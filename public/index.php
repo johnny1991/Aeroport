@@ -1,6 +1,7 @@
 <?php
 echo "test valentin";
 echo "test EMERIC";
+echo "test valentin2";
 // Define path to application directory
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
