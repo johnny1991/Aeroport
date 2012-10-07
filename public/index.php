@@ -9,7 +9,7 @@ defined('APPLICATION_ENV')
 
 // Define library directory
 defined ('LIBRARY_PATH') || define('LIBRARY_PATH',
-	realpath(dirname(__FILE__) . '/../library'));
+	realpath(dirname(__FILE__) . '/../../library'));
 
 // Define models directory
 defined ('MODELS_PATH') || define('MODELS_PATH',
