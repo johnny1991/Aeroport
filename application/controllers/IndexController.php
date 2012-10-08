@@ -2,7 +2,6 @@
 
 class IndexController extends Zend_Controller_Action
 {
-
 	public function init()
 	{
 		/* Initialize action controller here */
@@ -10,12 +9,25 @@ class IndexController extends Zend_Controller_Action
 
 	public function indexAction()
 	{
-		echo phpinfo();
-		//Test de connexion a la bdd et aux modeles
-		//$tableAeroport=new Aeroport;
-		//$aeroport=$tableAeroport->fetchrow();
+		/** Test de tout les modèles */
+		/*
+		$tableAeroport = new Aeroport;
+		$tableAstreinte = new Astreinte;
+		$tableAvion = new Avion;
+		$tableEtreBreveter = new EtreBreveter;
+		$tableIntervention = new Intervention;
+		$tableJourSemaine = new JourSemaine;
+		$tablePays = new Pays;
+		$tablePeriodiciteJourSemaine = new PeriodiciteJourSemaine;
+		$tablePeriodicite = new Periodicite;
+		$tablePilote = new Pilote;
+		$tableRemarque = new Remarque;
+		$tableService = new Service;
+		$tableTypeAvion = new TypeAvion;
+		$tableUtilisateur = new Utilisateur;
+		$tableVille = new Ville;
+		$tableVol = new Vol;
+		*/
 	}
-
-
 }
 
