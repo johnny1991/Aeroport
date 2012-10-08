@@ -13,10 +13,10 @@ defined ('LIBRARY_PATH') || define('LIBRARY_PATH',
 
 // Define models directory
 defined ('MODELS_PATH') || define('MODELS_PATH',
-		realpath(dirname(__FILE__) . '/models'));
+		realpath(APPLICATION_PATH. '/models'));
 
 // Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(realpath('LIBRARY_PATH'),realpath('MODELS_PATH'), get_include_path())));
+set_include_path(implode(PATH_SEPARATOR, array(realpath(LIBRARY_PATH),realpath(MODELS_PATH), get_include_path())));
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
