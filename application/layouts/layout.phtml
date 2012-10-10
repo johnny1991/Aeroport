@@ -11,8 +11,17 @@ echo $this->escape($this->title);
 </title>
 </head>
 <body>
+<div id="pere">
+	<div id="header">
+		<div id="logo"></div>
+		<div id="connect"><?php echo $this->action('login','index'); ?></div>
+	</div>
+
 	<?php 
 	echo $this->layout()->content;
 	?>
+	
+	<!-- <div id="footer"></div>  -->
+</div>
 </body>
 </html>

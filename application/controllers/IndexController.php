@@ -9,6 +9,7 @@ class IndexController extends Zend_Controller_Action
 
 	public function indexAction()
 	{
+		$this->_helper->layout->setLayout('home');
 		/** Test de tout les modèles */
 		/*
 		$tableAeroport = new Aeroport;
@@ -29,5 +30,11 @@ class IndexController extends Zend_Controller_Action
 		$tableVol = new Vol;
 		*/
 	}
+	
+	public function loginAction()
+	{
+		
+	}
 }
+
 
