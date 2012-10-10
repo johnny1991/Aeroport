@@ -1,0 +1,27 @@
+<?php echo $this->doctype('HTML5');?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php 
+echo $this->headLink()->appendStylesheet('/css/style.css');
+?>
+<title><?php 
+echo $this->escape($this->title);
+?>
+</title>
+</head>
+<body>
+<div id="pere">
+<div id="header"></div>
+	<div id="login_connect">
+		<div id="logo_connect"></div>
+		<form>
+			<input type=text name="login" value="login">
+			<input type=text name="mdp" value="mot de passe"><br />
+			<input type=submit value="ok">
+		</form>
+	</div>
+	<div id="footer"></div>
+</div>
+</body>
+</html>
