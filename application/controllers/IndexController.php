@@ -10,6 +10,7 @@ class IndexController extends Zend_Controller_Action
 	public function indexAction()
 	{
 		$this->_helper->layout->setLayout('home');
+		$this->view->title="INSSET Airlines - Connexion";
 		/** Test de tout les modèles */
 		/*
 		$tableAeroport = new Aeroport;

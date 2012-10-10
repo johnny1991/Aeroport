@@ -8,7 +8,7 @@ body{
 	width:960px;
 	height:100%;
 	margin:0 auto 0 auto;
-	background:url('../img/bck.jpg');
+	background:#4484b4 url('../img/bck.jpg');
 	box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
 }
 
@@ -55,8 +55,7 @@ body{
 #connect{
 	width:200px;
 	height:80px;
-	background:#FFF;
-	opacity:0.5;
+	background:rgba(255, 255, 255, 0.3);
 	float:right;
 	margin:10px 50px 0 0;
 	-webkit-border-radius: 10px;
@@ -70,8 +69,9 @@ body{
 
 #side_bar{
 	width:600px;
+	height:1px;
 	margin:20px auto 0 auto;
-	border:solid 1px;
+	background:url('../img/side.png');
 }
 nav{
 	width:400px;
