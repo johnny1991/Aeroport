@@ -1,0 +1,37 @@
+@CHARSET "UTF-8";
+
+#headerCalendar{width:896px;margin:auto;margin-bottom:30px;border-collapse:collapse;}
+	.buttonStyle{float:left;width:33px;height:25px;background:url('/img/sprite-button.png') left top no-repeat;cursor:pointer;text-align:center;}	
+	.buttonStyle img, .buttonStyleNoActive img{margin-top:8px;}
+	.buttonStyle:hover{background-position:left center;}
+	.buttonStyle:active{background-position:left bottom;}
+	.buttonStyleNoActive{float:left;width:33px;height:25px;background:url('/img/sprite-button.png') left bottom no-repeat;cursor:pointer;text-align:center;}
+	.tdFormCalendar{width:256px;}
+	.formCalendar{width:256px;position:relative;top:10px;}
+	.buttonToday{float:left;width:111px;height:25px;background:url('/img/sprite-button-today.png') left top no-repeat;cursor:pointer;margin-left:10px;}
+	.buttonTodayNoActive{float:left;width:111px;height:25px;background:url('/img/sprite-button-today.png') left bottom no-repeat;cursor:pointer;margin-left:10px;}
+	.buttonToday:hover{background-position:left center;}
+	.buttonToday:active{background-position:left bottom;}
+
+#titleCalendar{margin-left:8%;font-size:28px;}
+#tableCalendar{width:896px;border-collapse:collapse;border:1px #000 solid;margin:auto;}
+#tableCalendar th{background-color:#707070;box-shadow:0px 5px 5px #000;}
+#tableCalendar td{border:1px #000 solid;width:118px;height:90px;vertical-align:top;text-align:right;padding:5px;background:url('/img/background-td.png') -20px -40px no-repeat;}
+#tableCalendar td a{color:#000;text-decoration:none;}
+#tableCalendar td:hover{background:none;background:url('/img/background-td-hover.png') -30px -10px no-repeat;border: 1px #787878 inset;cursor:pointer;}
+#tableCalendar tr td:first-child{background:none;background-color:#b6b6b6;}
+
+#tableCalendar td.tdToday{background:none;background:url('/img/background-td-today.png') -30px -10px no-repeat;border:2px #787878 solid;}
+#tableCalendar tr.trWeek td.tdToday{background:none;background:url('/img/background-td-today.png') -30px -10px no-repeat;border:1px #000 solid;box-shadow:inset 2px 1px 8px #5e5e5e;}
+#tableCalendar tr.trWeek td.tdToday:hover{background:none;background:url('/img/background-td.png') -30px -10px no-repeat;border:1px #000 solid;}
+
+#tableCalendar tr.trWeek td{background:none;background:url('/img/background-td-update.png') -0px -0px no-repeat;}
+#tableCalendar tr.trWeek td:hover{background:none;background:url('/img/background-td-update-hover.png') -0px -0px no-repeat;}
+#tableCalendar tr.trWeek td.prevDay{background:none;background:url('/img/background-td-update-prev-next.png') -0px -0px no-repeat;color:#135411;}
+#tableCalendar tr.trWeek td.prevDay:hover{background:none;background:url('/img/background-td-update-prev-next-hover.png') -0px -0px no-repeat;color:#135411;}
+#tableCalendar tr.trWeek td:first-child{background:none;background-color:#b6b6b6;}
+
+#tableCalendar td.prevDay{color:#626262;background:none;background:url('/img/background-td-prev-next.png') -0px -0px no-repeat;}
+#tableCalendar td.prevDay:hover{color:#000;background:none;background:url('/img/background-td-hover.png') -0px -0px no-repeat;}
+
+#tableCalendar	td.tdWeek{width:70px;vertical-align:middle;text-align:center;}
