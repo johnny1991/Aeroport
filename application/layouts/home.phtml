@@ -16,9 +16,7 @@ echo $this->escape($this->title);
 	<div id="login_connect">
 		<div id="logo_connect"></div>
 		<form>
-			<input type=text name="login" value="login">
-			<input type=text name="mdp" value="mot de passe"><br />
-			<input type=submit value="ok">
+			<?php echo $this->action('login','auth'); ?>
 		</form>
 	</div>
 	<div id="footer"></div>
