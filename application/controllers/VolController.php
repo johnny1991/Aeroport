@@ -4,8 +4,8 @@ class VolController extends Zend_Controller_Action
 	public function ajoutAction() // faire les controles de saisie /!\
 	{
 		$this->view->headScript()->appendFile('/js/jquery-ui-sliderAccess.js');
-		$this->view->headScript()->appendFile('http://code.jquery.com/jquery-1.8.2.min.js');		
-		$this->view->headScript()->appendFile('http://code.jquery.com/ui/1.8.24/jquery-ui.min.js');
+		$this->view->headScript()->appendFile('/js/jquery-ui-timepicker-addon.js');
+		$this->view->headScript()->appendFile('/js/VolFonction.js');
 		$this->view->headLink()->appendStylesheet('/css/jquery-ui-timepicker-addon.css');
 		$this->view->headLink()->appendStylesheet('http://code.jquery.com/ui/1.8.23/themes/smoothness/jquery-ui.css');
 		$TableLigne = new Ligne;

@@ -5,7 +5,7 @@ function RechercheAeroport(provenance,pays)
 	$.ajax(
 			{
 				type: "POST",
-				url: "http://aeroport/Vol/rechercheaeroport",
+				url: "/Vol/rechercheaeroport",
 				data: 'pays='+pays,
 				success: function(msg)
 				{
