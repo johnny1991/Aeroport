@@ -2,7 +2,7 @@
 class Vol extends Zend_Db_Table_Abstract
 {
 	protected $_name='vol';
-	protected $_primary='id_vol';
+	protected $_primary='id_vol,numero_ligne';
 	protected $_referenceMap=array(
 			'id_pilote'=>array(
 					'columns'=>'id_pilote',  /* A voir selon modif bdd*/
