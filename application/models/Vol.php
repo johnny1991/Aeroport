@@ -2,7 +2,7 @@
 class Vol extends Zend_Db_Table_Abstract
 {
 	protected $_name='vol';
-	protected $_primary='id_vol,numero_ligne';
+	protected $_primary=array('id_vol','numero_ligne');
 	protected $_referenceMap=array(
 			'id_pilote'=>array(
 					'columns'=>'id_pilote',  /* A voir selon modif bdd*/
@@ -23,4 +23,11 @@ class Vol extends Zend_Db_Table_Abstract
 					'columns'=>'id_aeroport',
 					'refTableClass'=>'Aeroport')
 	);
+
+	public function getLastId($ligne){
+		$requete=$this->select()->from($this)->where('numero_ligne=?',$ligne);
+		$row=$this->getAdapter()->fetchOne($requete);
+		return $row;
+	}
+	
 }

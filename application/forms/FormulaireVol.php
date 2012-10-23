@@ -58,7 +58,8 @@ class FormulaireVol extends Zend_Form
 		$ENumero->setDecorators($decorators);
 		
 		$EPaysDepart= new Zend_Form_Element_Select('paysDepart');
-		$pays=$this->TablePays->fetchAll();
+		$requete=$this->TablePays->select()->from($this->TablePays)->order("nom_pays asc");
+		$pays=$this->TablePays->fetchAll($requete);
 		foreach($pays as $pays1){
 			$EPaysDepart->addMultiOption($pays1->code_pays,$pays1->nom_pays);
 		}
@@ -74,7 +75,7 @@ class FormulaireVol extends Zend_Form
 		$EAeroportDepart->setDecorators($decorators);
 
 		$EPaysArrive= new Zend_Form_Element_Select('paysArrive');
-		$pays=$this->TablePays->fetchAll();
+		$pays=$this->TablePays->fetchAll($requete);
 		foreach($pays as $pays1){
 			$EPaysArrive->addMultiOption($pays1->code_pays,$pays1->nom_pays);
 		}

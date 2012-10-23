@@ -1,7 +1,7 @@
 <?php
 class VolController extends Zend_Controller_Action
 {
-	public function ajoutAction()
+	public function ajoutAction() // faire les controles de saisie /!\
 	{
 		$this->view->headScript()->appendFile('/js/jquery-ui-sliderAccess.js');
 		$this->view->headScript()->appendFile('http://code.jquery.com/jquery-1.8.2.min.js');		
@@ -11,6 +11,8 @@ class VolController extends Zend_Controller_Action
 		$TableLigne = new Ligne;
 		$this->view->title="Ajouter un vol";
 		$form= new FormulaireVol();
+		$TableVol1=new Vol;
+		Zend_Debug::dump($TableVol1->getLastId(4));
 		if($this->getRequest()->isPost())
 		{
 			$data=$this->getRequest()->getPost();

@@ -6,6 +6,12 @@ class Ligne extends Zend_Db_Table_Abstract
 	protected $_referenceMap=array(
 			'id_aeroport_origine'=>array(
 					'columns'=>'id_aeroport',
+					'refTableClass'=>'Aeroport'),
+			'id_aeroport_depart'=>array(
+					'columns'=>'id_aeroport',
+					'refTableClass'=>'Aeroport'),
+			'id_aeroport_arrivee'=>array(
+					'columns'=>'id_aeroport',
 					'refTableClass'=>'Aeroport')
 	);
 }

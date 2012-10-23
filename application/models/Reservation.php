@@ -9,6 +9,9 @@ class Reservation extends Zend_Db_Table_Abstract
 					'refTableClass'=>'Client'),
 			'id_vol'=>array(
 					'columns'=>'id_vol',
-					'refTableClass'=>'Vol')
+					'refTableClass'=>'Vol'),
+			'numero_ligne'=>array(
+					'columns'=>'numero_ligne',
+					'refTableClass'=>'Ligne')
 	);
 }
