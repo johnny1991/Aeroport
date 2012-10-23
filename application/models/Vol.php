@@ -2,12 +2,12 @@
 class Vol extends Zend_Db_Table_Abstract
 {
 	protected $_name='vol';
-	protected $_primary='numero_vol';
+	protected $_primary='id_vol';
 	protected $_referenceMap=array(
 			'id_pilote'=>array(
 					'columns'=>'id_pilote',  /* A voir selon modif bdd*/
 					'refTableClass'=>'Pilote'),
-			'id_aeroport_arrive'=>array(
+			'id_aeroport_arrivee_effectif'=>array(
 					'columns'=>'id_aeroport',
 					'refTableClass'=>'Aeroport'),
 			'id_avion'=>array(
@@ -19,7 +19,7 @@ class Vol extends Zend_Db_Table_Abstract
 			'id_copilote'=>array(
 					'columns'=>'id_pilote',  /* A voir selon modif bdd*/
 					'refTableClass'=>'Pilote'),
-			'id_aeroport_arrivee'=>array(
+			'id_aeroport_depart_effectif'=>array(
 					'columns'=>'id_aeroport',
 					'refTableClass'=>'Aeroport')
 	);

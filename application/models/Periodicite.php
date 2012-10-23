@@ -1,11 +1,11 @@
 <?php
-class PeriodiciteJ extends Zend_Db_Table_Abstract
+class Periodicite extends Zend_Db_Table_Abstract
 {
-	protected $_name='periodicite_jour_semaine';
-	protected $_primary=array('id_periodicite','numero_jour');
+	protected $_name='periodicite';
+	protected $_primary=array('numero_ligne','numero_jour');
 	protected $_referenceMap=array(
-			'numero_lign'=>array(
-					'columns'=>'numero_lign',
+			'numero_ligne'=>array(
+					'columns'=>'numero_ligne',
 					'refTableClass'=>'Ligne'),
 			'numero_jour'=>array(
 					'columns'=>'numero_jour',

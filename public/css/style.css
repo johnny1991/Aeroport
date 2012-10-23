@@ -81,7 +81,9 @@ nav{
 }
 
 
-
+#globalDate1, #globalDate2, #globalJour{
+	display:none;
+}
 
 
 #footer{

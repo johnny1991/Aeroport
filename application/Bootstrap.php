@@ -8,5 +8,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		Zend_Db_Table_Abstract::setDefaultAdapter($db);
 		Zend_Registry::set('db',$db);
 	}
+	
+	protected function _initLibrairie(){
+		$autoloader= Zend_Loader_Autoloader::getInstance();
+		$autoloader->registerNamespace('Aeroport_');
+	}
 }
 

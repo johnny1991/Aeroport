@@ -11,6 +11,10 @@ defined('APPLICATION_ENV')
 defined ('LIBRARY_PATH') || define('LIBRARY_PATH',
 		realpath(dirname(__FILE__) . '/../../library'));
 
+// Define personnal library directory
+defined ('PERSONNAL_LIBRARY_PATH') || define('PERSONNAL_LIBRARY_PATH',
+		realpath(dirname(__FILE__) . '/../library'));
+
 // Define models directory
 defined ('MODELS_PATH') || define('MODELS_PATH',
 		realpath(APPLICATION_PATH. '/models'));
@@ -26,6 +30,7 @@ defined ('LAYOUTS_PATH') || define('LAYOUTS_PATH',
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
 		realpath(LIBRARY_PATH),
+		realpath(PERSONNAL_LIBRARY_PATH),
 		realpath(MODELS_PATH),
 		realpath(FORMS_PATH),
 		realpath(LAYOUTS_PATH),

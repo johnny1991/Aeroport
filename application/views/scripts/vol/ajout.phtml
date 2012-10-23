@@ -1,25 +1,4 @@
-<script type="text/javascript">
-function RechercheAeroport(provenance,pays)
-{
-$.ajax(
-{
-	type: "POST",
-	url: "http://aeroport/Vol/rechercheaeroport",
-	data: 'pays='+pays,
-	success: function(msg)
-	{
-		if(provenance=='depart')
-			{
-			$('#aeroportDepart').empty();
-			$('#aeroportDepart').append(msg);	
-			}
-		else if(provenance=='arrivee')
-			{
-			$('#aeroportArrivee').empty();
-			$('#aeroportArrivee').append(msg);	
-			}
-	}
-}
-);
-}
-</script>
+<?php 
+echo $this->headScript()->appendFile('/js/jquery-ui-timepicker-addon.js');
+echo $this->Form;
+?>
