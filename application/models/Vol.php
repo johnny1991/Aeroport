@@ -25,7 +25,7 @@ class Vol extends Zend_Db_Table_Abstract
 	);
 
 	public function getLastId($ligne){
-		$requete=$this->select()->from($this)->where('numero_ligne=?',$ligne);
+		$requete=$this->select()->from($this)->where('numero_ligne=?',$ligne)->order("id_vol Desc");
 		$row=$this->getAdapter()->fetchOne($requete);
 		return $row;
 	}

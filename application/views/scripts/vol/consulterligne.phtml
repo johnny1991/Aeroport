@@ -1,0 +1,69 @@
+<?php $lignes=$this->lignes; ?>
+<div class="tabLignes">
+	<div class="rowLignes">
+		<div class=""
+		<?php if($this->order=='Numero_Desc') echo "id='desc'"; else if ($this->order=='Numero_Asc') echo "id='asc'";?>>
+			<b><a
+				href="<?php if($this->order=='Numero_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/Numero_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/Numero_Asc'); ?>">Numéro</a> </b></div>
+		<div class=""
+		<?php if($this->order=='AeDepart_Desc') echo "id='desc'"; else if ($this->order=='AeDepart_Asc') echo "id='asc'";?>>
+			<b><a
+				href="<?php if($this->order=='AeDepart_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/AeDepart_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/AeDepart_Asc'); ?>">Aeroport
+					de départ</a> </b>
+		</div>
+		<div class=""
+		<?php if($this->order=='AeArrive_Desc') echo "id='desc'"; else if ($this->order=='AeArrive_Asc') echo "id='asc'";?>>
+			<b><a
+				href="<?php if($this->order=='AeArrive_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/AeArrive_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/AeArrive_Asc'); ?>">Aeroport
+					d'arrivé</a> </b>
+		</div>
+		<div class=""
+		<?php if($this->order=='HeDepart_Desc') echo "id='desc'"; else if ($this->order=='HeDepart_Asc') echo "id='asc'";?>>
+			<b><a
+				href="<?php if($this->order=='HeDepart_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/HeDepart_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/HeDepart_Asc'); ?>">Heure
+					de départ</a> </b>
+		</div>
+		<div class=""
+		<?php if($this->order=='HeArrivee_Desc') echo "id='desc'"; else if ($this->order=='HeArrivee_Asc') echo "id='asc'";?>>
+			<b><a
+				href="<?php if($this->order=='HeArrivee_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/HeArrivee_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/HeArrivee_Asc'); ?>">Heure
+					d'arrivée</a> </b>
+		</div>
+		<div class=""
+		<?php if($this->order=='Periodique_Desc') echo "id='desc'"; else if ($this->order=='Periodique_Asc') echo "id='asc'";?>>
+			<b><a
+				href="<?php if($this->order=='Periodique_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/Periodique_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/Periodique_Asc'); ?>">Périodicité</a>
+			</b>
+		</div>
+	</div>
+	<?php 
+	$idLigne=0;
+	foreach ($lignes as $ligne){
+	echo '<a href="'.$this->baseUrl('vol/consultervol/id/').$ligne->numero_ligne.'"><div class="';
+			if($idLigne%2)
+				echo 'ligneOdd';
+			else
+				echo 'ligneEven';
+			echo '">';
+			?>
+		<div class="">
+			<?php echo $ligne->numero_ligne; ?>
+		</div>
+		<div class="">
+			<?php echo $ligne->id_aeroport_depart; ?>
+		</div>
+		<div class="">
+			<?php echo $ligne->id_aeroport_arrivee; ?>
+		</div>
+		<div class="">
+			<?php echo $ligne->heure_depart; ?>
+		</div>
+		<div class="">
+			<?php echo $ligne->heure_arrivee; ?>
+		</div>
+		<div class="">
+			<?php if($ligne->periodique) echo "Périodique"; else echo "Vol à la carte"; ?>
+		</div>
+	</div>
+	<?php } ?>
+</div>

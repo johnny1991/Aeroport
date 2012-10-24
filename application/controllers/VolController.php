@@ -11,8 +11,6 @@ class VolController extends Zend_Controller_Action
 		$TableLigne = new Ligne;
 		$this->view->title="Ajouter un vol";
 		$form= new FormulaireVol();
-		$TableVol1=new Vol;
-		Zend_Debug::dump($TableVol1->getLastId(4));
 		if($this->getRequest()->isPost())
 		{
 			$data=$this->getRequest()->getPost();
@@ -44,6 +42,7 @@ class VolController extends Zend_Controller_Action
 				{
 					$TableVol=new Vol;
 					$Vol=$TableVol->createRow();
+					$Vol->id_vol=$TableVol->getLastId($Id)+1;
 					$Vol->numero_ligne=$Id;
 					$Vol->id_aeroport_depart_effectif=$form->getValue('aeroportDepart');
 					$Vol->id_aeroport_arrivee_effectif=$form->getValue('aeroportArrivee');
@@ -103,6 +102,20 @@ class VolController extends Zend_Controller_Action
 		}
 	}
 
+	public function consulterligneAction(){
+		$TableLigne= new Ligne;
+		$lignes=$TableLigne->fetchAll();
+		$this->view->lignes=$lignes;
+	}
+	
+	public function consultervolAction(){
+		$TableVol= new Vol;
+		$numero_ligne=$this->_getParam('id');
+		$requete=$TableVol->select()->from($TableVol)->where("numero_ligne=?",$numero_ligne);
+		$vols=$TableVol->fetchAll($requete);
+		$this->view->vols=$vols;
+	}
+	
 	public function init(){
 		parent::init();
 	}
