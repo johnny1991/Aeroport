@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.tableHeader{border:1px #000 solid;width:100%;margin-bottom:0px;height:50px;}
+.tableHeader td{text-align:center;}
+	.tdLienNextPrec{border:1px #000 solid;width:100px;}
+	.tdCenterDate span{font-size:1.500em;font-weight:bold;}
+
+.tableListeVol{border:1px #000 solid;width:100%;border-collapse:collapse;}
+.tableListeVol th{border-bottom:1px #000 solid;}
+.tableListeVol td{text-align:center;}
+
+.divLienRetour{text-align:center;margin-top:20px;}

@@ -387,9 +387,6 @@ INSERT INTO `jour_semaine` (`numero_jour`, `libelle_jour`) VALUES
 (6, 'Samedi'),
 (7, 'Dimanche');
 
-
-
-
 INSERT INTO `pays` (`code_pays`, `nom_pays`, `alpha2`, `alpha3`) VALUES
 (4, 'Afghanistan', 'AF', 'AFG'),
 (8, 'Albanie', 'AL', 'ALB'),
@@ -778,7 +775,48 @@ INSERT INTO `astreinte` (`id_aeroport`, `id_pilote`, `date_astreinte`) VALUES
 ('CDG', 4, '2012-10-22 20:58:01'),
 ('CDG', 6, '2012-10-22 20:58:41');
 
-INSERT INTO `ligne` (`numero_ligne`, `id_aeroport_origine`, `id_aeroport_depart`, `id_aeroport_arrivee`, `heure_depart`, `heure_arrivee`, `periodique`) VALUES
-(1, 'CDG', 'CDG', 'GIG', '10:12:23', '10:12:26', 0),
-(2, 'CDG', 'CDG', 'GIG', '10:13:18', '10:13:20', 0);
+INSERT INTO `ligne` (`numero_ligne`, `id_aeroport_origine`, `id_aeroport_depart`, `id_aeroport_arrivee`, `heure_depart`, `heure_arrivee`, `periodique`, `distance`) VALUES
+(17, 'CDG', 'CDG', 'GIG', '10:12:23', '10:12:26', 0, 1100),
+(16, 'CDG', 'CDG', 'GIG', '10:13:18', '10:13:20', 0, 15000),
+(18, 'CDG', 'CDG', 'MRS', '15:00:00', '18:00:00', 1, 2000),
+(19, 'LYS', 'LYS', 'PEK', '08:00:00', '18:00:00', 1, 350),
+(20, 'JFK', 'JFK', 'MRS', '08:00:00', '15:00:00', 1, 2500),
+(21, 'MAN', 'MAN', 'MUC', '15:00:00', '19:00:00', 1, 16000),
+(22, 'PEK', 'PEK', 'LYS', '08:00:00', '15:00:00', 1, 1500),
+(23, 'GIG', 'GIG', 'SXF', '06:00:00', '15:00:00', 1, 13687),
+(24, 'MAN', 'MAN', 'CDG', '09:00:00', '12:00:00', 1, 1564),
+(25, 'LHR', 'LHR', 'MUC', '02:00:00', '06:00:00', 1, 12354),
+(26, 'MUC', 'MUC', 'JFK', '05:00:00', '10:00:00', 1, 1547);
+
+INSERT INTO `periodicite` (`numero_ligne`, `numero_jour`) VALUES
+(20, 1),
+(21, 1),
+(23, 1),
+(24, 1),
+(18, 2),
+(20, 2),
+(22, 2),
+(25, 2),
+(26, 2),
+(23, 3),
+(25, 3),
+(18, 4),
+(19, 4),
+(21, 4),
+(22, 4),
+(24, 4),
+(25, 4),
+(20, 5),
+(23, 5),
+(24, 5),
+(26, 5),
+(19, 6),
+(22, 6),
+(21, 7),
+(23, 7),
+(26, 7);
+
+INSERT INTO `vol` (`id_vol`, `numero_ligne`, `id_aeroport_depart_effectif`, `id_aeroport_arrivee_effectif`, `date_depart`, `date_arrivee`, `id_avion`, `id_pilote`, `id_copilote`, `heure_arrivee_effective`, `tarif`) VALUES
+(1, 18, 'CDG', 'MRS', '2012-10-09', '2012-10-09', '2', 4, 3, '15:00:00', '150.00'),
+(1, 19, 'LYS', 'PEK', '2012-10-24', '2012-10-25', '2', 7, 2, '18:00:00', '3000.00');
 

@@ -15,7 +15,7 @@
 
 #titleCalendar{margin-left:8%;font-size:28px;}
 #tableCalendar{width:896px;border-collapse:collapse;border:1px #000 solid;margin:auto;}
-#tableCalendar th{background-color:#707070;box-shadow:0px 5px 5px #000;}
+#tableCalendar th{background-color:#707070;}
 #tableCalendar td{border:1px #000 solid;width:118px;height:90px;vertical-align:top;text-align:right;padding:5px;background:url('/img/background-td.png') -20px -40px no-repeat;}
 #tableCalendar td a{color:#000;text-decoration:none;}
 #tableCalendar td:hover{background:none;background:url('/img/background-td-hover.png') -30px -10px no-repeat;border: 1px #787878 inset;cursor:pointer;}

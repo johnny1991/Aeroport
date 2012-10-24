@@ -1,1 +1,35 @@
-<a href="/planning/planning/">Retour au planning</a>
+<br /><br />
+<table class="tableHeader">
+	<tr>
+		<td class="tdLienNextPrec"><a href="/planning/listevol/date/<?php echo $this->timestampPrec;?>">Jour précédent</a></td><td class="tdCenterDate"><span><?php echo $this->laDate;?></span></td><td class="tdLienNextPrec"><a href="/planning/listevol/date/<?php echo $this->timestampNext;?>">Jour suivant</a></td>
+	</tr>
+</table>
+
+<table class="tableListeVol">
+	<tr>
+		<th>Pays de départ</th>
+		<th>Aéroport de départ</th>
+		<th>Heure de départ</th>
+		<th>Pays d'arivée</th>
+		<th>Aéroport d'arrivée</th>
+		<th>Heure d'arrivée</th>
+		<th>Options</th>
+	</tr>
+	<?php 
+		foreach($this->tabLigne as $value){
+			echo '<tr>';
+			echo '
+				<td>'.$value['pays_origine'].'</td>
+				<td>'.$value['aeroport_origine'].'</td>
+				<td>'.$value['heure_depart'].'</td>
+				<td>'.$value['pays_arrivee'].'</td>
+				<td>'.$value['aeroport_arrivee'].'</td>
+				<td>'.$value['heure_arrivee'].'</td>
+				<td></td>';
+					
+			echo '</tr>';
+		}
+	?>
+</table>
+
+<div class="divLienRetour"><a href="/planning/planning/">Retour au planning</a></div>
