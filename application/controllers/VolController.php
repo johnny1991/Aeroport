@@ -104,8 +104,47 @@ class VolController extends Zend_Controller_Action
 
 	public function consulterligneAction(){
 		$TableLigne= new Ligne;
-		$lignes=$TableLigne->fetchAll();
-		$this->view->lignes=$lignes;
+		$nbLigne=20;
+		$page=1;
+		if($this->getRequest()->getParam('orderBy'))
+		{
+			$orderBy=$this->getRequest()->getParam('orderBy');
+		}
+		else
+			$orderBy="Numero_Asc";
+		
+		if($orderBy=="Numero_Asc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("numero_ligne asc")->limitPage($page,$nbLigne));
+		else if($orderBy=="Numero_Desc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("numero_ligne desc")->limitPage($page,$nbLigne));
+		if($orderBy=="AeDepart_Asc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("id_aeroport_depart asc")->limitPage($page,$nbLigne));
+		else if($orderBy=="AeDepart_Desc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("id_aeroport_depart desc")->limitPage($page,$nbLigne));
+		if($orderBy=="AeArrive_Asc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("id_aeroport_arrivee asc")->limitPage($page,$nbLigne));
+		else if($orderBy=="AeArrive_Desc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("id_aeroport_arrivee desc")->limitPage($page,$nbLigne));
+		if($orderBy=="HeDepart_Asc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("heure_depart asc")->limitPage($page,$nbLigne));
+		else if($orderBy=="HeDepart_Desc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("heure_depart desc")->limitPage($page,$nbLigne));
+		if($orderBy=="HeArrivee_Asc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("heure_arrivee asc")->limitPage($page,$nbLigne));
+		else if($orderBy=="HeArrivee_Desc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("heure_arrivee desc")->limitPage($page,$nbLigne));
+		if($orderBy=="Periodique_Asc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("periodique asc")->limitPage($page,$nbLigne));
+		else if($orderBy=="Periodique_Desc")
+			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("periodique desc")->limitPage($page,$nbLigne));
+		
+		
+		
+		
+		
+		$this->view->order=$orderBy;
+		//$lignes=$TableLigne->fetchAll();
+		//$this->view->lignes=$lignes;
 	}
 	
 	public function consultervolAction(){
