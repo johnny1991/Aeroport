@@ -1,7 +1,68 @@
 <?php 
-$vols=$this->vols;
-foreach($vols as $vol)
-{
-	echo $vol->id_vol;
-}
+$ligne=$this->ligne;
 ?>
+<div class="infoLigne">
+	<div class="">
+		<?php echo $ligne->numero_ligne; ?>
+	</div>
+	<div class="">
+		<?php echo $ligne->id_aeroport_origine; ?>
+	</div>
+	<div class="">
+		<?php echo $ligne->id_aeroport_depart; ?>
+	</div>
+	<div class="">
+		<?php echo $ligne->id_aeroport_arrivee; ?>
+	</div>
+	<div class="">
+		<?php echo $ligne->heure_depart; ?>
+	</div>
+	<div class="">
+		<?php echo $ligne->heure_arrivee; ?>
+	</div>
+	<div class="">
+		<?php echo $ligne->periodique; ?>
+	</div>
+	<div class="">
+		<?php echo $ligne->distance; ?>
+	</div>
+</div>
+<div class="tabVols">
+	<div class="rowVols">
+		<div class="">
+			<?php 
+			echo $this->Id;
+			echo $this->DaDepart;
+			echo $this->DaArrive;
+			echo $this->Avion;
+			echo $this->Pilote;
+			echo $this->Copilote;
+			?>
+		</div>
+	</div>
+	<?php foreach($this->vols as $vol){ ?>
+	<a href="<?php echo $this->baseUrl('vol/fichevol/id/').$vol->id_vol; ?>">
+		<div class="<?php echo $this->cycle(array("Odd", "Even"))->next(); ?>">
+			<div class="">
+				<?php echo $vol->id_vol; ?>
+			</div>
+			<div class="">
+				<?php echo $vol->date_depart; ?>
+			</div>
+			<div class="">
+				<?php echo $vol->date_arrivee; ?>
+			</div>
+			<div class="">
+				<?php if ($vol->id_avion==NULL) echo "non affecté"; else echo $vol->libelle; ?>
+			</div>
+			<div class="">
+				<?php if ($vol->id_pilote==NULL) echo "non affecté"; else echo $vol->nom; ?>
+			</div>
+			<div class="">
+				<?php if ($vol->id_copilote==NULL) echo "non affecté"; else echo $vol->copilote; ?>
+			</div>
+		</div>
+	</a>
+	<?php 
+	} ?>
+</div>

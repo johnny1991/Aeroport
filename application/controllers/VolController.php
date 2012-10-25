@@ -1,7 +1,7 @@
 <?php
 class VolController extends Zend_Controller_Action
 {
-	public function ajoutAction() // faire les controles de saisie /!\
+	public function ajoutAction() // faire les controles de saisie t ajouter l'aeroport d'origine/!\
 	{
 		$this->view->headScript()->appendFile('/js/jquery-ui-sliderAccess.js');
 		$this->view->headScript()->appendFile('/js/jquery-ui-timepicker-addon.js');
@@ -38,7 +38,7 @@ class VolController extends Zend_Controller_Action
 						$Periode->save();
 					}
 				}
-				else 
+				else
 				{
 					$TableVol=new Vol;
 					$Vol=$TableVol->createRow();
@@ -102,60 +102,128 @@ class VolController extends Zend_Controller_Action
 		}
 	}
 
-	public function consulterligneAction(){
-		$TableLigne= new Ligne;
-		$nbLigne=20;
-		$page=1;
+	public function consulterligneAction(){ // A completer l'indexation de la page dans consulterligne.phtml et verifier peut etre si les valeurs et get existent
+
+		$nbLigne=2; //Nombre de lignes par pages
+
+		if($this->getRequest()->getParam('page'))
+			$page=$this->getRequest()->getParam('page');
+		else
+			$page=1;
+			
 		if($this->getRequest()->getParam('orderBy'))
-		{
 			$orderBy=$this->getRequest()->getParam('orderBy');
-		}
 		else
 			$orderBy="Numero_Asc";
-		
-		if($orderBy=="Numero_Asc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("numero_ligne asc")->limitPage($page,$nbLigne));
-		else if($orderBy=="Numero_Desc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("numero_ligne desc")->limitPage($page,$nbLigne));
-		if($orderBy=="AeDepart_Asc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("id_aeroport_depart asc")->limitPage($page,$nbLigne));
-		else if($orderBy=="AeDepart_Desc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("id_aeroport_depart desc")->limitPage($page,$nbLigne));
-		if($orderBy=="AeArrive_Asc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("id_aeroport_arrivee asc")->limitPage($page,$nbLigne));
-		else if($orderBy=="AeArrive_Desc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("id_aeroport_arrivee desc")->limitPage($page,$nbLigne));
-		if($orderBy=="HeDepart_Asc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("heure_depart asc")->limitPage($page,$nbLigne));
-		else if($orderBy=="HeDepart_Desc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("heure_depart desc")->limitPage($page,$nbLigne));
-		if($orderBy=="HeArrivee_Asc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("heure_arrivee asc")->limitPage($page,$nbLigne));
-		else if($orderBy=="HeArrivee_Desc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("heure_arrivee desc")->limitPage($page,$nbLigne));
-		if($orderBy=="Periodique_Asc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("periodique asc")->limitPage($page,$nbLigne));
-		else if($orderBy=="Periodique_Desc")
-			$this->view->lignes=$TableLigne->fetchAll($TableLigne->select()->from($TableLigne)->order("periodique desc")->limitPage($page,$nbLigne));
-		
-		
-		
-		
-		
+
+		$TableLigne= new Ligne;
+		$requete=$TableLigne->select()->from($TableLigne)->limitPage($page,$nbLigne);
+
+		switch ($orderBy) {
+			case "Numero_Asc": $requete->order("numero_ligne asc"); break;
+			case "Numero_Desc": $requete->order("numero_ligne desc"); break;
+			case "AeDepart_Asc": $requete->order("id_aeroport_depart asc"); break;
+			case "AeDepart_Desc": $requete->order("id_aeroport_depart desc"); break;
+			case "AeArrive_Asc": $requete->order("id_aeroport_arrivee asc"); break;
+			case "AeArrive_Desc": $requete->order("id_aeroport_arrivee desc"); break;
+			case "HeDepart_Asc": $requete->order("heure_depart asc"); break;
+			case "HeDepart_Desc": $requete->order("heure_depart desc"); break;
+			case "HeArrivee_Asc": $requete->order("heure_arrivee asc"); break;
+			case "HeArrivee_Desc": $requete->order("heure_arrivee desc"); break;
+			case "Periodique_Asc": $requete->order("periodique asc"); break;
+			case "Periodique_Desc": $requete->order("periodique desc"); break;
+		}
+
+		$lignes=$TableLigne->fetchAll($requete);
 		$this->view->order=$orderBy;
-		//$lignes=$TableLigne->fetchAll();
-		//$this->view->lignes=$lignes;
+		$this->view->lignes=$lignes;
 	}
-	
+
 	public function consultervolAction(){
+
+		$nbLigne=5;
+
+		if($this->getRequest()->getParam('page'))
+			$page=$this->getRequest()->getParam('page');
+		else
+			$page=1;
+			
+		if($this->getRequest()->getParam('orderBy'))
+			$orderBy=$this->getRequest()->getParam('orderBy');
+		else
+			$orderBy="Id_Asc";
+
+		if($this->getRequest()->getParam('id'))
+			$numero_ligne=$this->getRequest()->getParam('id');
+		else
+		{
+			// Afficher une erreur propre
+		}
+
+		$TableLigne= new Ligne;
+		$this->view->ligne=$TableLigne->find($numero_ligne)->current();
+
 		$TableVol= new Vol;
-		$numero_ligne=$this->_getParam('id');
-		$requete=$TableVol->select()->from($TableVol)->where("numero_ligne=?",$numero_ligne);
+		$requete=$TableVol
+		->select()
+		->from(array('v'=>'vol'))
+		->setIntegrityCheck(false)
+		->joinLeft(array('a'=>'avion'),'a.id_avion=v.id_avion')
+		->joinLeft(array('ta'=>'type_avion'),'a.id_type_avion=ta.id_type_avion',array('ta.libelle'))
+		->joinLeft(array('p'=>'pilote'),'p.id_pilote=v.id_pilote',array('p.nom'))
+		->joinLeft(array('c'=>'pilote'),'c.id_pilote=v.id_copilote',array('c.nom as copilote'))
+		->where("numero_ligne=?",$numero_ligne)
+		->limitPage($page,$nbLigne);
+
+		switch ($orderBy) {
+			case "Id_Asc": $requete->order("v.id_vol asc"); break;
+			case "Id_Desc": $requete->order("v.id_vol desc"); break;
+			case "DaDepart_Asc": $requete->order("v.date_depart asc"); break;
+			case "DaDepart_Desc": $requete->order("v.date_depart desc"); break;
+			case "DaArrive_Asc": $requete->order("v.date_arrivee asc"); break;
+			case "DaArrive_Desc": $requete->order("v.date_arrivee desc"); break;
+			case "Avion_Asc": $requete->order("ta.libelle asc"); break;
+			case "Avion_Desc": $requete->order("ta.libelle desc"); break;
+			case "Pilote_Asc":	$requete->order("p.nom asc"); break;
+			case "Pilote_Desc": $requete->order("p.nom desc"); break;
+			case "Copilote_Asc": $requete->order("c.nom asc"); break;
+			case "Copilote_Desc": $requete->order("c.nom desc"); break;
+		}
+
 		$vols=$TableVol->fetchAll($requete);
 		$this->view->vols=$vols;
+
+		$this->view->Id=$this->orderColumns("Id",$orderBy,null,"Numéro du vol");
+		$this->view->DaDepart=$this->orderColumns("DeDepart",$orderBy,null,"Date de départ");
+		$this->view->DaArrive=$this->orderColumns("DaArrive",$orderBy,null,"Date d'arrivée");
+		$this->view->Avion=$this->orderColumns("Avion",$orderBy,null,"Type d'Avion");
+		$this->view->Pilote=$this->orderColumns("Pilote",$orderBy,null,"Nom du pilote");
+		$this->view->Copilote=$this->orderColumns("Copilote",$orderBy,null,"Nom du copilote");
 	}
-	
+
 	public function init(){
 		parent::init();
+	}
+
+	public function orderColumns($nomOrder,$order,$class,$nom){
+
+		$params=$this->getRequest()->getParams();
+		$Html="<div class='".$class."' ";
+		
+		if(strstr($order, "_Desc"))
+			$Html .= "id='desc'";
+		else if (strstr($order, "_Asc"))
+			$Html .= "id='asc'";
+		
+		$Html .="><b><a href='";
+		
+		if( (strstr($order, "_Asc")) && (strstr($order, $nomOrder)) )
+			$params["orderBy"]=$nomOrder."_Desc";
+		else
+			$params["orderBy"]=$nomOrder."_Asc";
+		
+		$Html.=$this->view->url($params)."'>".$nom."</a></b></div>";
+		
+		return $Html;
 	}
 }
