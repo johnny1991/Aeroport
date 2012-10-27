@@ -63,7 +63,7 @@ class VolController extends Zend_Controller_Action
 		}
 	}
 
-	public function modifierAction()
+	public function modifierAction()  // Faux
 	{
 		$this->view->title="Modifier un vol";
 		$TableVol= new Vol;
@@ -72,7 +72,7 @@ class VolController extends Zend_Controller_Action
 		$Vol->save();
 	}
 
-	public function supprimerAction()
+	public function supprimerAction() // Faux
 	{
 		$this->view->title="Supprimer un vol";
 		$TableVol= new Vol;
@@ -143,87 +143,124 @@ class VolController extends Zend_Controller_Action
 
 		$nbLigne=5;
 
-		if($this->getRequest()->getParam('page'))
-			$page=$this->getRequest()->getParam('page');
-		else
-			$page=1;
-			
-		if($this->getRequest()->getParam('orderBy'))
-			$orderBy=$this->getRequest()->getParam('orderBy');
-		else
-			$orderBy="Id_Asc";
+		$numero_ligne=$this->getRequest()->getParam('id');
+		$TableLigne= new Ligne;
+		$ligne=$TableLigne->find($numero_ligne)->current();
+		if( ($this->getRequest()->getParam('id')) && ($ligne!=NULL) )
+		{
+			$this->view->ligne=$ligne;
+			$this->view->aeroport_origine=$ligne->findParentAeroportByaeroport_origine();
+			$this->view->aeroport_depart=$ligne->findParentAeroportByaeroport_depart();
+			$this->view->aeroport_arrivee=$ligne->findParentAeroportByaeroport_arrivee();
+			$this->view->jours=$ligne->findJourSemaineViaPeriodicite();
 
-		if($this->getRequest()->getParam('id'))
-			$numero_ligne=$this->getRequest()->getParam('id');
+			if($this->getRequest()->getParam('orderBy'))
+				$orderBy=$this->getRequest()->getParam('orderBy');
+			else
+				$orderBy="Id_Asc";
+
+			if($this->getRequest()->getParam('page'))
+				$page=$this->getRequest()->getParam('page');
+			else
+				$page=1;
+
+			$TableVol= new Vol;
+			$requete=$TableVol
+			->select()
+			->from(array('v'=>'vol'))
+			->setIntegrityCheck(false)
+			->joinLeft(array('a'=>'avion'),'a.id_avion=v.id_avion')
+			->joinLeft(array('ta'=>'type_avion'),'a.id_type_avion=ta.id_type_avion',array('ta.libelle'))
+			->joinLeft(array('p'=>'pilote'),'p.id_pilote=v.id_pilote',array('p.nom'))
+			->joinLeft(array('c'=>'pilote'),'c.id_pilote=v.id_copilote',array('c.nom as copilote'))
+			->where("numero_ligne=?",$numero_ligne)
+			->limitPage($page,$nbLigne);
+
+			switch ($orderBy) {
+				case "Id_Asc": $requete->order("v.id_vol asc"); break;
+				case "Id_Desc": $requete->order("v.id_vol desc"); break;
+				case "DaDepart_Asc": $requete->order("v.date_depart asc"); break;
+				case "DaDepart_Desc": $requete->order("v.date_depart desc"); break;
+				case "DaArrive_Asc": $requete->order("v.date_arrivee asc"); break;
+				case "DaArrive_Desc": $requete->order("v.date_arrivee desc"); break;
+				case "Avion_Asc": $requete->order("ta.libelle asc"); break;
+				case "Avion_Desc": $requete->order("ta.libelle desc"); break;
+				case "Pilote_Asc":	$requete->order("p.nom asc"); break;
+				case "Pilote_Desc": $requete->order("p.nom desc"); break;
+				case "Copilote_Asc": $requete->order("c.nom asc"); break;
+				case "Copilote_Desc": $requete->order("c.nom desc"); break;
+				default : $requete->order("v.id_vol asc"); break;
+			}
+
+			$vols=$TableVol->fetchAll($requete);
+			$this->view->vols=$vols;
+
+			$this->view->Id=$this->orderColumns("Id",$orderBy,null,"Numéro du vol");
+			$this->view->DaDepart=$this->orderColumns("DeDepart",$orderBy,null,"Date de départ");
+			$this->view->DaArrive=$this->orderColumns("DaArrive",$orderBy,null,"Date d'arrivée");
+			$this->view->Avion=$this->orderColumns("Avion",$orderBy,null,"Type d'Avion");
+			$this->view->Pilote=$this->orderColumns("Pilote",$orderBy,null,"Nom du pilote");
+			$this->view->Copilote=$this->orderColumns("Copilote",$orderBy,null,"Nom du copilote");
+		}
 		else
 		{
-			// Afficher une erreur propre
+			$this->_helper->viewRenderer->setNoRender(true);/********************* A terminer ******************/
+			echo $this->view->action('pageerreur','error',null,array('page'=>$this->getRequest()->getActionName()));
 		}
 
-		$TableLigne= new Ligne;
-		$this->view->ligne=$TableLigne->find($numero_ligne)->current();
 
-		$TableVol= new Vol;
-		$requete=$TableVol
-		->select()
-		->from(array('v'=>'vol'))
-		->setIntegrityCheck(false)
-		->joinLeft(array('a'=>'avion'),'a.id_avion=v.id_avion')
-		->joinLeft(array('ta'=>'type_avion'),'a.id_type_avion=ta.id_type_avion',array('ta.libelle'))
-		->joinLeft(array('p'=>'pilote'),'p.id_pilote=v.id_pilote',array('p.nom'))
-		->joinLeft(array('c'=>'pilote'),'c.id_pilote=v.id_copilote',array('c.nom as copilote'))
-		->where("numero_ligne=?",$numero_ligne)
-		->limitPage($page,$nbLigne);
-
-		switch ($orderBy) {
-			case "Id_Asc": $requete->order("v.id_vol asc"); break;
-			case "Id_Desc": $requete->order("v.id_vol desc"); break;
-			case "DaDepart_Asc": $requete->order("v.date_depart asc"); break;
-			case "DaDepart_Desc": $requete->order("v.date_depart desc"); break;
-			case "DaArrive_Asc": $requete->order("v.date_arrivee asc"); break;
-			case "DaArrive_Desc": $requete->order("v.date_arrivee desc"); break;
-			case "Avion_Asc": $requete->order("ta.libelle asc"); break;
-			case "Avion_Desc": $requete->order("ta.libelle desc"); break;
-			case "Pilote_Asc":	$requete->order("p.nom asc"); break;
-			case "Pilote_Desc": $requete->order("p.nom desc"); break;
-			case "Copilote_Asc": $requete->order("c.nom asc"); break;
-			case "Copilote_Desc": $requete->order("c.nom desc"); break;
-		}
-
-		$vols=$TableVol->fetchAll($requete);
-		$this->view->vols=$vols;
-
-		$this->view->Id=$this->orderColumns("Id",$orderBy,null,"Numéro du vol");
-		$this->view->DaDepart=$this->orderColumns("DeDepart",$orderBy,null,"Date de départ");
-		$this->view->DaArrive=$this->orderColumns("DaArrive",$orderBy,null,"Date d'arrivée");
-		$this->view->Avion=$this->orderColumns("Avion",$orderBy,null,"Type d'Avion");
-		$this->view->Pilote=$this->orderColumns("Pilote",$orderBy,null,"Nom du pilote");
-		$this->view->Copilote=$this->orderColumns("Copilote",$orderBy,null,"Nom du copilote");
 	}
 
-	public function init(){
-		parent::init();
+	public function fichevolAction(){
+		$numero_ligne=$this->getRequest()->getParam('ligne');
+		
+		if( ($this->getRequest()->getParam('vol')) && ($this->getRequest()->getParam('ligne')) )
+		{
+			$id_vol=$this->getRequest()->getParam('vol');
+		}
+		else
+			echo "error"; // A terminer
+		$tableVol=new Vol;
+		$vol=$tableVol->find($numero_ligne,$id_vol)->current();
+		$this->view->vol=$vol;
+		$tableLigne=new Ligne;
+		$ligne=$tableLigne->find($numero_ligne)->current();
+		$this->view->jours=$ligne->findJourSemaineViaPeriodicite();
+		$this->view->aeroport_origine=$ligne->findParentRow('Aeroport','aeroport_origine');
+		$this->view->aeroport_depart=$ligne->findParentRow('Aeroport','aeroport_depart');
+		$this->view->aeroport_arrivee=$ligne->findParentRow('Aeroport','aeroport_arrivee');
+		$this->view->typeAvion=$vol->findParentRow("Avion")->findParentRow("TypeAvion");
+		$this->view->aeroport_depart_effectif=$vol->findParentRow('Aeroport','id_aeroport_depart_effectif');
+		$this->view->aeroport_arrivee_effectif=$vol->findParentRow('Aeroport','id_aeroport_arrivee_effectif');
+		$this->view->copilote=$vol->findParentRow('Pilote','Copilote');
+		$this->view->pilote=$vol->findParentRow('Pilote','Pilote');
+
+		$this->view->ligne=$ligne;
 	}
 
 	public function orderColumns($nomOrder,$order,$class,$nom){
 
 		$params=$this->getRequest()->getParams();
 		$Html="<div class='".$class."' ";
-		
+
 		if(strstr($order, "_Desc"))
 			$Html .= "id='desc'";
 		else if (strstr($order, "_Asc"))
 			$Html .= "id='asc'";
-		
+
 		$Html .="><b><a href='";
-		
+
 		if( (strstr($order, "_Asc")) && (strstr($order, $nomOrder)) )
 			$params["orderBy"]=$nomOrder."_Desc";
 		else
 			$params["orderBy"]=$nomOrder."_Asc";
-		
+
 		$Html.=$this->view->url($params)."'>".$nom."</a></b></div>";
-		
+
 		return $Html;
+	}
+
+	public function init(){
+		parent::init();
 	}
 }

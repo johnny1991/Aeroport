@@ -2,29 +2,44 @@
 $ligne=$this->ligne;
 ?>
 <div class="infoLigne">
-	<div class="">
+	<label for="numero">Numero de la ligne : </label>
+	<div class="" id="numero">
 		<?php echo $ligne->numero_ligne; ?>
 	</div>
-	<div class="">
-		<?php echo $ligne->id_aeroport_origine; ?>
+	<label for="aeroport_origine">Aeroport d'origine : </label>
+	<div class="" id="aeroport_origine">
+		<?php echo $this->aeroport_origine->nom; ?>
 	</div>
-	<div class="">
-		<?php echo $ligne->id_aeroport_depart; ?>
+	<label for="aeroport_depart">Aeroport de départ : </label>
+	<div class="" id="aeroport_depart">
+		<?php echo $this->aeroport_depart->nom; ?>
 	</div>
-	<div class="">
-		<?php echo $ligne->id_aeroport_arrivee; ?>
+	<label for="aeroport_arrive">Aeroport d'arrivé : </label>
+
+	<div class="" id="aeroport_arrive">
+		<?php echo $this->aeroport_arrivee->nom; ?>
 	</div>
-	<div class="">
+	<label for="heure_depart">Heure de départ : </label>
+	<div class="" id="heure_depart">
 		<?php echo $ligne->heure_depart; ?>
 	</div>
-	<div class="">
+	<label for="heure_arrivee">Heure d'arrivée : </label>
+	<div class="" id="heure_arrivee">
 		<?php echo $ligne->heure_arrivee; ?>
 	</div>
-	<div class="">
-		<?php echo $ligne->periodique; ?>
+	<label for="periodicite">Périodicité : </label>
+	<div class="" id="periodicite">
+		<?php 
+		foreach($this->jours as $jour){
+			?>
+		<div class="">
+			<?php echo $jour->libelle; ?>
+		</div>
+		<?php } ?>
 	</div>
-	<div class="">
-		<?php echo $ligne->distance; ?>
+	<label for="distance">Distance : </label>
+	<div class="" id="distance">
+		<?php echo $ligne->distance."m"; ?>
 	</div>
 </div>
 <div class="tabVols">
@@ -41,7 +56,8 @@ $ligne=$this->ligne;
 		</div>
 	</div>
 	<?php foreach($this->vols as $vol){ ?>
-	<a href="<?php echo $this->baseUrl('vol/fichevol/id/').$vol->id_vol; ?>">
+	<a
+		href="<?php echo $this->baseUrl('vol/fichevol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>">
 		<div class="<?php echo $this->cycle(array("Odd", "Even"))->next(); ?>">
 			<div class="">
 				<?php echo $vol->id_vol; ?>
