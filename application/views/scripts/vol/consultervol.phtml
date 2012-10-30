@@ -1,7 +1,84 @@
 <?php 
-$vols=$this->vols;
-foreach($vols as $vol)
-{
-	echo $vol->id_vol;
-}
+$ligne=$this->ligne;
 ?>
+<div class="infoLigne">
+	<label for="numero">Numero de la ligne : </label>
+	<div class="" id="numero">
+		<?php echo $ligne->numero_ligne; ?>
+	</div>
+	<label for="aeroport_origine">Aeroport d'origine : </label>
+	<div class="" id="aeroport_origine">
+		<?php echo $this->aeroport_origine->nom; ?>
+	</div>
+	<label for="aeroport_depart">Aeroport de départ : </label>
+	<div class="" id="aeroport_depart">
+		<?php echo $this->aeroport_depart->nom; ?>
+	</div>
+	<label for="aeroport_arrive">Aeroport d'arrivé : </label>
+
+	<div class="" id="aeroport_arrive">
+		<?php echo $this->aeroport_arrivee->nom; ?>
+	</div>
+	<label for="heure_depart">Heure de départ : </label>
+	<div class="" id="heure_depart">
+		<?php echo $ligne->heure_depart; ?>
+	</div>
+	<label for="heure_arrivee">Heure d'arrivée : </label>
+	<div class="" id="heure_arrivee">
+		<?php echo $ligne->heure_arrivee; ?>
+	</div>
+	<label for="periodicite">Périodicité : </label>
+	<div class="" id="periodicite">
+		<?php 
+		foreach($this->jours as $jour){
+			?>
+		<div class="">
+			<?php echo $jour->libelle; ?>
+		</div>
+		<?php } ?>
+	</div>
+	<label for="distance">Distance : </label>
+	<div class="" id="distance">
+		<?php echo $ligne->distance."m"; ?>
+	</div>
+</div>
+<div class="tabVols">
+	<div class="rowVols">
+		<div class="">
+			<?php 
+			echo $this->Id;
+			echo $this->DaDepart;
+			echo $this->DaArrive;
+			echo $this->Avion;
+			echo $this->Pilote;
+			echo $this->Copilote;
+			?>
+		</div>
+	</div>
+	<?php foreach($this->vols as $vol){ ?>
+	<a
+		href="<?php echo $this->baseUrl('vol/fichevol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>">
+		<div class="<?php echo $this->cycle(array("Odd", "Even"))->next(); ?>">
+			<div class="">
+				<?php echo $vol->id_vol; ?>
+			</div>
+			<div class="">
+				<?php echo $vol->date_depart; ?>
+			</div>
+			<div class="">
+				<?php echo $vol->date_arrivee; ?>
+			</div>
+			<div class="">
+				<?php if ($vol->id_avion==NULL) echo "non affecté"; else echo $vol->libelle; ?>
+			</div>
+			<div class="">
+				<?php if ($vol->id_pilote==NULL) echo "non affecté"; else echo $vol->nom; ?>
+			</div>
+			<div class="">
+				<?php if ($vol->id_copilote==NULL) echo "non affecté"; else echo $vol->copilote; ?>
+			</div>
+		</div>
+	</a>
+	<?php 
+	} ?>
+</div>

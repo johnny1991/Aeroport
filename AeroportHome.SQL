@@ -94,7 +94,7 @@ create table if not exists type_avion
 create table if not exists jour_semaine
  (
    numero_jour integer not null  ,
-   libelle_jour varchar(255) not null  , 
+   libelle varchar(255) not null  , 
    primary key (numero_jour) 
  ) 
  ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -378,7 +378,7 @@ ALTER DATABASE aeroport charset=utf8;
 #       Insertion Données
 # -----------------------------------------------------------------------------
 
-INSERT INTO `jour_semaine` (`numero_jour`, `libelle_jour`) VALUES
+INSERT INTO `jour_semaine` (`numero_jour`, `libelle`) VALUES
 (1, 'Lundi'),
 (2, 'Mardi'),
 (3, 'Mercredi'),

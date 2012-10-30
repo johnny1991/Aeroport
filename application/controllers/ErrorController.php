@@ -53,6 +53,9 @@ class ErrorController extends Zend_Controller_Action
         return $log;
     }
 
-
+	public function pageerreurAction(){
+		$this->view->page=$this->getRequest()->getParam("page");
+		
+	}
 }
 

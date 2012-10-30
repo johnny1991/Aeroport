@@ -52,3 +52,4 @@ class Avion extends Zend_Db_Table_Abstract
 		return $this->fetchRow($reqAvion);
 	}
 }
+

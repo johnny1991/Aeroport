@@ -4,24 +4,30 @@ class Vol extends Zend_Db_Table_Abstract
 	protected $_name='vol';
 	protected $_primary=array('id_vol','numero_ligne');
 	protected $_referenceMap=array(
-			'id_pilote'=>array(
-					'columns'=>'id_pilote',  /* A voir selon modif bdd*/
-					'refTableClass'=>'Pilote'),
-			'id_aeroport_arrivee_effectif'=>array(
-					'columns'=>'id_aeroport',
-					'refTableClass'=>'Aeroport'),
-			'id_avion'=>array(
-					'columns'=>'id_avion',
-					'refTableClass'=>'Avion'),
-			'numero_ligne'=>array(
+			'Ligne'=>array(
 					'columns'=>'numero_ligne',
-					'refTableClass'=>'Ligne'),
-			'id_copilote'=>array(
-					'columns'=>'id_pilote',  /* A voir selon modif bdd*/
-					'refTableClass'=>'Pilote'),
+					'refTableClass'=>'Ligne',
+					'refColumns'=>'numero_ligne'),
+			'Avion'=>array(
+					'columns'=>'id_avion',
+					'refTableClass'=>'Avion',
+					'refColumns'=>'id_avion'),
+			'Pilote'=>array(
+					'columns'=>'id_pilote',
+					'refTableClass'=>'Pilote',
+					'refColumns'=>'id_pilote'),
+			'Copilote'=>array(
+					'columns'=>'id_copilote',
+					'refTableClass'=>'Pilote',
+					'refColumns'=>'id_pilote'),
 			'id_aeroport_depart_effectif'=>array(
-					'columns'=>'id_aeroport',
-					'refTableClass'=>'Aeroport')
+					'columns'=>'id_aeroport_depart_effectif',
+					'refTableClass'=>'Aeroport',
+					'refColumns'=>'id_aeroport'),
+			'id_aeroport_arrivee_effectif'=>array(
+					'columns'=>'id_aeroport_arrivee_effectif',
+					'refTableClass'=>'Aeroport',
+					'refColumns'=>'id_aeroport')
 	);
 
 	public function getLastId($ligne){
@@ -29,5 +35,5 @@ class Vol extends Zend_Db_Table_Abstract
 		$row=$this->getAdapter()->fetchOne($requete);
 		return $row;
 	}
-	
+
 }

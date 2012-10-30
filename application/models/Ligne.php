@@ -8,6 +8,7 @@ class Ligne extends Zend_Db_Table_Abstract
 					'columns'=>'id_aeroport_origine',
 					'refTableClass'=>'Aeroport',
 					'refColumns'=>'id_aeroport'),
+
 			'aeroport_depart'=>array(
 					'columns'=>'id_aeroport_depart',
 					'refTableClass'=>'Aeroport',
