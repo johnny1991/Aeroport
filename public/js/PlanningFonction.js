@@ -316,6 +316,14 @@
         		}		
         	}
         	
+        	function getNumDay(dateToDay){
+        		dateString2 = dateToDay.toDateString(Math.round(dateToDay.getTime()/1000));
+    			dateExplode2 = dateString2.split(' ');
+    			
+    			return dateExplode2[2];
+    		
+        	}
+        	
         	function lastSunday(){
         		theDay = myDay;
         		dayMonth = arrayDayPerMonth[myMonth];
@@ -350,17 +358,19 @@
         			}
         		}
         		
-        		timestamp2Time = timestamp2.getTime();
+        		timestamp2Time = Math.round(timestamp2.getTime()/1000);
         		
         		return timestamp2Time;
         	}
         	
-        	function linkDay(date){
+        	function linkDay(dateJour){
         		
-        		formatDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
-        		
-	      		if(lastSunday() >= date.getTime()){
-	        		$('#tableCalendar tbody tr td:last-child span').wrap('<a href="/planning/listevol/date/'+date.getTime()+'"><div style="width:100%;height:80px;"></div></a>');
+        		formatDate = dateJour.getFullYear()+'-'+(dateJour.getMonth()+1)+'-'+dateJour.getDate();  		        	
+    			
+    			formatDateClass = getNumDay(dateJour)+'-'+dateJour.getMonth()+'-'+dateJour.getFullYear();
+	      		if(lastSunday() >= Math.round(dateJour.getTime()/1000)){
+	      			linkDate = Math.round(dateJour.getTime() / 1000);
+	        		$('td.'+formatDateClass+' span').wrap('<a href="/planning/listevol/date/'+linkDate+'"><div style="width:100%;height:80px;"></div></a>');
 	        	}	
         		
         	}
@@ -440,7 +450,7 @@
         					if(firstDay == 0)
         						firstDay = 7;
         					
-        					for(j=firstDay-2;j>=0;j--){
+        					for(p=firstDay-2;p>=0;p--){
         						
         						prevMonth = currentMonth - 1;
         						if(prevMonth == -1){
@@ -454,7 +464,7 @@
         							}
         						}
         						
-        						prevDay = totalDays - j;
+        						prevDay = totalDays - p;
         						prevYear = currentYear;
         						
         						if(prevMonth == 11)
@@ -464,7 +474,7 @@
         						prevDate.setMonth(prevMonth);
         						prevDate.setDate(prevDay);
         						
-        						$('#tableCalendar tbody tr:last-child').append('<td class="prevDay"><span>'+prevDay+'</span></td></a>');
+        						$('#tableCalendar tbody tr:last-child').append('<td class="prevDay '+getNumDay(prevDate)+'-'+prevDate.getMonth()+'-'+prevDate.getFullYear()+'"><span>'+prevDay+'</span></td></a>');
         						linkDay(prevDate);
         					}
         					
@@ -473,15 +483,16 @@
         				classToday = '';
         				
         				if(isDay(dateNumberDay, currentMonth, currentYear)){
-        					dateNumberDay = '<b>'+dateNumberDay+'</b>';
+        					
         					myWeek = currentWeek;
-        					classToday = 'class="tdToday"';
+        					classToday = 'class="tdToday '+dateNumberDay+'-'+currentMonth+'-'+currentYear+'"';
+        					dateNumberDay = '<b>'+dateNumberDay+'</b>';
         				}
         				
         				addAttributWeek(currentWeek, currentYear);
         				colorWeek(currentWeek);
         				
-        				$('#tableCalendar tbody tr:last-child').append('<td '+classToday+'><span>'+ dateNumberDay +'</span></td>');
+        				$('#tableCalendar tbody tr:last-child').append('<td '+classToday+' class="'+dateNumberDay+'-'+currentMonth+'-'+currentYear+'"><span>'+ dateNumberDay +'</span></td>');
         				
         				linkDay(date);
         			}
@@ -517,7 +528,7 @@
         			nextDate.setMonth(theNextMonth);
         			nextDate.setDate(j);
         			
-        			$('#tableCalendar tbody tr:last-child').append('<td class="prevDay"><span>'+j+'</span></td>');
+        			$('#tableCalendar tbody tr:last-child').append('<td class="prevDay '+getNumDay(nextDate)+'-'+nextDate.getMonth()+'-'+nextDate.getFullYear()+'"><span>'+nextDate.getDate()+'</span></td>');
         			linkDay(nextDate);
         		}
 
@@ -542,3 +553,43 @@
         }    
     };
 })( jQuery );
+
+function recherchePilote(numeroLigne, heureDepart, dateDepart, idTypeAvion, action){
+	$.ajax({
+		type: "POST",
+		url: "/planning/recherchepilote/",
+		data: 'numeroligne='+numeroLigne+'&heureDepart='+heureDepart+'&dateDepart='+dateDepart+'&idTypeAvion='+idTypeAvion+'&action='+action,
+		async: false,
+		success: function(msg){
+			$('#selectPilote').html(msg);
+			$('#selectCoPilote').html(msg);
+		}
+	});
+	
+	MaJCoPilote();
+}
+
+function MaJCoPilote(){
+	idTypeAvion = $('#selectPilote').val();
+	flagSelected = false;
+	
+	$('#selectCoPilote option').each(function(){
+		if($(this).val() == idTypeAvion){
+			$(this).hide();
+			$(this).removeAttr('selected');
+		}
+		else{
+			$(this).show();
+			$(this).removeAttr('selected');
+			
+			if(!flagSelected){
+				$(this).attr('selected', 'selected');
+				flagSelected = true;
+			}
+		}
+	});
+}
+
+$(document).ready(function(){
+	MaJCoPilote();
+});

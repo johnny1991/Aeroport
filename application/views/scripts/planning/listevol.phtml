@@ -5,31 +5,38 @@
 	</tr>
 </table>
 
-<table class="tableListeVol">
-	<tr>
-		<th>Pays de départ</th>
-		<th>Aéroport de départ</th>
-		<th>Heure de départ</th>
-		<th>Pays d'arivée</th>
-		<th>Aéroport d'arrivée</th>
-		<th>Heure d'arrivée</th>
-		<th>Options</th>
-	</tr>
+<?php
+	if(sizeof($this->tabLigne) != 0){
+?>
+	<table class="tableListeVol">
+		<tr>
+			<th>Numéro de ligne</th>
+			<th>Aéroport de départ</th>
+			<th>Heure de départ</th>
+			<th>Aéroport d'arrivée</th>
+			<th>Heure d'arrivée</th>
+			<th>Options</th>
+		</tr>
 	<?php 
-		foreach($this->tabLigne as $value){
-			echo '<tr>';
-			echo '
-				<td>'.$value['pays_origine'].'</td>
-				<td>'.$value['aeroport_origine'].'</td>
-				<td>'.$value['heure_depart'].'</td>
-				<td>'.$value['pays_arrivee'].'</td>
-				<td>'.$value['aeroport_arrivee'].'</td>
-				<td>'.$value['heure_arrivee'].'</td>
-				<td></td>';
-					
-			echo '</tr>';
-		}
+			foreach($this->tabLigne as $value){
+				echo '<tr>';
+				echo '
+					<td>'.$value['numero_ligne'].'</td>
+					<td><span class="spanAcronyme" title="'.$value['nom_aeroport_origine'].'">'.$value['aeroport_origine'].'</span></td>
+					<td>'.$value['heure_depart'].'</td>
+					<td><span class="spanAcronyme" title="'.$value['nom_aeroport_arrivee'].'">'.$value['aeroport_arrivee'].'</span></td>
+					<td>'.$value['heure_arrivee'].'</td>
+					<td><a href="/planning/planificationvol/date/'.$value['date_depart'].'/numeroligne/'.$value['numero_ligne'].'/actions/'.$value['options'].'">'.$value['options'].'</a></td>';
+						
+				echo '</tr>';
+			}
 	?>
 </table>
+<?php 
+	}
+	else{
+		echo 'Aucun vol pour ce jour.';
+	}
+?>
 
 <div class="divLienRetour"><a href="/planning/planning/">Retour au planning</a></div>
