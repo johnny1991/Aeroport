@@ -18,7 +18,7 @@
 #tableCalendar th{background-color:#707070;}
 #tableCalendar td{border:1px #000 solid;width:118px;height:90px;vertical-align:top;text-align:right;padding:5px;background:url('/img/background-td.png') -20px -40px no-repeat;}
 #tableCalendar td a{color:#000;text-decoration:none;}
-#tableCalendar td:hover{background:none;background:url('/img/background-td-hover.png') -30px -10px no-repeat;border: 1px #787878 inset;cursor:pointer;}
+#tableCalendar td:hover{background:none;background:url('/img/background-td-hover.png') -30px -10px no-repeat;border: 1px #787878 inset;}
 #tableCalendar tr td:first-child{background:none;background-color:#b6b6b6;}
 
 #tableCalendar td.tdToday{background:none;background:url('/img/background-td-today.png') -30px -10px no-repeat;border:2px #787878 solid;}

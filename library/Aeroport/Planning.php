@@ -18,4 +18,14 @@ class Aeroport_Planning {
 	function getTranslateMonth(){
 		return $this->_tabMois[($this->_numMonth-1)];
 	}
+	
+	function getTimestampFirstMonday(){
+		$myTimestamp = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+		$myDay = date('N');
+		$myDate = date('d');
+		
+		$firstMonday = $myDate - $myDay + 1;
+		$timestampFirstMonday = mktime(0, 0, 0, date('m'), $firstMonday, date('Y'));
+		return $timestampFirstMonday;
+	}
 }

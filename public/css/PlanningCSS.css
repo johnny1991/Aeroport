@@ -8,5 +8,6 @@
 .tableListeVol{border:1px #000 solid;width:100%;border-collapse:collapse;}
 .tableListeVol th{border-bottom:1px #000 solid;}
 .tableListeVol td{text-align:center;}
+	.spanAcronyme{border-bottom:1px #84c2f4 dotted;cursor:help;}
 
 .divLienRetour{text-align:center;margin-top:20px;}
