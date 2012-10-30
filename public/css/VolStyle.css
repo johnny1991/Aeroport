@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+body{
+	font-family: Quattrocento,Georgia,"Times New Roman",serif;
+	}
+
+.Global div{
+	float:left;
+}
+
+.Global{
+	overflow:auto;
+	margin:10px 0;
+}

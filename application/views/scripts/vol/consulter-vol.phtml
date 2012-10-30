@@ -57,7 +57,7 @@ $ligne=$this->ligne;
 	</div>
 	<?php foreach($this->vols as $vol){ ?>
 	<a
-		href="<?php echo $this->baseUrl('vol/fichevol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>">
+		href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>">
 		<div class="<?php echo $this->cycle(array("Odd", "Even"))->next(); ?>">
 			<div class="">
 				<?php echo $vol->id_vol; ?>

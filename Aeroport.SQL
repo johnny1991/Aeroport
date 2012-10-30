@@ -129,7 +129,6 @@ create table if not exists ligne
    id_aeroport_arrivee char(3) not null  ,
    heure_depart time not null  , 
    heure_arrivee time not null  ,
-   periodique bool not null  ,
    distance integer not null  ,
    primary key (numero_ligne) ,
    Foreign key (id_aeroport_origine) references aeroport (id_aeroport) ,
@@ -156,7 +155,7 @@ create table if not exists vol
    heure_arrivee_effective time null  ,
    tarif decimal(13,2) null ,
    primary key (numero_ligne,id_vol) ,
-   Foreign key (numero_ligne) references ligne (numero_ligne) ,
+   Foreign key (numero_ligne) references ligne (numero_ligne) ON DELETE CASCADE ,
    Foreign Key (id_pilote) references pilote (id_pilote),
    Foreign Key (id_aeroport_arrivee_effectif) references aeroport (id_aeroport) ,
    Foreign Key (id_avion) references avion (id_avion),
@@ -265,7 +264,7 @@ create table if not exists intervention
    duree_effective time not null  ,
    commentaire varchar(255) null ,
    primary key (id_intervention) ,
-   Foreign key (id_maintenance) references maintenance (id_maintenance) ,
+   Foreign key (id_maintenance) references maintenance (id_maintenance) ON DELETE CASCADE ,
    Foreign key (login) references utilisateur(login) 
  ) 
  ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -311,7 +310,7 @@ create table if not exists periodicite
    numero_ligne integer not null ,
    numero_jour integer not null  , 
    primary key (numero_ligne,numero_jour) ,
-   Foreign key (numero_ligne) references ligne (numero_ligne),
+   Foreign key (numero_ligne) references ligne (numero_ligne) ON DELETE CASCADE ,
    Foreign key (numero_jour) references jour_semaine (numero_jour)
  ) 
  ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -367,7 +366,7 @@ create table if not exists reservation
    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
    primary key (id_reservation) ,
    Foreign key (id_client) references client (id_client) ,
-   Foreign key (numero_ligne,id_vol) references vol (numero_ligne,id_vol) 
+   Foreign key (numero_ligne,id_vol) references vol (numero_ligne,id_vol) ON DELETE CASCADE 
 
  ) 
  ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -775,18 +774,18 @@ INSERT INTO `astreinte` (`id_aeroport`, `id_pilote`, `date_astreinte`) VALUES
 ('CDG', 4, '2012-10-22 20:58:01'),
 ('CDG', 6, '2012-10-22 20:58:41');
 
-INSERT INTO `ligne` (`numero_ligne`, `id_aeroport_origine`, `id_aeroport_depart`, `id_aeroport_arrivee`, `heure_depart`, `heure_arrivee`, `periodique`, `distance`) VALUES
-(17, 'CDG', 'CDG', 'GIG', '10:12:23', '10:12:26', 0, 1100),
-(16, 'CDG', 'CDG', 'GIG', '10:13:18', '10:13:20', 0, 15000),
-(18, 'CDG', 'CDG', 'MRS', '15:00:00', '18:00:00', 1, 2000),
-(19, 'LYS', 'LYS', 'PEK', '08:00:00', '18:00:00', 1, 350),
-(20, 'JFK', 'JFK', 'MRS', '08:00:00', '15:00:00', 1, 2500),
-(21, 'MAN', 'MAN', 'MUC', '15:00:00', '19:00:00', 1, 16000),
-(22, 'PEK', 'PEK', 'LYS', '08:00:00', '15:00:00', 1, 1500),
-(23, 'GIG', 'GIG', 'SXF', '06:00:00', '15:00:00', 1, 13687),
-(24, 'MAN', 'MAN', 'CDG', '09:00:00', '12:00:00', 1, 1564),
-(25, 'LHR', 'LHR', 'MUC', '02:00:00', '06:00:00', 1, 12354),
-(26, 'MUC', 'MUC', 'JFK', '05:00:00', '10:00:00', 1, 1547);
+INSERT INTO `ligne` (`numero_ligne`, `id_aeroport_origine`, `id_aeroport_depart`, `id_aeroport_arrivee`, `heure_depart`, `heure_arrivee`, `distance`) VALUES
+(17, 'CDG', 'CDG', 'GIG', '10:12:23', '10:12:26', 1100),
+(16, 'CDG', 'CDG', 'GIG', '10:13:18', '10:13:20', 15000),
+(18, 'CDG', 'CDG', 'MRS', '15:00:00', '18:00:00', 2000),
+(19, 'LYS', 'LYS', 'PEK', '08:00:00', '18:00:00', 350),
+(20, 'JFK', 'JFK', 'MRS', '08:00:00', '15:00:00', 2500),
+(21, 'MAN', 'MAN', 'MUC', '15:00:00', '19:00:00', 16000),
+(22, 'PEK', 'PEK', 'LYS', '08:00:00', '15:00:00', 1500),
+(23, 'GIG', 'GIG', 'SXF', '06:00:00', '15:00:00', 13687),
+(24, 'MAN', 'MAN', 'CDG', '09:00:00', '12:00:00', 1564),
+(25, 'LHR', 'LHR', 'MUC', '02:00:00', '06:00:00', 12354),
+(26, 'MUC', 'MUC', 'JFK', '05:00:00', '10:00:00', 1547);
 
 INSERT INTO `periodicite` (`numero_ligne`, `numero_jour`) VALUES
 (20, 1),

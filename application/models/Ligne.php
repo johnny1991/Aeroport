@@ -17,4 +17,10 @@ class Ligne extends Zend_Db_Table_Abstract
 					'refTableClass'=>'Aeroport',
 					'refColumns'=>'id_aeroport')
 	);
+	
+	public function getLastId(){
+		$requete=$this->select()->from($this)->order("numero_ligne Desc");
+		$row=$this->getAdapter()->fetchOne($requete);
+		return $row;
+	}
 }

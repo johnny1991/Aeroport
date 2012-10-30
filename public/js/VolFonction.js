@@ -1,11 +1,15 @@
-//test
+function initialize(){
+	RechercheAeroport("depart",250);
+	RechercheAeroport("arrivee",250);
+	RechercheAeroport("origine",250);
+}
 
 function RechercheAeroport(provenance,pays)
 {
 	$.ajax(
 			{
 				type: "POST",
-				url: "/Vol/rechercheaeroport",
+				url: "/vol/rechercher-aeroport",
 				data: 'pays='+pays,
 				success: function(msg)
 				{
@@ -18,6 +22,11 @@ function RechercheAeroport(provenance,pays)
 					{
 						$('#aeroportArrivee').empty();
 						$('#aeroportArrivee').append(msg);	
+					}
+					else if(provenance=='origine')
+					{
+						$('#aeroportOrigine').empty();
+						$('#aeroportOrigine').append(msg);	
 					}
 				}
 			}

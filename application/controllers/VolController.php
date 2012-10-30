@@ -1,37 +1,35 @@
 <?php
 class VolController extends Zend_Controller_Action
 {
-	public function ajoutAction() // faire les controles de saisie t ajouter l'aeroport d'origine/!\
+	public function indexAction(){ // A effacer
+	}
+
+	public function ajouterLigneAction() // faire les controles de saisie t ajouter l'aeroport d'origine/!\
 	{
+		$this->view->title = "Ajouter un vol";
 		$this->view->headScript()->appendFile('/js/jquery-ui-sliderAccess.js');
 		$this->view->headScript()->appendFile('/js/jquery-ui-timepicker-addon.js');
-		$this->view->headScript()->appendFile('/js/VolFonction.js');
 		$this->view->headLink()->appendStylesheet('/css/jquery-ui-timepicker-addon.css');
-		$this->view->headLink()->appendStylesheet('http://code.jquery.com/ui/1.8.23/themes/smoothness/jquery-ui.css');
+		$this->view->headLink()->appendStylesheet('/css/jquery-ui-1.8.23.css');
+		$form = new FormulaireLigne();
+		$form->setAction($this->getRequest()->getActionName());
 		$TableLigne = new Ligne;
-		$this->view->title="Ajouter un vol";
-		$form= new FormulaireVol();
 		if($this->getRequest()->isPost())
 		{
 			$data=$this->getRequest()->getPost();
 			if($form->isValid($data))
 			{
-				$Ligne=$TableLigne->createRow();
-				$Ligne->id_aeroport_origine='CDG';
+				$Ligne = $TableLigne->createRow();
+				$Ligne->id_aeroport_origine = $form->getValue('aeroportOrigine');
 				$Ligne->id_aeroport_depart=$form->getValue('aeroportDepart');
 				$Ligne->id_aeroport_arrivee=$form->getValue('aeroportArrivee');
 				$Ligne->heure_depart=$form->getValue('heureDepart');
 				$Ligne->heure_arrivee=$form->getValue('heureArrivee');
-				$Ligne->periodique=$form->getValue('periodicite');
 				$Id=$Ligne->save();
 				if($this->getRequest()->getPost('periodicite'))
 				{
 					$TablePeriodicite=new Periodicite;
-					$jours=$form->getValue("jours");
-					$Periode=$TablePeriodicite->createRow();
-					$Periode->numero_ligne=1;
-					$Periode->numero_jour=1;
-					foreach ($jours as $jour){
+					foreach ($form->getValue("jours") as $jour){
 						$Periode=$TablePeriodicite->createRow();
 						$Periode->numero_ligne=$Id;
 						$Periode->numero_jour=$jour;
@@ -59,45 +57,53 @@ class VolController extends Zend_Controller_Action
 		}
 		else
 		{
+			/*$form->getElement("Origine")->setValue("250");
+			$form->getElement("Depart")->setValue("250");
+			$form->getElement("Arrive")->setValue("250");
+			$form->getElement("Numero")->setValue($TableLigne->getLastId()+1);*/
 			$this->view->Form=$form;
 		}
 	}
 
-	public function modifierAction()  // Faux
+	public function modifierLigneAction()  // Faux
 	{
-		$this->view->title="Modifier un vol";
-		$TableVol= new Vol;
-		$numeroVol=$this->_getParam('numero');
-		$Vol=$TableVol->find($numeroVol)->current();
-		$Vol->save();
+		$this->view->title="Modifier une ligne";
+		$numero_ligne=$this->_getParam('ligne');
+		$TableLigne=new Ligne;
+		$Ligne=$TableLigne->find($numero_ligne)->current();
+		try{
+			//$Ligne->delete();
+		}catch(Exception $e){
+			$this->view->erreur=$e->getMessage();
+		}
 	}
 
-	public function supprimerAction() // Faux
+	public function supprimerLigneAction() // Faux
 	{
-		$this->view->title="Supprimer un vol";
-		$TableVol= new Vol;
-		$numeroVol=$this->_getParam('numero');
-		$Vol=$TableVol->find($numeroVol)->current();
+		$this->view->title="Supprimer une ligne";
+		$numero_ligne=$this->_getParam('ligne');
+		$TableLigne=new Ligne;
+		$Ligne=$TableLigne->find($numero_ligne)->current();
 		try{
-			$Vol->delete();
+			$Ligne->delete();
 		}catch(Exception $e){
 			$this->view->erreur=$e->getMessage();
 		}
 
 	}
 
-	public function rechercheaeroportAction()
+	public function rechercherAeroportAction()
 	{
 		$this->_helper->layout->disableLayout();
-		$pays=$this->_getParam('pays');
 		$tableAeroport = new Aeroport;
 		$requete=$tableAeroport->select()
 		->setIntegrityCheck(false)
 		->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
 		->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
-		->where('code_pays=?',$pays);
+		->where('code_pays=?',$this->_getParam('pays'));
 		$aeroports=$tableAeroport->fetchAll($requete);
-		foreach ($aeroports as $aeroport){
+		foreach ($aeroports as $aeroport)
+		{
 			echo '<option value="'.$aeroport->id_aeroport.'">'.$aeroport->nom.'</option>';
 		}
 	}
@@ -139,14 +145,14 @@ class VolController extends Zend_Controller_Action
 		$this->view->lignes=$lignes;
 	}
 
-	public function consultervolAction(){
+	public function consulterVolAction(){  // A completer l'indexation de la page dans consulterligne.phtml et verifier peut etre si les valeurs et get existent
 
 		$nbLigne=5;
 
-		$numero_ligne=$this->getRequest()->getParam('id');
+		$numero_ligne=$this->getRequest()->getParam('ligne');
 		$TableLigne= new Ligne;
 		$ligne=$TableLigne->find($numero_ligne)->current();
-		if( ($this->getRequest()->getParam('id')) && ($ligne!=NULL) )
+		if( ($this->getRequest()->getParam('ligne')) && ($ligne!=NULL) )
 		{
 			$this->view->ligne=$ligne;
 			$this->view->aeroport_origine=$ligne->findParentAeroportByaeroport_origine();
@@ -211,9 +217,9 @@ class VolController extends Zend_Controller_Action
 
 	}
 
-	public function fichevolAction(){
+	public function ficheVolAction(){
 		$numero_ligne=$this->getRequest()->getParam('ligne');
-		
+
 		if( ($this->getRequest()->getParam('vol')) && ($this->getRequest()->getParam('ligne')) )
 		{
 			$id_vol=$this->getRequest()->getParam('vol');
@@ -221,7 +227,7 @@ class VolController extends Zend_Controller_Action
 		else
 			echo "error"; // A terminer
 		$tableVol=new Vol;
-		$vol=$tableVol->find($numero_ligne,$id_vol)->current();
+		$vol=$tableVol->find($id_vol,$numero_ligne)->current();
 		$this->view->vol=$vol;
 		$tableLigne=new Ligne;
 		$ligne=$tableLigne->find($numero_ligne)->current();
@@ -234,7 +240,6 @@ class VolController extends Zend_Controller_Action
 		$this->view->aeroport_arrivee_effectif=$vol->findParentRow('Aeroport','id_aeroport_arrivee_effectif');
 		$this->view->copilote=$vol->findParentRow('Pilote','Copilote');
 		$this->view->pilote=$vol->findParentRow('Pilote','Pilote');
-
 		$this->view->ligne=$ligne;
 	}
 
@@ -261,6 +266,9 @@ class VolController extends Zend_Controller_Action
 	}
 
 	public function init(){
+		$this->view->headScript()->appendFile('/js/VolFonction.js');
+		$this->view->headLink()->appendStylesheet('/css/VolStyle.css');
+		
 		parent::init();
 	}
 }

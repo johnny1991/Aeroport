@@ -1,6 +1,20 @@
 <?php
 class Aeroport_Form_DecorateurElement extends Zend_Form_Decorator_Abstract
 {
+	public $ElementTag;
+	public $ElementLabel;
+	public $ElementInput;
+	public $ElementError;
+	public $ElementId;
+
+	public function GestionClass($ElementTag,$ElementLabel,$ElementInput,$ElementError,$ElementId = NULL){
+		$this->ElementTag=$ElementTag;
+		$this->ElementLabel=$ElementLabel;
+		$this->ElementInput=$ElementInput;
+		$this->ElementError=$ElementError;
+		$this->ElementId=$ElementId;
+	}
+
 	// Construction de l'élément label
 	public function buildLabel()
 	{
@@ -10,14 +24,16 @@ class Aeroport_Form_DecorateurElement extends Zend_Form_Decorator_Abstract
 		// Recuperer le label
 		$label=$element->getLabel();
 
-		// Ajouter une etoile si l'element est obligatoire
-		if($element->isRequired())
-			$label .=' <div class="obligatoire">*</div>';
-
 		// Ajouter les : de fin au label
 		$label.='  : ';
 
-		return $element->getView()->formLabel($element->getname(),$label);
+		// Ajouter une etoile si l'element est obligatoire
+		if($element->isRequired())
+			$label .='<b>*</b>';
+
+
+
+		return '<div class="'.$this->ElementLabel.'">'.$element->getView()->formLabel($element->getname(),$label).'</div>';
 	}
 
 	// Construction de l'élément input
@@ -26,12 +42,17 @@ class Aeroport_Form_DecorateurElement extends Zend_Form_Decorator_Abstract
 		// Recuperer l'element a traiter
 		$element = $this->getElement();
 		$helper  = $element->helper;
-		return $element->getView()->$helper(
+		if($element->getType()=='Zend_Form_Element_Submit')
+			$value="Ajouter";
+		else
+			$value=$element->getValue();
+
+		return '<div class="'.$this->ElementInput.'">'.$element->getView()->$helper(
 				$element->getName(),
-				$element->getValue(),
+				$value,
 				$element->getAttribs(),
 				$element->options
-		);
+		).'</div>';
 	}
 
 	// Construction de la partie errreur
@@ -43,7 +64,7 @@ class Aeroport_Form_DecorateurElement extends Zend_Form_Decorator_Abstract
 		if (empty($messages)) {
 			return '';
 		}
-		return '<div class="errors">' .
+		return '<div class="'.$this->ElementError.'">' .
 				$element->getView()->formErrors($messages) . '</div>';
 	}
 
@@ -58,13 +79,21 @@ class Aeroport_Form_DecorateurElement extends Zend_Form_Decorator_Abstract
 	// Construction de l'element final (label+input+erreur+description)
 	public function render($content)
 	{
+		$element=$this->getElement();
+
 		$label=$this->buildLabel();
 		$input=$this->buildInput();
 		$errors=$this->buildErrors();
 		$description=$this->buildDescription();
+		if($element->getType()!='Zend_Form_Element_Submit')
+			$output=$label.$input.$errors;
+		else
+			$output=$input.$errors;
 
-		$output=$label.$input.$errors;
-		return $content.$output;
+		if ($this->ElementId!="")
+			return '<div class="'.$this->ElementTag.'" id="'.$this->ElementId.'">'.$content.$output.'</div>';
+		else
+			return '<div class="'.$this->ElementTag.'">'.$content.$output.'</div>';
 
 	}
 }

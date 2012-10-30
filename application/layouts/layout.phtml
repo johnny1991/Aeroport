@@ -8,11 +8,12 @@ $this->headScript()->prependFile('/js/jquery-ui-1.9.0.custom.min.js');
 $this->headScript()->prependFile('/js/jquery-1.8.2.min.js');
 echo $this->headScript();
 echo $this->headLink();
+$action = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
 ?>
 <title><?php echo $this->escape($this->title); ?>
 </title>
 </head> 
-<body>
+<body <?php if ($action=="ajouter-ligne") echo 'onload="initialize()"'; ?>>
 	<div id="pere">
 		<div id="header">
 			<div id="logo"></div>
