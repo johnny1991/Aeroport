@@ -57,10 +57,10 @@ class VolController extends Zend_Controller_Action
 		}
 		else
 		{
-			/*$form->getElement("Origine")->setValue("250");
+			$form->getElement("Origine")->setValue("250");
 			$form->getElement("Depart")->setValue("250");
 			$form->getElement("Arrive")->setValue("250");
-			$form->getElement("Numero")->setValue($TableLigne->getLastId()+1);*/
+			$form->getElement("Numero")->setValue($TableLigne->getLastId()+1);
 			$this->view->Form=$form;
 		}
 	}
@@ -108,9 +108,9 @@ class VolController extends Zend_Controller_Action
 		}
 	}
 
-	public function consulterligneAction(){ // A completer l'indexation de la page dans consulterligne.phtml et verifier peut etre si les valeurs et get existent
+	public function consulterLigneAction(){ // A completer l'indexation de la page dans consulterligne.phtml et verifier peut etre si les valeurs et get existent
 
-		$nbLigne=2; //Nombre de lignes par pages
+		$nbLigne=10; //Nombre de lignes par pages
 
 		if($this->getRequest()->getParam('page'))
 			$page=$this->getRequest()->getParam('page');
@@ -123,7 +123,12 @@ class VolController extends Zend_Controller_Action
 			$orderBy="Numero_Asc";
 
 		$TableLigne= new Ligne;
-		$requete=$TableLigne->select()->from($TableLigne)->limitPage($page,$nbLigne);
+		$requete=$TableLigne
+		->select()
+		->setIntegrityCheck(false)
+		->from(array('l'=>'ligne'))
+		->join(array('a1'=>'aeroport'),'l.id_aeroport_depart=a1.id_aeroport',array('a1.nom as nom_aeroport_depart'))
+		->join(array('a2'=>'aeroport'),'l.id_aeroport_arrivee=a2.id_aeroport',array('a2.nom as nom_aeroport_arrivee'));
 
 		switch ($orderBy) {
 			case "Numero_Asc": $requete->order("numero_ligne asc"); break;
@@ -136,13 +141,20 @@ class VolController extends Zend_Controller_Action
 			case "HeDepart_Desc": $requete->order("heure_depart desc"); break;
 			case "HeArrivee_Asc": $requete->order("heure_arrivee asc"); break;
 			case "HeArrivee_Desc": $requete->order("heure_arrivee desc"); break;
-			case "Periodique_Asc": $requete->order("periodique asc"); break;
-			case "Periodique_Desc": $requete->order("periodique desc"); break;
 		}
 
 		$lignes=$TableLigne->fetchAll($requete);
 		$this->view->order=$orderBy;
-		$this->view->lignes=$lignes;
+		$this->view->Numero=$this->orderColumns("Numero",$orderBy,null,"Numéro");
+		$this->view->AeDepart=$this->orderColumns("AeDepart",$orderBy,null,"Aeroport de départ");
+		$this->view->AeArrive=$this->orderColumns("AeArrive",$orderBy,null,"Aeroport d'arrivée");
+		$this->view->HeDepart=$this->orderColumns("HeDepart",$orderBy,null,"Heure de départ");
+		$this->view->HeArrivee=$this->orderColumns("HeArrivee",$orderBy,null,"Heure d'arrivée");
+
+		$paginator = Zend_Paginator::factory($lignes);
+		$paginator->setItemCountPerPage($nbLigne);
+		$paginator->setCurrentPageNumber($page);
+		$this->view->paginator=$paginator;
 	}
 
 	public function consulterVolAction(){  // A completer l'indexation de la page dans consulterligne.phtml et verifier peut etre si les valeurs et get existent
@@ -199,7 +211,11 @@ class VolController extends Zend_Controller_Action
 			}
 
 			$vols=$TableVol->fetchAll($requete);
-			$this->view->vols=$vols;
+			$paginator = Zend_Paginator::factory($vols);
+			$paginator->setItemCountPerPage($nbLigne);
+			$paginator->setCurrentPageNumber($page);
+			$this->view->count=$paginator->getAdapter()->count();
+			$this->view->paginator=$paginator;
 
 			$this->view->Id=$this->orderColumns("Id",$orderBy,null,"Numéro du vol");
 			$this->view->DaDepart=$this->orderColumns("DeDepart",$orderBy,null,"Date de départ");
@@ -213,12 +229,15 @@ class VolController extends Zend_Controller_Action
 			$this->_helper->viewRenderer->setNoRender(true);/********************* A terminer ******************/
 			echo $this->view->action('pageerreur','error',null,array('page'=>$this->getRequest()->getActionName()));
 		}
-
-
 	}
 
 	public function ficheVolAction(){
+
 		$numero_ligne=$this->getRequest()->getParam('ligne');
+		$container=$this->view->navigation()->findOneBy("id","consulterVol");
+		$container->set("params", array( 'ligne' =>$numero_ligne));
+		$container->set("title", "Consulter les vols de la ligne ".$numero_ligne);
+
 
 		if( ($this->getRequest()->getParam('vol')) && ($this->getRequest()->getParam('ligne')) )
 		{
@@ -244,23 +263,24 @@ class VolController extends Zend_Controller_Action
 	}
 
 	public function orderColumns($nomOrder,$order,$class,$nom){
-
+		$orderAsc=$nomOrder."_Asc";
+		$orderDesc=$nomOrder."_Desc";
 		$params=$this->getRequest()->getParams();
-		$Html="<div class='".$class."' ";
+		$Html="<th ";
 
-		if(strstr($order, "_Desc"))
+		if( (strstr($order, "_Desc")) && ($orderDesc==$order) )
 			$Html .= "id='desc'";
-		else if (strstr($order, "_Asc"))
+		else if ( (strstr($order, "_Asc")) && ($orderAsc==$order) )
 			$Html .= "id='asc'";
 
-		$Html .="><b><a href='";
+		$Html .="><a href='";
 
 		if( (strstr($order, "_Asc")) && (strstr($order, $nomOrder)) )
 			$params["orderBy"]=$nomOrder."_Desc";
 		else
 			$params["orderBy"]=$nomOrder."_Asc";
 
-		$Html.=$this->view->url($params)."'>".$nom."</a></b></div>";
+		$Html.=$this->view->url($params)."'>".$nom."</a></th>";
 
 		return $Html;
 	}
@@ -268,7 +288,7 @@ class VolController extends Zend_Controller_Action
 	public function init(){
 		$this->view->headScript()->appendFile('/js/VolFonction.js');
 		$this->view->headLink()->appendStylesheet('/css/VolStyle.css');
-		
+
 		parent::init();
 	}
 }

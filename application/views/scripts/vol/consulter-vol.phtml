@@ -1,50 +1,71 @@
-<?php 
-$ligne=$this->ligne;
-?>
-<div class="infoLigne">
-	<label for="numero">Numero de la ligne : </label>
-	<div class="" id="numero">
-		<?php echo $ligne->numero_ligne; ?>
-	</div>
-	<label for="aeroport_origine">Aeroport d'origine : </label>
-	<div class="" id="aeroport_origine">
-		<?php echo $this->aeroport_origine->nom; ?>
-	</div>
-	<label for="aeroport_depart">Aeroport de départ : </label>
-	<div class="" id="aeroport_depart">
-		<?php echo $this->aeroport_depart->nom; ?>
-	</div>
-	<label for="aeroport_arrive">Aeroport d'arrivé : </label>
-
-	<div class="" id="aeroport_arrive">
-		<?php echo $this->aeroport_arrivee->nom; ?>
-	</div>
-	<label for="heure_depart">Heure de départ : </label>
-	<div class="" id="heure_depart">
-		<?php echo $ligne->heure_depart; ?>
-	</div>
-	<label for="heure_arrivee">Heure d'arrivée : </label>
-	<div class="" id="heure_arrivee">
-		<?php echo $ligne->heure_arrivee; ?>
-	</div>
-	<label for="periodicite">Périodicité : </label>
-	<div class="" id="periodicite">
-		<?php 
-		foreach($this->jours as $jour){
-			?>
-		<div class="">
-			<?php echo $jour->libelle; ?>
+<fieldset>
+	<legend>Information sur la ligne</legend>
+	<div class="infoLigne">
+		<div class="infoLigneRow">
+			<label for="numero">Numero de la ligne :</label>
+			<div class="" id="numero">
+				<?php echo $this->ligne->numero_ligne; ?>
+			</div>
 		</div>
-		<?php } ?>
-	</div>
-	<label for="distance">Distance : </label>
-	<div class="" id="distance">
-		<?php echo $ligne->distance."m"; ?>
-	</div>
-</div>
-<div class="tabVols">
-	<div class="rowVols">
-		<div class="">
+		<div class="infoLigneRow">
+			<label for="aeroport_origine">Aeroport d'origine :</label>
+			<div class="" id="aeroport_origine">
+				<?php echo $this->aeroport_origine->nom; ?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="aeroport_depart">Aeroport de départ :</label>
+			<div class="" id="aeroport_depart">
+				<?php echo $this->aeroport_depart->nom; ?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="aeroport_arrive">Aeroport d'arrivé :</label>
+
+			<div class="" id="aeroport_arrive">
+				<?php echo $this->aeroport_arrivee->nom; ?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="heure_depart">Heure de départ :</label>
+			<div class="" id="heure_depart">
+				<?php echo $this->ligne->heure_depart; ?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="heure_arrivee">Heure d'arrivée :</label>
+			<div class="" id="heure_arrivee">
+				<?php echo $this->ligne->heure_arrivee; ?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="periodicite">Périodicité :</label>
+			<div class="" id="periodicite">
+				<?php 
+				foreach($this->jours as $jour){
+					?>
+				<span class="">
+					<?php echo $jour->libelle; ?>
+				</span>
+				<?php } ?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+
+			<label for="distance">Distance :</label>
+			<div class="" id="distance">
+				<?php echo $this->ligne->distance."m"; ?>
+			</div>
+		</div>
+
+</fieldset>
+<?php 
+if(($this->count)>0)
+{
+	?>
+<table class="table_consulter-vol">
+	<thead>
+		<tr id="TableHead">
 			<?php 
 			echo $this->Id;
 			echo $this->DaDepart;
@@ -53,32 +74,42 @@ $ligne=$this->ligne;
 			echo $this->Pilote;
 			echo $this->Copilote;
 			?>
-		</div>
-	</div>
-	<?php foreach($this->vols as $vol){ ?>
-	<a
-		href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>">
-		<div class="<?php echo $this->cycle(array("Odd", "Even"))->next(); ?>">
-			<div class="">
-				<?php echo $vol->id_vol; ?>
-			</div>
-			<div class="">
-				<?php echo $vol->date_depart; ?>
-			</div>
-			<div class="">
-				<?php echo $vol->date_arrivee; ?>
-			</div>
-			<div class="">
-				<?php if ($vol->id_avion==NULL) echo "non affecté"; else echo $vol->libelle; ?>
-			</div>
-			<div class="">
-				<?php if ($vol->id_pilote==NULL) echo "non affecté"; else echo $vol->nom; ?>
-			</div>
-			<div class="">
-				<?php if ($vol->id_copilote==NULL) echo "non affecté"; else echo $vol->copilote; ?>
-			</div>
-		</div>
-	</a>
-	<?php 
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($this->paginator as $vol){ ?>
+		<tr class="<?php echo $this->cycle(array("Odd", "Even"))->next();?>">
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php echo $vol->id_vol ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php echo $vol->date_depart; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php echo $vol->date_arrivee; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php if ($vol->id_avion==NULL) echo "non affecté"; else echo $vol->libelle; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php if ($vol->id_pilote==NULL) echo "non affecté"; else echo $vol->nom; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php if ($vol->id_copilote==NULL) echo "non affecté"; else echo $vol->copilote; ?>
+			</a></td>
+		</tr>
+		<?php
 	} ?>
-</div>
+	</tbody>
+</table>
+<?php 
+}
+else {
+	?>
+	<div class="noVols">Il n'y a pas de vols affectés a cette ligne</div>
+<?php 
+}
+?>
+<?php
+echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml');
+?>

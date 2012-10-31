@@ -1,36 +1,46 @@
-<?php $lignes=$this->lignes; ?>
-<table class="table_consulterligne">
+<table class="table_consulter-ligne">
 	<thead>
-    <tr>
-      <th><?php if($this->order=='Numero_Desc') echo "id='desc'"; else if ($this->order=='Numero_Asc') echo "id='asc'";?>
-			<a href="<?php if($this->order=='Numero_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/Numero_Desc'); else echo $this->baseUrl('vol/consulterligne'); ?>">Numéro</a></th>
-      <th><?php if($this->order=='AeDepart_Desc') echo "id='desc'"; else if ($this->order=='AeDepart_Asc') echo "id='asc'";?>
-			<a href="<?php if($this->order=='AeDepart_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/AeDepart_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/AeDepart_Asc'); ?>">Aeroport de départ</a></th>
-      <th><?php if($this->order=='AeArrive_Desc') echo "id='desc'"; else if ($this->order=='AeArrive_Asc') echo "id='asc'";?>
-			<a href="<?php if($this->order=='AeArrive_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/AeArrive_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/AeArrive_Asc'); ?>">Aeroport d'arrivé</a></th>
-      <th><?php if($this->order=='HeDepart_Desc') echo "id='desc'"; else if ($this->order=='HeDepart_Asc') echo "id='asc'";?>
-			<a href="<?php if($this->order=='HeDepart_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/HeDepart_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/HeDepart_Asc'); ?>">Heure de départ</a></th>
-      <th><?php if($this->order=='HeArrivee_Desc') echo "id='desc'"; else if ($this->order=='HeArrivee_Asc') echo "id='asc'";?>
-			<a href="<?php if($this->order=='HeArrivee_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/HeArrivee_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/HeArrivee_Asc'); ?>">Heure d'arrivée</a></th>
-      <th><?php if($this->order=='Periodique_Desc') echo "id='desc'"; else if ($this->order=='Periodique_Asc') echo "id='asc'";?>
-			<a href="<?php if($this->order=='Periodique_Asc') echo $this->baseUrl('vol/consulterligne/orderBy/Periodique_Desc'); else echo $this->baseUrl('vol/consulterligne/orderBy/Periodique_Asc'); ?>">Périodicité</a></th>
-    </tr>
-  </thead>
+		<tr id="TableHead">
+			<?php 
+			echo $this->Numero;
+			echo $this->AeDepart;
+			echo $this->AeArrive;
+			echo $this->HeDepart;
+			echo $this->HeArrivee;
+			?>
+		</tr>
+	</thead>
+	<tbody>
+		<?php 
+		$idLigne=0;
+	foreach ($this->paginator as $ligne){ ?>
+		<tr class="<?php echo $this->cycle(array("Odd", "Even"))->next();?>">
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/consulter-vol/ligne/').$ligne->numero_ligne; ?>"><?php echo $ligne->numero_ligne; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/consulter-vol/ligne/').$ligne->numero_ligne; ?>"><?php echo $ligne->nom_aeroport_depart; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/consulter-vol/ligne/').$ligne->numero_ligne; ?>"><?php echo $ligne->nom_aeroport_arrivee; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/consulter-vol/ligne/').$ligne->numero_ligne; ?>"><?php echo $ligne->heure_depart; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('vol/consulter-vol/ligne/').$ligne->numero_ligne; ?>"><?php echo $ligne->heure_arrivee; ?>
+			</a></td>
+		</tr>
 
-  <?php 
-	$idLigne=0;
-	foreach ($lignes as $ligne){ ?>
-  <tbody>
-  	<tr>
-  		<td class="ligne"><a href="<?php echo $this->baseUrl('vol/consultervol/id/').$ligne->numero_ligne; ?>"><?php echo $ligne->numero_ligne; ?></a></td>
-  		<td class="ligne"><a href="<?php echo $this->baseUrl('vol/consultervol/id/').$ligne->numero_ligne; ?>"><?php echo $ligne->id_aeroport_depart; ?></a></td>
-  		<td class="ligne"><a href="<?php echo $this->baseUrl('vol/consultervol/id/').$ligne->numero_ligne; ?>"><?php echo $ligne->id_aeroport_arrivee; ?></a></td>
-  		<td class="ligne"><a href="<?php echo $this->baseUrl('vol/consultervol/id/').$ligne->numero_ligne; ?>"><?php echo $ligne->heure_depart; ?></a></td>
-  		<td class="ligne"><a href="<?php echo $this->baseUrl('vol/consultervol/id/').$ligne->numero_ligne; ?>"><?php echo $ligne->heure_arrivee; ?></a></td>
-  		<td class="ligne"><a href="<?php echo $this->baseUrl('vol/consultervol/id/').$ligne->numero_ligne; ?>"><?php if($ligne->periodique) echo "Périodique"; else echo "Vol à la carte"; ?></a></td>
-  	</tr>
-  </tbody>
-  
-  <?php } ?>
-  
+		<?php } ?>
+	</tbody>
 </table>
+<?php 
+
+
+echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml');
+
+?>
+
+
+

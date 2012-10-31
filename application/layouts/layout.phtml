@@ -1,4 +1,4 @@
-<?php echo $this->doctype('HTML5');?> 
+<?php echo $this->doctype('HTML5');?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -12,8 +12,9 @@ $action = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
 ?>
 <title><?php echo $this->escape($this->title); ?>
 </title>
-</head> 
-<body <?php if ($action=="ajouter-ligne") echo 'onload="initialize()"'; ?>>
+</head>
+<body
+<?php if ($action=="ajouter-ligne") echo 'onload="initialize()"'; ?>>
 	<div id="pere">
 		<div id="header">
 			<div id="logo"></div>
@@ -22,7 +23,11 @@ $action = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
 			</div>
 		</div>
 		<div id="side_bar"></div>
-		<nav>Navigation</nav>
+		<nav>
+
+				<?php echo $this->navigation()->breadcrumbs();?>
+
+		</nav>
 		<?php echo $this->layout()->content; ?>
 		<div id="footer">
 			<p>Copyright INSSET Airlines - 2012</p>

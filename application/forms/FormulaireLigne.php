@@ -34,7 +34,7 @@ class FormulaireLigne extends Zend_Form
 		$FormErrors->setMarkupListItemStart('<div>');
 $FormErrors->setMarkupListItemEnd('</div>');
 			$decoratorsForm = array(
-		 				'FormElements',		array('HtmlTag', array('tag' => 'div','class' =>'formulaire')),
+		 				'FormElements',		array('HtmlTag', array('tag' => 'div','class' =>'formulaireLigne')),
 		 				$FormErrors,
 		 				'Form'
 		 		);

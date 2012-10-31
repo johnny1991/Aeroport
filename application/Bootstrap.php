@@ -20,5 +20,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$route = new Zend_Controller_Router_Route('Nouvelle_Ligne', array('controller' => 'vol', 'action' => 'ajouter-ligne'));
 		$router->addRoute('Nouvelle_Ligne', $route);
 	}
+
+	protected function _initBreadcrumb(){
+		$this->bootstrap("layout");
+		$layout=$this->getResource("layout");
+		$view=$layout->getView();
+		$config=new Zend_Config(require APPLICATION_PATH.'/configs/navigation.php');
+		$navigation=new Zend_Navigation();
+		$view->navigation($navigation);
+		$navigation->addPage($config);
+	}
 }
 

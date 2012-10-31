@@ -6,97 +6,132 @@ $jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 <div class="">
 	<fieldset>
 		<legend>Informations sur la ligne</legend>
-		<label for="numero">Numero de la ligne : </label>
-		<div class="" id="numero">
-			<?php echo $ligne->numero_ligne;?>
-		</div>
-		<label for="aeroport_origine">Aeroport d'origine : </label>
-		<div class="" id="aeroport_origine">
-			<?php echo $this->aeroport_origine->nom;?>
-		</div>
-		<label for="aeroport_depart">Aeroport de départ : </label>
-		<div class="" id="aeroport_depart">
-			<?php echo $this->aeroport_depart->nom;?>
-		</div>
-		<label for="aeroport_arrive">Aeroport d'arrivé : </label>
-		<div class="" id="aeroport_arrive">
-			<?php echo $this->aeroport_arrivee->nom;?>
-		</div>
-		<label for="heure_depart">Heure de départ : </label>
-		<div class="" id="heure_depart">
-			<?php echo $ligne->heure_depart;?>
-		</div>
-		<label for="heure_arrivee">Heure d'arrivée : </label>
-		<div class="" id="heure_arrivee">
-			<?php echo $ligne->heure_arrivee;?>
-		</div>
-		<label for="periodicite">Périodicité : </label>
-		<div class="" id="periodicite">
-			<?php 
-			$jours=$this->jours;
-			foreach($jours as $jour1){
-				?>
-			<div class="">
-				<?php echo $jour1->libelle; ?>
+
+		<div class="infoLigneRow">
+			<label for="numero">Numero de la ligne : </label>
+			<div class="" id="numero">
+				<?php echo $ligne->numero_ligne;?>
 			</div>
-			<?php } ?>
 		</div>
-		<label for="distance">Distance : </label>
-		<div class="" id="distance">
-			<?php echo $ligne->distance."m";?>
+		<div class="infoLigneRow">
+			<label for="aeroport_origine">Aeroport d'origine : </label>
+			<div class="" id="aeroport_origine">
+				<?php echo $this->aeroport_origine->nom;?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="aeroport_depart">Aeroport de départ : </label>
+			<div class="" id="aeroport_depart">
+				<?php echo $this->aeroport_depart->nom;?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="aeroport_arrive">Aeroport d'arrivé : </label>
+			<div class="" id="aeroport_arrive">
+				<?php echo $this->aeroport_arrivee->nom;?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="heure_depart">Heure de départ : </label>
+			<div class="" id="heure_depart">
+				<?php echo $ligne->heure_depart;?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="heure_arrivee">Heure d'arrivée : </label>
+			<div class="" id="heure_arrivee">
+				<?php echo $ligne->heure_arrivee;?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="periodicite">Périodicité : </label>
+			<div class="" id="periodicite">
+				<?php 
+				$jours=$this->jours;
+				foreach($jours as $jour1){
+					?>
+				<span class=""> <?php echo $jour1->libelle; ?>
+				</span>
+				<?php } ?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="distance">Distance : </label>
+			<div class="" id="distance">
+				<?php echo $ligne->distance."m";?>
+			</div>
 		</div>
 	</fieldset>
 	<fieldset>
 		<legend>Informations sur le vol</legend>
-		<label for="vol">Numero du vol : </label>
-		<div class="" id="vol">
-			<?php echo $vol->id_vol;?>
+		<div class="infoVolRow">
+			<label for="vol">Numero du vol : </label>
+			<div class="" id="vol">
+				<?php echo $vol->id_vol;?>
+			</div>
 		</div>
-		<label for="date_depart">Date de départ : </label>
-		<div class="" id="date_depart">
-			<?php 
-			$madate = strtotime($vol->date_depart);
-			echo "(".$jour[date("N",$madate)].") ".date("d/m/y",$madate);
-			?>
+		<div class="infoVolRow">
+			<label for="date_depart">Date de départ : </label>
+			<div class="" id="date_depart">
+				<?php 
+				$madate = strtotime($vol->date_depart);
+				echo "(".$jour[date("N",$madate)].") ".date("d/m/y",$madate);
+				?>
+			</div>
 		</div>
-		<label for="date_arrivee">Date d'arrivée : </label>
-		<div class="" id="date_arrivee">
-			<?php 
-			$madate = strtotime($vol->date_arrivee);
-			echo "(".$jour[date("N",$madate)].") ".date("d/m/y",$madate);
-			?>
+		<div class="infoVolRow">
+			<label for="date_arrivee">Date d'arrivée : </label>
+			<div class="" id="date_arrivee">
+				<?php 
+				$madate = strtotime($vol->date_arrivee);
+				echo "(".$jour[date("N",$madate)].") ".date("d/m/y",$madate);
+				?>
+			</div>
 		</div>
-		<label for="type_avion">Type d'avion : </label>
-		<div class="" id="type_avion">
-			<?php echo $this->typeAvion->libelle;?>
+		<div class="infoVolRow">
+			<label for="type_avion">Type d'avion : </label>
+			<div class="" id="type_avion">
+				<?php echo $this->typeAvion->libelle;?>
+			</div>
 		</div>
-		<label for="pilote">Pilote : </label>
-		<div class="" id="pilote">
-			<?php echo $this->vol->id_pilote.' : '.strtoupper($this->pilote->nom).' '.$this->pilote->prenom;?>
+		<div class="infoVolRow">
+			<label for="pilote">Pilote : </label>
+			<div class="" id="pilote">
+				<?php echo strtoupper($this->pilote->nom).' '.$this->pilote->prenom;?>
+			</div>
 		</div>
-		<label for="copilote">Copilote : </label>
-		<div class="" id="copilote">
-			<?php echo $this->vol->id_copilote.' : '.strtoupper($this->copilote->nom).' '.$this->copilote->prenom;?>
+		<div class="infoVolRow">
+			<label for="copilote">Copilote : </label>
+			<div class="" id="copilote">
+				<?php echo strtoupper($this->copilote->nom).' '.$this->copilote->prenom;?>
+			</div>
 		</div>
-		<label for="tarif">Tarif : </label>
-		<div class="" id="tarif">
-			<?php echo $vol->tarif."€"; ?>
-		</div>
+		<div class="infoVolRow">
+			<label for="tarif">Tarif : </label>
+			<div class="" id="tarif">
+				<?php echo $vol->tarif."€"; ?>
+			</div>
+	
 	</fieldset>
 	<fieldset>
 		<legend>Données Effectives</legend>
-		<label for="aeroport_depart_effectif">Aeroport de départ effectif : </label>
-		<div class="" id="aeroport_depart_effectif">
-			<?php echo $this->aeroport_depart_effectif->nom;?>
+		<div class="infoEffRow">
+			<label for="aeroport_depart_effectif">Aeroport de départ effectif : </label>
+			<div class="" id="aeroport_depart_effectif">
+				<?php echo $this->aeroport_depart_effectif->nom;?>
+			</div>
 		</div>
-		<label for="aeroport_arrivee_effectif">Aeroport d'arrivé effectif : </label>
-		<div class="" id="aeroport_arrivee_effectif">
-			<?php echo $this->aeroport_arrivee_effectif->nom;?>
+		<div class="infoEffRow">
+			<label for="aeroport_arrivee_effectif">Aeroport d'arrivé effectif : </label>
+			<div class="" id="aeroport_arrivee_effectif">
+				<?php echo $this->aeroport_arrivee_effectif->nom;?>
+			</div>
 		</div>
-
-		<label for="heure_arrivee_effective">Heure d'arrivée effective : </label>
-		<div class="" id="heure_arrivee_effective">
-			<?php echo $vol->heure_arrivee_effective; ?>
+		<div class="infoEffRow">
+			<label for="heure_arrivee_effective">Heure d'arrivée effective : </label>
+			<div class="" id="heure_arrivee_effective">
+				<?php echo $vol->heure_arrivee_effective; ?>
+			</div>
 		</div>
 	</fieldset>
 </div>

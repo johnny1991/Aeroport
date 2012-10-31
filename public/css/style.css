@@ -1,86 +1,139 @@
 @CHARSET "UTF-8";
-body{
-	background:#FFF;
-	margin:5px auto 0 auto;
-	
+
+body {
+	background: #FFF;
+	margin: 5px auto 0 auto;
+	font-family: Quattrocento, Georgia, "Times New Roman", serif;
 }
 
-#pere{
-	width:960px;
-	height:100%;
-	margin:0 auto 0 auto;
-	background:#4584b4 url('../img/bck.jpg')repeat-x;
-	box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
+table {
+	border-collapse: collapse;
+}
+
+table td {
+	padding: 0px;
+}
+
+table th a {
+	text-decoration: none;
+	padding: 5px 5px 10px 5px;
+	display: block;
+	color: black;
+	text-align: left;
+}
+
+table th a:hover {
+	color: #232828;
+}
+
+table a {
+	font-size: 0.90em;
+	text-decoration: none;
+	color: black;
+	padding: 5px;
+	display: block;
+}
+
+table tr:hover {
+	background-color: rgba(219, 252, 255, 0.7);
+}
+
+fieldset {
+	margin: 5px;
+}
+
+h1 {
+	font-size: 1.4em;
+	margin-left: 50px;
+}
+
+#TableHead:hover {
+	background-color: inherit;
+}
+
+#pere {
+	width: 960px;
+	height: 100%;
+	margin: 0 auto 0 auto;
+	background: #4584b4 url('../img/bck.jpg') repeat-x;
+	box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
 }
 
 /*------- home page -------*/
-#login_connect{
-	width:300px;
-	height:300px;
+#login_connect {
+	width: 300px;
+	height: 300px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
-	background:rgba(255, 255, 255, 0.3);
-	margin:auto;
+	background: rgba(255, 255, 255, 0.3);
+	margin: auto;
 }
-#logo_connect{
-	width:359px;
-	height:93px;
-	margin-left:25px;
-	background:url('../img/logo.png');
+
+#logo_connect {
+	width: 359px;
+	height: 93px;
+	margin-left: 25px;
+	background: url('../img/logo.png');
 }
-#login_connect form{
-	width:300px;
-	margin:20px 0 0 0;
+
+#login_connect form {
+	width: 300px;
+	margin: 20px 0 0 0;
 }
-#login_connect form input{
-	width:200px;
-	height:30px;
-	margin:15px 0 0 45px;
+
+#login_connect form input {
+	width: 200px;
+	height: 30px;
+	margin: 15px 0 0 45px;
 }
 /*------- fin home page -------*/
-
-
-
-
-#header{
-	height:93px;
+#header {
+	height: 93px;
 }
-#logo{
-	width:359px;
-	height:93px;
-	background:url('../img/logo.png');
-	margin:0 0 0 50px;
-	float:left;
+
+#logo {
+	width: 359px;
+	height: 93px;
+	background: url('../img/logo.png');
+	margin: 0 0 0 50px;
+	float: left;
 }
-#connect{
-	width:200px;
-	height:80px;
-	background:rgba(255, 255, 255, 0.3);
-	float:right;
-	margin:10px 50px 0 0;
+
+#connect {
+	width: 200px;
+	height: 80px;
+	background: rgba(255, 255, 255, 0.3);
+	float: right;
+	margin: 10px 50px 0 0;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 }
-#connect p{
-	margin:3px 0 0 10px;
+
+#connect p {
+	margin: 3px 0 0 10px;
 }
 
-
-#side_bar{
-	width:600px;
-	height:1px;
-	margin:20px auto 0 auto;
-	background:url('../img/side.png');
-}
-nav{
-	width:400px;
-	height:40px;
-	margin:20px 0 0 0;
-	background:#CCC;
+#side_bar {
+	width: 600px;
+	height: 1px;
+	margin: 20px auto 0 auto;
+	background: url('../img/side.png');
 }
 
+nav {
+	padding: 10px;
+	/*width: 400px;
+	height: 40px;
+	margin: 20px 0 0 0;
+	background: #CCC;*/
+}
+
+nav a {
+	text-decoration: none;
+	color: black;
+}
 
 /* #desc{
 	position:relative;
@@ -91,53 +144,104 @@ nav{
 	border-width:0px 100px 100px 100px;
 }*/
 
-
 /*------- tableau consltation ligne -------*/
-.table_consulterligne{
-	width:900px;
-	heiht:100%;
-	margin:auto;
-}
-.table_consulterligne thead a{
-	font-size:0.875em;
-	text-decoration:none;
-	color:black;
-}
-.table_consulterligne tbody{
-	text-align:center;
-}
-.ligne a{
-	font-size:0.750em;
-	text-decoration:none;
-	color:black;
+.table_consulterligne {
+	width: 900px;
+	heiht: 100%;
+	margin: auto;
 }
 
-
-
-
-
-#globalDate1, #globalDate2, #globalJour{
-	display:none;
+.table_consulterligne thead a {
+	font-size: 0.875em;
+	text-decoration: none;
+	color: black;
 }
 
-
-#footer{
-	height:175px;
-	background:url('../img/footer.png') no-repeat center;
-	width:960px;
-}
-#footer p{
-	text-align:center;
-	font-size:0.750em;
-	padding-top:100px;
+.table_consulterligne tbody {
+	text-align: center;
 }
 
+#globalDate1,#globalDate2,#globalJour {
+	display: none;
+}
 
+#footer {
+	height: 175px;
+	background: url('../img/footer.png') no-repeat center;
+	width: 960px;
+}
 
+#footer p {
+	text-align: center;
+	font-size: 0.750em;
+	padding-top: 100px;
+}
 
+.Global div, .GlobalDate1 div, .GlobalDate2 div, .GlobalJour div {
+	float: left;
+}
 
+.Global {
+	overflow: auto;
+}
 
+.Odd { /*background-color: #FFFFFF;
+	filter: alpha(opacity =     50);
+	-moz-opacity: 0.5;
+	opacity: 0.5;*/
+	background-color: rgba(129, 190, 208, 0.7);
+}
 
+.Even { /*background-color: red;*/
+	
+}
 
+#desc {
+	background: url("/img/desc.png") no-repeat scroll 11px 25px;
+}
 
+#asc {
+	background: url("/img/asc.png") no-repeat scroll 11px 25px;
+}
 
+.infoLigneRow,.infoVolRow,.infoEffRow {
+	overflow: auto;
+}
+
+.infoLigneRow label,.infoVolRow label,.infoEffRow label {
+	float: left;
+	padding: 3px;
+	font-weight: bold;
+}
+
+.infoLigneRow div,.infoVolRow div,.infoEffRow div {
+	float: left;
+	padding: 3px;
+}
+
+.table_consulter-vol,.table_consulter-ligne {
+	margin: 10px;
+	width: 98%;
+}
+
+.noVols {
+	margin: 20px;
+	text-align: center;
+	font-size: 1.15em;
+}
+
+.Global_label,.Global_input {
+	margin: 10px;
+}
+
+.Global_label label {
+	font-weight: bold;
+}
+
+.formulaireLigne {
+	margin: 10px;
+}
+
+.GlobalDate1 , .GlobalDate2, .GlobalJour {
+	overflow:auto;
+}

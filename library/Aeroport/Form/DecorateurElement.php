@@ -29,7 +29,7 @@ class Aeroport_Form_DecorateurElement extends Zend_Form_Decorator_Abstract
 
 		// Ajouter une etoile si l'element est obligatoire
 		if($element->isRequired())
-			$label .='<b>*</b>';
+			$label .=' *';
 
 
 

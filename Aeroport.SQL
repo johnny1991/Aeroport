@@ -817,5 +817,7 @@ INSERT INTO `periodicite` (`numero_ligne`, `numero_jour`) VALUES
 
 INSERT INTO `vol` (`id_vol`, `numero_ligne`, `id_aeroport_depart_effectif`, `id_aeroport_arrivee_effectif`, `date_depart`, `date_arrivee`, `id_avion`, `id_pilote`, `id_copilote`, `heure_arrivee_effective`, `tarif`) VALUES
 (1, 18, 'CDG', 'MRS', '2012-10-09', '2012-10-09', '2', 4, 3, '15:00:00', '150.00'),
-(1, 19, 'LYS', 'PEK', '2012-10-24', '2012-10-25', '2', 7, 2, '18:00:00', '3000.00');
+(1, 19, 'LYS', 'PEK', '2012-10-24', '2012-10-25', '2', 7, 2, '18:00:00', '3000.00'),
+('2', '18', 'CDG', 'GIG', '2012-10-01', '2012-10-18', '4', '2', NULL, NULL, NULL), 
+('3', '18', 'JFK', 'LHR', '2012-10-25', '2012-10-26', NULL, NULL, NULL, NULL, NULL);
 
