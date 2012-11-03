@@ -23,4 +23,14 @@ class Ligne extends Zend_Db_Table_Abstract
 		$row=$this->getAdapter()->fetchOne($requete);
 		return $row;
 	}
+	
+	public function getAeroportByAeroportArrivee($numeroLigne){
+		$req = $this->select()
+					->setIntegrityCheck(false)
+					->from(array('li' => 'Ligne'))
+					->join(array('ae' => 'Aeroport'), 'li.id_aeroport_arrivee = ae.id_aeroport')
+					->where('li.numero_ligne = ?', $numeroLigne);
+		
+		return $this->fetchRow($req);
+	}
 }

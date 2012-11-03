@@ -28,4 +28,34 @@ class Aeroport_Planning {
 		$timestampFirstMonday = mktime(0, 0, 0, date('m'), $firstMonday, date('Y'));
 		return $timestampFirstMonday;
 	}
+	
+	function getTimestampLastSunday(){
+		$myTimestamp = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+		$myDay = date('N');
+		$myDate = date('d');
+		$myDayInMonth = date('t');
+		$myMonth = date('m');
+		
+		$daysRemaining = 7 - $myDay;
+		$lastDayWeek = $myDate + $daysRemaining;
+		$Sundays4 = (3*7) + $lastDayWeek;
+		
+		$timestamp2 = mktime(0, 0, 0, $myMonth, $Sundays4, date('Y'));
+		
+		if($Sundays4 > $myDayInMonth){
+			$dayNextMonth = $Sundays4 - $myDayInMonth; 
+			$NextMonth = $myMonth + 1;
+			
+			if($NextMonth == 13)
+				$NextMonth = 1;
+			
+			$timestamp2 = mktime(0, 0, 0, $NextMonth, $dayNextMonth, date('Y'));
+			 
+			if($NextMonth == 1){
+				$timestamp2 = mktime(0, 0, 0, $NextMonth, $dayNextMonth, (date('Y') + 1));
+			}
+		}
+		
+		return $timestamp2;
+	}
 }
