@@ -35,5 +35,49 @@ class Vol extends Zend_Db_Table_Abstract
 		$row=$this->getAdapter()->fetchOne($requete);
 		return $row;
 	}
+	
+	public function getInfosVol($numeroLigne, $dateDepart){
+		$reqVol = $this->select()
+					->setIntegrityCheck(false)
+					->from(array('v' => 'Vol'))
+					->join(array('avi' => 'Avion'), 'v.id_avion = avi.id_avion')
+					->join(array('tavi' => 'Type_Avion'), 'avi.id_type_avion = tavi.id_type_avion')
+					->where('numero_ligne = ?', $numeroLigne)
+					->where('date_depart = ?', $dateDepart);
+			
+		return $this->fetchRow($reqVol);
+	}
+	
+	public function getIdAvionNoDispo($dateDepart, $heureArrivee, $heureDepart, $numeroLigne = null){
+		if($numeroLigne == null){
+			$req = $this->select()
+						->setIntegrityCheck(false)
+						->from(array('v' => 'Vol'), 'v.id_avion')
+						->where('v.date_depart = ?', $dateDepart)
+						->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
+		}
+		else{
+			$req = $this->select()
+						->setIntegrityCheck(false)
+						->from(array('v' => 'Vol'), 'v.id_avion')
+						->where('v.numero_ligne != ?', $numeroLigne)
+						->where('v.date_depart = ?', $dateDepart)
+						->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
+		}
+		
+		return($req);
+	}
+	
+	/*public function getIdAvionNoDispoWithLigne($dateDepart, $heureArrivee, $numeroLigne){
+		$req = $this->select()
+					->setIntegrityCheck(false)
+					->from(array('v' => 'Vol'), 'v.id_avion')
+					->join(array('li' => 'Ligne'), 'li.numero_ligne = v.numero_ligne', array())
+					->where('v.numero_ligne != ?', $numeroLigne)
+					->where('date_arrivee = ?', $dateDepart)
+					->where('li.heure_depart < ?', $heureArrivee);
+		
+		return($req);
+	}*/
 
 }

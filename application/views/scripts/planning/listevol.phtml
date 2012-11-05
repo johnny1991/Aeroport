@@ -19,6 +19,11 @@
 		</tr>
 	<?php 
 			foreach($this->tabLigne as $value){
+				if($value['options'] != 'Consulter')
+					$lien = '/planning/planificationvol/date/'.$value['date_depart'].'/numeroligne/'.$value['numero_ligne'].'/actions/'.$value['options'].'';
+				else
+					$lien = '/planning/consultervol/numeroligne/'.$value['numero_ligne'].'/idvol/'.$value['idVol'].'';
+				
 				echo '<tr>';
 				echo '
 					<td>'.$value['numero_ligne'].'</td>
@@ -26,7 +31,7 @@
 					<td>'.$value['heure_depart'].'</td>
 					<td><span class="spanAcronyme" title="'.$value['nom_aeroport_arrivee'].'">'.$value['aeroport_arrivee'].'</span></td>
 					<td>'.$value['heure_arrivee'].'</td>
-					<td><a href="/planning/planificationvol/date/'.$value['date_depart'].'/numeroligne/'.$value['numero_ligne'].'/actions/'.$value['options'].'">'.$value['options'].'</a></td>';
+					<td><a href="'.$lien.'">'.$value['options'].'</a></td>';
 						
 				echo '</tr>';
 			}
