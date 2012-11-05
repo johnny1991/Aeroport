@@ -16,19 +16,19 @@ $jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 		<div class="infoLigneRow">
 			<label for="aeroport_origine">Aeroport d'origine : </label>
 			<div class="" id="aeroport_origine">
-				<?php echo $this->aeroport_origine->nom;?>
+				<?php echo $this->aeroport_origine->nom." (".$this->villeOrigine->nom." / ".$this->paysOrigine->nom.")";?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
 			<label for="aeroport_depart">Aeroport de départ : </label>
 			<div class="" id="aeroport_depart">
-				<?php echo $this->aeroport_depart->nom;?>
+				<?php echo $this->aeroport_depart->nom." (".$this->villeDepart->nom." / ".$this->paysDepart->nom.")";?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
 			<label for="aeroport_arrive">Aeroport d'arrivé : </label>
 			<div class="" id="aeroport_arrive">
-				<?php echo $this->aeroport_arrivee->nom;?>
+				<?php echo $this->aeroport_arrivee->nom." (".$this->villeArrivee->nom." / ".$this->paysArrive->nom.")";?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
@@ -43,6 +43,7 @@ $jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 				<?php echo $ligne->heure_arrivee;?>
 			</div>
 		</div>
+		<?php if($this->nbJours>0){?>
 		<div class="infoLigneRow">
 			<label for="periodicite">Périodicité : </label>
 			<div class="" id="periodicite">
@@ -53,6 +54,13 @@ $jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 				<span class=""> <?php echo $jour1->libelle; ?>
 				</span>
 				<?php } ?>
+			</div>
+		</div>
+		<?php }?>
+		<div class="infoLigneRow">
+			<label for="tarif">Tarif : </label>
+			<div class="" id="tarif">
+				<?php echo $ligne->tarif."€";?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
@@ -91,25 +99,37 @@ $jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 		<div class="infoVolRow">
 			<label for="type_avion">Type d'avion : </label>
 			<div class="" id="type_avion">
-				<?php echo $this->typeAvion->libelle;?>
+				<?php if($vol->id_avion!=NULL) { ?>
+				<?php echo $this->typeAvion->libelle;
+				} else {
+					echo "non affecté";
+						} ?>
 			</div>
 		</div>
 		<div class="infoVolRow">
 			<label for="pilote">Pilote : </label>
 			<div class="" id="pilote">
-				<?php echo strtoupper($this->pilote->nom).' '.$this->pilote->prenom;?>
+				<?php if($vol->id_pilote!=NULL) { ?>
+				<?php echo strtoupper($this->pilote->nom).' '.$this->pilote->prenom;
+						} else {
+							echo "non affecté";
+						} ?>
 			</div>
 		</div>
 		<div class="infoVolRow">
 			<label for="copilote">Copilote : </label>
 			<div class="" id="copilote">
-				<?php echo strtoupper($this->copilote->nom).' '.$this->copilote->prenom;?>
+				<?php if($vol->id_copilote!=NULL) { ?>
+				<?php echo strtoupper($this->copilote->nom).' '.$this->copilote->prenom;
+						} else {
+							echo "non affecté";
+						} ?>
 			</div>
 		</div>
 		<div class="infoVolRow">
-			<label for="tarif">Tarif : </label>
+			<label for="tarif">Tarif effectif : </label>
 			<div class="" id="tarif">
-				<?php echo $vol->tarif."€"; ?>
+				<?php echo $vol->tarif_effectif."€"; ?>
 			</div>
 	
 	</fieldset>

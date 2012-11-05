@@ -6,7 +6,7 @@ class VolController extends Zend_Controller_Action
 
 	public function ajouterLigneAction() // faire les controles de saisie t ajouter l'aeroport d'origine/!\
 	{
-		$this->view->title = "Ajouter un vol";
+		$this->view->title = "Ajouter une ligne";
 		$this->view->headScript()->appendFile('/js/jquery-ui-sliderAccess.js');
 		$this->view->headScript()->appendFile('/js/jquery-ui-timepicker-addon.js');
 		$this->view->headLink()->appendStylesheet('/css/jquery-ui-timepicker-addon.css');
@@ -25,6 +25,8 @@ class VolController extends Zend_Controller_Action
 				$Ligne->id_aeroport_arrivee=$form->getValue('aeroportArrivee');
 				$Ligne->heure_depart=$form->getValue('heureDepart');
 				$Ligne->heure_arrivee=$form->getValue('heureArrivee');
+				$Ligne->tarif=$form->getValue('tarif');
+				$Ligne->distance=$form->getValue('distance');
 				$Id=$Ligne->save();
 				if($this->getRequest()->getPost('periodicite'))
 				{
@@ -44,14 +46,59 @@ class VolController extends Zend_Controller_Action
 					$Vol->numero_ligne=$Id;
 					$Vol->id_aeroport_depart_effectif=$form->getValue('aeroportDepart');
 					$Vol->id_aeroport_arrivee_effectif=$form->getValue('aeroportArrivee');
-					$Vol->date_depart=$form->getValue('dateDepart');
-					$Vol->date_arrivee=$form->getValue('dateArrivee');
+					$dateDepart = new Zend_Date($form->getValue('dateDepart'), 'dd/MM/yyyy');
+					$Vol->date_depart=$dateDepart->get('yyyy-MM-dd');
+					$dateArrivee = new Zend_Date($form->getValue('dateArrivee'), 'dd/MM/yyyy');
+					$Vol->date_arrivee=$dateArrivee->get('yyyy-MM-dd');
+					$Vol->tarif_effectif=$form->getValue('tarif_effectif');
 					$Vol->save();
 				}
 				echo "insertion reussi !!!";
 			}
 			else{
 				$form->populate($data);
+				$tableAeroport=new Aeroport;
+				if(isset($data["aeroportOrigine"]))
+				{
+					$AeroportOrigine=$form->getElement('aeroportOrigine');
+					$form->getElement('PopulateOrigine')->setValue("1");
+					$requete=$tableAeroport->select()
+					->setIntegrityCheck(false)
+					->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
+					->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
+					->where('code_pays=?',$data["Origine"]);
+					$aeroports=$tableAeroport->fetchAll($requete);
+					foreach($aeroports as $aeroport)
+						$AeroportOrigine->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
+				}
+				if(isset($data["aeroportDepart"])){
+					$AeroportDepart=$form->getElement('aeroportDepart');
+					$form->getElement('PopulateDepart')->setValue("1");
+					$requete=$tableAeroport->select()
+					->setIntegrityCheck(false)
+					->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
+					->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
+					->where('code_pays=?',$data["Origine"]);
+					$aeroports=$tableAeroport->fetchAll($requete);
+					foreach($aeroports as $aeroport)
+						$AeroportDepart->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
+				}
+				if(isset($data["aeroportArrivee"]))
+				{
+					$AeroportArrivee=$form->getElement('aeroportArrivee');
+					$form->getElement('PopulateArrivee')->setValue("1");
+					$requete=$tableAeroport->select()
+					->setIntegrityCheck(false)
+					->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
+					->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
+					->where('code_pays=?',$data["Origine"]);
+					$aeroports=$tableAeroport->fetchAll($requete);
+					foreach($aeroports as $aeroport)
+						$AeroportArrivee->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
+				}
+
+				
+				
 				$this->view->Form=$form;
 			}
 		}
@@ -92,8 +139,19 @@ class VolController extends Zend_Controller_Action
 
 	}
 
+	public function rechercherAdresseAction(){
+		$this->_helper->layout->disableLayout();
+		$id_aeroport=$this->_getParam('id_aeroport');
+		$TableAeroport=new Aeroport;
+		$Aeroport=$TableAeroport->find($id_aeroport)->current();
+		$Ville=$Aeroport->findParentRow('Ville');
+		echo $Aeroport->adresse.", ".$Ville->nom.", ".$Ville->findParentRow('Pays')->nom;
+
+	}
+
 	public function rechercherAeroportAction()
 	{
+		echo $isValid=$this->getParam("isValid");
 		$this->_helper->layout->disableLayout();
 		$tableAeroport = new Aeroport;
 		$requete=$tableAeroport->select()
@@ -102,6 +160,10 @@ class VolController extends Zend_Controller_Action
 		->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
 		->where('code_pays=?',$this->_getParam('pays'));
 		$aeroports=$tableAeroport->fetchAll($requete);
+		echo '<option value="0" disabled="disabled"';
+		if(!($isValid))
+			echo " selected='selected' ";
+		echo '>Choisissez l\'aeroport</option>';
 		foreach ($aeroports as $aeroport)
 		{
 			echo '<option value="'.$aeroport->id_aeroport.'">'.$aeroport->nom.'</option>';
@@ -171,6 +233,15 @@ class VolController extends Zend_Controller_Action
 			$this->view->aeroport_depart=$ligne->findParentAeroportByaeroport_depart();
 			$this->view->aeroport_arrivee=$ligne->findParentAeroportByaeroport_arrivee();
 			$this->view->jours=$ligne->findJourSemaineViaPeriodicite();
+			$this->view->nbJours=count($ligne->findJourSemaineViaPeriodicite());
+			$this->view->villeOrigine=$ligne->findParentRow('Aeroport','aeroport_origine')->findParentRow('Ville');
+			$this->view->paysOrigine=$this->view->villeOrigine->findParentRow('Pays');
+			$this->view->villeDepart=$ligne->findParentRow('Aeroport','aeroport_depart')->findParentRow('Ville');
+			$this->view->paysDepart=$this->view->villeDepart->findParentRow('Pays');
+			$this->view->villeArrivee=$ligne->findParentRow('Aeroport','aeroport_arrivee')->findParentRow('Ville');
+			$this->view->paysArrive=$this->view->villeArrivee->findParentRow('Pays');
+
+
 
 			if($this->getRequest()->getParam('orderBy'))
 				$orderBy=$this->getRequest()->getParam('orderBy');
@@ -251,14 +322,24 @@ class VolController extends Zend_Controller_Action
 		$tableLigne=new Ligne;
 		$ligne=$tableLigne->find($numero_ligne)->current();
 		$this->view->jours=$ligne->findJourSemaineViaPeriodicite();
+		$this->view->nbJours=count($ligne->findJourSemaineViaPeriodicite());
 		$this->view->aeroport_origine=$ligne->findParentRow('Aeroport','aeroport_origine');
 		$this->view->aeroport_depart=$ligne->findParentRow('Aeroport','aeroport_depart');
 		$this->view->aeroport_arrivee=$ligne->findParentRow('Aeroport','aeroport_arrivee');
-		$this->view->typeAvion=$vol->findParentRow("Avion")->findParentRow("TypeAvion");
+		if ($vol->id_avion!=NULL)
+			$this->view->typeAvion=$vol->findParentRow("Avion")->findParentRow("TypeAvion");
 		$this->view->aeroport_depart_effectif=$vol->findParentRow('Aeroport','id_aeroport_depart_effectif');
 		$this->view->aeroport_arrivee_effectif=$vol->findParentRow('Aeroport','id_aeroport_arrivee_effectif');
-		$this->view->copilote=$vol->findParentRow('Pilote','Copilote');
-		$this->view->pilote=$vol->findParentRow('Pilote','Pilote');
+		if ($vol->id_pilote!=NULL)
+			$this->view->pilote=$vol->findParentRow('Pilote','Pilote');
+		if ($vol->id_copilote!=NULL)
+			$this->view->copilote=$vol->findParentRow('Pilote','Copilote');
+		$this->view->villeOrigine=$ligne->findParentRow('Aeroport','aeroport_origine')->findParentRow('Ville');
+		$this->view->paysOrigine=$this->view->villeOrigine->findParentRow('Pays');
+		$this->view->villeDepart=$ligne->findParentRow('Aeroport','aeroport_depart')->findParentRow('Ville');
+		$this->view->paysDepart=$this->view->villeDepart->findParentRow('Pays');
+		$this->view->villeArrivee=$ligne->findParentRow('Aeroport','aeroport_arrivee')->findParentRow('Ville');
+		$this->view->paysArrive=$this->view->villeArrivee->findParentRow('Pays');
 		$this->view->ligne=$ligne;
 	}
 
@@ -287,7 +368,7 @@ class VolController extends Zend_Controller_Action
 
 	public function init(){
 		$this->view->headScript()->appendFile('/js/VolFonction.js');
-		$this->view->headLink()->appendStylesheet('/css/VolStyle.css');
+		$this->view->headScript()->appendFile('http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry');
 
 		parent::init();
 	}

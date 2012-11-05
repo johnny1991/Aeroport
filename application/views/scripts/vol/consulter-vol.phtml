@@ -10,20 +10,20 @@
 		<div class="infoLigneRow">
 			<label for="aeroport_origine">Aeroport d'origine :</label>
 			<div class="" id="aeroport_origine">
-				<?php echo $this->aeroport_origine->nom; ?>
+				<?php echo $this->aeroport_origine->nom." (".$this->villeOrigine->nom." / ".$this->paysOrigine->nom.")"; ?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
 			<label for="aeroport_depart">Aeroport de départ :</label>
 			<div class="" id="aeroport_depart">
-				<?php echo $this->aeroport_depart->nom; ?>
+				<?php echo $this->aeroport_depart->nom." (".$this->villeDepart->nom." / ".$this->paysDepart->nom.")"; ?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
 			<label for="aeroport_arrive">Aeroport d'arrivé :</label>
 
 			<div class="" id="aeroport_arrive">
-				<?php echo $this->aeroport_arrivee->nom; ?>
+				<?php echo $this->aeroport_arrivee->nom." (".$this->villeArrivee->nom." / ".$this->paysArrive->nom.")"; ?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
@@ -38,18 +38,19 @@
 				<?php echo $this->ligne->heure_arrivee; ?>
 			</div>
 		</div>
+		<?php if($this->nbJours>0){?>
 		<div class="infoLigneRow">
 			<label for="periodicite">Périodicité :</label>
 			<div class="" id="periodicite">
 				<?php 
 				foreach($this->jours as $jour){
 					?>
-				<span class="">
-					<?php echo $jour->libelle; ?>
+				<span class=""> <?php echo $jour->libelle; ?>
 				</span>
 				<?php } ?>
 			</div>
 		</div>
+		<?php }?>
 		<div class="infoLigneRow">
 
 			<label for="distance">Distance :</label>
@@ -106,7 +107,7 @@ if(($this->count)>0)
 }
 else {
 	?>
-	<div class="noVols">Il n'y a pas de vols affectés a cette ligne</div>
+<div class="noVols">Il n'y a pas de vols affectés a cette ligne</div>
 <?php 
 }
 ?>

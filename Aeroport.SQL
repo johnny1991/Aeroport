@@ -11,7 +11,7 @@ use aeroport;
 create table if not exists pays
  (
    code_pays integer not null  ,
-   nom_pays varchar(255) not null  , 
+   nom varchar(255) not null  , 
    alpha2 char(2) null  ,
    alpha3 char(3) null  ,
    primary key (code_pays) 
@@ -25,7 +25,7 @@ create table if not exists pays
 create table if not exists ville
  (
    code_ville varchar(255) not null  ,
-   nom_ville varchar(255) not null  ,
+   nom varchar(255) not null  ,
    code_pays integer not null  ,
    code_postal varchar(255) null  , 
    primary key (code_ville) ,
@@ -42,7 +42,8 @@ create table if not exists aeroport
  (
    id_aeroport char(3) not null  ,
    nom varchar(255) not null  ,
-   code_ville varchar(255) not null  ,   
+   code_ville varchar(255) not null  ,  
+   adresse varchar(255) not null ,  
    longueur_piste bigint(4) not null  , 
    primary key (id_aeroport) ,
    Foreign key (code_ville) references ville (code_ville) 
@@ -129,6 +130,7 @@ create table if not exists ligne
    id_aeroport_arrivee char(3) not null  ,
    heure_depart time not null  , 
    heure_arrivee time not null  ,
+   tarif decimal(13,2) null ,
    distance integer not null  ,
    primary key (numero_ligne) ,
    Foreign key (id_aeroport_origine) references aeroport (id_aeroport) ,
@@ -153,7 +155,7 @@ create table if not exists vol
    id_pilote integer null  ,
    id_copilote integer null  ,
    heure_arrivee_effective time null  ,
-   tarif decimal(13,2) null ,
+   tarif_effectif decimal(13,2) null ,
    primary key (numero_ligne,id_vol) ,
    Foreign key (numero_ligne) references ligne (numero_ligne) ON DELETE CASCADE ,
    Foreign Key (id_pilote) references pilote (id_pilote),
@@ -386,7 +388,7 @@ INSERT INTO `jour_semaine` (`numero_jour`, `libelle`) VALUES
 (6, 'Samedi'),
 (7, 'Dimanche');
 
-INSERT INTO `pays` (`code_pays`, `nom_pays`, `alpha2`, `alpha3`) VALUES
+INSERT INTO `pays` (`code_pays`, `nom`, `alpha2`, `alpha3`) VALUES
 (4, 'Afghanistan', 'AF', 'AFG'),
 (8, 'Albanie', 'AL', 'ALB'),
 (10, 'Antarctique', 'AQ', 'ATA'),
@@ -649,7 +651,7 @@ INSERT INTO `avion` (`id_avion`, `id_type_avion`, `nb_places`, `total_heure_vol`
 ('8', 2, 380, 30, 0, 1),
 ('9', 1, 525, 2000, 0, 0);
 
-INSERT INTO `ville` (`code_ville`, `nom_ville`, `code_pays`, `code_postal`) VALUES
+INSERT INTO `ville` (`code_ville`, `nom`, `code_pays`, `code_postal`) VALUES
 ('1', 'Paris', 250, '75000'),
 ('10', 'Rio de Janeiro', 76, NULL),
 ('2', 'Marseille', 250, '13000'),
@@ -665,17 +667,17 @@ INSERT INTO `client` (`id_client`, `nom`, `prenom`, `email`, `password`, `code_v
 (1, 'Franquatin', 'Paulette', 'paulette.franquatin@gmail.com', 'paulou', '2', '12bis rue du jeu de paume', NULL, '2012-10-22 21:01:07'),
 (2, 'Mojou', 'Bertrand', 'bertrand.mojou@gmail.com', 'bertrand', '7', '415 place de rien', NULL, '2012-10-22 21:01:07');
 
-INSERT INTO `aeroport` (`id_aeroport`, `nom`, `code_ville`, `longueur_piste`) VALUES
-('CDG', 'Aéroport Charles-de-Gaulle', '1', 4200),
-('GIG', 'Aéroport international Galeão', '10', 4000),
-('JFK', 'Aéroport international John-F.-Kennedy', '9', 4442),
-('LHR', 'Aéroport de Londres Heathrow', '4', 3902),
-('LYS', 'Aéroport Lyon-Saint-Exupéry', '3', 4000),
-('MAN', 'Aéroport international de Manchester', '5', 3048),
-('MRS', 'Aéroport Marseille Provence', '2', 3500),
-('MUC', 'Aéroport international Franz-Josef-Strauss', '6', 4000),
-('PEK', 'Beijing-Capital', '8', 3800),
-('SXF', 'Aéroport international de Berlin-Schönefeld', '7', 3000);
+INSERT INTO `aeroport` (`id_aeroport`, `nom`, `code_ville`, `adresse`, `longueur_piste`) VALUES
+('CDG', 'Aéroport Charles-de-Gaulle', '1','1 impasse de Gaulle', 4200),
+('GIG', 'Aéroport international Galeão', '10','2 rue de la paix', 4000),
+('JFK', 'Aéroport international John-F.-Kennedy', '9','2 rue de la paix', 4442),
+('LHR', 'Aéroport de Londres Heathrow', '4','2 rue de la paix', 3902),
+('LYS', 'Aéroport Lyon-Saint-Exupéry', '3','2 rue de la paix', 4000),
+('MAN', 'Aéroport international de Manchester', '5','2 rue de la paix', 3048),
+('MRS', 'Aéroport Marseille Provence', '2','2 rue de la paix', 3500),
+('MUC', 'Aéroport international Franz-Josef-Strauss', '6','2 rue de la paix', 4000),
+('PEK', 'Beijing-Capital', '8','2 rue de la paix', 3800),
+('SXF', 'Aéroport international de Berlin-Schönefeld', '7','2 rue de la paix', 3000);
 
 INSERT INTO `desservirVilleAeroport` (`code_ville`, `id_aeroport`) VALUES
 ('3', 'CDG'),
@@ -774,18 +776,18 @@ INSERT INTO `astreinte` (`id_aeroport`, `id_pilote`, `date_astreinte`) VALUES
 ('CDG', 4, '2012-10-22 20:58:01'),
 ('CDG', 6, '2012-10-22 20:58:41');
 
-INSERT INTO `ligne` (`numero_ligne`, `id_aeroport_origine`, `id_aeroport_depart`, `id_aeroport_arrivee`, `heure_depart`, `heure_arrivee`, `distance`) VALUES
-(17, 'CDG', 'CDG', 'GIG', '10:12:23', '10:12:26', 1100),
-(16, 'CDG', 'CDG', 'GIG', '10:13:18', '10:13:20', 15000),
-(18, 'CDG', 'CDG', 'MRS', '15:00:00', '18:00:00', 2000),
-(19, 'LYS', 'LYS', 'PEK', '08:00:00', '18:00:00', 350),
-(20, 'JFK', 'JFK', 'MRS', '08:00:00', '15:00:00', 2500),
-(21, 'MAN', 'MAN', 'MUC', '15:00:00', '19:00:00', 16000),
-(22, 'PEK', 'PEK', 'LYS', '08:00:00', '15:00:00', 1500),
-(23, 'GIG', 'GIG', 'SXF', '06:00:00', '15:00:00', 13687),
-(24, 'MAN', 'MAN', 'CDG', '09:00:00', '12:00:00', 1564),
-(25, 'LHR', 'LHR', 'MUC', '02:00:00', '06:00:00', 12354),
-(26, 'MUC', 'MUC', 'JFK', '05:00:00', '10:00:00', 1547);
+INSERT INTO `ligne` (`numero_ligne`, `id_aeroport_origine`, `id_aeroport_depart`, `id_aeroport_arrivee`, `heure_depart`, `heure_arrivee`,`tarif`, `distance`) VALUES
+(17, 'CDG', 'CDG', 'GIG', '10:12:23', '10:12:26',5, 1100),
+(16, 'CDG', 'CDG', 'GIG', '10:13:18', '10:13:20',5, 15000),
+(18, 'CDG', 'CDG', 'MRS', '15:00:00', '18:00:00',5, 2000),
+(19, 'LYS', 'LYS', 'PEK', '08:00:00', '18:00:00',5, 350),
+(20, 'JFK', 'JFK', 'MRS', '08:00:00', '15:00:00',5, 2500),
+(21, 'MAN', 'MAN', 'MUC', '15:00:00', '19:00:00',5, 16000),
+(22, 'PEK', 'PEK', 'LYS', '08:00:00', '15:00:00',5, 1500),
+(23, 'GIG', 'GIG', 'SXF', '06:00:00', '15:00:00',5, 13687),
+(24, 'MAN', 'MAN', 'CDG', '09:00:00', '12:00:00',5, 1564),
+(25, 'LHR', 'LHR', 'MUC', '02:00:00', '06:00:00',5, 12354),
+(26, 'MUC', 'MUC', 'JFK', '05:00:00', '10:00:00',5, 1547);
 
 INSERT INTO `periodicite` (`numero_ligne`, `numero_jour`) VALUES
 (20, 1),
@@ -815,9 +817,9 @@ INSERT INTO `periodicite` (`numero_ligne`, `numero_jour`) VALUES
 (23, 7),
 (26, 7);
 
-INSERT INTO `vol` (`id_vol`, `numero_ligne`, `id_aeroport_depart_effectif`, `id_aeroport_arrivee_effectif`, `date_depart`, `date_arrivee`, `id_avion`, `id_pilote`, `id_copilote`, `heure_arrivee_effective`, `tarif`) VALUES
-(1, 18, 'CDG', 'MRS', '2012-10-09', '2012-10-09', '2', 4, 3, '15:00:00', '150.00'),
-(1, 19, 'LYS', 'PEK', '2012-10-24', '2012-10-25', '2', 7, 2, '18:00:00', '3000.00'),
-('2', '18', 'CDG', 'GIG', '2012-10-01', '2012-10-18', '4', '2', NULL, NULL, NULL), 
-('3', '18', 'JFK', 'LHR', '2012-10-25', '2012-10-26', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `vol` (`id_vol`, `numero_ligne`, `id_aeroport_depart_effectif`, `id_aeroport_arrivee_effectif`, `date_depart`, `date_arrivee`, `id_avion`, `id_pilote`, `id_copilote`, `heure_arrivee_effective`, `tarif_effectif`) VALUES
+(1, 18, 'CDG', 'MRS', '2012-10-09', '2012-10-09', '2', 4, 3, '15:00:00', '5'),
+(1, 19, 'LYS', 'PEK', '2012-10-24', '2012-10-25', '2', 7, 2, '18:00:00', '5'),
+('2', '18', 'CDG', 'GIG', '2012-10-01', '2012-10-18', '4', '2', NULL, NULL, '5'), 
+('3', '18', 'JFK', 'LHR', '2012-10-25', '2012-10-26', NULL, NULL, NULL, NULL, '5');
 

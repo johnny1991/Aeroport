@@ -44,7 +44,16 @@ fieldset {
 
 h1 {
 	font-size: 1.4em;
-	margin-left: 50px;
+	margin: 10px;
+}
+
+input{
+	border-radius:5px;
+	padding-left:3px;
+}
+
+select{
+	border-radius:5px;
 }
 
 #TableHead:hover {
@@ -57,6 +66,7 @@ h1 {
 	margin: 0 auto 0 auto;
 	background: #4584b4 url('../img/bck.jpg') repeat-x;
 	box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
+	overflow: auto;
 }
 
 /*------- home page -------*/
@@ -144,7 +154,7 @@ nav a {
 	border-width:0px 100px 100px 100px;
 }*/
 
-/*------- tableau consltation ligne -------*/
+/*------- tableau consultation ligne -------*/
 .table_consulterligne {
 	width: 900px;
 	heiht: 100%;
@@ -161,28 +171,17 @@ nav a {
 	text-align: center;
 }
 
-#globalDate1,#globalDate2,#globalJour {
-	display: none;
-}
-
 #footer {
 	height: 175px;
 	background: url('../img/footer.png') no-repeat center;
 	width: 960px;
+	overflow: auto;
 }
 
 #footer p {
 	text-align: center;
 	font-size: 0.750em;
 	padding-top: 100px;
-}
-
-.Global div, .GlobalDate1 div, .GlobalDate2 div, .GlobalJour div {
-	float: left;
-}
-
-.Global {
-	overflow: auto;
 }
 
 .Odd { /*background-color: #FFFFFF;
@@ -230,18 +229,126 @@ nav a {
 	font-size: 1.15em;
 }
 
+/* Ajouter une ligne */
+/*#globalDate1,#globalDate2,#globalJour,#globalTarif {
+	display: none;
+}*/
+#fieldset-carte,#fieldset-periodique {
+	margin-top: 15px;
+	display: none;
+}
+
+.Global div,.GlobalDate1 div,.GlobalDate2 div,.GlobalJour div,.GlobalTarif div,.GlobalTrait div
+	{
+	float: left;
+}
+
+.GlobalDate1,.GlobalDate2,.GlobalJour,.GlobalTarif,.GlobalTrait,.Global
+	{
+	overflow: auto;
+}
+
 .Global_label,.Global_input {
 	margin: 10px;
 }
 
-.Global_label label {
-	font-weight: bold;
+.Global_label label { /*font-weight: bold;*/
+	
+}
+
+.GlobalTrait,.GlobalTarif {
+	background: url('../img/side.png') no-repeat;
+	margin-top: 10px;
+	padding-top: 10px;
 }
 
 .formulaireLigne {
 	margin: 10px;
+	width: 625px;
+	float: left;
+	color: #0E0E0F;
 }
 
-.GlobalDate1 , .GlobalDate2, .GlobalJour {
-	overflow:auto;
+.Map-New-Ligne {
+	float: left;
+	height: 300px;
+	width: 300px;
+	border-radius: 20px;
+	border: 1px solid black;
+	box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.698);
+	margin-top: 75px;
+}
+
+#title-New-Ligne {
+	margin-left: 50px;
+	color: black;
+}
+
+.formulaireLigne fieldset {
+	border-radius: 5px;
+	border: 1px solid black;
+}
+
+.formulaireLigne legend {
+	font-weight: bold;
+	color: #0E0E0F;
+	margin-left: 10px;
+	padding: 0px 5px;
+}
+
+.Global_label {
+	width: 165px;
+}
+
+.Legend-Map-New-Ligne { /*width:280px;*/
+	float: left;
+	margin-top: 5px;
+	margin-left: 20px;
+	padding: 10px;
+}
+
+.Row-Legend-Map-New-Ligne { /*width:280px;*/
+	height: 40px;
+	display: none;
+}
+
+#legendDepart {
+	background: url(/img/map-icon1.png) no-repeat top left;
+}
+
+#legendArrivee {
+	background: url(/img/map-icon.png) no-repeat top left;
+}
+
+.Row-Legend-Map-New-Ligne label {
+	display: block;
+	padding-top: 5px;
+	margin-left: 35px;
+	color: #0E0E0F;
+}
+
+#Ajouter {
+	background: -moz-linear-gradient(center top, #FFFFFF 0%, #FF9C00 100%)
+		repeat scroll 0 0 transparent;
+	border: 1px solid #E3E3E3;
+	border-radius: 18px 18px 18px 18px;
+	display: inline-block;
+	padding: 7px 18px;
+	color: 0E53A7;
+	font-size: 15px;
+}
+
+.Global_error ul {
+	margin: 0px;
+	list-style-type: none;
+	padding: 0px;
+}
+
+.Global_error {
+	color: #D40000;
+	margin-left: 196px;
+}
+
+.gmnoprint{
+	display:none;
 }
