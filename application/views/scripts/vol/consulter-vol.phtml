@@ -1,26 +1,31 @@
+<?php 
+foreach($this->messages as $message)
+	echo $message;
+?>
+<h1>Informations sur la ligne <?php echo $this->ligne->numero_ligne;?></h1>
 <fieldset>
-	<legend>Information sur la ligne</legend>
+	<legend>Informations détaillés sur la ligne</legend>
 	<div class="infoLigne">
 		<div class="infoLigneRow">
-			<label for="numero">Numero de la ligne :</label>
+			<label for="numero">Numéro de la ligne :</label>
 			<div class="" id="numero">
 				<?php echo $this->ligne->numero_ligne; ?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
-			<label for="aeroport_origine">Aeroport d'origine :</label>
+			<label for="aeroport_origine">Aéroport d'origine :</label>
 			<div class="" id="aeroport_origine">
 				<?php echo $this->aeroport_origine->nom." (".$this->villeOrigine->nom." / ".$this->paysOrigine->nom.")"; ?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
-			<label for="aeroport_depart">Aeroport de départ :</label>
+			<label for="aeroport_depart">Aéroport de départ :</label>
 			<div class="" id="aeroport_depart">
 				<?php echo $this->aeroport_depart->nom." (".$this->villeDepart->nom." / ".$this->paysDepart->nom.")"; ?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
-			<label for="aeroport_arrive">Aeroport d'arrivé :</label>
+			<label for="aeroport_arrive">Aéroport d'arrivé :</label>
 
 			<div class="" id="aeroport_arrive">
 				<?php echo $this->aeroport_arrivee->nom." (".$this->villeArrivee->nom." / ".$this->paysArrive->nom.")"; ?>
@@ -29,13 +34,19 @@
 		<div class="infoLigneRow">
 			<label for="heure_depart">Heure de départ :</label>
 			<div class="" id="heure_depart">
-				<?php echo $this->ligne->heure_depart; ?>
+				<?php 
+				$heureDepart = new Zend_Date($this->ligne->heure_depart,'HH:mm:ss');
+				echo $heureDepart->get('HH:mm');
+				?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
 			<label for="heure_arrivee">Heure d'arrivée :</label>
 			<div class="" id="heure_arrivee">
-				<?php echo $this->ligne->heure_arrivee; ?>
+				<?php 
+				$heureArrivee = new Zend_Date($this->ligne->heure_arrivee,'HH:mm:ss');
+				echo $heureArrivee->get('HH:mm');
+				?>
 			</div>
 		</div>
 		<?php if($this->nbJours>0){?>
@@ -52,10 +63,15 @@
 		</div>
 		<?php }?>
 		<div class="infoLigneRow">
-
+			<label for="tarif">Tarif : </label>
+			<div class="" id="tarif">
+				<?php echo $this->ligne->tarif." €";?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
 			<label for="distance">Distance :</label>
 			<div class="" id="distance">
-				<?php echo $this->ligne->distance."m"; ?>
+				<?php echo $this->ligne->distance." km"; ?>
 			</div>
 		</div>
 
@@ -64,6 +80,7 @@
 if(($this->count)>0)
 {
 	?>
+<h2>Liste des vols</h2>
 <table class="table_consulter-vol">
 	<thead>
 		<tr id="TableHead">

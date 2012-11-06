@@ -1,32 +1,40 @@
 <?php 
+foreach($this->messages as $message)
+	echo $message;
+?>
+<?php 
 $vol=$this->vol;
 $ligne=$this->ligne;
-$jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi");
+$jour = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vendredi","6"=>"Samedi","7"=>"Dimanche");
 ?>
-<div class="">
+<h1>
+	Fiche du vol
+	<?php echo $vol->id_vol;?>
+</h1>
+<div class="fiche-vol">
 	<fieldset>
 		<legend>Informations sur la ligne</legend>
 
 		<div class="infoLigneRow">
-			<label for="numero">Numero de la ligne : </label>
+			<label for="numero">Numéro de la ligne : </label>
 			<div class="" id="numero">
 				<?php echo $ligne->numero_ligne;?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
-			<label for="aeroport_origine">Aeroport d'origine : </label>
+			<label for="aeroport_origine">Aéroport d'origine : </label>
 			<div class="" id="aeroport_origine">
 				<?php echo $this->aeroport_origine->nom." (".$this->villeOrigine->nom." / ".$this->paysOrigine->nom.")";?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
-			<label for="aeroport_depart">Aeroport de départ : </label>
+			<label for="aeroport_depart">Aéroport de départ : </label>
 			<div class="" id="aeroport_depart">
 				<?php echo $this->aeroport_depart->nom." (".$this->villeDepart->nom." / ".$this->paysDepart->nom.")";?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
-			<label for="aeroport_arrive">Aeroport d'arrivé : </label>
+			<label for="aeroport_arrive">Aéroport d'arrivé : </label>
 			<div class="" id="aeroport_arrive">
 				<?php echo $this->aeroport_arrivee->nom." (".$this->villeArrivee->nom." / ".$this->paysArrive->nom.")";?>
 			</div>
@@ -34,13 +42,19 @@ $jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 		<div class="infoLigneRow">
 			<label for="heure_depart">Heure de départ : </label>
 			<div class="" id="heure_depart">
-				<?php echo $ligne->heure_depart;?>
+				<?php 
+				$heureDepart = new Zend_Date($ligne->heure_depart,'HH:mm:ss');
+				echo $heureDepart->get('HH:mm');
+				?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
 			<label for="heure_arrivee">Heure d'arrivée : </label>
 			<div class="" id="heure_arrivee">
-				<?php echo $ligne->heure_arrivee;?>
+				<?php 
+				$heureDepart = new Zend_Date($ligne->heure_arrivee,'HH:mm:ss');
+				echo $heureDepart->get('HH:mm');
+				?>
 			</div>
 		</div>
 		<?php if($this->nbJours>0){?>
@@ -60,13 +74,13 @@ $jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 		<div class="infoLigneRow">
 			<label for="tarif">Tarif : </label>
 			<div class="" id="tarif">
-				<?php echo $ligne->tarif."€";?>
+				<?php echo $ligne->tarif." €";?>
 			</div>
 		</div>
 		<div class="infoLigneRow">
 			<label for="distance">Distance : </label>
 			<div class="" id="distance">
-				<?php echo $ligne->distance."m";?>
+				<?php echo $ligne->distance." km";?>
 			</div>
 		</div>
 	</fieldset>
@@ -91,6 +105,7 @@ $jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 			<label for="date_arrivee">Date d'arrivée : </label>
 			<div class="" id="date_arrivee">
 				<?php 
+				//echo $vol->date_arrivee;
 				$madate = strtotime($vol->date_arrivee);
 				echo "(".$jour[date("N",$madate)].") ".date("d/m/y",$madate);
 				?>
@@ -99,50 +114,50 @@ $jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 		<div class="infoVolRow">
 			<label for="type_avion">Type d'avion : </label>
 			<div class="" id="type_avion">
-				<?php if($vol->id_avion!=NULL) { ?>
-				<?php echo $this->typeAvion->libelle;
+				<?php if($vol->id_avion!=NULL) {
+					echo $this->typeAvion->libelle;
 				} else {
-					echo "non affecté";
+					echo "Non affecté";
 						} ?>
 			</div>
 		</div>
 		<div class="infoVolRow">
 			<label for="pilote">Pilote : </label>
 			<div class="" id="pilote">
-				<?php if($vol->id_pilote!=NULL) { ?>
-				<?php echo strtoupper($this->pilote->nom).' '.$this->pilote->prenom;
-						} else {
-							echo "non affecté";
+				<?php if($vol->id_pilote!=NULL) {  
+					echo strtoupper($this->pilote->nom).' '.$this->pilote->prenom;
+				} else {
+					echo "Non affecté";
 						} ?>
 			</div>
 		</div>
 		<div class="infoVolRow">
 			<label for="copilote">Copilote : </label>
 			<div class="" id="copilote">
-				<?php if($vol->id_copilote!=NULL) { ?>
-				<?php echo strtoupper($this->copilote->nom).' '.$this->copilote->prenom;
-						} else {
-							echo "non affecté";
+				<?php if($vol->id_copilote!=NULL) {
+					echo strtoupper($this->copilote->nom).' '.$this->copilote->prenom;
+				} else {
+					echo "Non affecté";
 						} ?>
 			</div>
 		</div>
 		<div class="infoVolRow">
 			<label for="tarif">Tarif effectif : </label>
 			<div class="" id="tarif">
-				<?php echo $vol->tarif_effectif."€"; ?>
+				<?php echo $vol->tarif_effectif." €"; ?>
 			</div>
 	
 	</fieldset>
 	<fieldset>
 		<legend>Données Effectives</legend>
 		<div class="infoEffRow">
-			<label for="aeroport_depart_effectif">Aeroport de départ effectif : </label>
+			<label for="aeroport_depart_effectif">Aéroport de départ effectif : </label>
 			<div class="" id="aeroport_depart_effectif">
 				<?php echo $this->aeroport_depart_effectif->nom;?>
 			</div>
 		</div>
 		<div class="infoEffRow">
-			<label for="aeroport_arrivee_effectif">Aeroport d'arrivé effectif : </label>
+			<label for="aeroport_arrivee_effectif">Aéroport d'arrivé effectif : </label>
 			<div class="" id="aeroport_arrivee_effectif">
 				<?php echo $this->aeroport_arrivee_effectif->nom;?>
 			</div>
@@ -150,7 +165,14 @@ $jour = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 		<div class="infoEffRow">
 			<label for="heure_arrivee_effective">Heure d'arrivée effective : </label>
 			<div class="" id="heure_arrivee_effective">
-				<?php echo $vol->heure_arrivee_effective; ?>
+				<?php 
+				if($vol->heure_arrivee_effective!=NULL) {
+					$heureArriveeEffective = new Zend_Date($vol->heure_arrivee_effective,'HH:mm:ss');
+					echo $heureArriveeEffective->get('HH:mm');
+				}
+				else
+					echo "Non attribué";
+				?>
 			</div>
 		</div>
 	</fieldset>

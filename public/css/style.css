@@ -4,6 +4,7 @@ body {
 	background: #FFF;
 	margin: 5px auto 0 auto;
 	font-family: Quattrocento, Georgia, "Times New Roman", serif;
+	color: #0E0E0F;
 }
 
 table {
@@ -29,7 +30,7 @@ table th a:hover {
 table a {
 	font-size: 0.90em;
 	text-decoration: none;
-	color: black;
+	color: #0E0E0F;
 	padding: 5px;
 	display: block;
 }
@@ -39,7 +40,16 @@ table tr:hover {
 }
 
 fieldset {
-	margin: 5px;
+	margin: 15px;
+	border-radius: 5px;
+	border: 1px solid white;
+}
+
+fieldset legend {
+	font-weight: bold;
+	margin-left: 10px;
+	padding: 0px 5px;
+	color: white
 }
 
 h1 {
@@ -47,13 +57,18 @@ h1 {
 	margin: 10px;
 }
 
-input{
-	border-radius:5px;
-	padding-left:3px;
+h2 {
+	font-size: 1.2em;
+	margin: 10px;
 }
 
-select{
-	border-radius:5px;
+input {
+	border-radius: 5px;
+	padding-left: 3px;
+}
+
+select {
+	border-radius: 5px;
 }
 
 #TableHead:hover {
@@ -142,7 +157,7 @@ nav {
 
 nav a {
 	text-decoration: none;
-	color: black;
+	color: #0E0E0F;
 }
 
 /* #desc{
@@ -263,10 +278,8 @@ nav a {
 }
 
 .formulaireLigne {
-	margin: 10px;
-	width: 625px;
+	width: 645px;
 	float: left;
-	color: #0E0E0F;
 }
 
 .Map-New-Ligne {
@@ -282,18 +295,6 @@ nav a {
 #title-New-Ligne {
 	margin-left: 50px;
 	color: black;
-}
-
-.formulaireLigne fieldset {
-	border-radius: 5px;
-	border: 1px solid black;
-}
-
-.formulaireLigne legend {
-	font-weight: bold;
-	color: #0E0E0F;
-	margin-left: 10px;
-	padding: 0px 5px;
 }
 
 .Global_label {
@@ -347,8 +348,75 @@ nav a {
 .Global_error {
 	color: #D40000;
 	margin-left: 196px;
+	width: 395px;
 }
 
-.gmnoprint{
-	display:none;
+.gmnoprint {
+	display: none;
+}
+
+.insertion-ok,.no-exist {
+	height: 40px;
+	margin-left: 40px;
+}
+
+.insertion-ok {
+	background: url("/img/ok.png") no-repeat scroll 0 0 transparent;
+}
+
+.no-exist {
+	background: url("/img/error.png") no-repeat scroll 0 0 transparent;
+}
+
+.insertion-ok label,.no-exist label {
+	display: block;
+	font-size: 19px;
+	font-weight: bold;
+	margin-left: 45px;
+	padding-top: 10px;
+}
+
+.insertion-ok label {
+	color: #155B00;
+}
+
+.no-exist label {
+	color: #D40000;
+}
+
+/* pagination */
+.pagination {
+	width: 100%;
+	text-align: center;
+}
+
+.pagination a {
+	text-decoration: none;
+	color: #0E0E0F;
+}
+
+.pagination-center {
+	margin-left: 60px;
+}
+
+.pagination .disabled,.pagination .enabled {
+	padding: 4px 10px;
+	display: block;
+	float: left;
+}
+
+.pagination .disabled {
+	opacity: 0.6;
+}
+
+.pagination .numero_enabled,.pagination .numero {
+	padding: 4px;
+	border-radius: 4px;
+	display: block;
+	float: left;
+}
+
+.pagination .numero_enabled {
+	color: #0E0E0F;
+	background-color: rgba(219, 252, 255, 0.7);
 }

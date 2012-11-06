@@ -81,7 +81,7 @@ class FormulaireLigne extends Zend_Form
 		$ENumero->setName("Numero");
 		$EPaysOrigine->setName("Origine");
 		$EPaysDepart->setName("Depart");
-		$EPaysArrive->setName("Arrive");
+		$EPaysArrive->setName("Arrivee");
 		$ERepopulateOrigine->setName("PopulateOrigine");
 		$ERepopulateDepart->setName("PopulateDepart");
 		$ERepopulateArrivee->setName("PopulateArrivee");
@@ -96,7 +96,7 @@ class FormulaireLigne extends Zend_Form
 		$EHeureDepart->setLabel('Heure de départ');
 		$EHeureArrivee->setLabel('Heure d\'arrivée');
 		$ETarif->setLabel('Tarif (€)');
-		$EDistance->setLabel('Distance (m)');
+		$EDistance->setLabel('Distance (km)');
 		$EPeriodicite->setLabel('Périodicité');
 		$EDateDepart->setLabel('Date de départ');
 		$EDateArrivee->setLabel("Date d'arrivée");
@@ -128,6 +128,7 @@ class FormulaireLigne extends Zend_Form
 		$ERepopulateDepart->removeDecorator('label');
 		$ERepopulateArrivee->removeDecorator('label');
 
+		$ENumero->setRequired(true);
 		$EPaysOrigine->setRequired(true);
 		$EAeroportOrigine->setRequired(true);
 		$EPaysDepart->setRequired(true);
@@ -162,7 +163,8 @@ class FormulaireLigne extends Zend_Form
 		$EAeroportArrivee->setRegisterInArrayValidator(false);
 
 		$pays=$this->TablePays->fetchAll($this->TablePays->select()->from($this->TablePays)->order("nom asc"));
-		foreach($pays as $pays1){
+		foreach($pays as $pays1)
+		{
 			$EPaysOrigine->addMultiOption($pays1->code_pays,$pays1->nom);
 			$EPaysDepart->addMultiOption($pays1->code_pays,$pays1->nom);
 			$EPaysArrive->addMultiOption($pays1->code_pays,$pays1->nom);
@@ -222,11 +224,10 @@ class FormulaireLigne extends Zend_Form
 		$this->addElement($EAdresseArrivee);
 		$this->addElement($ERepopulateOrigine);
 		$this->addElement($ERepopulateDepart);
-		$this->addElement($ERepopulateArrivee);
-		
+		$this->addElement($ERepopulateArrivee);	
 
 		$this->addDisplayGroup(
-				array('Numero','Origine','aeroportOrigine','Depart','aeroportDepart','Arrive',
+				array('Numero','Origine','aeroportOrigine','Depart','aeroportDepart','Arrivee',
 						'aeroportArrivee','heureDepart','heureArrivee','tarif','distance','periodicite'	),
 				'ligne',
 				array('legend' => 'Information sur la ligne')
@@ -254,7 +255,5 @@ class FormulaireLigne extends Zend_Form
 		$this->getDisplayGroup('periodique')->setDecorators($optionGroups);
 
 		$this->addElement($ESubmit);
-
 	}
-
 }

@@ -1,24 +1,19 @@
 function initialisation(){
 	initializeMap();
 	initializeAeroport();
-
-//	RechercheAdresse("depart","CDG");
-//	RechercheAdresse("arrivee","CDG");
 	affichePeriodicite();
-	//setTimeout(showAdresse, 1000);
-
 }
 
 function initializeAeroport()
 {
 	if(document.getElementById('aeroportOrigine').value=="")
-		RechercheAeroport("origine",250);
+		RechercheAeroport("origine",document.getElementById('Origine').value);
 	if(document.getElementById('aeroportDepart').value=="")
-		RechercheAeroport("depart",250);
+		RechercheAeroport("depart",document.getElementById('Depart').value);
 	else
 		RechercheAdresse("depart",document.getElementById('aeroportDepart').value);
 	if(document.getElementById('aeroportArrivee').value=="")
-		RechercheAeroport("arrivee",250);
+		RechercheAeroport("arrivee",document.getElementById('Arrivee').value);
 	else
 		RechercheAdresse("arrivee",document.getElementById('aeroportArrivee').value);
 	showAdresse();
@@ -91,21 +86,15 @@ $(function(){
 });
 
 function affichePeriodicite(){
-	if(document.getElementById('periodicite-1').checked==true){
-		console.log("periodique");
+	if(document.getElementById('periodicite-1').checked==true)
+	{
 		document.getElementById("fieldset-periodique").style.display = 'block';
 		document.getElementById("fieldset-carte").style.display = 'none';
-		//document.getElementById("globalDate2").style.display = 'none';
-		//document.getElementById("globalTarif").style.display = 'none';
 	}
 	else if (document.getElementById('periodicite-0').checked==true)
 	{
-		console.log("carte");
-
 		document.getElementById("fieldset-periodique").style.display = 'none';
 		document.getElementById("fieldset-carte").style.display = 'block';
-		//document.getElementById("globalDate2").style.display = 'block';
-		//document.getElementById("globalTarif").style.display = 'block';
 	}
 }
 
@@ -206,7 +195,7 @@ function showAdresse(){
 
 	setTimeout(function(){
 		var distance = google.maps.geometry.spherical.computeLength(path); 
-		document.getElementById("distance").value = Math.floor( distance );
+		document.getElementById("distance").value = parseInt(Math.floor(distance)/1000);
 		getMilieu();
 	},500);
 

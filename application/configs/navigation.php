@@ -32,7 +32,7 @@ return array(
 										'title'		=>	'Consulter les lignes',
 										'pages' => array(
 												array(
-														'label'      => 'Consulter les vols',
+														'label'      => 'Consultation des vols',
 														'module'     => 'default',
 														'controller' => 'vol',
 														'action'     => 'consulter-vol',
@@ -40,7 +40,7 @@ return array(
 														'id'		=>	'consulterVol',
 														'pages' => array(
 																array(
-																		'label'      => 'Fiche du vol',
+																		'label'      => 'Fiche d\'un vol',
 																		'module'     => 'default',
 																		'controller' => 'vol',
 																		'action'     => 'fiche-vol'
