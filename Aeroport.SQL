@@ -319,10 +319,10 @@ create table if not exists periodicite
 
 
 # -----------------------------------------------------------------------------
-#       table : etreBreveter
+#       table : etre_breveter
 # -----------------------------------------------------------------------------
 
-create table if not exists etreBreveter
+create table if not exists etre_breveter
  (
    id_pilote integer not null  ,
    id_type_avion integer not null  ,
@@ -723,7 +723,7 @@ INSERT INTO `pilote` (`id_pilote`, `nom`, `prenom`, `email`, `password`, `code_v
 (9, 'Hancouille', 'John', 'john.hancouille@gmail.com', 'hancock', '8', '415 de la cité interdite', NULL, 0),
 (10, 'Belhamy', 'Edgard', 'edgard.balhamy@gmail.com', 'edgard', '2', '45 rue des riches', NULL, 1);
 
-INSERT INTO `etreBreveter` (`id_pilote`, `id_type_avion`, `date`) VALUES
+INSERT INTO `etre_breveter` (`id_pilote`, `id_type_avion`, `date`) VALUES
 (1, 1, '2012-10-22 21:08:50'),
 (1, 2, '2012-10-22 21:08:50'),
 (1, 4, '2012-10-22 21:08:50'),
