@@ -273,10 +273,10 @@ create table if not exists intervention
 
 
 # -----------------------------------------------------------------------------
-#       table : desservirVilleAeroport
+#       table : desservir_ville_aeroport
 # -----------------------------------------------------------------------------
 
-create table if not exists desservirVilleAeroport
+create table if not exists desservir_ville_aeroport
  (
    code_ville varchar(255) not null  ,
    id_aeroport char(3) not null  , 
@@ -679,7 +679,7 @@ INSERT INTO `aeroport` (`id_aeroport`, `nom`, `code_ville`, `adresse`, `longueur
 ('PEK', 'Beijing-Capital', '8','2 rue de la paix', 3800),
 ('SXF', 'Aéroport international de Berlin-Schönefeld', '7','2 rue de la paix', 3000);
 
-INSERT INTO `desservirVilleAeroport` (`code_ville`, `id_aeroport`) VALUES
+INSERT INTO `desservir_ville_aeroport` (`code_ville`, `id_aeroport`) VALUES
 ('3', 'CDG'),
 ('7', 'CDG'),
 ('8', 'CDG'),

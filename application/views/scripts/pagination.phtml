@@ -5,20 +5,29 @@
 	<!--<a href="<?php //echo $this->url(array('page' => $this->first)); ?>">Début</a> |
         <?php //else: ?>
                 <span class="disabled">Début</span> |-->
-	<?php //endif; ?>
+	<?php //endif; 
+        $parametres=$this->param;
+       unset($parametres["controller"]);
+       unset($parametres["action"]);
+       unset($parametres["module"]);
+        
+      //  Zend_Debug::dump($parametres);?>
 
 	<!-- Previous page link -->
 
-	<?php if (isset($this->previous)): ?>
-	<a href="<?= $this->url(array('page' => $this->previous)); ?>">
+	<?php if (isset($this->previous)): 
+	$parametres['page']=$this->previous;?>
+	<a href="<?= $this->url($parametres); ?>">
 		<span class="enabled"><< Précedent</span></a>
 	<?php else: ?>
 	<span class="disabled"><< Précedent</span>
 	<?php endif; ?>
 	<!-- Numbered page links -->
 	<?php foreach ($this->pagesInRange as $page): ?>
-	<?php if ($page != $this->current): ?>
-	<a href="<?= $this->url(array('page' => $page)); ?>"><span class="numero"><?= $page; ?></span>
+	<?php if ($page != $this->current): 
+		$parametres['page']=$page;
+	?>
+	<a href="<?= $this->url(/*array(*/$parametres/*,'page' => $page*//*)*/); ?>"><span class="numero"><?= $page; ?></span>
 	</a>
 	<?php else: ?>
 	<span class="numero_enabled"><?= $page; ?></span>
@@ -26,8 +35,9 @@
 	<?php endforeach; ?>
 
 	<!-- Next page link -->
-	<?php if (isset($this->next)): ?>
-	<a href="<?= $this->url(array('page' => $this->next)); ?>"><span class="enabled">Suivant >></span></a>
+	<?php if (isset($this->next)):
+		$parametres['page']=$this->next;?>
+	<a href="<?= $this->url($parametres); ?>"><span class="enabled">Suivant >></span></a>
 	<?php else: ?>
 	<span class="disabled">Suivant >></span>
 	<?php endif; ?>

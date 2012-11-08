@@ -10,13 +10,13 @@ $this->headScript()->prependFile('/js/jquery-1.8.2.min.js');
 
 echo $this->headScript();
 echo $this->headLink();
-$action = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+$controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
 ?>
 <title><?php echo $this->escape($this->title); ?>
 </title>
 </head>
 <body
-<?php if ($action=="ajouter-ligne") echo 'onload="initialisation()"'; ?>>
+<?php if ($controller=="vol") echo 'onload="initialisation()"'; ?>>
 	<div id="pere">
 		<div id="header">
 			<div id="logo"></div>

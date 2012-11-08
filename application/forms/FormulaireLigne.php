@@ -158,6 +158,7 @@ class FormulaireLigne extends Zend_Form
 		$EDateDepart->setAttrib('size','5');
 		$EDateArrivee->setAttrib('size','5');
 		$ETarif_effectif->setAttrib('size','5');
+		
 		$EAeroportOrigine->setRegisterInArrayValidator(false);
 		$EAeroportDepart->setRegisterInArrayValidator(false);
 		$EAeroportArrivee->setRegisterInArrayValidator(false);

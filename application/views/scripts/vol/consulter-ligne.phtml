@@ -2,6 +2,7 @@
 foreach($this->messages as $message)
 	echo $message;
 ?>
+<?php echo $this->Recherche;?>
 <table class="table_consulter-ligne">
 	<thead>
 		<tr id="TableHead">
@@ -29,10 +30,18 @@ foreach($this->messages as $message)
 				href="<?php echo $this->baseUrl('vol/consulter-vol/ligne/').$ligne->numero_ligne; ?>"><?php echo $ligne->nom_aeroport_arrivee; ?>
 			</a></td>
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('vol/consulter-vol/ligne/').$ligne->numero_ligne; ?>"><?php echo $ligne->heure_depart; ?>
+				href="<?php echo $this->baseUrl('vol/consulter-vol/ligne/').$ligne->numero_ligne; ?>">
+					<?php 
+					$heureDepart = new Zend_Date($ligne->heure_depart,'HH:mm:ss');
+					echo $heureDepart->get('HH:mm');
+					?>
 			</a></td>
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('vol/consulter-vol/ligne/').$ligne->numero_ligne; ?>"><?php echo $ligne->heure_arrivee; ?>
+				href="<?php echo $this->baseUrl('vol/consulter-vol/ligne/').$ligne->numero_ligne; ?>">
+					<?php 
+					$heureArrivee = new Zend_Date($ligne->heure_arrivee,'HH:mm:ss');
+					echo $heureArrivee->get('HH:mm');
+					?>
 			</a></td>
 		</tr>
 
@@ -42,7 +51,7 @@ foreach($this->messages as $message)
 <?php 
 
 
-echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml');
+echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->param));
 
 ?>
 

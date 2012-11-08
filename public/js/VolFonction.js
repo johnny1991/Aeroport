@@ -1,7 +1,11 @@
 function initialisation(){
-	initializeMap();
-	initializeAeroport();
-	affichePeriodicite();
+	try{	
+		initializeMap();
+		affichePeriodicite();
+	}
+	finally{
+		initializeAeroport();
+	}
 }
 
 function initializeAeroport()
@@ -16,11 +20,12 @@ function initializeAeroport()
 		RechercheAeroport("arrivee",document.getElementById('Arrivee').value);
 	else
 		RechercheAdresse("arrivee",document.getElementById('aeroportArrivee').value);
-	showAdresse();
+	try{ showAdresse(); } catch(err){}
 }
 
 function RechercheAeroport(provenance,pays)
 {
+	console.log("passe1");
 	var isValid;
 	if(provenance=='depart')
 		isValid=document.getElementById('PopulateDepart').value;
@@ -28,6 +33,7 @@ function RechercheAeroport(provenance,pays)
 		isValid=document.getElementById('PopulateArrivee').value;
 	else if(provenance=='origine')
 		isValid=document.getElementById('PopulateOrigine').value;
+	console.log("passe2");
 
 	$.ajax(
 			{
@@ -83,6 +89,31 @@ $(function(){
 		minuteGrid: 10,
 		timeFormat: "hh:mm:ss t",
 	});
+
+	$("input[name=heureDepartMin]").timepicker({
+		hourGrid: 4,
+		minuteGrid: 10,
+		timeFormat: "hh:mm t",
+	});
+
+	$("input[name=heureDepartMax]").timepicker({
+		hourGrid: 4,
+		minuteGrid: 10,
+		timeFormat: "hh:mm t",
+	});
+
+	$("input[name=heureArriveeMin]").timepicker({
+		hourGrid: 4,
+		minuteGrid: 10,
+		timeFormat: "hh:mm t",
+	});
+
+	$("input[name=heureArriveeMax]").timepicker({
+		hourGrid: 4,
+		minuteGrid: 10,
+		timeFormat: "hh:mm t",
+	});
+
 });
 
 function affichePeriodicite(){
@@ -212,4 +243,38 @@ function getMilieu(){
 	map.fitBounds(bounds);
 }
 
+function searchLigne(){
+	if(document.getElementById('search-advanced-ligne').style.display=="block"){
+		document.getElementById('search-advanced-ligne').style.display="none";
+		document.getElementById('boutonSearchLigne').innerHTML="Recherche détaillée";
+	}
+	else{
+		document.getElementById('search-advanced-ligne').style.display="block";
+		document.getElementById('boutonSearchLigne').innerHTML="Recherche simplifiée";
 
+	}
+
+}
+
+function resetSearch(){
+	document.getElementById('mot').value="";
+	document.getElementById('Origine').value="0";
+	document.getElementById('aeroportOrigine').value="0";
+	document.getElementById('Depart').value="0";
+	document.getElementById('aeroportDepart').value="0";
+	document.getElementById('Arrivee').value="0";
+	document.getElementById('aeroportArrivee').value="0";
+	document.getElementById('dateDepart').value="";
+	document.getElementById('dateArrivee').value="";
+	document.getElementById('heureDepartMin').value="";
+	document.getElementById('heureDepartMax').value="";
+	document.getElementById('heureArriveeMin').value="";
+	document.getElementById('heureArriveeMax').value="";
+	document.getElementById('tarifMin').value="";
+	document.getElementById('tarifMax').value="";
+	document.getElementById('periodicite-1').checked=false;
+
+
+
+	console.log("test");
+}

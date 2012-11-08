@@ -2,7 +2,10 @@
 foreach($this->messages as $message)
 	echo $message;
 ?>
-<h1>Informations sur la ligne <?php echo $this->ligne->numero_ligne;?></h1>
+<h1>
+	Informations sur la ligne
+	<?php echo $this->ligne->numero_ligne;?>
+</h1>
 <fieldset>
 	<legend>Informations détaillés sur la ligne</legend>
 	<div class="infoLigne">
@@ -101,11 +104,17 @@ if(($this->count)>0)
 				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php echo $vol->id_vol ?>
 			</a></td>
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php echo $vol->date_depart; ?>
+				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>">
+					<?php 
+					$madate = strtotime($vol->date_depart);
+					echo date("d/m/Y",$madate);
+					?>
 			</a></td>
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php echo $vol->date_arrivee; ?>
-			</a></td>
+				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php 
+				$madate = strtotime($vol->date_arrivee);
+				echo date("d/m/Y",$madate);
+				?> </a></td>
 			<td class="ligne"><a
 				href="<?php echo $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/').$vol->id_vol; ?>"><?php if ($vol->id_avion==NULL) echo "non affecté"; else echo $vol->libelle; ?>
 			</a></td>
