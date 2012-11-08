@@ -255,7 +255,7 @@ function searchLigne(){
 	}
 
 }
-
+ 
 function resetSearch(){
 	document.getElementById('mot').value="";
 	document.getElementById('Origine').value="0";
