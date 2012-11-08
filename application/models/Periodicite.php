@@ -15,7 +15,7 @@ class Periodicite extends Zend_Db_Table_Abstract
 	public function getReqIdVolPeriodique($NumJour){
 		$reqVol = $this->select()
 					->setIntegrityCheck(false)
-					->from(array('per' => 'Periodicite'), array('per.numero_ligne'))
+					->from(array('per' => 'periodicite'), array('per.numero_ligne'))
 					->where('numero_jour = ?', $NumJour);
 		
 		return $reqVol;

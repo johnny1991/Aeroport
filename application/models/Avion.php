@@ -19,7 +19,7 @@ class Avion extends Zend_Db_Table_Abstract
 		if($actions == 'Planifier'){
 			$reqAvion = $this->select()
 							->setIntegrityCheck(false)
-							->from(array('avi' => 'Avion'), array('avi.id_avion'))
+							->from(array('avi' => 'avion'), array('avi.id_avion'))
 							->joinLeft(array('tyav' => 'Type_Avion'), 'avi.id_type_avion = tyav.id_type_avion')
 							->where('avi.id_type_avion = ?', $infosVol['idTypeAvion'])
 							->where('id_avion NOT IN ?', $subReqAvion)
@@ -32,8 +32,8 @@ class Avion extends Zend_Db_Table_Abstract
 		else{
 			$reqAvion = $this->select()
 							->setIntegrityCheck(false)
-							->from(array('avi' => 'Avion'), array('avi.id_avion'))
-							->joinLeft(array('tyav' => 'Type_Avion'), 'avi.id_type_avion = tyav.id_type_avion')
+							->from(array('avi' => 'avion'), array('avi.id_avion'))
+							->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion')
 							->where('avi.id_type_avion = ?', $infosVol['idTypeAvion'])
 							->where('id_avion NOT IN ?', $subReqAvion)
 							->where('disponibilite_avion = 1')
@@ -65,15 +65,15 @@ class Avion extends Zend_Db_Table_Abstract
 	
 		$subReqAvion = $TableVol->select()
 								->setIntegrityCheck(false)
-								->from(array('v' => 'Vol'),  array('id_avion'))
-								->join(array('l' => 'Ligne'), 'v.numero_ligne = l.numero_ligne', null)
+								->from(array('v' => 'vol'),  array('id_avion'))
+								->join(array('l' => 'ligne'), 'v.numero_ligne = l.numero_ligne', null)
 								->where('date_depart = ?', $dateDepart)
 								->where('v.numero_ligne != ?', $numeroLigne)
 								->where('UNIX_TIMESTAMP(CONCAT(v.date_depart," ",l.heure_depart)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'")) OR UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
 		
 		$req = $this->select()
 					->setIntegrityCheck(false)
-					->from(array('av' => 'Avion'))
+					->from(array('av' => 'avion'))
 					->where('id_avion = ?', $idAvion)
 					->where('id_avion NOT IN (?)', $subReqAvion);
 	

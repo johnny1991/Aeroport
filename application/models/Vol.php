@@ -39,7 +39,7 @@ class Vol extends Zend_Db_Table_Abstract
 	public function getInfosVol($numeroLigne, $dateDepart){
 		$reqVol = $this->select()
 					->setIntegrityCheck(false)
-					->from(array('v' => 'Vol'))
+					->from(array('v' => 'vol'))
 					->where('numero_ligne = ?', $numeroLigne)
 					->where('date_depart = ?', $dateDepart);
 			
@@ -49,9 +49,9 @@ class Vol extends Zend_Db_Table_Abstract
 	public function getInfosVolWithAvion($numeroLigne, $dateDepart){
 		$reqVol = $this->select()
 					->setIntegrityCheck(false)
-					->from(array('v' => 'Vol'))
-					->join(array('avi' => 'Avion'), 'v.id_avion = avi.id_avion')
-					->join(array('tavi' => 'Type_Avion'), 'avi.id_type_avion = tavi.id_type_avion')
+					->from(array('v' => 'vol'))
+					->join(array('avi' => 'avion'), 'v.id_avion = avi.id_avion')
+					->join(array('tavi' => 'type_avion'), 'avi.id_type_avion = tavi.id_type_avion')
 					->where('numero_ligne = ?', $numeroLigne)
 					->where('date_depart = ?', $dateDepart);
 			
@@ -62,14 +62,14 @@ class Vol extends Zend_Db_Table_Abstract
 		if($numeroLigne == null){
 			$req = $this->select()
 						->setIntegrityCheck(false)
-						->from(array('v' => 'Vol'), 'v.id_avion')
+						->from(array('v' => 'vol'), 'v.id_avion')
 						->where('v.date_depart = ?', $dateDepart)
 						->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
 		}
 		else{
 			$req = $this->select()
 						->setIntegrityCheck(false)
-						->from(array('v' => 'Vol'), 'v.id_avion')
+						->from(array('v' => 'vol'), 'v.id_avion')
 						->where('v.numero_ligne != ?', $numeroLigne)
 						->where('v.date_depart = ?', $dateDepart)
 						->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');

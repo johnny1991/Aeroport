@@ -16,18 +16,18 @@ class Pilote extends Zend_Db_Table_Abstract
 		
 		$subReqPiloteVol = $TableVol->select()
 								->setIntegrityCheck(false)
-								->from(array('v' => 'Vol'), array('v.id_pilote'))
+								->from(array('v' => 'vol'), array('v.id_pilote'))
 								->where('date_depart = ?', $dateDepart)
 								->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
 		
 		$subReqPiloteAstreinte = $TableAstreinte->select()
 												->setIntegrityCheck(false)
-												->from(array('ab' => 'Astreinte'), array('id_pilote'))
+												->from(array('ab' => 'astreinte'), array('id_pilote'))
 												->where('date_astreinte = ?', $dateDepart);
 		
 		$subReqPiloteCoVol = $TableVol->select()
 									->setIntegrityCheck(false)
-									->from(array('v' => 'Vol'), array('v.id_copilote'))
+									->from(array('v' => 'vol'), array('v.id_copilote'))
 									->where('date_depart = ?', $dateDepart)
 									->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
 		
@@ -59,19 +59,19 @@ class Pilote extends Zend_Db_Table_Abstract
 		
 		$subReqPiloteVol = $TableVol->select()
 									->setIntegrityCheck(false)
-									->from(array('v' => 'Vol'), array('v.id_pilote'))
+									->from(array('v' => 'vol'), array('v.id_pilote'))
 									->where('v.numero_ligne != ?', $numeroLigne)
 									->where('date_depart = ?', $dateDepart)
 									->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
 		
 		$subReqPiloteAstreinte = $TableAstreinte->select()
 												->setIntegrityCheck(false)
-												->from(array('ab' => 'Astreinte'), array('id_pilote'))
+												->from(array('ab' => 'astreinte'), array('id_pilote'))
 												->where('date_astreinte = ?', $dateDepart);
 		
 		$subReqPiloteCoVol = $TableVol->select()
 									->setIntegrityCheck(false)
-									->from(array('v' => 'Vol'), array('v.id_copilote'))
+									->from(array('v' => 'vol'), array('v.id_copilote'))
 									->where('v.numero_ligne != ?', $numeroLigne)
 									->where('date_depart = ?', $dateDepart)
 									->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
@@ -84,13 +84,13 @@ class Pilote extends Zend_Db_Table_Abstract
 		
 		$subReqPiloteVolLigne = $TableVol->select()
 										->setIntegrityCheck(false)
-										->from(array('v' => 'Vol'), array('id_pilote'))
+										->from(array('v' => 'vol'), array('id_pilote'))
 										->where('numero_ligne = ?', $numeroLigne)
 										->where('date_depart = ?', $dateDepart);
 		
 		$subReqCoPiloteVolLigne = $TableVol->select()
 										->setIntegrityCheck(false)
-										->from(array('v' => 'Vol'), array('id_copilote'))
+										->from(array('v' => 'vol'), array('id_copilote'))
 										->where('numero_ligne = ?', $numeroLigne)
 										->where('date_depart = ?', $dateDepart);
 	
@@ -117,7 +117,7 @@ class Pilote extends Zend_Db_Table_Abstract
 		if(!$update){
 			$req = $this->select()
 						->setIntegrityCheck(false)
-						->from(array('pil' => 'Pilote'))
+						->from(array('pil' => 'pilote'))
 						->where('id_pilote NOT IN (?)', $subReqAstreinte)
 						->where('disponibilite = 1')
 						->order('id_pilote ASC');
@@ -127,7 +127,7 @@ class Pilote extends Zend_Db_Table_Abstract
 			
 			$req = $this->select()
 						->setIntegrityCheck(false)
-						->from(array('pil' => 'Pilote'))
+						->from(array('pil' => 'pilote'))
 						->where('disponibilite = 1 AND (id_pilote IN ('.$subReqPilote.') OR id_pilote NOT IN ('.$subReqAstreinte.'))')
 						->order('id_pilote ASC');
 		}
@@ -160,23 +160,23 @@ class Pilote extends Zend_Db_Table_Abstract
 		
 		$subReqPilote = $TableVol->select()
 								->setIntegrityCheck(false)
-								->from(array('v' => 'Vol'),  array('id_pilote'))
-								->join(array('l' => 'Ligne'), 'v.numero_ligne = l.numero_ligne', null)
+								->from(array('v' => 'vol'),  array('id_pilote'))
+								->join(array('l' => 'ligne'), 'v.numero_ligne = l.numero_ligne', null)
 								->where('date_depart = ?', $dateDepart)
 								->where('v.numero_ligne != ?', $numeroLigne)
 								->where('UNIX_TIMESTAMP(CONCAT(v.date_depart," ",l.heure_depart)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'")) OR UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
 		
 		$subReqCoPilote = $TableVol->select()
 								->setIntegrityCheck(false)
-								->from(array('v' => 'Vol'), array('id_copilote'))
-								->join(array('l' => 'Ligne'), 'v.numero_ligne = l.numero_ligne', null)
+								->from(array('v' => 'vol'), array('id_copilote'))
+								->join(array('l' => 'ligne'), 'v.numero_ligne = l.numero_ligne', null)
 								->where('date_depart = ?', $dateDepart)
 								->where('v.numero_ligne != ?', $numeroLigne)
 								->where('UNIX_TIMESTAMP(CONCAT(v.date_depart," ",l.heure_depart)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'")) OR UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
 		
 		$req = $this->select()
 					->setIntegrityCheck(false)
-					->from(array('pil' => 'Pilote'))
+					->from(array('pil' => 'pilote'))
 					->where('id_pilote = ?', $idPilote)
 					->where('disponibilite = 1')
 					->where('id_pilote NOT IN (?)', $subReqAstreinte)
