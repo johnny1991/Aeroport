@@ -295,6 +295,7 @@ class PlanningController extends Zend_Controller_Action
 							'nom_aeroport_arrivee' =>$aeroport_origine->nom,
 							'heure_arrivee' => $vol->heure_arrivee_effective,
 							'date_depart' => $formatDate,
+							'error' => false,
 							'options' => 'Consulter');
 				}
 				
