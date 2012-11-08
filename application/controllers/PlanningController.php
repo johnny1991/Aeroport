@@ -190,9 +190,9 @@ class PlanningController extends Zend_Controller_Action
 				$subReqPeriodicite = $TablePeriodicite->getReqIdVolPeriodique($NumJour);
 				$reqVolsCarte = $TableVol->select()
 										->setIntegrityCheck(false)
-										->from(array('vol' => 'Vol'))
-										->join(array('ligne' => 'Ligne'), 'vol.numero_ligne = ligne.numero_ligne')
-										->where('vol.date_depart = \''.$formatDate.'\' AND (id_avion IS NULL OR vol.numero_ligne NOT IN ('.$subReqPeriodicite.'))');
+										->from(array('v' => 'vol'))
+										->join(array('l' => 'ligne'), 'v.numero_ligne = l.numero_ligne')
+										->where('v.date_depart = \''.$formatDate.'\' AND (id_avion IS NULL OR v.numero_ligne NOT IN ('.$subReqPeriodicite.'))');
 				
 				$volsCarte = $TableVol->fetchAll($reqVolsCarte);
 	
