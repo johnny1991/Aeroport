@@ -313,7 +313,7 @@ nav a {
 	color: #0E0E0F;
 }
 
-#Ajouter,#Rechercher {
+#Ajouter,#Rechercher,#Reset {
 	background: -moz-linear-gradient(center top, #FFFFFF 0%, #FF9C00 100%)
 		repeat scroll 0 0 transparent;
 	border: 1px solid #E3E3E3;
@@ -323,6 +323,11 @@ nav a {
 	color: 0E53A7;
 	font-size: 15px;
 }
+#Reset{
+		background: -moz-linear-gradient(center top, #FFFFFF 0%, rgb(129, 190, 208) 100%)
+		repeat scroll 0 0 transparent;
+}
+
 
 .Global_error ul {
 	margin: 0px;
@@ -434,6 +439,17 @@ nav a {
 }
 
 #boutonSearchLigne {
+	cursor: pointer;
+	margin-top: 8px;
+	display: block;
+	float: right;
+	text-decoration: underline;
+	display: block;
+	position: relative;
+	left: 25px;
+    top: 20px;
+}
+#resetSearchLigne {
 	cursor: pointer;
 	margin-top: 8px;
 	display: block;

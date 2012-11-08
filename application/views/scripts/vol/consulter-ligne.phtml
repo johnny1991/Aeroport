@@ -2,7 +2,91 @@
 foreach($this->messages as $message)
 	echo $message;
 ?>
-<?php echo $this->Recherche;?>
+<?php $form=$this->form;?>
+<div class="search-ligne">
+	<form method="<?php echo $form->getMethod() ?>"
+		action="<?php echo $form->getAction();?>">
+		<div id="mot-cle-search-ligne">
+			<div class="search-row1">
+				<?php $form->getElement("mot")->getDecorator('label')->setOption('tag', null); ?>
+				<?php echo $form->mot->renderLabel();?>
+				<?php echo $form->mot->renderViewHelper();?>
+				<?php echo $form->Rechercher->renderViewHelper();?>
+				<?php echo $form->Reset->renderViewHelper();?>
+				<span onclick="searchLigne();" id="boutonSearchLigne">Recherche
+					détaillée</span>
+			</div>
+		</div>
+		<div id="search-advanced-ligne">
+			<div class="search-row">
+				<div class="Aeroport">
+					<?php $form->getElement("aeroportOrigine")->getDecorator('label')->setOption('tag', null); ?>
+					<?php echo $form->aeroportOrigine->renderLabel();?>
+					<?php echo $form->Origine->renderViewHelper();?>
+					<?php echo $form->aeroportOrigine->renderViewHelper();?>
+				</div>
+			</div>
+			<div class="search-row">
+				<div class="Aeroport">
+					<?php $form->getElement("aeroportDepart")->getDecorator('label')->setOption('tag', null); ?>
+					<?php echo $form->aeroportDepart->renderLabel();?>
+					<?php echo $form->Depart->renderViewHelper();?>
+					<?php echo $form->aeroportDepart->renderViewHelper();?>
+				</div>
+			</div>
+			<div class="search-row">
+				<div class="Aeroport">
+					<?php $form->getElement("aeroportArrivee")->getDecorator('label')->setOption('tag', null); ?>
+					<?php echo $form->aeroportArrivee->renderLabel();?>
+					<?php echo $form->Arrivee->renderViewHelper();?>
+					<?php echo $form->aeroportArrivee->renderViewHelper();?>
+				</div>
+			</div>
+			<div class="search-row">
+				<div class="Date">
+					<?php $form->getElement("dateDepart")->getDecorator('label')->setOption('tag', null); ?>
+					<?php echo $form->dateDepart->renderLabel();?>
+					<?php echo $form->dateDepart->renderViewHelper();?>
+				</div>
+				<div class="Heure">
+					<label>Heure de départ </label><span>entre</span>
+					<?php echo $form->heureDepartMin->renderViewHelper();?>
+					<span>et</span>
+					<?php echo $form->heureDepartMax->renderViewHelper();?>
+				</div>
+
+			</div>
+			<div class="search-row">
+				<div class="Date">
+					<?php $form->getElement("dateArrivee")->getDecorator('label')->setOption('tag', null); ?>
+					<?php echo $form->dateArrivee->renderLabel();?>
+					<?php echo $form->dateArrivee->renderViewHelper();?>
+				</div>
+				<div class="Heure">
+					<label>Heure d'arrivée </label><span>entre</span>
+					<?php echo $form->heureArriveeMin->renderViewHelper();?>
+					<span>et</span>
+					<?php echo $form->heureArriveeMax->renderViewHelper();?>
+				</div>
+			</div>
+			<div class="search-row">
+				<div class="Tarif">
+					<label>Tarif </label><span>entre</span>
+					<?php echo $form->tarifMin->renderViewHelper();?>
+					<span>et</span>
+					<?php echo $form->tarifMax->renderViewHelper();?>
+				</div>
+				<div class="Periodicite">
+					<?php echo $form->periodicite->renderViewHelper();?>
+				</div>
+			</div>
+			<?php echo $form->PopulateOrigine->renderViewHelper();?>
+			<?php echo $form->PopulateDepart->renderViewHelper();?>
+			<?php echo $form->PopulateArrivee->renderViewHelper();?>
+		</div>
+	</form>
+</div>
+
 <table class="table_consulter-ligne">
 	<thead>
 		<tr id="TableHead">

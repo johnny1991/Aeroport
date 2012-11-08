@@ -257,7 +257,10 @@ function searchLigne(){
 }
  
 function resetSearch(){
-	document.getElementById('mot').value="";
+	console.log(document.getElementById('mot').value);
+	document.getElementById('mot').value=" ";
+	console.log(document.getElementById('mot').value);
+
 	document.getElementById('Origine').value="0";
 	document.getElementById('aeroportOrigine').value="0";
 	document.getElementById('Depart').value="0";
@@ -274,7 +277,4 @@ function resetSearch(){
 	document.getElementById('tarifMax').value="";
 	document.getElementById('periodicite-1').checked=false;
 
-
-
-	console.log("test");
 }

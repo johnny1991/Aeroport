@@ -206,10 +206,65 @@ class VolController extends Zend_Controller_Action
 
 	public function consulterLigneAction(){ //OK
 
-		$this->view->Recherche=$this->view->action('recherche-ligne','vol',null);
+		$data = $this->getRequest()->getParams();
+		
+		$form = new RechercheLigne();
+		$form->Reset->setAttrib('onclick',"javascript:location.href='".$this->view->url()."'");
+		$form->populate($data);
+		$form->setAction("/vol/consulter-ligne");
 
+		$tableAeroport = new Aeroport;
+		$TableLigne = new Ligne;
+		
+		if((isset($data["aeroportOrigine"])))
+		{
+			$AeroportOrigine = $form->getElement('aeroportOrigine');
+			$requete = $tableAeroport->select()
+			->setIntegrityCheck(false)
+			->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
+			->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
+			->where('code_pays=?',$data["Origine"]);
+			$aeroports = $tableAeroport->fetchAll($requete);
+			$AeroportOrigine->addMultiOption("0","Choisissez l'aéroport");
+			$AeroportOrigine->setAttrib("disable",array("0"));
+			foreach($aeroports as $aeroport)
+				$AeroportOrigine->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
+			$AeroportOrigine->setValue($data["aeroportOrigine"]);
+		}
+		if((isset($data["aeroportDepart"])))
+		{
+			$AeroportDepart = $form->getElement('aeroportDepart');
+			$requete = $tableAeroport->select()
+			->setIntegrityCheck(false)
+			->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
+			->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
+			->where('code_pays=?',$data["Depart"]);
+			$aeroports = $tableAeroport->fetchAll($requete);
+			$AeroportDepart->addMultiOption("0","Choisissez l'aéroport");
+			$AeroportDepart->setAttrib("disable",array("0"));
+			foreach($aeroports as $aeroport)
+				$AeroportDepart->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
+			$AeroportDepart->setValue($data["aeroportDepart"]);
+		}
+		if((isset($data["aeroportArrivee"])))
+		{
+			$AeroportArrivee=$form->getElement('aeroportArrivee');
+			$requete = $tableAeroport->select()
+			->setIntegrityCheck(false)
+			->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
+			->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
+			->where('code_pays=?',$data["Arrivee"]);
+			$aeroports = $tableAeroport->fetchAll($requete);
+			$AeroportArrivee->addMultiOption("0","Choisissez l'aéroport");
+			$AeroportArrivee->setAttrib("disable",array("0"));
+			foreach($aeroports as $aeroport)
+				$AeroportArrivee->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
+			$AeroportArrivee->setValue($data["aeroportArrivee"]);
+		}
+		
+		$this->view->form = $form;
 		$this->view->title = "Consultation des lignes";
-		$nbLigne = 20; //Nombre de lignes par pages
+		$nbLigne = 25; //Nombre de lignes par pages
 
 		if($this->getRequest()->getParam('page'))
 			$page=$this->getRequest()->getParam('page');
@@ -221,7 +276,6 @@ class VolController extends Zend_Controller_Action
 		else
 			$orderBy = "Numero_Asc";
 
-		$TableLigne = new Ligne;
 
 		$requete = $TableLigne
 		->select()
@@ -254,31 +308,25 @@ class VolController extends Zend_Controller_Action
 			$requete->where("l.id_aeroport_arrivee=?",$this->getRequest()->getParam('aeroportArrivee'));
 
 		if($this->getRequest()->getParam('heureDepartMin')&&(!($this->getRequest()->getParam('heureDepartMax'))))
-			$requete->where("l.heure_depart >?",$this->getRequest()->getParam('heureDepartMin').":00")
-			/*->where("l.heure_depart <?",$this->getRequest()->getParam('heureDepartMin').":59")*/;
+			$requete->where("l.heure_depart >=?",$this->getRequest()->getParam('heureDepartMin').":00");
 		else if($this->getRequest()->getParam('heureDepartMax')&&(!($this->getRequest()->getParam('heureDepartMin'))))
-			$requete/*->where("l.heure_depart >?",$this->getRequest()->getParam('heureDepartMax').":00")*/
-			->where("l.heure_depart <?",$this->getRequest()->getParam('heureDepartMax').":59");
+			$requete->where("l.heure_depart <=?",$this->getRequest()->getParam('heureDepartMax').":59");
 		else if($this->getRequest()->getParam('heureDepartMin')&&($this->getRequest()->getParam('heureDepartMax')))
-			$requete->where("l.heure_depart >?",$this->getRequest()->getParam('heureDepartMin').":00")
-			->where("l.heure_depart <?",$this->getRequest()->getParam('heureDepartMax').":59");
+			$requete->where("l.heure_depart >=?",$this->getRequest()->getParam('heureDepartMin').":00")
+			->where("l.heure_depart =<?",$this->getRequest()->getParam('heureDepartMax').":59");
 
 		if($this->getRequest()->getParam('heureArriveeMin')&&(!($this->getRequest()->getParam('heureArriveeMax'))))
-			$requete->where("l.heure_arrivee >?",$this->getRequest()->getParam('heureArriveeMin').":00")
-			->where("l.heure_arrivee <?",$this->getRequest()->getParam('heureArriveeMin').":59");
+			$requete->where("l.heure_arrivee >=?",$this->getRequest()->getParam('heureArriveeMin').":00");
 		else if($this->getRequest()->getParam('heureArriveeMax')&&(!($this->getRequest()->getParam('heureArriveeMin'))))
-			$requete->where("l.heure_arrivee >?",$this->getRequest()->getParam('heureArriveeMax').":00")
-			->where("l.heure_arrivee <?",$this->getRequest()->getParam('heureArriveeMax').":59");
+			$requete->where("l.heure_arrivee <?",$this->getRequest()->getParam('heureArriveeMax').":59");
 		else if($this->getRequest()->getParam('heureArriveeMin')&&($this->getRequest()->getParam('heureArriveeMax')))
-			$requete->where("l.heure_arrivee >?",$this->getRequest()->getParam('heureArriveeMin').":00")
+			$requete->where("l.heure_arrivee >=?",$this->getRequest()->getParam('heureArriveeMin').":00")
 			->where("l.heure_arrivee <?",$this->getRequest()->getParam('heureArriveeMax').":59");
 
 		if($this->getRequest()->getParam('tarifMin')&&(!($this->getRequest()->getParam('tarifMax'))))
-			$requete->where("l.tarif >=?",$this->getRequest()->getParam('tarifMin'))
-			/*->where("l.tarif <=?",$this->getRequest()->getParam('tarifMin'))*/;
+			$requete->where("l.tarif >=?",$this->getRequest()->getParam('tarifMin'));
 		else if($this->getRequest()->getParam('tarifMax')&&(!($this->getRequest()->getParam('tarifMin'))))
-			$requete/*->where("l.tarif >=?",$this->getRequest()->getParam('tarifMax'))*/
-			->where("l.tarif <=?",$this->getRequest()->getParam('tarifMax'));
+			$requete->where("l.tarif <=?",$this->getRequest()->getParam('tarifMax'));
 		else if($this->getRequest()->getParam('tarifMin')&&($this->getRequest()->getParam('tarifMax')))
 			$requete->where("l.tarif >=?",$this->getRequest()->getParam('tarifMin'))
 			->where("l.tarif <=?",$this->getRequest()->getParam('tarifMax'));
@@ -293,41 +341,26 @@ class VolController extends Zend_Controller_Action
 			$dateArrivee = new Zend_Date($this->getRequest()->getParam('dateArrivee'), 'dd-MM-yy');
 			$requete->where("vol.date_arrivee=?",$dateArrivee->get('yyyy-MM-dd'));
 		}
+		if($this->getRequest()->getParam('periodicite'))
+		{
+			$periodique = $this->getRequest()->getParam('periodicite');
+			if($periodique["0"])
+				$requete->joinleft(array('p'=>'periodicite'),'p.numero_ligne=l.numero_ligne',array('p.numero_jour'))
+				->where('p.numero_jour IS NULL');
+		}
 		if($this->getRequest()->getParam('mot'))
 		{
-			$mot=$this->getRequest()->getParam('mot');
+			$mot = $this->getRequest()->getParam('mot');
 			$db = $TableLigne->getAdapter();
-			$requete
-			->where('
-					(' . $db->quoteInto("l.numero_ligne =?",$mot) . ' 
-					OR 
-					' . $db->quoteInto("p1.nom LIKE ?","%".$mot."%") . '
-					OR 
-					' . $db->quoteInto("p2.nom LIKE ?","%".$mot."%") . ' 
-					OR 
-					' . $db->quoteInto("p3.nom LIKE ?","%".$mot."%") . '
-					OR 
-					' . $db->quoteInto("v1.nom LIKE ?","%".$mot."%") . ' 
-					OR 
-					' . $db->quoteInto("v2.nom LIKE ?","%".$mot."%") . ' 
-					OR 
-					' . $db->quoteInto("a1.nom LIKE ?","%".$mot."%") . ' 
-					OR 
-					' . $db->quoteInto("a2.nom LIKE ?","%".$mot."%") . ' 
-					)');
-				
-			/*->orWhere("l.numero_ligne =?",$mot)
-			->orWhere("p1.nom LIKE ?","%".$mot."%")
-			->orWhere("p2.nom LIKE ?","%".$mot."%")
-			->orWhere("p3.nom LIKE ?","%".$mot."%")
-			->orWhere("v1.nom LIKE ?","%".$mot."%")
-			->orWhere("v2.nom LIKE ?","%".$mot."%")
-			->orWhere("v3.nom LIKE ?","%".$mot."%")
-			->orWhere("a1.nom LIKE ?","%".$mot."%")
-			->orWhere("a2.nom LIKE ?","%".$mot."%")*/
-			//->orWhere("l.heure_depart LIKE ?","%".$mot."%")
-			//->orWhere("l.heure_arrivee LIKE ?","%".$mot."%")			;
-
+			$requete->where('
+					(' . $db->quoteInto("l.numero_ligne =?",$mot) . 'OR
+					' . $db->quoteInto("p1.nom LIKE ?","%".$mot."%") . 'OR
+					' . $db->quoteInto("p2.nom LIKE ?","%".$mot."%") . 'OR
+					' . $db->quoteInto("p3.nom LIKE ?","%".$mot."%") . 'OR
+					' . $db->quoteInto("v1.nom LIKE ?","%".$mot."%") . 'OR
+					' . $db->quoteInto("v2.nom LIKE ?","%".$mot."%") . 'OR
+					' . $db->quoteInto("a1.nom LIKE ?","%".$mot."%") . 'OR
+					' . $db->quoteInto("a2.nom LIKE ?","%".$mot."%") . ')');
 		}
 
 		switch ($orderBy)
@@ -357,14 +390,13 @@ class VolController extends Zend_Controller_Action
 		$paginator->setItemCountPerPage($nbLigne);
 		$paginator->setCurrentPageNumber($page);
 		$this->view->param=$this->getAllParams();
-	//	Zend_Debug::dump($this->view->param);
 		$this->view->paginator = $paginator;
 	}
 
 	public function consulterVolAction(){  //OK
 
 		$this->view->title = "Consultation des vols";
-		$nbLigne = 10;
+		$nbLigne = 25;
 
 		$numero_ligne = $this->getRequest()->getParam('ligne');
 		$TableLigne = new Ligne;
@@ -404,7 +436,8 @@ class VolController extends Zend_Controller_Action
 			->joinLeft(array('p'=>'pilote'),'p.id_pilote=v.id_pilote',array('p.nom'))
 			->joinLeft(array('c'=>'pilote'),'c.id_pilote=v.id_copilote',array('c.nom as copilote'))
 			->where("numero_ligne=?",$numero_ligne)
-			->limitPage($page,$nbLigne);
+			//->limitPage($page,$nbLigne)
+			;
 
 			switch ($orderBy)
 			{
@@ -520,80 +553,6 @@ class VolController extends Zend_Controller_Action
 		$Html .= $this->view->url($params)."'>".$nom."</a></th>";
 
 		return $Html;
-	}
-
-	public function rechercheLigneAction(){
-		$form = new RechercheLigne();
-		/*if($this->getRequest()->isPost())
-		 {
-		$data = $this->getRequest()->getParams();
-		if ($form->isValid($data)){
-		if($this->getRequest()->getParam('mot')){
-		echo $this->getRequest()->getParam('mot');
-		}
-		}
-		}
-		else
-		{*/
-		//$form->getElement("Origine")->setValue("250");
-		//$form->getElement("Depart")->setValue("250");
-		//$form->getElement("Arrivee")->setValue("250");
-		if($this->getRequest()->getParam('Rechercher'))
-		{
-			$data=$this->getRequest()->getParams();
-			$form->populate($data);
-			$tableAeroport=new Aeroport;
-			if((isset($data["aeroportOrigine"])))
-			{
-				$AeroportOrigine=$form->getElement('aeroportOrigine');
-				$requete = $tableAeroport->select()
-				->setIntegrityCheck(false)
-				->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
-				->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
-				->where('code_pays=?',$data["Origine"]);
-				$aeroports = $tableAeroport->fetchAll($requete);
-				$AeroportOrigine->addMultiOption("0","Choisissez l'aéroport");
-				$AeroportOrigine->setAttrib("disable",array("0"));
-				foreach($aeroports as $aeroport)
-					$AeroportOrigine->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
-				$AeroportOrigine->setValue($data["aeroportOrigine"]);
-			}
-			if((isset($data["aeroportDepart"])))
-			{
-				$AeroportDepart=$form->getElement('aeroportDepart');
-				$requete = $tableAeroport->select()
-				->setIntegrityCheck(false)
-				->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
-				->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
-				->where('code_pays=?',$data["Depart"]);
-				$aeroports = $tableAeroport->fetchAll($requete);
-				$AeroportDepart->addMultiOption("0","Choisissez l'aéroport");
-				$AeroportDepart->setAttrib("disable",array("0"));
-				foreach($aeroports as $aeroport)
-					$AeroportDepart->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
-				$AeroportDepart->setValue($data["aeroportDepart"]);
-			}
-			if((isset($data["aeroportArrivee"])))
-			{
-				$AeroportArrivee=$form->getElement('aeroportArrivee');
-				$requete = $tableAeroport->select()
-				->setIntegrityCheck(false)
-				->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
-				->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
-				->where('code_pays=?',$data["Arrivee"]);
-				$aeroports = $tableAeroport->fetchAll($requete);
-				$AeroportArrivee->addMultiOption("0","Choisissez l'aéroport");
-				$AeroportArrivee->setAttrib("disable",array("0"));
-				foreach($aeroports as $aeroport)
-					$AeroportArrivee->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
-				$AeroportArrivee->setValue($data["aeroportArrivee"]);
-			}
-		}
-		$form->setAction("/vol/consulter-ligne");
-		//$form->setAction("/vol/recherche-ligne");
-
-		$this->view->form=$form;
-		//}
 	}
 
 	public function init(){ //OK

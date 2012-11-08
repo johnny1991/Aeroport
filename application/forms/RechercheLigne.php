@@ -19,6 +19,7 @@ class RechercheLigne extends Zend_Form{
 		$EDateDepart = 		new Zend_Form_Element_Text('dateDepart');
 		$EDateArrivee =		new Zend_Form_Element_Text('dateArrivee');
 		$submit  = new Zend_Form_Element_Submit("Rechercher");
+		$Reset = new Zend_Form_Element_Button("Reset");
 		$ERepopulateOrigine = new Zend_Form_Element_Hidden('isValidOrigine');
 		$ERepopulateDepart = new Zend_Form_Element_Hidden('isValidDepart');
 		$ERepopulateArrivee = new Zend_Form_Element_Hidden('isValidArrivee');
@@ -83,16 +84,13 @@ class RechercheLigne extends Zend_Form{
 		$EPaysOrigine->setAttrib('onchange', 'RechercheAeroport("origine",this.value)');
 		$EPaysDepart->setAttrib('onchange', 'RechercheAeroport("depart",this.value)');
 		$EPaysArrive->setAttrib('onchange', 'RechercheAeroport("arrivee",this.value)');
-		/*$ERepopulateOrigine->removeDecorator('label');
-		 $ERepopulateDepart->removeDecorator('label');
-		$ERepopulateArrivee->removeDecorator('label');*/
+
 
 		$EAeroportOrigine->setRegisterInArrayValidator(false);
 		$EAeroportDepart->setRegisterInArrayValidator(false);
 		$EAeroportArrivee->setRegisterInArrayValidator(false);
 
 		$this->setMethod("GET");
-		//$this->setAction("/vol/consulter-ligne");
 		$this->addElement($mot);
 		$this->addElement($EPaysOrigine);
 		$this->addElement($EAeroportOrigine);
@@ -111,41 +109,11 @@ class RechercheLigne extends Zend_Form{
 		$this->addElement($ERepopulateOrigine);
 		$this->addElement($ERepopulateDepart);
 		$this->addElement($ERepopulateArrivee);
-
-		/*$optionGroups=array(array('FormElements',array('tag' => 'div','class'=>'test')),array('HtmlTag', array('tag' => 'div','class'=>'test1')));
-
-		$this->addDisplayGroup(array('mot'),'motCle',array('disableLoadDefaultDecorators' => true,'displayGroupClass' => 'My_DisplayGroup'));
-		$this->addDisplayGroup(array('Origine','aeroportOrigine'),'AeroportOrigine',array('disableLoadDefaultDecorators' => true,'displayGroupClass' => 'DisplayGroup'));
-		$this->addDisplayGroup(array('Depart','aeroportDepart'),'AeroportDepart',array('disableLoadDefaultDecorators' => true));
-		$this->addDisplayGroup(array('Arrivee','aeroportArrivee'),'AeroportArrivee',array('disableLoadDefaultDecorators' => true));
-		$this->addDisplayGroup(array('heureDepartMin','heureDepartMax'),'HeureDepart',array('disableLoadDefaultDecorators' => true));
-		$this->addDisplayGroup(array('heureArriveeMin','heureArriveeMax'),'HeureArrivee',array('disableLoadDefaultDecorators' => true));
-		$this->addDisplayGroup(array('tarifMin','tarifMax'),'tarif',array('disableLoadDefaultDecorators' => true));
-		$this->addDisplayGroup(array('dateDepart','dateArrivee'),'date',array('disableLoadDefaultDecorators' => true));
-		*/
-		/*	$this->addDisplayGroup(array('aeroportOrigine','aeroportDepart','aeroportArrivee','heureDepartMax','heureArriveeMax','tarif','date'),'group',array('disableLoadDefaultDecorators' => true));
-		 $optionGroups1=array(array('FormElements',array('tag' => 'div','class'=>'test3')),array('HtmlTag', array('tag' => 'div','class'=>'test2')));
-		$this->getDisplayGroup('group')->setDecorators($optionGroups1);*/
-
-		/*$this->getDisplayGroup('AeroportOrigine')->removeDecorator('DtDdWrapper');
-		 $this->getDisplayGroup('AeroportDepart')->removeDecorator('DtDdWrapper');
-		$this->getDisplayGroup('AeroportArrivee')->removeDecorator('DtDdWrapper');
-		$this->getDisplayGroup('HeureDepart')->removeDecorator('DtDdWrapper');
-		$this->getDisplayGroup('HeureArrivee')->removeDecorator('DtDdWrapper');
-		$this->getDisplayGroup('tarif')->removeDecorator('DtDdWrapper');
-		$this->getDisplayGroup('date')->removeDecorator('DtDdWrapper');*/
-
-		/*	$this->getDisplayGroup('motCle')->setDecorators($optionGroups);
-		 $this->getDisplayGroup('AeroportOrigine')->setDecorators($optionGroups);
-		$this->getDisplayGroup('AeroportDepart')->setDecorators($optionGroups);
-		$this->getDisplayGroup('AeroportArrivee')->setDecorators($optionGroups);
-		$this->getDisplayGroup('HeureDepart')->setDecorators($optionGroups);
-		$this->getDisplayGroup('HeureArrivee')->setDecorators($optionGroups);
-		$this->getDisplayGroup('tarif')->setDecorators($optionGroups);
-		$this->getDisplayGroup('date')->setDecorators($optionGroups);*/
-
 		$this->addElement($EPeriodicite);
+		$this->addElement($Reset);		
 		$this->addElement($submit);
+		
+		
 
 	}
 }
