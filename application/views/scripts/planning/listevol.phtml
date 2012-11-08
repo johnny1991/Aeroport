@@ -6,7 +6,7 @@
 </table>
 
 <?php
-	if(sizeof($this->tabLigne) != 0){
+	if(count($this->paginator) != 0){
 ?>
 	<table class="tableListeVol">
 		<tr>
@@ -18,22 +18,25 @@
 			<th>Options</th>
 		</tr>
 	<?php 
-			foreach($this->tabLigne as $value){
+			foreach($this->paginator as $value){
+				
+				$error = ($value['error']) ? 'style="background-color:red;"' : '';
+				
 				if($value['options'] != 'Consulter')
 					$lien = '/planning/planificationvol/date/'.$value['date_depart'].'/numeroligne/'.$value['numero_ligne'].'/actions/'.$value['options'].'';
 				else
-					$lien = '/planning/consultervol/numeroligne/'.$value['numero_ligne'].'/idvol/'.$value['idVol'].'';
+					$lien = '/vol/fiche-vol/ligne/'.$value['numero_ligne'].'/vol/'.$value['idVol'].'/';
 				
-				echo '<tr>';
 				echo '
+				<tr '.$error.'>
 					<td>'.$value['numero_ligne'].'</td>
 					<td><span class="spanAcronyme" title="'.$value['nom_aeroport_origine'].'">'.$value['aeroport_origine'].'</span></td>
 					<td>'.$value['heure_depart'].'</td>
 					<td><span class="spanAcronyme" title="'.$value['nom_aeroport_arrivee'].'">'.$value['aeroport_arrivee'].'</span></td>
 					<td>'.$value['heure_arrivee'].'</td>
-					<td><a href="'.$lien.'">'.$value['options'].'</a></td>';
-						
-				echo '</tr>';
+					<td><a href="'.$lien.'">'.$value['options'].'</a></td>
+				</tr>';	
+				
 			}
 	?>
 </table>
@@ -43,5 +46,25 @@
 		echo 'Aucun vol pour ce jour.';
 	}
 ?>
-
+<br />
+<br />
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+<br />
+<br />
+<?php if(count($this->tabAeroportAstreinte) != 0){?>
+<table class="tableAstreinte">
+	<tr><th>Planification d'un équipage d'astreinte</th><th class="thOption">Options</th></tr>
+	<?php 
+		foreach($this->tabAeroportAstreinte as $aeroport => $value){
+			echo '
+			<tr>
+				<td class="tdAeroport">'.$value['nom'].'</td>
+				<td class="tdAeroportOption"><a href="/planning/planificationastreinte/idaeroport/'.$aeroport.'/date/'.$value['date'].'/nbvol/'.$value['nbvol'].'/">'.$value['option'].'</a></td>
+			</tr>';
+		}
+	?>
+</table>
+<?php }?>
+<br />
+<br />
 <div class="divLienRetour"><a href="/planning/planning/">Retour au planning</a></div>

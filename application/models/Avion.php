@@ -47,5 +47,37 @@ class Avion extends Zend_Db_Table_Abstract
 		
 		return $this->fetchRow($reqAvion);
 	}
+	
+	public function checkAvionDispo($dateDepart, $numeroLigne, $idAvion){
+		$TableVol = new Vol;
+		$TableAstreinte = new Astreinte;
+		$TableAvion = new Avion;
+		$TableBreveter = new EtreBreveter;
+		$TableLigne = new Ligne;
+	
+		$InfosVol = $TableVol->getInfosVol($numeroLigne, $dateDepart);
+		$dateArrivee = $InfosVol->date_arrivee;
+		$idAeroport = $InfosVol->id_aeroport_depart_effectif;
+		$heureArrivee = $InfosVol->heure_arrivee_effective;
+	
+		$Ligne = $TableLigne->find($numeroLigne)->current();
+		$heureDepart = $Ligne->heure_depart;
+	
+		$subReqAvion = $TableVol->select()
+								->setIntegrityCheck(false)
+								->from(array('v' => 'Vol'),  array('id_avion'))
+								->join(array('l' => 'Ligne'), 'v.numero_ligne = l.numero_ligne', null)
+								->where('date_depart = ?', $dateDepart)
+								->where('v.numero_ligne != ?', $numeroLigne)
+								->where('UNIX_TIMESTAMP(CONCAT(v.date_depart," ",l.heure_depart)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'")) OR UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
+		
+		$req = $this->select()
+					->setIntegrityCheck(false)
+					->from(array('av' => 'Avion'))
+					->where('id_avion = ?', $idAvion)
+					->where('id_avion NOT IN (?)', $subReqAvion);
+	
+		return $this->fetchRow($req);
+	}
 }
 

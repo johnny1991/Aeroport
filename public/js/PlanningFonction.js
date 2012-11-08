@@ -374,7 +374,7 @@
     			formatDateClass = getNumDay(dateJour)+'-'+dateJour.getMonth()+'-'+dateJour.getFullYear();
 	      		if(lastSunday() >= Math.round(dateJour.getTime()/1000)){
 	      			linkDate = Math.round(dateJour.getTime() / 1000);
-	        		$('td.'+formatDateClass+' span').wrap('<a href="/planning/listevol/date/'+linkDate+'"><div style="width:100%;height:80px;"></div></a>');
+	        		$('td.'+formatDateClass+' span').wrap('<a href="/planning/listevol/date/'+formatDate+'"><div style="width:100%;height:80px;"></div></a>');
 	        	}	
         		
         	}
@@ -648,8 +648,94 @@ function getActionsUrl(){
 	return explodeUrl[1];
 }
 
-$(document).ready(function(){
+function getActionUrl(){
+	url = document.location.href;
+	explodeUrl = url.split('/');
+	return explodeUrl[4];
+}
 
-	if(getActionsUrl() != 'Modifier')
+function in_array(needle, haystack){
+    for(i in haystack){
+        if(haystack[i] == needle)
+            return true;
+    }
+    
+    return false;
+}
+
+function debug(tabDebug){
+    for(k in tabDebug){
+        console.log('key: '+k+' Value: '+tabDebug[k]);
+    }
+    console.log('fin');
+}
+
+function MaJSelect(numSelect){
+	 value = $('select[name=pilote'+numSelect+']').val()
+    $('select[name=pilote'+numSelect+']').val(value).attr('selected', 'selected');
+	 var tabElements = new Array();
+    var tabSelected = new Array();
+    
+    $('form').find('select').each(function(indexElts){
+	    tabElements[indexElts] = $(this);
+       tabSelected[$(this).attr('name')] = $(this).val();
+	 });
+    
+    var nbSelect = tabElements.length - 1;
+    var nextElts = numSelect + 1;
+    
+    var i;
+    var j;
+    
+    //On boucle sur tous les selects suivant celui sélectionné;
+    for(i = nextElts; i <= nbSelect; i++){
+       var flagSelected = false;
+       var tabValue = new Array();
+       var prevElts = i - 1;
+       
+       //On boucle sur les selects précédents pour récupérer leur valeur puis les insérer dans un tableau;
+       for(j = prevElts; j >= 0; j--){
+           tabValue[tabElements[j].attr('name')] = tabElements[j].val();
+       }
+       
+       //On insére la valeur du select sélectionné dans le tableau;
+       tabValue['pilote'+numSelect+''] = $('select[name=pilote'+numSelect+']').val();
+       
+       //On boucle sur les options pour savoir si on affiche ou pas;
+       tabElements[i].children('option').each(function(indexOption){
+           
+           //On teste si la valeur de l'option est dans le tableau; Si oui, on la cache, sinon on l'affiche au cas ou elle était caché
+           if(in_array($(this).val(), tabValue)){
+               $(this).hide();
+               
+               if(tabSelected[$(this).parent().attr('name')] == $(this).val()){
+
+                   $(this).removeAttr('selected');
+                   
+                   $(this).parent().children('option').each(function(){
+                      
+                       if($(this).css('display') != 'none'){
+                           $(this).attr('selected', 'selected');
+                           tabSelected[$(this).parent().attr('name')] = $(this).val();
+                           return false;
+                       }
+                   });
+               }  
+           }
+          	else{
+   			$(this).show();
+   		}
+       });
+    }
+}
+
+$(document).ready(function(){
+	
+	if(getActionsUrl() != 'Modifier' && getActionUrl() == 'planificationvol'){
 		MaJCoPilote();
+	}	
+	
+	if(getActionUrl() == 'planificationastreinte'){
+		MaJSelect(0);
+	}
 });

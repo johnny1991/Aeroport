@@ -11,3 +11,9 @@
 	.spanAcronyme{border-bottom:1px #84c2f4 dotted;cursor:help;}
 
 .divLienRetour{text-align:center;margin-top:20px;}
+
+.tableAstreinte{border-collapse:collapse;width:100%;border:1px #000 solid;}
+.tableAstreinte th{border:1px #000 solid;border-left:none;border-right:none;height:21px;}
+	.thOption{width:83px;}
+	.tdAeroport{padding-left:20px;height:28px;}
+	.tdAeroportOption{text-align:center;font-size:0.90em;}

@@ -25,7 +25,7 @@ class PlanificationVol extends Zend_Form
 	public function init(){
 		
 		//Récupére les infos du vol si c'est une modification
-		$infosVol = ($this->_action == 'Modifier') ? $this->TableVol->getInfosVol($this->_numeroLigne, $this->_dateDepart) : false;
+		$infosVol = ($this->_action == 'Modifier') ? $this->TableVol->getInfosVolWithAvion($this->_numeroLigne, $this->_dateDepart) : false;
 		
 		//Récupère les infos de la ligne
 		$infosAeroportArrivee = $this->TableLigne->getAeroportByAeroportArrivee($this->_numeroLigne);
@@ -92,7 +92,6 @@ class PlanificationVol extends Zend_Form
 			$ECoPilote = new Zend_Form_Element_Select('co_pilote');
 			$ECoPilote->setLabel('Liste des co-pilotes');
 			$ECoPilote->setAttrib('id', 'selectCoPilote');
-			$ECoPilote->setAttrib('onchange', 'MaJCoPilote()');
 			$ECoPilote->setRequired(true);
 			
 			$TablePilote = new Pilote();
@@ -120,7 +119,7 @@ class PlanificationVol extends Zend_Form
 			
 			$ECoPilote->setRegisterInArrayValidator(false);
 			$EPilote->setRegisterInArrayValidator(false);
-			
+
 			$this->setMethod('post');
 			$this->setAction('/planning/planificationvol/date/'.$this->_dateDepart.'/numeroligne/'.$this->_numeroLigne.'/actions/'.$this->_action);
 			

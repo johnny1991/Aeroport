@@ -11,4 +11,13 @@ class Periodicite extends Zend_Db_Table_Abstract
 					'columns'=>'numero_jour',
 					'refTableClass'=>'JourSemaine')
 	);
+	
+	public function getReqIdVolPeriodique($NumJour){
+		$reqVol = $this->select()
+					->setIntegrityCheck(false)
+					->from(array('per' => 'Periodicite'), array('per.numero_ligne'))
+					->where('numero_jour = ?', $NumJour);
+		
+		return $reqVol;
+	}
 }
