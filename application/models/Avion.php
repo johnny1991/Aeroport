@@ -20,7 +20,7 @@ class Avion extends Zend_Db_Table_Abstract
 			$reqAvion = $this->select()
 							->setIntegrityCheck(false)
 							->from(array('avi' => 'avion'), array('avi.id_avion'))
-							->joinLeft(array('tyav' => 'Type_Avion'), 'avi.id_type_avion = tyav.id_type_avion')
+							->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion')
 							->where('avi.id_type_avion = ?', $infosVol['idTypeAvion'])
 							->where('id_avion NOT IN ?', $subReqAvion)
 							->where('disponibilite_avion = 1')

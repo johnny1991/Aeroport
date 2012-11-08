@@ -40,8 +40,8 @@ class PlanificationVol extends Zend_Form
 		if($infosVol == false){
 			$reqAvion = $this->TableAvion->select()
 										->setIntegrityCheck(false)
-										->from(array('avi' => 'Avion'))
-										->joinLeft(array('tyav' => 'Type_Avion'), 'avi.id_type_avion = tyav.id_type_avion', array('tyav.libelle', 'tyav.id_type_avion'))
+										->from(array('avi' => 'avion'))
+										->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion', array('tyav.libelle', 'tyav.id_type_avion'))
 										->where('id_avion NOT IN ?', $subReqAvion)
 										->where('disponibilite_avion = 1')
 										->where('rayon_action > ?', $distance)
@@ -52,8 +52,8 @@ class PlanificationVol extends Zend_Form
 		else{
 			$reqAvion = $this->TableAvion->select()
 										->setIntegrityCheck(false)
-										->from(array('avi' => 'Avion'))
-										->joinLeft(array('tyav' => 'Type_Avion'), 'avi.id_type_avion = tyav.id_type_avion', array('tyav.libelle', 'tyav.id_type_avion'))
+										->from(array('avi' => 'avion'))
+										->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion', array('tyav.libelle', 'tyav.id_type_avion'))
 										->where('id_avion NOT IN ?', $subReqAvion)
 										->where('disponibilite_avion = 1')
 										->where('rayon_action > ?', $distance)
