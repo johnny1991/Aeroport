@@ -719,7 +719,7 @@ $(document).ready(function(){
 		//MaJCoPilote();
 	}	
 	
-	if(getActionUrl() == 'planifie-astreinte'){
+	if(getActionUrl() == 'planifier-astreinte'){
 		MaJSelect(0);
 	}
 });
