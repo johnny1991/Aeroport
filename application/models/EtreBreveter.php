@@ -21,4 +21,5 @@ class EtreBreveter extends Zend_Db_Table_Abstract
 		
 		return $req;
 	}
+
 }

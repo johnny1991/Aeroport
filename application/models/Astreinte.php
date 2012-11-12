@@ -31,4 +31,13 @@ class Astreinte extends Zend_Db_Table_Abstract
 		return $req;
 	}
 	
+	public function getReqIdPiloteByDate($dateDepart){
+		$req = $this->select()
+					->setIntegrityCheck(false)
+					->from(array('ab' => 'astreinte'), array('id_pilote'))
+					->where('DATE(date_astreinte) = ?', $dateDepart);
+		
+		return $req;
+	}
+	
 }

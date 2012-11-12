@@ -9,101 +9,44 @@ class Pilote extends Zend_Db_Table_Abstract
 					'columns'=>'code_ville',
 					'refTableClass'=>'Ville'));
 	
-	public function getPiloteByTypeAvion($heureDepart, $heureArrivee, $dateDepart, $idTypeAvion){
+	public function getPiloteByTypeAvion($numeroLigne, $dateDepart, $idTypeAvion, $update = false){
 		$TableVol = new Vol();
 		$TableBreveter = new EtreBreveter();
 		$TableAstreinte = new Astreinte;
 		
-		$subReqPiloteVol = $TableVol->select()
-								->setIntegrityCheck(false)
-								->from(array('v' => 'vol'), array('v.id_pilote'))
-								->where('date_depart = ?', $dateDepart)
-								->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
+		$subReqPiloteAstreinte = $TableAstreinte->getReqIdPiloteByDate($dateDepart);
+		$subReqPiloteBreveter = $TableBreveter->getReqPiloteBreveter($idTypeAvion, $dateDepart);
 		
-		$subReqPiloteAstreinte = $TableAstreinte->select()
-												->setIntegrityCheck(false)
-												->from(array('ab' => 'astreinte'), array('id_pilote'))
-												->where('date_astreinte = ?', $dateDepart);
-		
-		$subReqPiloteCoVol = $TableVol->select()
-									->setIntegrityCheck(false)
-									->from(array('v' => 'vol'), array('v.id_copilote'))
-									->where('date_depart = ?', $dateDepart)
-									->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
-		
-		$subReqPiloteBreveter = $TableBreveter->select()
-									->setIntegrityCheck(false)
-									->from($TableBreveter, array('id_pilote'))
-									->where('id_type_avion = ?', $idTypeAvion)
-									->where('ADDDATE(DATE(date), INTERVAL 1 YEAR) > ?', $dateDepart);
-		
-		$reqPilote = $this->select()
-								->setIntegrityCheck(false)
-								->from($this)
-								->where('disponibilite = 1')
-								->where('id_pilote IN ?', $subReqPiloteBreveter)
-								->where('id_pilote NOT IN ?', $subReqPiloteVol)
-								->where('id_pilote NOT IN ?', $subReqPiloteCoVol)
-								->where('id_pilote NOT IN ?', $subReqPiloteAstreinte)
-								->order('id_pilote');
-		
-		$listePilotes = $this->fetchAll($reqPilote);
-		
-		return $listePilotes;
-	}
-	
-	public function getPiloteByTypeAvionUpdate($heureDepart, $heureArrivee, $dateDepart, $idTypeAvion, $numeroLigne, $idPilote, $idCoPilote){
-		$TableVol = new Vol();
-		$TableBreveter = new EtreBreveter();
-		$TableAstreinte = new Astreinte;
-		
-		$subReqPiloteVol = $TableVol->select()
-									->setIntegrityCheck(false)
-									->from(array('v' => 'vol'), array('v.id_pilote'))
-									->where('v.numero_ligne != ?', $numeroLigne)
-									->where('date_depart = ?', $dateDepart)
-									->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
-		
-		$subReqPiloteAstreinte = $TableAstreinte->select()
-												->setIntegrityCheck(false)
-												->from(array('ab' => 'astreinte'), array('id_pilote'))
-												->where('date_astreinte = ?', $dateDepart);
-		
-		$subReqPiloteCoVol = $TableVol->select()
-									->setIntegrityCheck(false)
-									->from(array('v' => 'vol'), array('v.id_copilote'))
-									->where('v.numero_ligne != ?', $numeroLigne)
-									->where('date_depart = ?', $dateDepart)
-									->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
-		
-		$subReqPiloteBreveter = $TableBreveter->select()
-											->setIntegrityCheck(false)
-											->from($TableBreveter, array('id_pilote'))
-											->where('id_type_avion = ?', $idTypeAvion)
-											->where('ADDDATE(DATE(date), INTERVAL 1 YEAR) > ?', $dateDepart);
-		
-		$subReqPiloteVolLigne = $TableVol->select()
-										->setIntegrityCheck(false)
-										->from(array('v' => 'vol'), array('id_pilote'))
-										->where('numero_ligne = ?', $numeroLigne)
-										->where('date_depart = ?', $dateDepart);
-		
-		$subReqCoPiloteVolLigne = $TableVol->select()
-										->setIntegrityCheck(false)
-										->from(array('v' => 'vol'), array('id_copilote'))
-										->where('numero_ligne = ?', $numeroLigne)
-										->where('date_depart = ?', $dateDepart);
-	
-		$reqPilote = $this->select()
-						->setIntegrityCheck(false)
-						->from($this)
-						->where('disponibilite = 1 AND id_pilote IN ('.$subReqPiloteBreveter.') AND id_pilote NOT IN ('.$subReqPiloteAstreinte.') AND ((id_pilote NOT IN ('.$subReqPiloteVol.') AND id_pilote NOT IN ('.$subReqPiloteCoVol.')) OR (id_pilote IN ('.$subReqPiloteVolLigne.') OR id_pilote IN ('.$subReqCoPiloteVolLigne.')))')
-						->order('id_pilote');
-		
-	
-		$listePilotes = $this->fetchAll($reqPilote);
+		if($update == false){
+			$subReqPiloteVol = $TableVol->getReqIdPiloteNoDispoByVol($numeroLigne, $dateDepart);
+			$subReqCoPiloteVol = $TableVol->getReqIdCoPiloteNoDispoByVol($numeroLigne, $dateDepart);
+			
+			$reqPilote = $this->select()
+							->setIntegrityCheck(false)
+							->from($this)
+							->where('disponibilite = 1')
+							->where('id_pilote IN ?', $subReqPiloteBreveter)
+							->where('id_pilote NOT IN ?', $subReqPiloteVol)
+							->where('id_pilote NOT IN ?', $subReqCoPiloteVol)
+							->where('id_pilote NOT IN ?', $subReqPiloteAstreinte)
+							->order('id_pilote');
+		}
+		else{
+			$subReqPiloteVol = $TableVol->getReqIdPiloteNoDispoByVol($numeroLigne, $dateDepart, true);
+			$subReqCoPiloteVol = $TableVol->getReqIdCoPiloteNoDispoByVol($numeroLigne, $dateDepart, true);
+			
+			$infosVol = $TableVol->getInfosVol($numeroLigne, $dateDepart);
+			$idPilote = $infosVol['id_pilote'];
+			$idCoPilote = $infosVol['id_copilote'];
+			
+			$reqPilote = $this->select()
+							->setIntegrityCheck(false)
+							->from($this)
+							->where('disponibilite = 1 AND id_pilote IN ('.$subReqPiloteBreveter.') AND id_pilote NOT IN ('.$subReqPiloteAstreinte.') AND ((id_pilote NOT IN ('.$subReqPiloteVol.') AND id_pilote NOT IN ('.$subReqCoPiloteVol.')) OR (id_pilote = 1 OR id_pilote = 2))')
+							->order('id_pilote');
+		}
 
-		return $listePilotes;
+		return $this->fetchAll($reqPilote);
 	}
 	
 	public function getPiloteDispoAstreinte($date, $idAeroport, $update = false){
@@ -114,7 +57,7 @@ class Pilote extends Zend_Db_Table_Abstract
 										->from($TableAstreinte, array('id_pilote'))
 										->where('DATE(date_astreinte) = ?', $date);
 		
-		if(!$update){
+		if($update == false){
 			$req = $this->select()
 						->setIntegrityCheck(false)
 						->from(array('pil' => 'pilote'))

@@ -58,13 +58,26 @@ class Vol extends Zend_Db_Table_Abstract
 		return $this->fetchRow($reqVol);
 	}
 	
-	public function getIdAvionNoDispo($dateDepart, $heureArrivee, $heureDepart, $numeroLigne = null){
-		if($numeroLigne == null){
+	public function getIdAvionNoDispoByVol($numeroLigne, $dateDepart, $update = false){
+		$TableLigne = new Ligne;
+		
+		$infosLigne = $TableLigne->find($numeroLigne)->current();
+		
+		$heureDepart = $infosLigne->heure_depart;
+		$heureArrivee = $infosLigne->heure_arrivee;
+		$timestampDepart = strtotime($dateDepart);
+		
+		if($heureArrivee < $heureDepart)
+			$dateArrivee = date(‘Y-m-d’, strtotime('+1 days', $timestampDepart));
+		else
+			$dateArrivee = $dateDepart;
+		
+		if($update == false){
 			$req = $this->select()
 						->setIntegrityCheck(false)
 						->from(array('v' => 'vol'), 'v.id_avion')
 						->where('v.date_depart = ?', $dateDepart)
-						->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
+						->where('UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
 		}
 		else{
 			$req = $this->select()
@@ -72,10 +85,78 @@ class Vol extends Zend_Db_Table_Abstract
 						->from(array('v' => 'vol'), 'v.id_avion')
 						->where('v.numero_ligne != ?', $numeroLigne)
 						->where('v.date_depart = ?', $dateDepart)
-						->where('v.heure_arrivee_effective BETWEEN \''.$heureDepart.'\' AND \''.$heureArrivee.'\'');
+						->where('UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
 		}
 		
 		return($req);
+	}
+	
+	public function getReqIdPiloteNoDispoByVol($numeroLigne, $dateDepart, $update = false){
+	
+		$TableLigne = new Ligne;
+	
+		$infosLigne = $TableLigne->find($numeroLigne)->current();
+	
+		$heureDepart = $infosLigne->heure_depart;
+		$heureArrivee = $infosLigne->heure_arrivee;
+		$timestampDepart = strtotime($dateDepart);
+	
+		if($heureArrivee < $heureDepart)
+			$dateArrivee = date(‘Y-m-d’, strtotime('+1 days', $timestampDepart));
+		else
+			$dateArrivee = $dateDepart;
+	
+		if($update == false){
+			$req = $this->select()
+						->setIntegrityCheck(false)
+						->from(array('v' => 'vol'), array('v.id_pilote'))
+						->where('date_depart = ?', $dateDepart)
+						->where('UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
+		}
+		else{
+			$req = $this->select()
+						->setIntegrityCheck(false)
+						->from(array('v' => 'vol'), array('v.id_pilote'))
+						->where('date_depart = ?', $dateDepart)
+						->where('v.numero_ligne != ?', $numeroLigne)
+						->where('UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
+		}
+	
+		return $req;
+	}
+	
+	public function getReqIdCoPiloteNoDispoByVol($numeroLigne, $dateDepart, $update = false){
+	
+		$TableLigne = new Ligne;
+	
+		$infosLigne = $TableLigne->find($numeroLigne)->current();
+	
+		$heureDepart = $infosLigne->heure_depart;
+		$heureArrivee = $infosLigne->heure_arrivee;
+		$timestampDepart = strtotime($dateDepart);
+	
+		if($heureArrivee < $heureDepart)
+			$dateArrivee = date(‘Y-m-d’, strtotime('+1 days', $timestampDepart));
+		else
+			$dateArrivee = $dateDepart;
+	
+		if($update == false){
+			$req = $this->select()
+						->setIntegrityCheck(false)
+						->from(array('v' => 'vol'), array('v.id_copilote'))
+						->where('date_depart = ?', $dateDepart)
+						->where('UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
+		}
+		else{
+			$req = $this->select()
+						->setIntegrityCheck(false)
+						->from(array('v' => 'vol'), array('v.id_copilote'))
+						->where('date_depart = ?', $dateDepart)
+						->where('v.numero_ligne != ?', $numeroLigne)
+						->where('UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
+		}
+	
+		return $req;
 	}
 
 }

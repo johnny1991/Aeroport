@@ -1,11 +1,16 @@
 <?php
 class PlanningController extends Zend_Controller_Action
 {
-	public function planningAction(){
+	public function indexAction(){
 		
 	}
 	
-	public function planificationvolAction(){
+	public function planifierVolAction(){
+		
+		if(!($this->hasParam('date')) || !($this->hasParam('numeroligne'))){
+			$redirector = $this->_helper->getHelper('Redirector');
+			$redirector->gotoUrl('/planning/');
+		}
 		
 		$form = new PlanificationVol();
 		$params = $this->getRequest()->getParams();
@@ -29,6 +34,36 @@ class PlanningController extends Zend_Controller_Action
 		$this->view->numeroLigne = $laLigne->numero_ligne;
 		$this->view->laDate = $laDateArray[2].'/'.$laDateArray[1].'/'.$laDateArray[0];
 		
+		if(($params['numeroligne'] != NULL) && ($laLigne != NULL)){
+			
+			$vol = $tableVol->getInfosVol($numeroLigne, $params['date']);
+			
+			$this->view->ligne = $laLigne;
+			$this->view->jours = $laLigne->findJourSemaineViaPeriodicite();
+			$this->view->nbJours = count($laLigne->findJourSemaineViaPeriodicite());
+			$this->view->aeroport_origine = $laLigne->findParentRow('Aeroport','aeroport_origine');
+			$this->view->aeroport_depart = $laLigne->findParentRow('Aeroport','aeroport_depart');
+			$this->view->aeroport_arrivee = $laLigne->findParentRow('Aeroport','aeroport_arrivee');
+			$this->view->villeOrigine = $laLigne->findParentRow('Aeroport','aeroport_origine')->findParentRow('Ville');
+			$this->view->paysOrigine = $this->view->villeOrigine->findParentRow('Pays');
+			$this->view->villeDepart = $laLigne->findParentRow('Aeroport','aeroport_depart')->findParentRow('Ville');
+			$this->view->paysDepart = $this->view->villeDepart->findParentRow('Pays');
+			$this->view->villeArrivee = $laLigne->findParentRow('Aeroport','aeroport_arrivee')->findParentRow('Ville');
+			$this->view->paysArrive = $this->view->villeArrivee->findParentRow('Pays');
+			
+			if(($params['date'] != NULL) && ($vol != NULL)){
+
+				$this->view->vol = $vol;
+				$this->view->aeroport_depart_effectif = $vol->findParentRow('Aeroport','id_aeroport_depart_effectif');
+				$this->view->aeroport_arrivee_effectif = $vol->findParentRow('Aeroport','id_aeroport_arrivee_effectif');
+				
+			}
+			else{
+				$this->view->nextDate = (intVal($laDateArray[2]) + 1).'/'.$laDateArray[1].'/'.$laDateArray[0];
+				$this->view->idVol = $tableVol->getLastId($numeroLigne) + 1;
+			}
+		}
+		
 		if($this->getRequest()->isPost()){
 			$data = $this->getRequest()->getPost();
 
@@ -36,33 +71,8 @@ class PlanningController extends Zend_Controller_Action
 				$leVol = $tableVol->getInfosVol($numeroLigne, $params['date']);
 				$nbVol = count($leVol);
 				
-				$infosAeroportArrivee = $tableLigne->getAeroportByAeroportArrivee($numeroLigne);
-				
-				if($params['actions'] == 'Planifier'){
-					$tabVol = array('dateDepart' => $params['date'], 
-									'heureDepart' => $infosAeroportArrivee->heure_depart,
-									'heureArrivee' => $infosAeroportArrivee->heure_arrivee,
-									'distance' => $infosAeroportArrivee->distance,
-									'longueurPiste' => $infosAeroportArrivee->longueur_piste,
-									'numeroLigne' => $params['numeroligne'],
-									'idTypeAvion' => $form->getValue('avion'));
-				}
-				else{
-					$idAvionVol = $tableVol->getInfosVolWithAvion($numeroLigne, $params['date']);
-					$tabVol = array('dateDepart' => $params['date'],
-							'heureDepart' => $infosAeroportArrivee->heure_depart,
-							'heureArrivee' => $infosAeroportArrivee->heure_arrivee,
-							'distance' => $infosAeroportArrivee->distance,
-							'longueurPiste' => $infosAeroportArrivee->longueur_piste,
-							'numeroLigne' => $params['numeroligne'],
-							'idTypeAvion' => $form->getValue('avion'),
-							'idAvion' => $idAvionVol->id_avion);
-				}
-				
-				$idAvion = $tableAvion->getAvionDispoByTypeByLigne($tabVol, $params['actions']);
-				
 				if($nbVol == 0){
-					
+					$idAvion = $tableAvion->getAvionDispoByTypeByVol($numeroLigne, $params['date'], $form->getValue('avion'));
 					$idVol = $tableVol->getLastId($numeroLigne) + 1;
 					
 					$Vol = $tableVol->createRow();
@@ -80,6 +90,8 @@ class PlanningController extends Zend_Controller_Action
 					$Vol->save();
 				}
 				else{
+					$idAvion = $tableAvion->getAvionDispoByTypeByVol($numeroLigne, $params['date'], $form->getValue('avion'), true);
+					
 					$leVol->id_avion = $idAvion->id_avion;
 					$leVol->id_pilote = $form->getValue('pilote');
 					$leVol->id_copilote = $form->getValue('co_pilote');
@@ -88,7 +100,7 @@ class PlanningController extends Zend_Controller_Action
 				}
 
 				$redirector = $this->_helper->getHelper('Redirector');
-				$redirector->gotoUrl('/planning/listevol/date/'.$this->getParam('date'));
+				$redirector->gotoUrl('/planning/liste-vol/date/'.$this->getParam('date'));
 			}
 			else{
 				$form->populate($data);
@@ -101,9 +113,13 @@ class PlanningController extends Zend_Controller_Action
 	
 	}
 	
-	public function listevolAction(){
-
-		$timestamp = strtotime($this->getParam('date'));
+	public function listeVolAction(){
+		
+		
+		if($this->hasParam('date'))
+			$timestamp = strtotime($this->getParam('date'));
+		else
+			$timestamp = time();
 		
 		if($timestamp < 1325379600)
 			$timestamp = 1325379600;
@@ -318,75 +334,31 @@ class PlanningController extends Zend_Controller_Action
 	public function recherchepiloteAction(){
 		$this->_helper->layout->disableLayout();
 		
-		$heureArrivee = $this->_getParam('heureArrivee');
-		$heureDepart = $this->_getParam('heureDepart');
-		$dateDepart = $this->_getParam('dateDepart');
-		$idTypeAvion = $this->_getParam('idTypeAvion');
-		$action = $this->_getParam('action');
-		$numeroLigne = $this->_getParam('numeroligne');
-		
-		if($this->_hasParam('idPilote')){
-			$idPilote = $this->_getParam('idPilote');
-			$idCoPilote = $this->_getParam('idCoPilote');
-		}
-		
+		$TableVol = new Vol;
 		$TablePilote = new Pilote();
 		
-		if($action == 'Planifier')
-			$infosPilote = $TablePilote->getPiloteByTypeAvion($heureDepart, $heureArrivee, $dateDepart, $idTypeAvion);
+		$numeroLigne = $this->_getParam('numeroligne');
+		$dateDepart = $this->_getParam('dateDepart');
+		$idTypeAvion = $this->_getParam('idTypeAvion');
+		$update = $this->_getParam('update');
+			
+		if($update == false)
+			$infosPilote = $TablePilote->getPiloteByTypeAvion($numeroLigne, $dateDepart, $idTypeAvion);
 		else
-			$infosPilote = $TablePilote->getPiloteByTypeAvionUpdate($heureDepart, $heureArrivee, $dateDepart, $idTypeAvion, $numeroLigne, $idPilote, $idCoPilote);
+			$infosPilote = $TablePilote->getPiloteByTypeAvion($numeroLigne, $dateDepart, $idTypeAvion, true);
 
 		foreach($infosPilote as $pilote){
 			echo '<option class="pilote-'.$pilote->id_pilote.'" value="'.$pilote->id_pilote.'">'.$pilote->nom.' '.$pilote->prenom.'</option>';
 		}
 	}
 	
-	public function consultervolAction(){
-		$numeroLigne = $this->getParam('numeroligne');
-		$idVol = $this->getParam('idvol');
+	public function planifierAstreinteAction(){
+
+		if(!($this->hasParam('idaeroport')) || !($this->hasParam('date')) || !($this->hasParam('nbvol'))){
+			$redirector = $this->_helper->getHelper('Redirector');
+			$redirector->gotoUrl('/planning/');
+		}
 		
-		$TableVol = new Vol;
-		$TableAeroport = new Aeroport;
-		$TableLigne = new Ligne;
-		$TablePilote = new Pilote;
-		$TableAvion = new Avion;
-		$TableTypeAvion = new TypeAvion;
-		
-		//Sort toutes les informations concernant le vol;
-		$reqVol = $TableVol->select()->from($TableVol)->where('id_vol = ?', $idVol)->where('numero_ligne = ?', $numeroLigne);
-		$infosVol = $TableVol->fetchRow($reqVol);
-		
-		$aeroportDepart = $TableAeroport->find($infosVol->id_aeroport_depart_effectif)->current();
-		$aeroportArrivee = $TableAeroport->find($infosVol->id_aeroport_arrivee_effectif)->current();
-		$pilote = $TablePilote->find($infosVol->id_pilote)->current();
-		$coPilote = $TablePilote->find($infosVol->id_copilote)->current();
-		$avion = $TableAvion->find($infosVol->id_avion)->current();
-		$typeAvion = $TableTypeAvion->find($avion->id_type_avion)->current();
-		$ligne = $TableLigne->find($infosVol->numero_ligne)->current();
-		
-		//Toutes les informations sont dans un tableau;
-		$tabInfosVol = array(
-							'idVol' => $infosVol->id_vol, 
-							'numeroLigne' => $infosVol->numero_ligne,
-							'dateDepart' => $infosVol->date_depart,
-							'dateArrivee' => $infosVol->date_arrivee,
-							'heureDepart' => $ligne->heure_depart,
-							'heureArrivee' => $infosVol->heure_arrivee_effective,
-							'aeroportDepart' => $aeroportDepart->nom,
-							'aeroportArrivee' => $aeroportArrivee->nom,
-							'nomPilote' => $pilote->nom.' '.$pilote->prenom,
-							'nomCoPilote' => $coPilote->nom.' '.$coPilote->prenom,
-							'nomAvion' => $typeAvion->libelle,
-							'tarif' => $infosVol->tarif
-							);
-		
-		$this->view->assign('infosVol', $tabInfosVol);
-		
-		$this->view->timestamp = strtotime($infosVol->date_depart);
-	}
-	
-	public function planificationastreinteAction(){
 		$params = $this->getRequest()->getParams();
 		
 		$tableAeroport = new Aeroport;
@@ -450,7 +422,7 @@ class PlanningController extends Zend_Controller_Action
 				}
 
 				$redirector = $this->_helper->getHelper('Redirector');
-				$redirector->gotoUrl('/planning/listevol/date/'.$params['date']);
+				$redirector->gotoUrl('/planning/liste-vol/date/'.$params['date']);
 			}
 			else{
 				$form->populate($data);

@@ -1,7 +1,7 @@
 <br /><br />
 <table class="tableHeader">
 	<tr>
-		<td class="tdLienNextPrec"><a href="/planning/listevol/date/<?php echo $this->timestampPrec;?>">Jour précédent</a></td><td class="tdCenterDate"><span><?php echo $this->laDate;?></span></td><td class="tdLienNextPrec"><a href="/planning/listevol/date/<?php echo $this->timestampNext;?>">Jour suivant</a></td>
+		<td class="tdLienNextPrec"><a href="/planning/liste-vol/date/<?php echo $this->timestampPrec;?>">Jour précédent</a></td><td class="tdCenterDate"><span><?php echo $this->laDate;?></span></td><td class="tdLienNextPrec"><a href="/planning/liste-vol/date/<?php echo $this->timestampNext;?>">Jour suivant</a></td>
 	</tr>
 </table>
 
@@ -23,7 +23,7 @@
 				$error = ($value['error']) ? 'style="background-color:red;"' : '';
 				
 				if($value['options'] != 'Consulter')
-					$lien = '/planning/planificationvol/date/'.$value['date_depart'].'/numeroligne/'.$value['numero_ligne'].'/actions/'.$value['options'].'';
+					$lien = '/planning/planifier-vol/date/'.$value['date_depart'].'/numeroligne/'.$value['numero_ligne'].'';
 				else
 					$lien = '/vol/fiche-vol/ligne/'.$value['numero_ligne'].'/vol/'.$value['idVol'].'/';
 				
@@ -59,12 +59,9 @@
 			echo '
 			<tr>
 				<td class="tdAeroport">'.$value['nom'].'</td>
-				<td class="tdAeroportOption"><a href="/planning/planificationastreinte/idaeroport/'.$aeroport.'/date/'.$value['date'].'/nbvol/'.$value['nbvol'].'/">'.$value['option'].'</a></td>
+				<td class="tdAeroportOption"><a href="/planning/planifier-astreinte/idaeroport/'.$aeroport.'/date/'.$value['date'].'/nbvol/'.$value['nbvol'].'/">'.$value['option'].'</a></td>
 			</tr>';
 		}
 	?>
 </table>
 <?php }?>
-<br />
-<br />
-<div class="divLienRetour"><a href="/planning/planning/">Retour au planning</a></div>

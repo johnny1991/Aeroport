@@ -374,7 +374,7 @@
     			formatDateClass = getNumDay(dateJour)+'-'+dateJour.getMonth()+'-'+dateJour.getFullYear();
 	      		if(lastSunday() >= Math.round(dateJour.getTime()/1000)){
 	      			linkDate = Math.round(dateJour.getTime() / 1000);
-	        		$('td.'+formatDateClass+' span').wrap('<a href="/planning/listevol/date/'+formatDate+'"><div style="width:100%;height:80px;"></div></a>');
+	        		$('td.'+formatDateClass+' span').wrap('<a href="/planning/liste-vol/date/'+formatDate+'"><div style="width:100%;height:80px;"></div></a>');
 	        	}	
         		
         	}
@@ -567,28 +567,12 @@
     };
 })( jQuery );
 
-function recherchePilote(numeroLigne, heureArrivee, heureDepart, dateDepart, idTypeAvion, action){
+function recherchePilote(numeroLigne, dateDepart, idTypeAvion, update){
 
 	$.ajax({
 		type: "POST",
 		url: "/planning/recherchepilote/",
-		data: 'numeroligne='+numeroLigne+'&heureDepart='+heureDepart+'&heureArrivee='+heureArrivee+'&dateDepart='+dateDepart+'&idTypeAvion='+idTypeAvion+'&action='+action,
-		async: false,
-		success: function(msg){
-			$('#selectPilote').html(msg);
-			$('#selectCoPilote').html(msg);
-		}
-	});
-	
-	MaJCoPilote();
-}
-
-function recherchePiloteModifier(numeroLigne, heureArrivee, heureDepart, dateDepart, idTypeAvion, action, idPilote, idCoPilote){
-
-	$.ajax({
-		type: "POST",
-		url: "/planning/recherchepilote/",
-		data: 'numeroligne='+numeroLigne+'&heureDepart='+heureDepart+'&heureArrivee='+heureArrivee+'&dateDepart='+dateDepart+'&idTypeAvion='+idTypeAvion+'&action='+action+'&idPilote='+idPilote+'&idCoPilote='+idCoPilote,
+		data: 'numeroligne='+numeroLigne+'&dateDepart='+dateDepart+'&idTypeAvion='+idTypeAvion+'&update='+update,
 		async: false,
 		success: function(msg){
 			$('#selectPilote').html(msg);
@@ -629,13 +613,13 @@ function MaJCoPilote(){
 	if(index == 0){
 		$('#selectPilote').hide();
 		$('#selectCoPilote').hide();
-		$('dd#selectPilote-element, dd#selectCoPilote-element').after('<span class="error-pilote" style="color:red;">Aucun pilote disponible pour cet avion.</span>');
+		$('div#copilote, div#pilote').after('<span class="error-pilote" style="color:red;">Aucun pilote disponible pour cet avion.</span>');
 		$('input[type=submit]').attr('disabled', 'disabled');
 	}
 	else{
 		if(index == 1){
 			$('#selectCoPilote').hide();
-			$('dd#selectCoPilote-element').after('<span class="error-pilote" style="color:red;">Aucun pilote disponible pour cet avion.</span>');
+			$('div#copilote').after('<span class="error-pilote" style="color:red;">Aucun pilote disponible pour cet avion.</span>');
 			$('input[type=submit]').attr('disabled', 'disabled');
 		}
 	}
@@ -731,11 +715,11 @@ function MaJSelect(numSelect){
 
 $(document).ready(function(){
 	
-	if(getActionsUrl() != 'Modifier' && getActionUrl() == 'planificationvol'){
-		MaJCoPilote();
+	if(getActionUrl() == 'planifier-vol'){
+		//MaJCoPilote();
 	}	
 	
-	if(getActionUrl() == 'planificationastreinte'){
+	if(getActionUrl() == 'planifie-astreinte'){
 		MaJSelect(0);
 	}
 });
