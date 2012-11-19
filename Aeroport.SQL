@@ -273,21 +273,6 @@ create table if not exists intervention
 
 
 # -----------------------------------------------------------------------------
-#       table : desservir_ville_aeroport
-# -----------------------------------------------------------------------------
-
-create table if not exists desservir_ville_aeroport
- (
-   code_ville varchar(255) not null  ,
-   id_aeroport char(3) not null  , 
-   primary key (code_ville,id_aeroport) ,
-   Foreign key (code_ville) references ville (code_ville) ,
-   foreign key (id_aeroport) references aeroport (id_aeroport)
- ) 
- ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-# -----------------------------------------------------------------------------
 #       table : astreinte
 # -----------------------------------------------------------------------------
 
@@ -678,38 +663,6 @@ INSERT INTO `aeroport` (`id_aeroport`, `nom`, `code_ville`, `adresse`, `longueur
 ('MUC', 'Aéroport international Franz-Josef-Strauss', '6','2 rue de la paix', 4000),
 ('PEK', 'Beijing-Capital', '8','2 rue de la paix', 3800),
 ('SXF', 'Aéroport international de Berlin-Schönefeld', '7','2 rue de la paix', 3000);
-
-INSERT INTO `desservir_ville_aeroport` (`code_ville`, `id_aeroport`) VALUES
-('3', 'CDG'),
-('7', 'CDG'),
-('8', 'CDG'),
-('1', 'GIG'),
-('2', 'GIG'),
-('7', 'GIG'),
-('1', 'JFK'),
-('10', 'JFK'),
-('2', 'JFK'),
-('3', 'JFK'),
-('4', 'JFK'),
-('5', 'JFK'),
-('6', 'JFK'),
-('6', 'LHR'),
-('1', 'LYS'),
-('10', 'LYS'),
-('6', 'LYS'),
-('9', 'LYS'),
-('7', 'MAN'),
-('9', 'MAN'),
-('10', 'MRS'),
-('4', 'MRS'),
-('5', 'MRS'),
-('8', 'MRS'),
-('9', 'MRS'),
-('2', 'MUC'),
-('4', 'PEK'),
-('8', 'PEK'),
-('3', 'SXF'),
-('8', 'SXF');
 
 INSERT INTO `pilote` (`id_pilote`, `nom`, `prenom`, `email`, `password`, `code_ville`, `adresse`, `telephone`, `disponibilite`) VALUES
 (1, 'Simoret', 'Marc', 'marc.simoret@gmail.com', 'marco', '5', '154 rue de moncuq', NULL, 1),
