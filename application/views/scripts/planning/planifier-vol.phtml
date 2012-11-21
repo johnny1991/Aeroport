@@ -1,0 +1,212 @@
+<br />
+<br />
+<h4 align="center">Planifier le vol <?php echo $this->nomAeroportOrigine;?> - <?php echo $this->nomAeroportArrivee?> de la ligne <?php echo $this->numeroLigne;?> du <?php echo $this->laDate;?></h4>
+
+<?php 
+if(isset($this->vol)){
+	$vol = $this->vol;
+}
+
+$form = $this->Form;
+$ligne = $this->ligne;
+$jour = array('1'=>'Lundi', '2'=>'Mardi','3'=>'Mercredi','4'=>'Jeudi','5'=>'Vendredi','6'=>'Samedi','7'=>'Dimanche');
+?>
+<form enctype="<?php echo $form->getEnctype();?>" method="<?php echo $form->getMethod();?>" action="<?php echo $form->getAction();?>">
+<div class="fiche-vol">
+	<fieldset>
+		<legend>Informations sur la ligne</legend>
+
+		<div class="infoLigneRow">
+			<label for="numero">Numéro de la ligne : </label>
+			<div class="" id="numero">
+				<?php echo $ligne->numero_ligne;?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="aeroport_origine">Aéroport d'origine : </label>
+			<div class="" id="aeroport_origine">
+				<?php echo $this->aeroport_origine->nom." (".$this->villeOrigine->nom." / ".$this->paysOrigine->nom.")";?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="aeroport_depart">Aéroport de départ : </label>
+			<div class="" id="aeroport_depart">
+				<?php echo $this->aeroport_depart->nom." (".$this->villeDepart->nom." / ".$this->paysDepart->nom.")";?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="aeroport_arrive">Aéroport d'arrivé : </label>
+			<div class="" id="aeroport_arrive">
+				<?php echo $this->aeroport_arrivee->nom." (".$this->villeArrivee->nom." / ".$this->paysArrive->nom.")";?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="heure_depart">Heure de départ : </label>
+			<div class="" id="heure_depart">
+				<?php 
+				$heureDepart = new Zend_Date($ligne->heure_depart,'HH:mm:ss');
+				echo $heureDepart->get('HH:mm');
+				?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="heure_arrivee">Heure d'arrivée : </label>
+			<div class="" id="heure_arrivee">
+				<?php 
+				$heureDepart = new Zend_Date($ligne->heure_arrivee,'HH:mm:ss');
+				echo $heureDepart->get('HH:mm');
+				?>
+			</div>
+		</div>
+		<?php if($this->nbJours>0){?>
+		<div class="infoLigneRow">
+			<label for="periodicite">Périodicité : </label>
+			<div class="" id="periodicite">
+				<?php 
+				$jours=$this->jours;
+				foreach($jours as $jour1){
+					?>
+				<span class=""> <?php echo $jour1->libelle; ?>
+				</span>
+				<?php } ?>
+			</div>
+		</div>
+		<?php }?>
+		<div class="infoLigneRow">
+			<label for="tarif">Tarif : </label>
+			<div class="" id="tarif">
+				<?php echo $ligne->tarif." €";?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="distance">Distance : </label>
+			<div class="" id="distance">
+				<?php echo $ligne->distance." km";?>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend>Informations sur le vol</legend>
+		<div class="infoVolRow">
+			<label for="vol">Numero du vol : </label>
+			<div class="" id="vol">
+				<?php 
+				if(isset($vol) && $vol->id_vol != NULL) {
+					echo $vol->id_vol;
+				}	
+				else
+					echo $this->idVol;
+				?>
+			</div>
+		</div>
+		<div class="infoVolRow">
+			<label for="date_depart">Date de départ : </label>
+			<div class="" id="date_depart">
+				<?php 
+				if(isset($vol) && $vol->date_depart != NULL) {
+					$madate = strtotime($vol->date_depart);
+					echo "(".$jour[date("N",$madate)].") ".date("d/m/y",$madate);
+				}
+				else{
+					echo $this->laDate;
+				}
+				?>
+			</div>
+		</div>
+		<div class="infoVolRow">
+			<label for="date_arrivee">Date d'arrivée : </label>
+			<div class="" id="date_arrivee">
+				<?php 
+				if(isset($vol) && $vol->date_arrivee != NULL) {
+					$madate = strtotime($vol->date_arrivee);
+					echo "(".$jour[date("N",$madate)].") ".date("d/m/y",$madate);
+				}
+				else{
+					if($ligne->heure_arrivee < $ligne->heure_depart)
+						echo $this->nextDate;
+					else{
+						echo $this->laDate;
+					}
+				}
+				?>
+			</div>
+		</div>
+		<div class="infoVolRow">
+			<label for="type_avion">Type d'avion : </label>
+			<div class="" id="type_avion">
+				<?php echo $form->getElement('avion');?>
+			</div>
+		</div>
+		<div class="infoVolRow">
+			<label for="pilote">Pilote : </label>
+			<div class="" id="pilote">
+				<?php echo $form->getElement('pilote');?>
+			</div>
+		</div>
+		<div class="infoVolRow">
+			<label for="copilote">Copilote : </label>
+			<div class="" id="copilote">
+				<?php echo $form->getElement('co_pilote');?>
+			</div>
+		</div>
+		<div class="infoVolRow">
+			<label for="tarif">Tarif effectif : </label>
+			<div class="" id="tarif">
+				<?php 
+					if(isset($vol) && $vol->tarif_effectif != NULL) {
+						echo $vol->tarif_effectif.' €';
+					}
+					else{
+						echo $ligne->tarif.' €';
+					}
+				?>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend>Données Effectives</legend>
+		<div class="infoEffRow">
+			<label for="aeroport_depart_effectif">Aéroport de départ effectif : </label>
+			<div class="" id="aeroport_depart_effectif">
+				<?php 
+					if(isset($vol) && $vol->id_aeroport_depart_effectif != NULL) {
+						echo $this->aeroport_depart_effectif->nom;
+					}
+					else{
+						echo $this->aeroport_depart->nom;
+					}
+				?>
+			</div>
+		</div>
+		<div class="infoEffRow">
+			<label for="aeroport_arrivee_effectif">Aéroport d'arrivé effectif : </label>
+			<div class="" id="aeroport_arrivee_effectif">
+				<?php
+					if(isset($vol) && $vol->id_aeroport_arrivee_effectif != NULL) {
+						echo $this->aeroport_arrivee_effectif->nom;
+					}
+					else{
+						echo $this->aeroport_arrivee->nom;
+					}
+				?>
+			</div>
+		</div>
+		<div class="infoEffRow">
+			<label for="heure_arrivee_effective">Heure d'arrivée effective : </label>
+			<div class="" id="heure_arrivee_effective">
+				<?php
+				if(isset($vol) && $vol->heure_arrivee_effective != NULL) {
+					$heureDepart = new Zend_Date($vol->heure_arrivee_effective,'HH:mm:ss');
+					echo $heureDepart->get('HH:mm');
+				}
+				else{
+					$heureDepart = new Zend_Date($ligne->heure_arrivee,'HH:mm:ss');
+					echo $heureDepart->get('HH:mm');
+				}
+				?>
+			</div>
+		</div>
+	</fieldset>
+</div>
+<div align="center"><?php echo $form->getElement('bouton');?></div>
+</form>

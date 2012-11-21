@@ -1,4 +1,6 @@
 <?php
+$date = Aeroport_Fonctions::getParam('date');
+
 return array(
 		'label'      => 'Insset Airlines',
 		'module'     => 'default',
@@ -46,6 +48,49 @@ return array(
 																		'action'     => 'fiche-vol'
 																)
 														)
+												)
+										)
+								)
+						)
+				),
+				
+				array(
+						'label'      => 'Gestion du planning',
+						'module'     => 'default',
+						'controller' => 'planning',
+						'action'     => 'index',
+						'title'		=>	'Gérer le planning',
+						'pages'      =>
+						array(
+								array(
+										'label'      => 'Liste des vols',
+										'uri'		=>	'/planning/liste-vol/',
+										'module'     => 'default',
+										'controller' => 'planning',
+										'action'     => 'liste-vol',
+										'id'		=>	'listeVol',
+										'params' => array(
+												'date' => $date
+										),
+										'title'		=>	'Liste des vols à planifier',
+										'pages' => array(
+												array(
+														'label'      => 'Planifier un vol',
+														'module'     => 'default',
+														'controller' => 'planning',
+														'action'     => 'planifier-vol',
+														'uri'		=>	'/planning/planifier-vol/',
+														'id'		=>	'planifierVol'
+														
+												),
+												array(
+														'label'      => 'Planifier un équipage d\'astreinte',
+														'module'     => 'default',
+														'controller' => 'planning',
+														'action'     => 'planifier-astreinte',
+														'uri'		=>	'/planning/planifier-astreinte/',
+														'id'		=>	'planifierAstreinte'
+														
 												)
 										)
 								)

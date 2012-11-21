@@ -1,9 +1,6 @@
 <?php
 class PlanificationVol extends Zend_Form
 {
-	protected $TableAvion;
-	protected $TableLigne;
-	protected $TableVol;
 	protected $_dateDepart;
 	protected $_numeroLigne;
 	protected $_action;
@@ -12,116 +9,86 @@ class PlanificationVol extends Zend_Form
 		
 		$params = Zend_Controller_Front::getInstance()->getRequest()->getParams();
 		
-		$this->TableAvion= new Avion();
-		$this->TableLigne = new Ligne();
-		$this->TableVol = new Vol();
 		$this->_dateDepart = $params['date'];
 		$this->_numeroLigne = $params['numeroligne'];
-		$this->_action = $params['actions'];
 
 		parent::__construct($options);
 	}
 
 	public function init(){
 		
+		$TableAvion = new Avion;
+		$TableLigne = new Ligne;
+		$TableVol = new Vol;
+		
 		//Récupére les infos du vol si c'est une modification
-		$infosVol = ($this->_action == 'Modifier') ? $this->TableVol->getInfosVolWithAvion($this->_numeroLigne, $this->_dateDepart) : false;
+		$infosVol = $TableVol->getInfosVolWithAvion($this->_numeroLigne, $this->_dateDepart);
+		$nbVol = count($infosVol);
 		
-		//Récupère les infos de la ligne
-		$infosAeroportArrivee = $this->TableLigne->getAeroportByAeroportArrivee($this->_numeroLigne);
-		
-		$distance = $infosAeroportArrivee->distance;
-		$longueurPiste = $infosAeroportArrivee->longueur_piste;
-		$heureDepart = $infosAeroportArrivee->heure_depart;
-		$heureArrivee = $infosAeroportArrivee->heure_arrivee;
-
-		$subReqAvion = ($this->_action == 'Planifier') ? $this->TableVol->getIdAvionNoDispo($this->_dateDepart, $heureArrivee, $heureDepart) : $this->TableVol->getIdAvionNoDispo($this->_dateDepart, $heureArrivee, $heureDepart, $this->_numeroLigne);
-
-		if($infosVol == false){
-			$reqAvion = $this->TableAvion->select()
-										->setIntegrityCheck(false)
-										->from(array('avi' => 'avion'))
-										->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion', array('tyav.libelle', 'tyav.id_type_avion'))
-										->where('id_avion NOT IN ?', $subReqAvion)
-										->where('disponibilite_avion = 1')
-										->where('rayon_action > ?', $distance)
-										->where('longueur_atterissage < ?', $longueurPiste)
-										->group('tyav.libelle')
-										->order('tyav.id_type_avion');
-		}
-		else{
-			$reqAvion = $this->TableAvion->select()
-										->setIntegrityCheck(false)
-										->from(array('avi' => 'avion'))
-										->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion', array('tyav.libelle', 'tyav.id_type_avion'))
-										->where('id_avion NOT IN ?', $subReqAvion)
-										->where('disponibilite_avion = 1')
-										->where('rayon_action > ?', $distance)
-										->where('longueur_atterissage < ?', $longueurPiste)
-										->orWhere('id_avion = ?', $infosVol->id_avion)
-										->group('tyav.libelle')
-										->order('tyav.id_type_avion');
-		}
-		$listeAvions = $this->TableAvion->fetchAll($reqAvion);
+		if($nbVol == 0)
+			$listeAvions = $TableAvion->getTypeAvionDispoByVol($this->_numeroLigne, $this->_dateDepart);
+		else
+			$listeAvions = $TableAvion->getTypeAvionDispoByVol($this->_numeroLigne, $this->_dateDepart, true);
 		
 		if(count($listeAvions) != 0){
+			
 			$EAvion = new Zend_Form_Element_Select('avion');
+			$EAvion->removeDecorator('label');
+			$EAvion->removeDecorator('HtmlTag');
+			$EAvion->setRequired(true);
+			
 			foreach($listeAvions as $avion){
 				$EAvion->addMultiOption($avion->id_type_avion, $avion->libelle);
 			}
 			
-			$EAvion->setLabel('Liste des avions');
-			if($infosVol != false){
-				$EAvion->setAttrib('onchange', 'recherchePiloteModifier('.$this->_numeroLigne.', \''.$heureArrivee.'\', \''.$heureDepart.'\', \''.$this->_dateDepart.'\', this.value, \''.$this->_action.'\', '.$infosVol->id_pilote.', '.$infosVol->id_copilote.')');
-			}
-			else{
-				$EAvion->setAttrib('onchange', 'recherchePilote('.$this->_numeroLigne.', \''.$heureArrivee.'\', \''.$heureDepart.'\', \''.$this->_dateDepart.'\', this.value, \''.$this->_action.'\')');
-			}
-			$EAvion->setRequired(true);
+			if($nbVol == 0)
+				$EAvion->setAttrib('onchange', 'recherchePilote('.$this->_numeroLigne.', \''.$this->_dateDepart.'\', this.value, false)');
+			else
+				$EAvion->setAttrib('onchange', 'recherchePilote('.$this->_numeroLigne.', \''.$this->_dateDepart.'\', this.value, true) ');
 			
-			if($infosVol != false){
+			if($nbVol != 0)
 				$EAvion->setValue($infosVol->id_type_avion);
-			}
 		
 			$EPilote = new Zend_Form_Element_Select('pilote');
-			$EPilote->setLabel('Liste des pilotes');
 			$EPilote->setAttrib('id', 'selectPilote');
 			$EPilote->setAttrib('onchange', 'MaJCoPilote()');
+			$EPilote->removeDecorator('label');
+			$EPilote->removeDecorator('HtmlTag');
 			$EPilote->setRequired(true);
 			
 			$ECoPilote = new Zend_Form_Element_Select('co_pilote');
-			$ECoPilote->setLabel('Liste des co-pilotes');
 			$ECoPilote->setAttrib('id', 'selectCoPilote');
+			$ECoPilote->removeDecorator('label');
+			$ECoPilote->removeDecorator('HtmlTag');
 			$ECoPilote->setRequired(true);
 			
 			$TablePilote = new Pilote();
 					
-			if($infosVol != false){
-				$infosPilote = $TablePilote->getPiloteByTypeAvionUpdate($heureDepart, $heureArrivee, $this->_dateDepart, $infosVol->id_type_avion, $this->_numeroLigne, $infosVol->id_pilote, $infosVol->id_copilote);
-		
-			}	
-			else{
-				$infosPilote = $TablePilote->getPiloteByTypeAvion($heureDepart, $heureArrivee, $this->_dateDepart, $listeAvions[0]['id_type_avion']);
-			}
+			if($nbVol != 0)
+				$infosPilote = $TablePilote->getPiloteByTypeAvion($this->_numeroLigne, $this->_dateDepart, $infosVol->id_type_avion, true);
+			else
+				$infosPilote = $TablePilote->getPiloteByTypeAvion($this->_numeroLigne, $this->_dateDepart, $listeAvions[0]['id_type_avion']);
 
 			foreach($infosPilote as $pilote){
 				$EPilote->addMultiOption($pilote->id_pilote, $pilote->nom.' '.$pilote->prenom);
 				$ECoPilote->addMultiOption($pilote->id_pilote, $pilote->nom.' '.$pilote->prenom);
 			}
 			
-			if($infosVol != false){
-				$EPilote->setValue($infosVol->id_pilote);
-				$ECoPilote->setValue($infosVol->id_copilote);
-				$ESubmit = new Zend_Form_Element_Submit('Modifier');
+			$ESubmit = new Zend_Form_Element_Submit('bouton');
+			
+			if($nbVol != 0){
+				$EPilote->setValue($infosVol['id_pilote']);
+				$ECoPilote->setValue($infosVol['id_copilote']);
+				$ESubmit->setLabel('Modifier');
 			}
 			else
-				$ESubmit = new Zend_Form_Element_Submit('Planifier');
+				$ESubmit->setLabel('Planifier');
 			
 			$ECoPilote->setRegisterInArrayValidator(false);
 			$EPilote->setRegisterInArrayValidator(false);
 
 			$this->setMethod('post');
-			$this->setAction('/planning/planificationvol/date/'.$this->_dateDepart.'/numeroligne/'.$this->_numeroLigne.'/actions/'.$this->_action);
+			$this->setAction('/planning/planifier-vol/date/'.$this->_dateDepart.'/numeroligne/'.$this->_numeroLigne);
 			
 			$this->addElement($EAvion);
 			$this->addElement($EPilote);

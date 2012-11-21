@@ -11,21 +11,29 @@ class Avion extends Zend_Db_Table_Abstract
 					'refColumns'=>'id_type_avion')
 			);
 	
-	public function getAvionDispoByTypeByLigne($infosVol, $actions){
+	public function getAvionDispoByTypeByVol($numeroLigne, $dateDepart, $idTypeAvion, $update = false){
 		$TableVol = new Vol();
+		$TableLigne = new Ligne();
 		
-		$subReqAvion = ($actions == 'Planifier') ? $TableVol->getIdAvionNoDispo($infosVol['dateDepart'], $infosVol['heureArrivee'], $infosVol['heureDepart']) : $TableVol->getIdAvionNoDispo($infosVol['dateDepart'], $infosVol['heureArrivee'], $infosVol['heureDepart'], $infosVol['numeroLigne']); 
+		$infosVol = $TableVol->getInfosVol($numeroLigne, $dateDepart);
+		$infosLigne = $TableLigne->find($numeroLigne)->current();
+		$aeroportArrivee = $infosLigne->findParentRow('Aeroport', 'aeroport_arrivee');
 		
-		if($actions == 'Planifier'){
+		if($update == false)
+			$subReqAvion = $TableVol->getIdAvionNoDispoByVol($numeroLigne, $dateDepart);
+		else
+			$subReqAvion = $TableVol->getIdAvionNoDispoByVol($numeroLigne, $dateDepart, true);
+			
+		if($update == false){
 			$reqAvion = $this->select()
 							->setIntegrityCheck(false)
 							->from(array('avi' => 'avion'), array('avi.id_avion'))
 							->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion')
-							->where('avi.id_type_avion = ?', $infosVol['idTypeAvion'])
+							->where('avi.id_type_avion = ?', $idTypeAvion)
 							->where('id_avion NOT IN ?', $subReqAvion)
 							->where('disponibilite_avion = 1')
-							->where('rayon_action > ?', $infosVol['distance'])
-							->where('longueur_atterissage < ?', $infosVol['longueurPiste'])
+							->where('rayon_action > ?', $infosLigne->distance)
+							->where('longueur_atterissage < ?', $aeroportArrivee->longueur_piste)
 							->group('tyav.libelle')
 							->order('tyav.id_type_avion');
 		}
@@ -34,12 +42,12 @@ class Avion extends Zend_Db_Table_Abstract
 							->setIntegrityCheck(false)
 							->from(array('avi' => 'avion'), array('avi.id_avion'))
 							->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion')
-							->where('avi.id_type_avion = ?', $infosVol['idTypeAvion'])
+							->where('avi.id_type_avion = ?', $idTypeAvion)
 							->where('id_avion NOT IN ?', $subReqAvion)
 							->where('disponibilite_avion = 1')
-							->where('rayon_action > ?', $infosVol['distance'])
-							->where('longueur_atterissage < ?', $infosVol['longueurPiste'])
-							->orWhere('id_avion = ?', $infosVol['idAvion'])
+							->where('rayon_action > ?', $infosLigne->distance)
+							->where('longueur_atterissage < ?', $aeroportArrivee->longueur_piste)
+							->orWhere('id_avion = ?', $infosVol['id_avion'])
 							->group('tyav.libelle')
 							->order('tyav.id_type_avion');
 		}
@@ -78,6 +86,53 @@ class Avion extends Zend_Db_Table_Abstract
 					->where('id_avion NOT IN (?)', $subReqAvion);
 	
 		return $this->fetchRow($req);
+	}
+	
+	public function getTypeAvionDispoByVol($numeroLigne, $dateDepart, $update = false){
+		$TableVol = new Vol;
+		$TableLigne = new Ligne;
+		
+		$infosLigne = $TableLigne->find($numeroLigne)->current();
+		$aeroportArrivee = $infosLigne->findParentRow('Aeroport','aeroport_arrivee');
+		
+		$distance = $infosLigne->distance;
+		$longueurPiste = $aeroportArrivee->longueur_piste;
+		
+		if($update == false)
+			$subReqAvion = $TableVol->getIdAvionNoDispoByVol($numeroLigne, $dateDepart);
+		else
+			$subReqAvion = $TableVol->getIdAvionNoDispoByVol($numeroLigne, $dateDepart, true);
+		
+		if($update == false){
+			$reqAvion = $this->select()
+							->setIntegrityCheck(false)
+							->from(array('avi' => 'avion'))
+							->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion', array('tyav.libelle', 'tyav.id_type_avion'))
+							->where('id_avion NOT IN ?', $subReqAvion)
+							->where('disponibilite_avion = 1')
+							->where('rayon_action > ?', $distance)
+							->where('longueur_atterissage < ?', $longueurPiste)
+							->group('tyav.libelle')
+							->order('tyav.id_type_avion');
+		}
+		else{
+			$infosVol = $TableVol->getInfosVol($numeroLigne, $dateDepart);
+			
+			$reqAvion = $this->select()
+							->setIntegrityCheck(false)
+							->from(array('avi' => 'avion'))
+							->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion', array('tyav.libelle', 'tyav.id_type_avion'))
+							->where('id_avion NOT IN ?', $subReqAvion)
+							->where('disponibilite_avion = 1')
+							->where('rayon_action > ?', $distance)
+							->where('longueur_atterissage < ?', $longueurPiste)
+							->orWhere('id_avion = ?', $infosVol->id_avion)
+							->group('tyav.libelle')
+							->order('tyav.id_type_avion');
+		}
+		
+		return $this->fetchAll($reqAvion);
+		
 	}
 }
 

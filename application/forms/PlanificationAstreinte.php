@@ -99,7 +99,7 @@ class PlanificationAstreinte extends Zend_Form
 			$ESubmit = new Zend_Form_Element_Submit('Planifier');
 		
 		$this->setMethod('post');
-		$this->setAction('/planning/planificationastreinte/idaeroport/'.$this->_idAeroport.'/date/'.$this->_date.'/nbvol/'.$this->_nbVol.'/');
+		$this->setAction('/planning/planifier-astreinte/idaeroport/'.$this->_idAeroport.'/date/'.$this->_date.'/nbvol/'.$this->_nbVol.'/');
 	
 		$this->addElement($ESubmit);
 
