@@ -97,11 +97,12 @@ foreach($this->messages as $message)
 			echo $this->HeDepart;
 			echo $this->HeArrivee;
 			?>
+			<th class="emplacement_icone"></th>
+			<th class="emplacement_icone"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php 
-		$idLigne=0;
 	foreach ($this->paginator as $ligne){ ?>
 		<tr class="<?php echo $this->cycle(array("Odd", "Even"))->next();?>">
 			<td class="ligne"><a
@@ -127,6 +128,10 @@ foreach($this->messages as $message)
 					echo $heureArrivee->get('HH:mm');
 					?>
 			</a></td>
+			<td><a href="<?php echo $this->baseUrl('vol/modifier-ligne/ligne/').$ligne->numero_ligne;?>" class="icone_modifier_ligne"></a>
+			</td>
+			<td><a href="#" class="icone_delete_ligne"></a>
+			</td>
 		</tr>
 
 		<?php } ?>

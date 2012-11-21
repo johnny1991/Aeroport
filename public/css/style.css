@@ -3,7 +3,7 @@
 body {
 	background: #FFF;
 	margin: 5px auto 0 auto;
-	font-family: Quattrocento, Georgia, "Times New Roman", serif;
+	font-family: /*Quattrocento, Georgia, */ "Times New Roman", serif;
 	color: #0E0E0F;
 }
 
@@ -166,6 +166,24 @@ nav a {
 }*/
 
 /*------- tableau consultation ligne -------*/
+.emplacement_icone {
+	width: 25px;
+	height: 25px;
+}
+
+.icone_modifier_ligne {
+	width: 22px;
+	height: 22px;
+	background: url('/img/modifier-icone.png') no-repeat;
+	padding: 0px;
+}
+
+.icone_delete_ligne {
+	width: 22px;
+	height: 22px;
+	background: url('/img/icones1.png') no-repeat -130px -49px;
+	padding: 0px;
+}
 
 .table_consulter-ligne tr:hover,.table_consulter-vol tr:hover {
 	background-color: #FFAC2A;
@@ -184,15 +202,13 @@ nav a {
 	padding-top: 100px;
 }
 
-.Odd { /*background-color: #FFFFFF;
-	filter: alpha(opacity =     50);
-	-moz-opacity: 0.5;
-	opacity: 0.5;*/
+.Odd {
+	height: 35px;
 	background-color: rgba(129, 190, 208, 0.5);
 }
 
-.Even { /*background-color: red;*/
-	
+.Even {
+	height: 35px;
 }
 
 #desc {
@@ -323,11 +339,11 @@ nav a {
 	color: 0E53A7;
 	font-size: 15px;
 }
-#Reset{
-		background: -moz-linear-gradient(center top, #FFFFFF 0%, rgb(129, 190, 208) 100%)
-		repeat scroll 0 0 transparent;
-}
 
+#Reset {
+	background: -moz-linear-gradient(center top, #FFFFFF 0%, rgb(129, 190, 208)
+		100% ) repeat scroll 0 0 transparent;
+}
 
 .Global_error ul {
 	margin: 0px;
@@ -395,7 +411,8 @@ nav a {
 	float: left;
 }
 
-.pagination .disabled,.pagination .numero:hover,.pagination .enabled:hover {
+.pagination .disabled,.pagination .numero:hover,.pagination .enabled:hover
+	{
 	opacity: 0.6;
 }
 
@@ -404,14 +421,14 @@ nav a {
 	border-radius: 4px;
 	display: block;
 	float: left;
-	height:19px;
-	width:19px;
-	margin-top:2px;
+	height: 19px;
+	width: 19px;
+	margin-top: 2px;
 }
 
 .pagination .numero_enabled {
 	color: #0E0E0F;
-	background-color: #FFAC2A/*rgba(219, 252, 255, 0.7)*/;
+	background-color: #FFAC2A /*rgba(219, 252, 255, 0.7)*/;
 }
 
 /* search ligne */
@@ -428,6 +445,7 @@ nav a {
 
 #search-advanced-ligne {
 	/*background: url("../img/side.png") no-repeat scroll 0 0 transparent;*/
+	
 }
 
 .search-ligne label {
@@ -447,8 +465,9 @@ nav a {
 	display: block;
 	position: relative;
 	left: 25px;
-    top: 20px;
+	top: 20px;
 }
+
 #resetSearchLigne {
 	cursor: pointer;
 	margin-top: 8px;

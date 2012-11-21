@@ -5,12 +5,12 @@ class VolController extends Zend_Controller_Action
 		$this->view->title = "Gestion des lignes";
 	}
 
-	public function ajouterLigneAction() //OK
+	public function ajouterLigneAction() // A VOIR
 	{
-		$this->view->title = "Ajouter une ligne";
 		$form = new FormulaireLigne();
 		$form->setAction($this->getRequest()->getActionName());
 		$TableLigne = new Ligne;
+
 		if($this->getRequest()->isPost())
 		{
 			$data=$this->getRequest()->getPost();
@@ -45,7 +45,7 @@ class VolController extends Zend_Controller_Action
 				$Id = $Ligne->save();
 				$message = "<div class='insertion-ok'><label>Insertion réussi</label></div>";
 				$this->_helper->FlashMessenger($message);
-				if($this->getRequest()->getPost('periodicite'))
+				if($this->getRequest()->getPost('periodicite'))  // Périodique
 				{
 					$TablePeriodicite = new Periodicite;
 					foreach ($form->getValue("jours") as $jour)
@@ -58,7 +58,7 @@ class VolController extends Zend_Controller_Action
 					}
 					$this->_redirector->gotoUrl('/vol/consulter-vol/ligne/'.$Id);
 				}
-				else
+				else // Vol à la carte
 				{
 					$TableVol = new Vol;
 					$Vol = $TableVol->createRow();
@@ -84,56 +84,8 @@ class VolController extends Zend_Controller_Action
 								l'heure d'arrivée si la date de départ et la date d'arrivée sont à la même date");
 
 				}
-
 				$form->populate($data);
-
-				$tableAeroport = new Aeroport;
-
-				$AeroportOrigine = $form->getElement('aeroportOrigine');
-				$form->getElement('PopulateOrigine')->setValue("1");
-				$requete = $tableAeroport->select()
-				->setIntegrityCheck(false)
-				->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
-				->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
-				->where('code_pays=?',$data["Origine"]);
-				$aeroports = $tableAeroport->fetchAll($requete);
-				$AeroportOrigine->addMultiOption(0,"Choisissez l'aéroport");
-				$AeroportOrigine->setAttrib("disable",array("0"));
-				foreach($aeroports as $aeroport)
-					$AeroportOrigine->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
-				if(!(isset($data["aeroportOrigine"])))
-					$AeroportOrigine->setValue(0);
-
-				$AeroportDepart = $form->getElement('aeroportDepart');
-				$form->getElement('PopulateDepart')->setValue("1");
-				$requete = $tableAeroport->select()
-				->setIntegrityCheck(false)
-				->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
-				->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
-				->where('code_pays=?',$data["Depart"]);
-				$aeroports = $tableAeroport->fetchAll($requete);
-				$AeroportDepart->addMultiOption("0","Choisissez l'aéroport");
-				$AeroportDepart->setAttrib("disable",array("0"));
-				foreach($aeroports as $aeroport)
-					$AeroportDepart->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
-				if(!(isset($data["aeroportDepart"])))
-					$AeroportDepart->setValue(0);
-
-				$AeroportArrivee = $form->getElement('aeroportArrivee');
-				$form->getElement('PopulateArrivee')->setValue("1");
-				$requete = $tableAeroport->select()
-				->setIntegrityCheck(false)
-				->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
-				->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
-				->where('code_pays=?',$data["Arrivee"]);
-				$aeroports = $tableAeroport->fetchAll($requete);
-				$AeroportArrivee->addMultiOption("0","Choisissez l'aéroport");
-				$AeroportArrivee->setAttrib("disable",array("0"));
-				foreach($aeroports as $aeroport)
-					$AeroportArrivee->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
-				if(!(isset($data["aeroportArrivee"])))
-					$AeroportArrivee->setValue(0);
-
+				$this->remplissageAeroport($form, $data);
 				$this->view->Form = $form;
 			}
 		}
@@ -149,14 +101,146 @@ class VolController extends Zend_Controller_Action
 
 	public function modifierLigneAction()  // Faux
 	{
-		$this->view->title="Modifier une ligne";
+		$this->view->title = "Modifier une ligne";
+		$form = new FormulaireLigne();
+		$form->setAction($this->view->url($this->getAllParams()));
+		$TableLigne = new Ligne;
 		$numero_ligne=$this->_getParam('ligne');
-		$TableLigne=new Ligne;
-		$Ligne=$TableLigne->find($numero_ligne)->current();
-		try{
-			//$Ligne->delete();
-		}catch(Exception $e){
-			$this->view->erreur=$e->getMessage();
+		$ligne=$TableLigne->find($numero_ligne)->current();
+
+		if( ($numero_ligne != NULL) && ($ligne != NULL) )
+		{
+			//echo "passe";
+			if($this->getRequest()->isPost())
+			{
+				//echo "passe1";
+				
+				$data=$this->getRequest()->getPost();
+				$dateDepart = null;
+				$dateArrivee = null;
+				$hDepart = null;
+				$hArrivee = null;
+
+				if ((isset($data["periodicite"]))&&(!($data["periodicite"])))
+				{
+					echo "passe2";
+						
+					if($data["dateDepart"]!='')
+						$dateDepart = new Zend_Date($data["dateDepart"], 'dd-MM-yy');
+					if($data["dateArrivee"]!='')
+						$dateArrivee = new Zend_Date($data["dateArrivee"], 'dd-MM-yy');
+					if($data["heureDepart"]!='')
+						$hDepart = new Zend_Date($data["heureDepart"], 'HH:mm:ss');
+					if($data["heureArrivee"]!='')
+						$hArrivee = new Zend_Date($data["heureArrivee"], 'HH:mm:ss');
+				}
+
+				if(($form->isValid($data))&&(($dateDepart<$dateArrivee)||(($dateDepart==$dateArrivee)&&($hDepart<$hArrivee))||(($data["periodicite"]))))
+				{
+					//echo "passe3";
+						
+					$Ligne = $TableLigne->find($form->getValue('Numero'))->current();
+					//$Ligne->numero_ligne = $form->getValue('Numero');
+					$Ligne->id_aeroport_origine = $form->getValue('aeroportOrigine');
+					$Ligne->id_aeroport_depart = $form->getValue('aeroportDepart');
+					$Ligne->id_aeroport_arrivee = $form->getValue('aeroportArrivee');
+					$Ligne->heure_depart = $form->getValue('heureDepart');
+					$Ligne->heure_arrivee = $form->getValue('heureArrivee');
+					$Ligne->tarif = $form->getValue('tarif');
+					$Ligne->distance = $form->getValue('distance');
+					$Id = $Ligne->save();
+					$message = "<div class='insertion-ok'><label>Modification réussi</label></div>";
+					$this->_helper->FlashMessenger($message);
+					if($this->getRequest()->getPost('periodicite')) // Périodique
+					{
+						$TablePeriodicite = new Periodicite;
+						foreach ($form->getValue("jours") as $jour)
+						{
+							echo "jour :".$jour;
+							$Periode = $TablePeriodicite->createRow();
+							$Periode->numero_ligne = $Id;
+							$Periode->numero_jour = $jour;
+							$Periode->save();
+						}
+						$this->_redirector->gotoUrl('/vol/consulter-vol/ligne/'.$Id);
+					}
+					else // Vol à la carte
+					{
+						//echo "passe4";
+						
+						$TableVol = new Vol;
+						$Vol = $TableVol->createRow();
+						$Vol = $Ligne->findDependentRowset('Vol')->current();
+						//$Vol->id_vol = $TableVol->getLastId($Id)+1;
+						$Vol->numero_ligne = $Id;
+						$Vol->id_aeroport_depart_effectif = $form->getValue('aeroportDepart');
+						$Vol->id_aeroport_arrivee_effectif = $form->getValue('aeroportArrivee');
+						$Vol->date_depart = $dateDepart->get('yyyy-MM-dd');
+						$Vol->date_arrivee = $dateArrivee->get('yyyy-MM-dd');
+						$Vol->tarif_effectif = $form->getValue('tarif_effectif');
+						$Vol->save();
+						$this->_redirector->gotoUrl('/vol/fiche-vol/ligne/'.$Vol->numero_ligne.'/vol/'.$Vol->id_vol);
+					}
+				}
+				else
+				{
+					if ((isset($data["periodicite"]))&&(!($data["periodicite"])))
+					{
+						if($dateDepart > $dateArrivee)
+							$form->getElement("dateArrivee")->addError("La date de départ doit être inférieur à la date d'arrivée");
+						else if (($dateDepart == $dateArrivee)&&($hDepart > $hArrivee))
+							$form->getElement("heureArrivee")->addError("L'heure de départ doit être inférieur à
+									l'heure d'arrivée si la date de départ et la date d'arrivée sont à la même date");
+
+					}
+					$form->populate($data);
+					$this->remplissageAeroport($form, $data);
+					$this->view->form = $form;
+					$form->getElement('Numero')->setAttrib("disabled","disabled");	
+				}
+			}
+			else
+			{
+				$donnees = array(
+						'Numero'=>$ligne->numero_ligne,
+						'Origine'=>$ligne->findParentRow('Aeroport','aeroport_origine')->findParentRow('Ville')->code_pays,
+						'aeroportOrigine'=>$ligne->id_aeroport_origine,
+						'Depart'=>$ligne->findParentRow('Aeroport','aeroport_depart')->findParentRow('Ville')->code_pays,
+						'aeroportDepart'=>$ligne->id_aeroport_depart,
+						'Arrivee'=>$ligne->findParentRow('Aeroport','aeroport_arrivee')->findParentRow('Ville')->code_pays,
+						'aeroportArrivee'=>$ligne->id_aeroport_arrivee,
+						'heureDepart'=>$ligne->heure_depart,
+						'heureArrivee'=>$ligne->heure_arrivee,
+						'tarif'=>number_format($ligne->tarif, 2, ',','')
+				);
+
+				if($ligne->findDependentRowset('Periodicite')->count()==0){
+					$dateDepart = new Zend_Date($ligne->findDependentRowset('Vol')->current()->date_depart, 'dd-MM-yy');
+					$dateArrivee = new Zend_Date($ligne->findDependentRowset('Vol')->current()->date_arrivee, 'dd-MM-yy');
+					$donnees["periodicite"]=0;
+					$donnees["dateDepart"]=$dateDepart->get('dd-MM-yyyy');
+					$donnees["dateArrivee"]=$dateArrivee->get('dd-MM-yyyy');
+					$donnees["tarif_effectif"]=number_format($ligne->findDependentRowset('Vol')->current()->tarif_effectif, 2, ',','');
+				}
+				else {
+					$Tablejours=$ligne->findDependentRowset('Periodicite')->toArray();
+					$jours= array();
+					$numero_jour=0;
+					foreach ($Tablejours as $jour)
+						$jours[$numero_jour++]=$jour["numero_jour"];
+					$donnees["periodicite"]=1;
+					$donnees["jours"]=$jours;
+				}
+				$form->populate($donnees);
+				$tableAeroport = new Aeroport;
+				$this->remplissageAeroport($form, $donnees);
+				$form->getElement('Numero')->setAttrib("disabled","disabled");
+				$this->view->form = $form;
+			}
+		}
+		else
+		{
+			echo "existe pas";
 		}
 	}
 
@@ -171,7 +255,6 @@ class VolController extends Zend_Controller_Action
 		}catch(Exception $e){
 			$this->view->erreur = $e->getMessage();
 		}
-
 	}
 
 	public function rechercherAdresseAction(){ //OK
@@ -181,7 +264,6 @@ class VolController extends Zend_Controller_Action
 		$Aeroport = $TableAeroport->find($id_aeroport)->current();
 		$Ville = $Aeroport->findParentRow('Ville');
 		echo $Aeroport->adresse.", ".$Ville->nom.", ".$Ville->findParentRow('Pays')->nom;
-
 	}
 
 	public function rechercherAeroportAction()
@@ -207,7 +289,7 @@ class VolController extends Zend_Controller_Action
 	public function consulterLigneAction(){ //OK
 
 		$data = $this->getRequest()->getParams();
-		
+
 		$form = new RechercheLigne();
 		$form->Reset->setAttrib('onclick',"javascript:location.href='".$this->view->url()."'");
 		$form->populate($data);
@@ -215,7 +297,7 @@ class VolController extends Zend_Controller_Action
 
 		$tableAeroport = new Aeroport;
 		$TableLigne = new Ligne;
-		
+
 		if((isset($data["aeroportOrigine"])))
 		{
 			$AeroportOrigine = $form->getElement('aeroportOrigine');
@@ -261,7 +343,7 @@ class VolController extends Zend_Controller_Action
 				$AeroportArrivee->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
 			$AeroportArrivee->setValue($data["aeroportArrivee"]);
 		}
-		
+
 		$this->view->form = $form;
 		$this->view->title = "Consultation des lignes";
 		$nbLigne = 25; //Nombre de lignes par pages
@@ -275,7 +357,6 @@ class VolController extends Zend_Controller_Action
 			$orderBy = $this->getRequest()->getParam('orderBy');
 		else
 			$orderBy = "Numero_Asc";
-
 
 		$requete = $TableLigne
 		->select()
@@ -435,9 +516,7 @@ class VolController extends Zend_Controller_Action
 			->joinLeft(array('ta'=>'type_avion'),'a.id_type_avion=ta.id_type_avion',array('ta.libelle'))
 			->joinLeft(array('p'=>'pilote'),'p.id_pilote=v.id_pilote',array('p.nom'))
 			->joinLeft(array('c'=>'pilote'),'c.id_pilote=v.id_copilote',array('c.nom as copilote'))
-			->where("numero_ligne=?",$numero_ligne)
-			//->limitPage($page,$nbLigne)
-			;
+			->where("numero_ligne=?",$numero_ligne);
 
 			switch ($orderBy)
 			{
@@ -553,6 +632,54 @@ class VolController extends Zend_Controller_Action
 		$Html .= $this->view->url($params)."'>".$nom."</a></th>";
 
 		return $Html;
+	}
+
+	public function remplissageAeroport($form,$data)
+	{
+		$tableAeroport = new Aeroport;
+		$AeroportOrigine = $form->getElement('aeroportOrigine');
+		$form->getElement('PopulateOrigine')->setValue("1");
+		$requete = $tableAeroport->select()
+		->setIntegrityCheck(false)
+		->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
+		->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
+		->where('code_pays=?',$data["Origine"]);
+		$aeroports = $tableAeroport->fetchAll($requete);
+		$AeroportOrigine->addMultiOption(0,"Choisissez l'aéroport");
+		$AeroportOrigine->setAttrib("disable",array("0"));
+		foreach($aeroports as $aeroport)
+			$AeroportOrigine->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
+		if(!(isset($data["aeroportOrigine"])))
+			$AeroportOrigine->setValue(0);
+		$AeroportDepart = $form->getElement('aeroportDepart');
+		$form->getElement('PopulateDepart')->setValue("1");
+		$requete = $tableAeroport->select()
+		->setIntegrityCheck(false)
+		->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
+		->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
+		->where('code_pays=?',$data["Depart"]);
+		$aeroports = $tableAeroport->fetchAll($requete);
+		$AeroportDepart->addMultiOption("0","Choisissez l'aéroport");
+		$AeroportDepart->setAttrib("disable",array("0"));
+		foreach($aeroports as $aeroport)
+			$AeroportDepart->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
+		if(!(isset($data["aeroportDepart"])))
+			$AeroportDepart->setValue(0);
+
+		$AeroportArrivee = $form->getElement('aeroportArrivee');
+		$form->getElement('PopulateArrivee')->setValue("1");
+		$requete = $tableAeroport->select()
+		->setIntegrityCheck(false)
+		->from(array('ae'=>'aeroport'),array('ae.nom','ae.code_ville','ae.id_aeroport'))
+		->join(array('v'=>'ville'),'v.code_ville = ae.code_ville',array('v.code_pays'))
+		->where('code_pays=?',$data["Arrivee"]);
+		$aeroports = $tableAeroport->fetchAll($requete);
+		$AeroportArrivee->addMultiOption("0","Choisissez l'aéroport");
+		$AeroportArrivee->setAttrib("disable",array("0"));
+		foreach($aeroports as $aeroport)
+			$AeroportArrivee->addMultiOption($aeroport->id_aeroport,$aeroport->nom);
+		if(!(isset($data["aeroportArrivee"])))
+			$AeroportArrivee->setValue(0);
 	}
 
 	public function init(){ //OK

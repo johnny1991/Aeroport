@@ -3,6 +3,7 @@ class Ligne extends Zend_Db_Table_Abstract
 {
 	protected $_name='ligne';
 	protected $_primary='numero_ligne';
+	protected $_dependentTables = array('Periodicite');
 	protected $_referenceMap=array(
 			'aeroport_origine'=>array(
 					'columns'=>'id_aeroport_origine',
