@@ -22,14 +22,16 @@
 #tableCalendar tr td:first-child{background:none;background-color:#b6b6b6;}
 
 #tableCalendar td.tdToday{background:none;background:url('/img/background-td-today.png') -30px -10px no-repeat;border:2px #787878 solid;}
-#tableCalendar tr.trWeek td.tdToday{background:none;background:url('/img/background-td-today.png') -30px -10px no-repeat;border:1px #000 solid;box-shadow:inset 2px 1px 8px #5e5e5e;}
-#tableCalendar tr.trWeek td.tdToday:hover{background:none;background:url('/img/background-td.png') -30px -10px no-repeat;border:1px #000 solid;}
+#tableCalendar td.tdToday.trWeek{background:none;background:url('/img/background-td-today.png') -30px -10px no-repeat;border:1px #000 solid;box-shadow:inset 2px 1px 8px #5e5e5e;}
+#tableCalendar td.tdToday.trWeek:hover{background:none;background:url('/img/background-td.png') -30px -10px no-repeat;border:1px #000 solid;}
+#tableCalendar td.tdToday.prevDay.trWeek{background:none;background:url('/img/background-td-today.png') -30px -10px no-repeat;border:1px #000 solid;box-shadow:inset 2px 1px 8px #5e5e5e;}
+#tableCalendar td.tdToday.prevDay.trWeek:hover{background:none;background:url('/img/background-td.png') -30px -10px no-repeat;border:1px #000 solid;}
 
-#tableCalendar tr.trWeek td{background:none;background:url('/img/background-td-update.png') -0px -0px no-repeat;}
-#tableCalendar tr.trWeek td:hover{background:none;background:url('/img/background-td-update-hover.png') -0px -0px no-repeat;}
-#tableCalendar tr.trWeek td.prevDay{background:none;background:url('/img/background-td-update-prev-next.png') -0px -0px no-repeat;color:#135411;}
-#tableCalendar tr.trWeek td.prevDay:hover{background:none;background:url('/img/background-td-update-prev-next-hover.png') -0px -0px no-repeat;color:#135411;}
-#tableCalendar tr.trWeek td:first-child{background:none;background-color:#b6b6b6;}
+#tableCalendar td.trWeek{background:none;background:url('/img/background-td-update.png') -0px -0px no-repeat;}
+#tableCalendar td.trWeek:hover{background:none;background:url('/img/background-td-update-hover.png') -0px -0px no-repeat;}
+#tableCalendar td.prevDay.trWeek {background:none;background:url('/img/background-td-update-prev-next.png') -0px -0px no-repeat;color:#135411;}
+#tableCalendar td.prevDay.trWeek:hover{background:none;background:url('/img/background-td-update-prev-next-hover.png') -0px -0px no-repeat;color:#135411;}
+#tableCalendar td:first-child.trWeek{background:none;background-color:#b6b6b6;}
 
 #tableCalendar td.prevDay{color:#626262;background:none;background:url('/img/background-td-prev-next.png') -0px -0px no-repeat;}
 #tableCalendar td.prevDay:hover{color:#000;background:none;background:url('/img/background-td-hover.png') -0px -0px no-repeat;}

@@ -39,7 +39,7 @@ class Aeroport_Fonctions{
 	
 	/**
 	 * Récupère la valeur d'un paramétre dans l'url courant
-	 * @param $param
+	 * @param $name
 	 * @return value
 	 */
 	public static function getParam($name){
@@ -63,5 +63,34 @@ class Aeroport_Fonctions{
 			return $params[$name];
 		else
 			return false;
+	}
+	
+	/**
+	 * Vérifie si les paramètre passés sont valides
+	 * @param array $param
+	 * @return bool
+	 */
+	public static function validParam($params){
+
+		$regex = array(
+					'date' => '^[0-9]{4}([-][0-9]{2}){2}$',
+					'idaeroport' => '^[a-zA-Z]{3}$',
+					'int' => '^[0-9]*$',
+					'error' => '^[0-9]{3}([-][0-9]{3})*$',
+					'bool' => '^true$|^false$'
+				);
+		
+		foreach($params as $param => $format){
+			if(!preg_match('#'.$regex[$format].'#', $param)){
+				return false;
+			}	
+		}
+		
+		return true;
+	}
+	
+	public static function redirector($link){
+		$redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+		$redirector->gotoUrl($link);
 	}
 }

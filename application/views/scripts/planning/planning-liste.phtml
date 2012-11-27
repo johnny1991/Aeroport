@@ -1,0 +1,99 @@
+<br /><br />
+
+
+<?php
+	if(count($this->paginator) != 0){
+?>
+	<table class="tableListeVol">
+		<tr>
+			<th>Date de départ</th>
+			<th>Numéro de ligne</th>
+			<th>Aéroport de départ</th>
+			<th>Heure de départ</th>
+			<th>Aéroport d'arrivée</th>
+			<th>Heure d'arrivée</th>
+			<th>Options</th>
+		</tr>
+	<?php 
+			foreach($this->paginator as $value){
+				$dateExplode = explode('-', $value['date_depart']);
+				
+				$error = '';
+				$varErreur = '';
+				if(isset($value['error-pilote']) || isset($value['error-copilote']) || isset($value['error-avion'])){
+					$error = 'class="trErreur"';
+					$varErreur = '/error/';
+
+					$varErreur = '/error/';
+					$codeErreur = array();
+					
+					if(isset($value['error-pilote'])){
+						$codeErreur[] = '101';
+					}
+					
+					if(isset($value['error-copilote'])){
+						$codeErreur[] = '102';
+					}
+					
+					if(isset($value['error-avion'])){
+						$codeErreur[] = '103';
+					}
+					
+					$varErreur .= implode('-', $codeErreur);
+				}
+				
+				if($value['options'] != 'Consulter')
+					$lien = '/planning/planifier-vol/date/'.$value['date_depart'].'/numeroligne/'.$value['numero_ligne'] . $varErreur;
+				else
+					$lien = '/vol/fiche-vol/ligne/'.$value['numero_ligne'].'/vol/'.$value['idVol'] . $varErreur;
+					
+					echo '
+					<tr '.$error.' class="'.$this->cycle(array("Odd", "Even"))->next().'">
+						<td>'.$dateExplode[2].'/'.$dateExplode[1].'/'.$dateExplode[0].'</td>
+						<td>'.$value['numero_ligne'].'</td>
+						<td><span class="spanAcronyme" title="'.$value['nom_aeroport_origine'].'">'.$value['aeroport_origine'].'</span></td>
+						<td>'.$value['heure_depart'].'</td>
+						<td><span class="spanAcronyme" title="'.$value['nom_aeroport_arrivee'].'">'.$value['aeroport_arrivee'].'</span></td>
+						<td>'.$value['heure_arrivee'].'</td>
+						<td><a href="'.$lien.'">'.$value['options'].'</a></td>
+					</tr>';	
+				
+			}
+	?>
+</table>
+<?php 
+	}
+	else{
+		echo 'Aucun vol pour ce jour.';
+	}
+?>
+<br />
+<br />
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+<br />
+<br />
+<?php if(count($this->tabAeroportAstreinte) != 0){?>
+<table class="tableAstreinte">
+	<tr><th>Date</th><th>Planification d'un équipage d'astreinte</th><th class="thOption">Options</th></tr>
+	<?php 
+	
+	foreach($this->paginatorAst as $date => $value){
+			$dateExplode = explode('-', $date);
+			$aeroport = $dateExplode[3];
+			$key = $dateExplode[2].'/'.$dateExplode[1].'/'.$dateExplode[0];
+				echo '
+				<tr class="'.$this->cycle(array("Odd", "Even"))->next().'">
+				<td class="tdAeroport">'.$key.'</td>
+				<td class="tdAeroport">'.$value['nom'].'</td>
+				<td class="tdAeroportOption"><a href="/planning/planifier-astreinte/idaeroport/'.$aeroport.'/date/'.$value['date'].'/nbvol/'.$value['nbvol'].'/">'.$value['option'].'</a></td>
+				</tr>';
+			
+		}
+	?>
+</table>
+<br />
+<br />
+<?php echo $this->paginationControl($this->paginatorAst, 'Sliding', 'pagination.phtml'); ?>
+<br />
+<br />
+<?php }?>

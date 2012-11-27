@@ -61,7 +61,15 @@ return array(
 						'action'     => 'index',
 						'title'		=>	'Gérer le planning',
 						'pages'      =>
-						array(
+						array(	array(
+									'label'      => 'Liste des vols',
+									'uri'		=>	'/planning/planning-liste/',
+									'module'     => 'default',
+									'controller' => 'planning',
+									'action'     => 'planning-liste',
+									'id'		=>	'planningListe',
+									'title'		=>	'Liste des vols à planifier',
+								),
 								array(
 										'label'      => 'Liste des vols',
 										'uri'		=>	'/planning/liste-vol/',
@@ -91,6 +99,14 @@ return array(
 														'uri'		=>	'/planning/planifier-astreinte/',
 														'id'		=>	'planifierAstreinte'
 														
+												), 
+												array(
+														'label'      => 'Consulter un équipage d\'astreinte',
+														'module'     => 'default',
+														'controller' => 'planning',
+														'action'     => 'fiche-astreinte',
+														'uri'		=>	'/planning/fiche-astreinte/',
+														'id'		=>	'ficheAstreinte'
 												)
 										)
 								)

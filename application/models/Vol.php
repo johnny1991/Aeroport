@@ -67,6 +67,9 @@ class Vol extends Zend_Db_Table_Abstract
 		$heureArrivee = $infosLigne->heure_arrivee;
 		$timestampDepart = strtotime($dateDepart);
 		
+		$infosVol = $this->getInfosVolWithAvion($numeroLigne, $dateDepart);
+		$idAvion = $infosVol['id_avion'];
+		
 		if($heureArrivee < $heureDepart)
 			$dateArrivee = date(‘Y-m-d’, strtotime('+1 days', $timestampDepart));
 		else
@@ -85,7 +88,8 @@ class Vol extends Zend_Db_Table_Abstract
 						->from(array('v' => 'vol'), 'v.id_avion')
 						->where('v.numero_ligne != ?', $numeroLigne)
 						->where('v.date_depart = ?', $dateDepart)
-						->where('UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))');
+						->where('UNIX_TIMESTAMP(CONCAT(v.date_arrivee," ",v.heure_arrivee_effective)) BETWEEN UNIX_TIMESTAMP(CONCAT("'.$dateDepart.'"," ","'.$heureDepart.'")) AND UNIX_TIMESTAMP(CONCAT("'.$dateArrivee.'"," ","'.$heureArrivee.'"))')
+						->orwhere('id_avion = ?', $idAvion);
 		}
 		
 		return($req);

@@ -21,6 +21,15 @@ class Astreinte extends Zend_Db_Table_Abstract
 		return $this->fetchAll($reqAstreinte);
 	}
 	
+	public function getIdAeroportByDate($date){
+		$req = $this->select()
+					->from(array('ast' => $this->_name), array('id_aeroport'))
+					->where('DATE(date_astreinte) = ?', $date)
+					->order('id_aeroport');
+		
+		return $this->fetchAll($req);
+	}
+	
 	public function getReqPiloteAstreinte($date, $idAeroport){
 		$req = $this->select()
 					->setIntegrityCheck(false)

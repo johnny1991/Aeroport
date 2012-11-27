@@ -34,10 +34,12 @@ class Avion extends Zend_Db_Table_Abstract
 							->where('disponibilite_avion = 1')
 							->where('rayon_action > ?', $infosLigne->distance)
 							->where('longueur_atterissage < ?', $aeroportArrivee->longueur_piste)
-							->group('tyav.libelle')
 							->order('tyav.id_type_avion');
 		}
 		else{
+			
+			$subReqAvionType = $this->getReqIdAvionByType($idTypeAvion);
+			
 			$reqAvion = $this->select()
 							->setIntegrityCheck(false)
 							->from(array('avi' => 'avion'), array('avi.id_avion'))
@@ -47,13 +49,21 @@ class Avion extends Zend_Db_Table_Abstract
 							->where('disponibilite_avion = 1')
 							->where('rayon_action > ?', $infosLigne->distance)
 							->where('longueur_atterissage < ?', $aeroportArrivee->longueur_piste)
-							->orWhere('id_avion = ?', $infosVol['id_avion'])
-							->group('tyav.libelle')
+							->orWhere('id_avion IN ('.$subReqAvionType.') AND id_avion = '.$infosVol['id_avion'])
 							->order('tyav.id_type_avion');
 		}
 		
 		
 		return $this->fetchRow($reqAvion);
+	}
+	
+	public function getReqIdAvionByType($idTypeAvion){
+		$req = $this->select()
+					->setIntegrityCheck(false)
+					->from(array('av' => 'avion'), array('id_avion'))
+					->where('id_type_avion = ?', $idTypeAvion);
+		
+		return $req;
 	}
 	
 	public function checkAvionDispo($dateDepart, $numeroLigne, $idAvion){

@@ -49,14 +49,14 @@ class PlanificationVol extends Zend_Form
 			if($nbVol != 0)
 				$EAvion->setValue($infosVol->id_type_avion);
 		
-			$EPilote = new Zend_Form_Element_Select('pilote');
+			$EPilote = new Zend_Form_Element_Select('pilote0');
 			$EPilote->setAttrib('id', 'selectPilote');
-			$EPilote->setAttrib('onchange', 'MaJCoPilote()');
+			$EPilote->setAttrib('onchange', 'MaJCoPilote(0)');
 			$EPilote->removeDecorator('label');
 			$EPilote->removeDecorator('HtmlTag');
 			$EPilote->setRequired(true);
 			
-			$ECoPilote = new Zend_Form_Element_Select('co_pilote');
+			$ECoPilote = new Zend_Form_Element_Select('pilote1');
 			$ECoPilote->setAttrib('id', 'selectCoPilote');
 			$ECoPilote->removeDecorator('label');
 			$ECoPilote->removeDecorator('HtmlTag');

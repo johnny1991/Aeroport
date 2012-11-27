@@ -14,7 +14,9 @@
                     'myWeek': getWeek(dateToday),
                     'myDay': dateToday.getDay(),
             		'minYear' : 2012,
-        			'maxYear' : 1 + dateToday.getFullYear()
+        			'maxYear' : 1 + dateToday.getFullYear(),
+        			'nbSemaine' : 4,
+        			'link' : '/planning/liste-vol/'
                 };
 
         	var params = $.extend(defaults, options);
@@ -29,6 +31,9 @@
         	
         	minYear = params.minYear;
         	maxYear = params.maxYear;
+        	link = params.link;
+
+        	nbSemaine = params.nbSemaine;
         	
         	currentMonth = dateToday.getMonth();
         	currentYear = dateToday.getFullYear();
@@ -226,94 +231,44 @@
         		return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
         	}
         	
-        	function colorWeek(theWeek){
+        	function getNumDay(dateToDay){
+        		dateString2 = dateToDay.toDateString(Math.round(dateToDay.getTime()/1000));
+    			dateExplode2 = dateString2.split(' ');
+    			
+    			return dateExplode2[2];
+    		
+        	}
+        	
+        	
+        	function getFirstMonday(){
+        		theDay = myDay;
+        		theDate = myDate;
         		
-        		weekFour = myWeek + 3;
+        		if(theDay == 0)
+        			theDay = 7;
         		
-        		if(currentYear == myYear){
-        			if(currentMonth == myMonth){
-        				if(currentMonth == 11){
-        					if(theWeek >= myWeek && theWeek <= weekFour){
-        						$('.date-'+theWeek+'-'+currentMonth+'-'+currentYear).addClass('trWeek');
-        					}
-        					else{
-        						
-        						dateTestMaxWeek = new Date();
-        						dateTestMaxWeek.setYear(myYear);
-        						dateTestMaxWeek.setMonth(11);
-        						dateTestMaxWeek.setDate(31);
-        						
-        						maxWeek = getWeek(dateTestMaxWeek);
-        						
-        						if(maxWeek == 1){
-        							maxWeek = 52;
-        						}
-        						
-        						if(weekFour > maxWeek){
-        							maxWeek = weekFour - maxWeek;
-        						
-        							if(theWeek <= maxWeek){
-        								$('.date-'+theWeek+'-'+currentMonth+'-'+currentYear).addClass('trWeek');
-        							}
-        						}
-        					}
-        					
-        				}
-        				else{
-        					if(theWeek >= myWeek && theWeek <= weekFour){
-        						$('.date-'+theWeek+'-'+currentMonth+'-'+currentYear).addClass('trWeek');
-        					}
-        				}
-        			}
-        			else{
-        				if(currentMonth == myMonth+1){
-        					if(theWeek >= myWeek && theWeek <= weekFour){
-        						$('.date-'+theWeek+'-'+currentMonth+'-'+currentYear).addClass('trWeek');
-        					}
-        				}
-        				else{
-        					if(currentMonth == myMonth-1){
-        						if(theWeek == myWeek){
-        							$('.date-'+theWeek+'-'+currentMonth+'-'+currentYear).addClass('trWeek');
-        						}
-        					}
-        				}
-        			}
+        		firstMonday = theDate - theDay + 1;
+        		
+        		if(firstMonday < 0){
+        			thePrevMonth = myMonth - 1;
+        			
+        			if(thePrevMonth == -1)
+        				thePrevMonth = 11;
+        			
+        			firstMonday = arrayDayPerMonth[thePrevMonth] + firstMonday;
         		}
-        		else{
-        			if(currentYear == myYear+1){
-        				if(currentMonth == 0){
-        					dateTestMaxWeek = new Date();
-        					dateTestMaxWeek.setYear(myYear);
-        					dateTestMaxWeek.setMonth(11);
-        					dateTestMaxWeek.setDate(31);
-        					
-        					maxWeek = getWeek(dateTestMaxWeek);
-        					
-        					if(maxWeek == 1){
-        						maxWeek = 52;
-        					}
-        					
-        					if(weekFour > maxWeek){
-        						maxWeek = weekFour - maxWeek;
-        					
-        						if(theWeek <= maxWeek){
-        							$('.date-'+theWeek+'-'+currentMonth+'-'+currentYear).addClass('trWeek');
-        							
-        						}
-        					}
-        				}
-        			}
-        			else{
-        				if(currentYear == myYear-1){
-        					if(currentMonth == 11){
-        						if(theWeek == myWeek){
-        							$('.date-'+theWeek+'-'+currentMonth+'-'+currentYear).addClass('trWeek');
-        						}
-        					}
-        				}
-        			}
-        		}		
+        		
+        		theFirstMondayDate = new Date();
+        		
+        		theFirstMondayDate.setMonth(myMonth);
+        		theFirstMondayDate.setYear(myYear);
+        		theFirstMondayDate.setDate(firstMonday);
+        		theFirstMondayDate.setHours(0);
+        		theFirstMondayDate.setMinutes(0);
+        		theFirstMondayDate.setSeconds(0);
+
+        		return (Math.floor(theFirstMondayDate.getTime() / 1000));
+        		
         	}
         	
         	function lastSunday(){
@@ -331,36 +286,78 @@
         		
         		daysRemaining = 7 - theDay;
         		lastDayWeek = myDate + daysRemaining;
-        		Sundays4 = (3*7) + lastDayWeek;		
+        		Sundays4 = ((nbSemaine - 1)*7) + lastDayWeek;		
         		
         		timestamp2 = new Date();
-        		timestamp2.setDate(Sundays4);
-        		timestamp2.setMonth(myMonth);
-        		timestamp2.setYear(myYear);
+        		timestamp2.setHours(23);
+        		timestamp2.setMinutes(59);
+        		timestamp2.setSeconds(59);
         		
         		if(Sundays4 > dayMonth){
+            		
+            		
         			dayNextMonth = Sundays4 - dayMonth;
+        			NextMonth = myMonth + 1;
+        			
+        			inc = 1;
+        			inc2 = myMonth + 1;
+        			
+        			if(inc2 == 12)
+        				inc2 = 0;
+        			
+        			while(dayNextMonth >= arrayDayPerMonth[(inc2)]){
+        				
+        				dayNextMonth = dayNextMonth - arrayDayPerMonth[(inc2)];
+        				NextMonth = myMonth + (inc + 1);
+        				
+        				inc2++;
+        				inc++;
+        				if(NextMonth == 12)
+        					NextMonth = 0;
+        				
+        				if(inc2 == 12)
+        					inc2 = 0;
+        			}
+        			
         			timestamp2.setDate(dayNextMonth);
         			
-        			NextMonth = myMonth + 1;
+        			if(NextMonth == 12)
+        				NextMonth = 0;
+        			
         			timestamp2.setMonth(NextMonth);
         			
         			if(NextMonth == 0){
         				timestamp2.setYear(myYear + 1);
         			}
+        		}else{
+        			timestamp2.setDate(Sundays4);
+            		timestamp2.setMonth(myMonth);
+            		timestamp2.setYear(myYear);
         		}
         		
-        		timestamp2Time = timestamp2.getTime();
+        		timestamp2Time = Math.round(timestamp2.getTime()/1000);
         		
-        		return timestamp2Time;
+        		return (timestamp2Time);
         	}
         	
-        	function linkDay(date){
-      
-	      		if(lastSunday() >= date.getTime()){
-	        		$('#tableCalendar tbody tr td:last-child span').wrap('<a href="http://www.google.fr"><div style="width:100%;height:80px;"></div></a>');
+        	function linkDay(dateJour){
+        		
+        		formatDate = dateJour.getFullYear()+'-'+(dateJour.getMonth()+1)+'-'+dateJour.getDate();  		        	
+    			
+    			formatDateClass = getNumDay(dateJour)+'-'+dateJour.getMonth()+'-'+dateJour.getFullYear();
+	      		if(lastSunday() >= Math.round(dateJour.getTime()/1000)){
+	      			linkDate = Math.round(dateJour.getTime() / 1000);
+	        		$('td.'+formatDateClass+' span').wrap('<a href="'+link+'date/'+formatDate+'"><div style="width:100%;height:80px;"></div></a>');
 	        	}	
         		
+        	}
+        	
+        	function colorDay(dateJour){
+        		timestampDateJour = Math.round(dateJour.getTime() / 1000);
+        		//theDate = dateJour.getDate();
+        		if(timestampDateJour >= getFirstMonday() && timestampDateJour <= lastSunday()){
+        			$('.'+getNumDay(dateJour)+'-'+dateJour.getMonth()+'-'+dateJour.getFullYear()).addClass('trWeek');
+        		}
         	}
         	
         	function addAttributWeek(theWeek, theYear){
@@ -396,7 +393,11 @@
         		arrayDay = {'Sun':'Dimanche', 'Mon':'Lundi', 'Tue':'Mardi', 'Wed':'Mercredi', 'Thu':'Jeudi', 'Fri':'Vendredi', 'Sat':'Samedi'};
         		arrayMonth = {'Jan':'Janvier', 'Feb':'Février', 'Mar':'Mars', 'Apr':'Avril', 'May':'Mai', 'Jun':'Juin', 'Jul':'Juillet', 'Aug':'Août', 'Sep':'Septembre', 'Oct':'Octobre', 'Nov':'Novembre', 'Dec':'Décembre'};
         		arrayMonthEng = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
-        		arrayDayPerMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+        		
+        		if(leapYear(currentYear))
+        			arrayDayPerMonth = new Array(31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+        		else
+        			arrayDayPerMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         	
         		date.setFullYear(indexYear);
         		date.setMonth(indexMonth);
@@ -438,7 +439,7 @@
         					if(firstDay == 0)
         						firstDay = 7;
         					
-        					for(j=firstDay-2;j>=0;j--){
+        					for(p=firstDay-2;p>=0;p--){
         						
         						prevMonth = currentMonth - 1;
         						if(prevMonth == -1){
@@ -452,18 +453,31 @@
         							}
         						}
         						
-        						prevDay = totalDays - j;
+        						prevDay = totalDays - p;
         						prevYear = currentYear;
         						
         						if(prevMonth == 11)
         							prevYear = currentYear - 1;
         						
-        						prevDate.setYear(prevYear);
-        						prevDate.setMonth(prevMonth);
-        						prevDate.setDate(prevDay);
+        						dateprev = new Date();
+        						dateprev.setYear(prevYear);
+        						dateprev.setMonth(prevMonth);
+        						dateprev.setDate(prevDay);
         						
-        						$('#tableCalendar tbody tr:last-child').append('<td class="prevDay"><span>'+prevDay+'</span></td></a>');
-        						linkDay(prevDate);
+        						dateprev.setHours(0);
+        						dateprev.setMinutes(0);
+        						dateprev.setSeconds(0);
+        						classToday = '';
+        						
+        						if(isDay(prevDay, prevMonth, prevYear)){
+        	    					myWeek = currentWeek;
+        	    					classToday = 'tdToday';
+        	    					prevDay = '<b>'+prevDay+'</b>';
+        	    				}
+        						
+        						$('#tableCalendar tbody tr:last-child').append('<td class="prevDay '+classToday+' '+getNumDay(dateprev)+'-'+dateprev.getMonth()+'-'+dateprev.getFullYear()+'"><span>'+prevDay+'</span></td></a>');
+        						linkDay(dateprev);
+        						colorDay(dateprev);
         					}
         					
         				}
@@ -471,16 +485,17 @@
         				classToday = '';
         				
         				if(isDay(dateNumberDay, currentMonth, currentYear)){
-        					dateNumberDay = '<b>'+dateNumberDay+'</b>';
+        					
         					myWeek = currentWeek;
-        					classToday = 'class="tdToday"';
+        					classToday = 'class="tdToday '+dateNumberDay+'-'+currentMonth+'-'+currentYear+'"';
+        					dateNumberDay = '<b>'+dateNumberDay+'</b>';
         				}
         				
         				addAttributWeek(currentWeek, currentYear);
-        				colorWeek(currentWeek);
         				
-        				$('#tableCalendar tbody tr:last-child').append('<td '+classToday+'><span>'+ dateNumberDay +'</span></td>');
         				
+        				$('#tableCalendar tbody tr:last-child').append('<td '+classToday+' class="'+dateNumberDay+'-'+currentMonth+'-'+currentYear+'"><span>'+ dateNumberDay +'</span></td>');
+        				colorDay(date);
         				linkDay(date);
         			}
         			else{
@@ -511,12 +526,22 @@
         				theNextMonth = 0;
         			}
         			
-        			nextDate.setYear(theNextYear);
-        			nextDate.setMonth(theNextMonth);
-        			nextDate.setDate(j);
+        			datesuivant = new Date();
+        			datesuivant.setYear(theNextYear);
+        			datesuivant.setMonth(theNextMonth);
+        			datesuivant.setDate(j);
+        			classToday = '';
+        			if(isDay(j, theNextMonth, theNextYear)){
+    					
+    					myWeek = currentWeek;
+    					classToday = 'tdToday';
+    					dateNumberDay = '<b>'+j+'</b>';
+    				}
         			
-        			$('#tableCalendar tbody tr:last-child').append('<td class="prevDay"><span>'+j+'</span></td>');
-        			linkDay(nextDate);
+        			$('#tableCalendar tbody tr:last-child').append('<td class="'+classToday+' prevDay '+getNumDay(datesuivant)+'-'+datesuivant.getMonth()+'-'+datesuivant.getFullYear()+'"><span>'+j+'</span></td>');
+        			linkDay(datesuivant);
+        			colorDay(datesuivant);
+        			classToday = '';
         		}
 
         		$('#tableCalendar tbody').append('</tr>');

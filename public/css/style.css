@@ -73,11 +73,11 @@ select {
 
 #pere {
 	width: 960px;
-	height: 100%;
+	min-height: 100%;
 	margin: 0 auto 0 auto;
 	background: #4584b4 url('../img/bck.jpg') repeat-x;
 	box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
-	overflow: auto;
+	/*overflow: auto;*/
 }
 
 /*------- home page -------*/
@@ -185,7 +185,7 @@ nav a {
 	padding: 0px;
 }
 
-.table_consulter-ligne tr:hover,.table_consulter-vol tr:hover {
+.table_consulter-ligne tr:hover,.table_consulter-vol tr:hover, .tableListeVol tr:hover, .tableAstreinte tr:hover {
 	background-color: #FFAC2A;
 }
 

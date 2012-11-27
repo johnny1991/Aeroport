@@ -1,0 +1,21 @@
+<h2 align="center">Informations concernant l'équipage d'astreinte de <?php echo $this->aeroport; ?> du <?php echo $this->date; ?></h2>
+<br />
+
+<?php 
+	$pilotes = $this->pilote;
+	if(count($pilotes) != 0){
+?>
+
+	Liste des pilotes de l'équipage d'astreinte:
+	<?php 
+
+		echo '<ul>';
+		foreach($pilotes as $pilote){
+			echo '<li>'.$pilote->nom.' '.$pilote->prenom.'</li>';
+		}
+		echo '</ul>';
+	?>
+
+<?php }else{
+		echo '<div align="center">Aucun équipage d\'astreinte pour ce jour.</div>';
+	}?>

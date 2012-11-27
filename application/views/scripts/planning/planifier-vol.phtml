@@ -2,7 +2,26 @@
 <br />
 <h4 align="center">Planifier le vol <?php echo $this->nomAeroportOrigine;?> - <?php echo $this->nomAeroportArrivee?> de la ligne <?php echo $this->numeroLigne;?> du <?php echo $this->laDate;?></h4>
 
-<?php 
+<?php
+
+if(isset($this->error)){
+	$errors = explode('-', $this->error);
+	
+	echo '<div class="boxError"><ul>';
+	
+	foreach($errors as $error){
+		
+		switch($error){
+			case 101: echo '<li>Le pilote est déjà utilisé pour un vol chevauchant.</li>'; break;
+			case 102: echo '<li>Le copilote est déjà utilisé pour un vol chevauchant.</li>'; break;
+			case 103: echo '<li>L\'avion est déjà utilisé pour un vol chevauchant.</li>'; break;
+		}
+		
+	}
+	
+	echo '</ul></div>';
+}
+
 if(isset($this->vol)){
 	$vol = $this->vol;
 }
@@ -140,13 +159,13 @@ $jour = array('1'=>'Lundi', '2'=>'Mardi','3'=>'Mercredi','4'=>'Jeudi','5'=>'Vend
 		<div class="infoVolRow">
 			<label for="pilote">Pilote : </label>
 			<div class="" id="pilote">
-				<?php echo $form->getElement('pilote');?>
+				<?php echo $form->getElement('pilote0');?>
 			</div>
 		</div>
 		<div class="infoVolRow">
 			<label for="copilote">Copilote : </label>
 			<div class="" id="copilote">
-				<?php echo $form->getElement('co_pilote');?>
+				<?php echo $form->getElement('pilote1');?>
 			</div>
 		</div>
 		<div class="infoVolRow">

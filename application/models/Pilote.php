@@ -34,15 +34,16 @@ class Pilote extends Zend_Db_Table_Abstract
 		else{
 			$subReqPiloteVol = $TableVol->getReqIdPiloteNoDispoByVol($numeroLigne, $dateDepart, true);
 			$subReqCoPiloteVol = $TableVol->getReqIdCoPiloteNoDispoByVol($numeroLigne, $dateDepart, true);
-			
+
 			$infosVol = $TableVol->getInfosVol($numeroLigne, $dateDepart);
+
 			$idPilote = $infosVol['id_pilote'];
 			$idCoPilote = $infosVol['id_copilote'];
 			
 			$reqPilote = $this->select()
 							->setIntegrityCheck(false)
 							->from($this)
-							->where('disponibilite = 1 AND id_pilote IN ('.$subReqPiloteBreveter.') AND id_pilote NOT IN ('.$subReqPiloteAstreinte.') AND ((id_pilote NOT IN ('.$subReqPiloteVol.') AND id_pilote NOT IN ('.$subReqCoPiloteVol.')) OR (id_pilote = 1 OR id_pilote = 2))')
+							->where('disponibilite = 1 AND id_pilote IN ('.$subReqPiloteBreveter.') AND id_pilote NOT IN ('.$subReqPiloteAstreinte.') AND ((id_pilote NOT IN ('.$subReqPiloteVol.') AND id_pilote NOT IN ('.$subReqCoPiloteVol.')) OR (id_pilote = '.$idPilote.' OR id_pilote = '.$idCoPilote.'))')
 							->order('id_pilote');
 		}
 
