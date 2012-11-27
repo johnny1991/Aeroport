@@ -670,7 +670,7 @@ class PlanningController extends Zend_Controller_Action
 		foreach($tabVol as $dateLigne => $vol){
 		$explodeDate = explode('-', $dateLigne);
 		$date = $explodeDate[0].'-'.$explodeDate[1].'-'.$explodeDate[2];
-			
+		$date = str_replace(' ', '', $date);
 			if(!array_key_exists($date, $listeAeroportVol)){
 				$listeAeroportVol[$date] = array();
 			}
