@@ -86,7 +86,7 @@ foreach($this->messages as $message)
 		</div>
 	</form>
 </div>
-
+<?php if(count($this->paginator) > 0){ ?>
 <table class="table_consulter-ligne">
 	<thead>
 		<tr id="TableHead">
@@ -128,9 +128,13 @@ foreach($this->messages as $message)
 					echo $heureArrivee->get('HH:mm');
 					?>
 			</a></td>
-			<td><a href="<?php echo $this->baseUrl('vol/modifier-ligne/ligne/').$ligne->numero_ligne;?>" class="icone_modifier_ligne"></a>
+			<td><a
+				href="<?php echo $this->baseUrl('vol/modifier-ligne/ligne/').$ligne->numero_ligne;?>"
+				class="icone_modifier_ligne"></a>
 			</td>
-			<td><a href="<?php echo $this->baseUrl('vol/supprimer-ligne/ligne/').$ligne->numero_ligne;?>" class="icone_delete_ligne"></a>
+			<td><a
+				href="<?php echo $this->baseUrl('vol/supprimer-ligne/ligne/').$ligne->numero_ligne;?>"
+				class="icone_delete_ligne"></a>
 			</td>
 		</tr>
 
@@ -138,11 +142,10 @@ foreach($this->messages as $message)
 	</tbody>
 </table>
 <?php 
-
-
-echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->param));
-
-?>
+	echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->param));
+} else {?>
+<div class="noLine">Aucune ligne</div>
+<?php } ?>
 
 
 

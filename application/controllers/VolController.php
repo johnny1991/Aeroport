@@ -440,9 +440,13 @@ class VolController extends Zend_Controller_Action
 		if($this->getRequest()->getParam('periodicite'))
 		{
 			$periodique = $this->getRequest()->getParam('periodicite');
-			if($periodique["0"])
+			if($periodique == 1)
 				$requete->joinleft(array('p'=>'periodicite'),'p.numero_ligne=l.numero_ligne',array('p.numero_jour'))
 				->where('p.numero_jour IS NULL');
+			else if($periodique == 2)
+				$requete->joinleft(array('p'=>'periodicite'),'p.numero_ligne=l.numero_ligne',array('p.numero_jour'))
+				->where('p.numero_jour IS NOT NULL');
+				
 		}
 		if($this->getRequest()->getParam('mot'))
 		{
@@ -675,7 +679,6 @@ class VolController extends Zend_Controller_Action
 		if(!(isset($data["aeroportArrivee"])))
 			$AeroportArrivee->setValue(0);
 	}
-
 
 	public function init(){ //OK
 		$this->view->messages = $this->_helper->FlashMessenger->getMessages();

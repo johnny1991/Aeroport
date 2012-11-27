@@ -15,7 +15,7 @@ class RechercheLigne extends Zend_Form{
 		$EHeureArriveeMax =	new Zend_Form_Element_Text('heureArriveeMax');
 		$ETarifMin =			new Zend_Form_Element_Text('tarifMin');
 		$ETarifMax =			new Zend_Form_Element_Text('tarifMax');
-		$EPeriodicite =		new Zend_Form_Element_MultiCheckbox('periodicite');
+		$EPeriodicite =		new Zend_Form_Element_Radio('periodicite');
 		$EDateDepart = 		new Zend_Form_Element_Text('dateDepart');
 		$EDateArrivee =		new Zend_Form_Element_Text('dateArrivee');
 		$submit  = new Zend_Form_Element_Submit("Rechercher");
@@ -80,7 +80,8 @@ class RechercheLigne extends Zend_Form{
 			$EPaysArrive->addMultiOption($pays1->code_pays,$pays1->nom);
 		}
 		$EPeriodicite->addMultiOptions(array("1"=>"Vol à la carte"));
-
+		$EPeriodicite->addMultiOptions(array("2"=>"Vol périodique"));
+		
 		$EPaysOrigine->setAttrib('onchange', 'RechercheAeroport("origine",this.value)');
 		$EPaysDepart->setAttrib('onchange', 'RechercheAeroport("depart",this.value)');
 		$EPaysArrive->setAttrib('onchange', 'RechercheAeroport("arrivee",this.value)');

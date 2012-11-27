@@ -363,7 +363,7 @@ nav a {
 
 .insertion-ok,.no-exist {
 	height: 40px;
-	margin-left: 40px;
+	margin: 10px 0px 10px 40px;
 }
 
 .insertion-ok {
@@ -387,7 +387,7 @@ nav a {
 }
 
 .no-exist label {
-	color: #D40000;
+	color: #DF280A;
 }
 
 /* pagination */
@@ -527,4 +527,8 @@ nav a {
 
 #mot-cle-search-ligne input {
 	margin-right: 30px;
+}
+
+.noLine{
+	margin:20px;
 }
