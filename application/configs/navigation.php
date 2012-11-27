@@ -34,6 +34,13 @@ return array(
 										'title'		=>	'Consulter les lignes',
 										'pages' => array(
 												array(
+														'label'      => "Modification d'une ligne",
+														'module'     => 'default',
+														'controller' => 'vol',
+														'title'		=>	'Modifier une ligne',
+														'action'     => 'modifier-ligne'
+												),
+												array(
 														'label'      => 'Consultation des vols',
 														'module'     => 'default',
 														'controller' => 'vol',

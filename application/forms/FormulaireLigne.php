@@ -203,7 +203,7 @@ class FormulaireLigne extends Zend_Form
 		$ERepopulateDepart->setValue("0");
 		$ERepopulateArrivee->setValue("0");
 
-		$this->setMethod('post');
+		$this->setMethod("POST");
 
 		$this->addElement($ENumero);
 		$this->addElement($EPaysOrigine);
