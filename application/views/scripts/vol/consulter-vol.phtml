@@ -52,19 +52,21 @@ foreach($this->messages as $message)
 				?>
 			</div>
 		</div>
-		<?php if($this->nbJours>0){?>
 		<div class="infoLigneRow">
 			<label for="periodicite">Périodicité :</label>
 			<div class="" id="periodicite">
+				<?php if($this->nbJours>0){?>
 				<?php 
 				foreach($this->jours as $jour){
 					?>
 				<span class=""> <?php echo $jour->libelle; ?>
 				</span>
 				<?php } ?>
+				<?php } else {?>
+				Vol à la carte
+				<?php } ?>
 			</div>
 		</div>
-		<?php }?>
 		<div class="infoLigneRow">
 			<label for="tarif">Tarif : </label>
 			<div class="" id="tarif">
@@ -129,7 +131,9 @@ if(($this->count)>0)
 	} ?>
 	</tbody>
 </table>
-<?php 
+<?php
+echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml');
+
 }
 else {
 	?>
@@ -137,6 +141,4 @@ else {
 <?php 
 }
 ?>
-<?php
-echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml');
-?>
+

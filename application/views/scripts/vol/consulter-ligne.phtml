@@ -130,7 +130,7 @@ foreach($this->messages as $message)
 			</a></td>
 			<td><a href="<?php echo $this->baseUrl('vol/modifier-ligne/ligne/').$ligne->numero_ligne;?>" class="icone_modifier_ligne"></a>
 			</td>
-			<td><a href="#" class="icone_delete_ligne"></a>
+			<td><a href="<?php echo $this->baseUrl('vol/supprimer-ligne/ligne/').$ligne->numero_ligne;?>" class="icone_delete_ligne"></a>
 			</td>
 		</tr>
 

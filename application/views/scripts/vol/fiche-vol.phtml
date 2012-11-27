@@ -5,7 +5,7 @@ foreach($this->messages as $message)
 <?php 
 $vol=$this->vol;
 $ligne=$this->ligne;
-$jour = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vendredi","6"=>"Samedi","7"=>"Dimanche");
+$jours = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vendredi","6"=>"Samedi","7"=>"Dimanche");
 ?>
 <h1>
 	Fiche du vol
@@ -57,20 +57,21 @@ $jour = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vendr
 				?>
 			</div>
 		</div>
-		<?php if($this->nbJours>0){?>
 		<div class="infoLigneRow">
-			<label for="periodicite">Périodicité : </label>
+			<label for="periodicite">Périodicité :</label>
 			<div class="" id="periodicite">
+				<?php if($this->nbJours>0){?>
 				<?php 
-				$jours=$this->jours;
-				foreach($jours as $jour1){
+				foreach($this->jours as $jour){
 					?>
-				<span class=""> <?php echo $jour1->libelle; ?>
+				<span class=""> <?php echo $jour->libelle; ?>
 				</span>
+				<?php } ?>
+				<?php } else {?>
+				Vol à la carte
 				<?php } ?>
 			</div>
 		</div>
-		<?php }?>
 		<div class="infoLigneRow">
 			<label for="tarif">Tarif : </label>
 			<div class="" id="tarif">
@@ -97,7 +98,7 @@ $jour = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vendr
 			<div class="" id="date_depart">
 				<?php 
 				$madate = strtotime($vol->date_depart);
-				echo "(".$jour[date("N",$madate)].") ".date("d/m/y",$madate);
+				echo "(".$jours[date("N",$madate)].") ".date("d/m/y",$madate);
 				?>
 			</div>
 		</div>
@@ -107,7 +108,7 @@ $jour = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vendr
 				<?php 
 				//echo $vol->date_arrivee;
 				$madate = strtotime($vol->date_arrivee);
-				echo "(".$jour[date("N",$madate)].") ".date("d/m/y",$madate);
+				echo "(".$jours[date("N",$madate)].") ".date("d/m/y",$madate);
 				?>
 			</div>
 		</div>
@@ -146,7 +147,7 @@ $jour = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vendr
 			<div class="" id="tarif">
 				<?php echo $vol->tarif_effectif." €"; ?>
 			</div>
-	
+		</div>
 	</fieldset>
 	<fieldset>
 		<legend>Données Effectives</legend>
