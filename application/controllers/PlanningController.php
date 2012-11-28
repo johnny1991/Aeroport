@@ -785,6 +785,7 @@ class PlanningController extends Zend_Controller_Action
 	
 	public function init(){
 		$this->view->headLink()->appendStylesheet('/css/calendar.jquery.css');
+		$this->view->headScript()->appendFile('/js/calendar.jquery.js');
 		$this->view->headScript()->appendFile('/js/PlanningFonction.js');
 		$this->view->headLink()->appendStylesheet('/css/PlanningCSS.css');
 		

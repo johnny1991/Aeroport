@@ -239,6 +239,15 @@
     		
         	}
         	
+        	function getNumMonth(dateToDay){
+        		dateString2 = dateToDay.toDateString(Math.round(dateToDay.getTime()/1000));
+    			dateExplode2 = dateString2.split(' ');
+    			
+    			tabmonth = {'Jan' : '01', 'Feb' : '02', 'Mar' : '03', 'Apr' : '04', 'May' : '05', 'Jun' : '06', 'Jul' : '07', 'Aug' : '08', 'Sep' : '09', 'Oct' : '10', 'Nov' : '11', 'Dec' : '12'};
+        		
+    			return tabmonth[dateExplode2[1]];
+    		
+        	}
         	
         	function getFirstMonday(){
         		theDay = myDay;
@@ -342,7 +351,7 @@
         	
         	function linkDay(dateJour){
         		
-        		formatDate = dateJour.getFullYear()+'-'+(dateJour.getMonth()+1)+'-'+dateJour.getDate();  		        	
+        		formatDate = dateJour.getFullYear()+'-'+(getNumMonth(dateJour))+'-'+getNumDay(dateJour);  		        	
     			
     			formatDateClass = getNumDay(dateJour)+'-'+dateJour.getMonth()+'-'+dateJour.getFullYear();
 	      		if(lastSunday() >= Math.round(dateJour.getTime()/1000)){
