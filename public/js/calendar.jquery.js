@@ -14,7 +14,7 @@
                     'myWeek': getWeek(dateToday),
                     'myDay': dateToday.getDay(),
             		'minYear' : 2012,
-        			'maxYear' : 1 + dateToday.getFullYear(),
+        			'maxYear' : 2 + dateToday.getFullYear(),
         			'nbSemaine' : 4,
         			'link' : '/planning/liste-vol/'
                 };
@@ -403,19 +403,28 @@
         		arrayMonth = {'Jan':'Janvier', 'Feb':'Février', 'Mar':'Mars', 'Apr':'Avril', 'May':'Mai', 'Jun':'Juin', 'Jul':'Juillet', 'Aug':'Août', 'Sep':'Septembre', 'Oct':'Octobre', 'Nov':'Novembre', 'Dec':'Décembre'};
         		arrayMonthEng = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
         		
-        		if(leapYear(currentYear))
+        		if(leapYear(indexYear))
         			arrayDayPerMonth = new Array(31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         		else
         			arrayDayPerMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-        	
+        		
+        		
         		date.setFullYear(indexYear);
         		date.setMonth(indexMonth);
+        		
+        		if(!leapYear(indexYear)){
+        			if(indexMonth == 1){
+        				date.setMonth(indexMonth);
+        			}
+        		}
+        		
+        		console.log(date.getMonth());
         		
         		titleDate = date.toDateString(Math.round(date.getTime()/1000));
         		titleExplode = titleDate.split(' ');
         		titleMonth = convert(titleExplode[1], arrayMonth);
         		titleYear = titleExplode[3];
-        		
+       
         		$('#titleCalendar b').text(titleMonth +' '+ titleYear);
         		
         		$('#tableCalendar tbody').append('<tr>');
