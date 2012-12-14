@@ -6,6 +6,8 @@ class ApiController extends Zend_Controller_Action{
 	}
 	
 	public function aeroportAction(){
+	
+		$this->_helper->layout->disableLayout();
 		$table = new Aeroport();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -51,14 +53,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function astreinteAction(){
+		$this->_helper->layout->disableLayout();
 		$table = new Astreinte();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -104,14 +107,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function avionAction(){
+		$this->_helper->layout->disableLayout();
 		$table = new Avion();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -157,14 +161,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function clientAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Client();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -210,14 +215,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function etrebreveterAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new EtreBreveter();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -263,14 +269,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function interventionAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Intervention();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -316,14 +323,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function joursemaineAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new JourSemaine();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -369,14 +377,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function ligneAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Ligne();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -422,14 +431,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function maintenanceAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Maintenance();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -475,14 +485,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function paysAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Pays();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -528,14 +539,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function periodiciteAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Periodicite();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -581,14 +593,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function piloteAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Pilote();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -634,14 +647,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function remarqueAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Remarque();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -687,14 +701,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function reservationAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Reservation();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -740,14 +755,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function serviceAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Service();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -793,14 +809,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function typeavionAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new TypeAvion();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -846,14 +863,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}	
 	
 	public function typeremarqueAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new TypeRemarque();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -899,14 +917,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function utilisateurAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Utilisateur();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -952,14 +971,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function villeAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Ville();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -1005,14 +1025,15 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
 	
 	public function volAction(){
+	$this->_helper->layout->disableLayout();
 		$table = new Vol();
 		$db = Zend_Registry::get('db');
 		$actions = mb_strtolower(htmlentities($this->getParam('actions'), ENT_QUOTES, 'UTF-8'));
@@ -1058,9 +1079,9 @@ class ApiController extends Zend_Controller_Action{
 				$where = Aeroport_Api::concatParam($args['where'], ' AND ');
 				$db->delete($args['from'], $where);
 			}
-		}elseif($get == 'all'){
+		}elseif($get != NULL && $get == 'all'){
 			print(json_encode($table->fetchAll()->toArray()));
-		}elseif($get != 'all'){
+		}elseif($get != NULL && $get != 'all'){
 			print(json_encode($table->find($get)->current()->toArray()));
 		}
 	}
