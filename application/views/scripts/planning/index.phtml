@@ -2,7 +2,19 @@
 	$(document).ready(function(){	
 		$('#calendar').calendar({
 			'nbSemaine' : 4, 
-			'link' : '/planning/liste-vol/'
+			'link' : '/planning/liste-vol/',
+			'colorDate' : {
+				/*'intervaltest' : '0-10',*/       	// La clé correspond à la class du background; La valeur correspond à l'interval du nombre de maintenance
+													// Entre 0 et 10 maintenance, on affiche le background intervaltest
+													// Toujours laisser une valeur de défaut à null comme trWeek (affichage des jour en vert si ne posséde 
+													// pas de nombre de maintenance)
+				'trWeek' : null
+			},
+			'infoDate' : { 	
+				/*'02/02/2013' : 1,
+				'07/01/2013' : 10,
+				'08/01/2013' : 10*/
+			}
 		});	
 	});
 </script>

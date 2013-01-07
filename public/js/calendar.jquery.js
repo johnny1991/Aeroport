@@ -16,7 +16,11 @@
             		'minYear' : 2012,
         			'maxYear' : 2 + dateToday.getFullYear(),
         			'nbSemaine' : 4,
-        			'link' : '/planning/liste-vol/'
+        			'link' : '/planning/liste-vol/',
+        			'infoDate' : false,
+        			'colorDate' : {
+        				'trWeek' : null
+        			}
                 };
 
         	var params = $.extend(defaults, options);
@@ -32,7 +36,9 @@
         	minYear = params.minYear;
         	maxYear = params.maxYear;
         	link = params.link;
-
+        	infoDate = params.infoDate;
+        	colorDate = params.colorDate;
+        	
         	nbSemaine = params.nbSemaine;
         	
         	currentMonth = dateToday.getMonth();
@@ -124,6 +130,16 @@
     			$('#tableCalendar thead').append('<tr></tr>');
     			$('#tableCalendar thead tr').append('<th class="tdWeek">Semaine</th><th>Lundi</th><th>Mardi</th><th>Mercredi</th><th>Jeudi</th><th>Vendredi</th><th>Samedi</th><th>Dimanche</th>');
     			$('#tableCalendar thead').after('<tbody></tbody>');
+    		}
+    		
+    		function array_key_exist(key, array){
+    			for(indexArray in array){
+    				if(indexArray == key){
+    					return true;
+    				}
+    			}
+    			
+    			return false;
     		}
         	
         	function valueSelect(valueMonth, valueYear){
@@ -361,11 +377,45 @@
         		
         	}
         	
+        	function getClassColor(number){
+        		for(indexClass in colorDate){
+        			if(colorDate[indexClass] != null){
+	        			tabInterval = colorDate[indexClass].split('-');
+	        			
+	        			if(number <= tabInterval[1] && number >= tabInterval[0]){
+	        				return indexClass;
+	        			}
+        			}
+        		}
+        		
+        		for(indexClass in colorDate){
+        			if(colorDate[indexClass] == null)
+        				return indexClass;
+        		}
+        	}
+        	
         	function colorDay(dateJour){
         		timestampDateJour = Math.round(dateJour.getTime() / 1000);
         		//theDate = dateJour.getDate();
         		if(timestampDateJour >= getFirstMonday() && timestampDateJour <= lastSunday()){
-        			$('.'+getNumDay(dateJour)+'-'+dateJour.getMonth()+'-'+dateJour.getFullYear()).addClass('trWeek');
+        			
+        			formatDateSlash = getNumDay(dateJour)+'/'+(getNumMonth(dateJour))+'/'+dateJour.getFullYear();
+					if(array_key_exist(formatDateSlash, infoDate)){
+						valueInfoDate = infoDate[formatDateSlash]; 
+					}else{
+						valueInfoDate = '';
+					}
+					
+					if(valueInfoDate != ''){
+						classColor = getClassColor(valueInfoDate);
+					}else{
+						for(indexClass in colorDate){
+		        			if(colorDate[indexClass] == null)
+		        				classColor = indexClass;
+		        		}
+					}
+        			
+        			$('.'+getNumDay(dateJour)+'-'+dateJour.getMonth()+'-'+dateJour.getFullYear()).addClass(classColor);
         		}
         	}
         	
@@ -417,8 +467,6 @@
         				date.setMonth(indexMonth);
         			}
         		}
-        		
-        		console.log(date.getMonth());
         		
         		titleDate = date.toDateString(Math.round(date.getTime()/1000));
         		titleExplode = titleDate.split(' ');
@@ -493,7 +541,14 @@
         	    					prevDay = '<b>'+prevDay+'</b>';
         	    				}
         						
-        						$('#tableCalendar tbody tr:last-child').append('<td class="prevDay '+classToday+' '+getNumDay(dateprev)+'-'+dateprev.getMonth()+'-'+dateprev.getFullYear()+'"><span>'+prevDay+'</span></td></a>');
+        						formatDateSlash = getNumDay(dateprev)+'/'+(getNumMonth(dateprev))+'/'+dateprev.getFullYear();
+        						if(array_key_exist(formatDateSlash, infoDate)){
+        							valueInfoDate = infoDate[formatDateSlash]; 
+        						}else{
+        							valueInfoDate = '';
+        						}
+        						
+        						$('#tableCalendar tbody tr:last-child').append('<td class="prevDay '+classToday+' '+getNumDay(dateprev)+'-'+dateprev.getMonth()+'-'+dateprev.getFullYear()+'"><span>'+prevDay+'<br /><br /><span style="text-align:center;margin-left:5px;display:block;font-size:1.500em;">'+valueInfoDate+'</span></span></td></a>');
         						linkDay(dateprev);
         						colorDay(dateprev);
         					}
@@ -501,18 +556,23 @@
         				}
         				
         				classToday = '';
-        				
+        				dateNumberDayStrong = dateNumberDay;
         				if(isDay(dateNumberDay, currentMonth, currentYear)){
-        					
+        					dateNumberDayStrong = '<b>'+dateNumberDay+'</b>';
         					myWeek = currentWeek;
-        					classToday = 'class="tdToday '+dateNumberDay+'-'+currentMonth+'-'+currentYear+'"';
-        					dateNumberDay = '<b>'+dateNumberDay+'</b>';
+        					classToday = 'tdToday';
         				}
         				
         				addAttributWeek(currentWeek, currentYear);
+
+        				formatDateSlash = getNumDay(date)+'/'+(getNumMonth(date))+'/'+date.getFullYear();
+        				if(array_key_exist(formatDateSlash, infoDate)){
+							valueInfoDate = infoDate[formatDateSlash]; 
+						}else{
+							valueInfoDate = '';
+						}
         				
-        				
-        				$('#tableCalendar tbody tr:last-child').append('<td '+classToday+' class="'+dateNumberDay+'-'+currentMonth+'-'+currentYear+'"><span>'+ dateNumberDay +'</span></td>');
+        				$('#tableCalendar tbody tr:last-child').append('<td class="'+dateNumberDay+'-'+currentMonth+'-'+currentYear+' '+classToday+'"  ><span>'+ dateNumberDayStrong +'<br /><br /><span style="text-align:center;margin-left:5px;display:block;font-size:1.500em;">'+valueInfoDate+'</span></span></td>');
         				colorDay(date);
         				linkDay(date);
         			}
@@ -556,7 +616,14 @@
     					dateNumberDay = '<b>'+j+'</b>';
     				}
         			
-        			$('#tableCalendar tbody tr:last-child').append('<td class="'+classToday+' prevDay '+getNumDay(datesuivant)+'-'+datesuivant.getMonth()+'-'+datesuivant.getFullYear()+'"><span>'+j+'</span></td>');
+        			formatDateSlash = getNumDay(datesuivant)+'/'+(getNumMonth(datesuivant))+'/'+datesuivant.getFullYear();
+        			if(array_key_exist(formatDateSlash, infoDate)){
+						valueInfoDate = infoDate[formatDateSlash]; 
+					}else{
+						valueInfoDate = '';
+					}
+        			
+        			$('#tableCalendar tbody tr:last-child').append('<td class="'+classToday+' prevDay '+getNumDay(datesuivant)+'-'+datesuivant.getMonth()+'-'+datesuivant.getFullYear()+'"><span>'+j+'<br /><br /><span style="text-align:center;margin-left:5px;display:block;font-size:1.500em;">'+valueInfoDate+'</span></span></td>');
         			linkDay(datesuivant);
         			colorDay(datesuivant);
         			classToday = '';
