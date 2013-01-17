@@ -13,10 +13,14 @@
 	<?php 
 		foreach($this->services as $service){
 			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().' service-'.$service['id_service'].'">';
-			echo '<td class="tdLibelleService updateService"><div onclick="CreationInput('.$service['id_service'].', \''.addslashes($service['libelle_service']).'\', \'service\');">'.stripslashes($service['libelle_service']).'</div><form style="display:none;margin-top:10px;" method="post" onsubmit="AjaxModifierLibelle('.$service['id_service'].', \''.addslashes($service['libelle_service']).'\', \'service\', \''.$this->order.'\', '.$this->page.');return false;"><input type="text" name="modifier" size="70" value="'.stripslashes($service['libelle_service']).'"/></form></td>';
-			
-			echo '<td class="tdOption"><div onclick="CreationInput('.$service['id_service'].', \''.addslashes($service['libelle_service']).'\', \'service\');" class="icone_modifier_ligne updateService"></div></td>';
-			echo '<td class="tdOption"><div class="icone_delete_ligne deleteService"></div></td>';
+			if($service['id_service'] != 9){
+				echo '<td class="tdLibelleService updateService"><div onclick="CreationInput('.$service['id_service'].', \''.addslashes($service['libelle_service']).'\', \'service\');">'.stripslashes($service['libelle_service']).'</div><form style="display:none;margin-top:10px;" method="post" onsubmit="AjaxModifierLibelle('.$service['id_service'].', \''.addslashes($service['libelle_service']).'\', \'service\', \''.$this->order.'\', '.$this->page.');return false;"><input type="text" name="modifier" size="70" value="'.stripslashes($service['libelle_service']).'"/></form></td>';
+				echo '<td class="tdOption"><div onclick="CreationInput('.$service['id_service'].', \''.addslashes($service['libelle_service']).'\', \'service\');" class="icone_modifier_ligne updateService"></div></td>';
+				echo '<td class="tdOption"><div class="icone_delete_ligne deleteService"></div></td>';
+			}else{
+				echo '<td class="tdLibelleService updateService"><div>'.stripslashes($service['libelle_service']).'</div></td>';
+				echo '<td colspan="2"></td>';
+			}
 			echo '</tr>';
 		}
 	?>
