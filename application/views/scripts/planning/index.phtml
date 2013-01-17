@@ -4,19 +4,49 @@
 			'nbSemaine' : 4, 
 			'link' : '/planning/liste-vol/',
 			'colorDate' : {
-				/*'intervaltest' : '0-10',*/       	// La clé correspond à la class du background; La valeur correspond à l'interval du nombre de maintenance
-													// Entre 0 et 10 maintenance, on affiche le background intervaltest
-													// Toujours laisser une valeur de défaut à null comme trWeek (affichage des jour en vert si ne posséde 
-													// pas de nombre de maintenance)
-				'trWeek' : null
+			//	1 : 'intervaltest',       	// La clé correspond à la valeur du tableau infoDate, la valeur correspond à la class CSS 		
+				0 : 'trWeek'				// permettant de changer la couleur du jour
+											// toujours mettre à la clé 0 une valeur par défaut (trWeek)
 			},
 			'infoDate' : { 	
-				/*'02/02/2013' : 1,
-				'07/01/2013' : 10,
-				'08/01/2013' : 10*/
+			//	'01/02/2013' : {'plop' : 1},		//La clé correspond au jour, la seconde correspond au texte présent à l'intérieur de la case
+			//	'16/01/2013' : {'plopy' : null},	//de ce jour et la valeur correspond à la clé du tablea ude couleur donnant sa class CSS
+			//	'15/01/2013' : {'plop545' : 0}		//mettre null ou 0 pour colorer par défaut
 			}
 		});	
 	});
 </script>
 <br />
 <div id="calendar"></div>
+
+<?php 
+/**
+ * 
+ * Exemple de formattage du JavaScript en PHP
+ *
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#calendar').calendar({
+				'nbSemaine' : 4,
+				'link' : '/planning/liste-vol/',
+				'colorDate' : {
+					1 : 'intervaltest',
+					0 : 'trWeek'
+				},
+				'infoDate' : {
+					<?php
+						$index = 0;
+						foreach($dates as $date){
+							$index++;
+							echo '\''.$date['date'].'\' : {\''.$date['texte'].'\' : '.$date['indexClass'].'}';
+							if(count($dates) != $index){
+								echo ',';
+							}
+						}
+					?>
+				}
+			});	
+		});
+	</script> 
+*/
+?>

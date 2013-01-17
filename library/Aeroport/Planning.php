@@ -34,7 +34,7 @@ class Aeroport_Planning {
 			$firstMonday = date('t', mktime(0, 0, 0, $thePrevMonth, 1, $myYear)) + $firstMonday;
 		}
 		
-		$timestampFirstMonday = mktime(0, 0, 0, date('m'), $firstMonday, date('Y'));
+		$timestampFirstMonday = mktime(-1, 0, 0, date('m'), $firstMonday, date('Y'));
 		return $timestampFirstMonday;
 	}
 	
@@ -50,7 +50,7 @@ class Aeroport_Planning {
 		$lastDayWeek = $myDate + $daysRemaining;
 		$Sundays4 = (($nbSemaine - 1)*7) + $lastDayWeek;
 		
-		$timestamp2 = mktime(0, 0, 0, $myMonth, $Sundays4, date('Y'));
+		$timestamp2 = mktime(22, 59, 59, $myMonth, $Sundays4, date('Y'));
 		
 		if($Sundays4 > $myDayInMonth){
 			$dayNextMonth = $Sundays4 - $myDayInMonth; 
@@ -79,10 +79,10 @@ class Aeroport_Planning {
 					$inc2 = 1;
 			}
 			
-			$timestamp2 = mktime(0, 0, 0, $NextMonth, $dayNextMonth, date('Y'));
+			$timestamp2 = mktime(22, 59, 59, $NextMonth, $dayNextMonth, date('Y'));
 			 
 			if($NextMonth == 1){
-				$timestamp2 = mktime(0, 0, 0, $NextMonth, $dayNextMonth, (date('Y') + 1));
+				$timestamp2 = mktime(22, 59, 59, $NextMonth, $dayNextMonth, (date('Y') + 1));
 			}
 		}
 		

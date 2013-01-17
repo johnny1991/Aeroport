@@ -93,4 +93,17 @@ class Aeroport_Fonctions{
 		$redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
 		$redirector->gotoUrl($link);
 	}
+	
+	public static function getResteDivision($number){
+		$explode = explode('.', $number);
+		return '0.'.$explode[1];
+	}
+	
+	public static function getTemps($heure){
+		$heureArrondit = floor($heure);
+		$minute = self::getResteDivision($heure) * 60;
+		$minuteArrondit = floor($minute);
+		
+		return $heureArrondit.'h'.$minuteArrondit.'min';
+	}
 }

@@ -22,12 +22,12 @@ function MaJCoPilote(numSelect){
 
 	 value = $('select[name=pilote'+numSelect+']').val()
 	    $('select[name=pilote'+numSelect+']').val(value).attr('selected', 'selected');
-		 var tabElements = new Array();
+		var tabElements = new Array();
 	    var tabSelected = new Array();
 	    
 	    $('form').find('select[name*=pilote]').each(function(indexElts){
 		    tabElements[indexElts] = $(this);
-	       tabSelected[$(this).attr('name')] = $(this).val();
+		    tabSelected[$(this).attr('name')] = $(this).val();
 		 });
 	    
 	    var nbSelect = tabElements.length - 1;
@@ -72,8 +72,8 @@ function MaJCoPilote(numSelect){
 	               }  
 	           }
 	          	else{
-	   			$(this).show();
-	   		}
+	          		$(this).show();
+	          	}
 	       });
 	    }
 	
@@ -122,14 +122,14 @@ function debug(tabDebug){
 }
 
 function MaJSelect(numSelect){
-	 value = $('select[name=pilote'+numSelect+']').val()
+	value = $('select[name=pilote'+numSelect+']').val();
     $('select[name=pilote'+numSelect+']').val(value).attr('selected', 'selected');
-	 var tabElements = new Array();
+	var tabElements = new Array();
     var tabSelected = new Array();
     
     $('form').find('select[name*=pilote]').each(function(indexElts){
 	    tabElements[indexElts] = $(this);
-       tabSelected[$(this).attr('name')] = $(this).val();
+	    tabSelected[$(this).attr('name')] = $(this).val();
 	 });
     
     var nbSelect = tabElements.length - 1;
@@ -174,8 +174,8 @@ function MaJSelect(numSelect){
                }  
            }
           	else{
-   			$(this).show();
-   		}
+          		$(this).show();
+          	}
        });
     }
 }

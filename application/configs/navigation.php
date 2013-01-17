@@ -118,6 +118,55 @@ return array(
 										)
 								)
 						)
+				),
+				
+				array(
+						'label'      => 'Direction des ressources humaines',
+						'module'     => 'default',
+						'controller' => 'drh',
+						'action'     => 'index',
+						'title'		=>	'Gérer les employés',
+						'pages'      =>
+						array(	array(
+									'label'      => 'Consulter les services',
+									'uri'		=>	'/drh/consulter-service/',
+									'module'     => 'default',
+									'controller' => 'drh',
+									'action'     => 'consulter-service',
+									'id'		=>	'consulterService',
+									'title'		=>	'Liste des services',
+								),
+								
+								array(
+									'label'      => 'Ajouter un employé',
+									'uri'		=>	'/drh/ajouter-employe/',
+									'module'     => 'default',
+									'controller' => 'drh',
+									'action'     => 'ajouter-employe',
+									'id'		=>	'ajouterEmploye',
+									'title'		=>	'Ajouter un employé'
+								),
+								
+								array(
+									'label'      => 'Modifier un employé',
+									'uri'		=>	'/drh/modifier-employe/',
+									'module'     => 'default',
+									'controller' => 'drh',
+									'action'     => 'modifier-employe',
+									'id'		=>	'modifierEmploye',
+									'title'		=>	'Modifier un employé'
+								),
+								
+								array(
+									'label'      => 'Consulter un employé',
+									'uri'		=>	'/drh/consulter-employe/',
+									'module'     => 'default',
+									'controller' => 'drh',
+									'action'     => 'consulter-employe',
+									'id'		=>	'consulterEmploye',
+									'title'		=>	'Consulter un employé'
+								)
+						)
 				)
 		)
 )

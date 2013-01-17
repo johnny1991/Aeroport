@@ -65,7 +65,7 @@ create table if not exists pilote
    code_ville varchar(255) not null  ,
    adresse varchar(255) not null  ,
    telephone integer(10) null  ,
-   disponibilite bool not null default 1, 
+   disponibilite bool not null default 1,
    primary key (id_pilote) ,
    Foreign key (code_ville) references ville (code_ville)
  ) 
@@ -229,9 +229,12 @@ create table if not exists utilisateur
    adresse varchar(255) not null  ,
    telephone integer(10) null  ,
    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+   id_user_pilote integer null ,
+   id_user integer not null ,
    primary key (login),
    Foreign Key (code_ville) references ville (code_ville),
-   Foreign Key (id_service) references service (id_service)
+   Foreign Key (id_service) references service (id_service),
+   Foreign Key (id_user_pilote) references pilote (id_pilote)
  ) 
 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -669,7 +672,7 @@ INSERT INTO `pilote` (`id_pilote`, `nom`, `prenom`, `email`, `password`, `code_v
 (2, 'Balouche', 'Paul', 'paul.balouche@gmail.com', 'paulo', '3', '562 place de la république', NULL, 1),
 (3, 'Vergoza', 'Paulo', 'paulo.vergoza@gmail.com', 'paulo', '10', '153 de la plaza centrale', NULL, 1),
 (4, 'Jupon', 'Daniel', 'daniel.jupon@gmail.com', 'daniel', '6', '156 schrule das', NULL, 0),
-(5, 'Kolibri', 'Gazelle', 'gazelle.kolibri', 'gazou', '8', '561 chinatown', NULL, 1),
+(5, 'Kolibri', 'Gazelle', 'gazelle.kolibri@gmail.com', 'gazou', '8', '561 chinatown', NULL, 1),
 (6, 'Peret', 'Franck', 'franck.perget@gmail.com', 'francky', '6', '6154 london park', NULL, 0),
 (7, 'Vasseur', 'Corentin', 'corentin.vasseur@gmail.com', 'corentinou', '2', '456 rue de voltaire', NULL, 1),
 (8, 'McClane', 'John', 'john.mcclane@gmail.com', 'yipikai', '9', '456 Madison Square Garden', NULL, 1),
@@ -709,7 +712,8 @@ INSERT INTO `service` (`id_service`, `libelle_service`) VALUES
 (4, 'Direction des ressources humaines'),
 (5, 'Service planning'),
 (6, 'Service d''exploitation'),
-(7, 'Service de logistique commerciale');
+(7, 'Service de logistique commerciale'),
+(8, 'Service d''équipage');
 
 INSERT INTO `type_remarque` (`id_type_remarque`, `libelle_type_remarque`) VALUES
 (1, 'Cuisine'),
@@ -718,24 +722,42 @@ INSERT INTO `type_remarque` (`id_type_remarque`, `libelle_type_remarque`) VALUES
 (4, 'Prise en charge'),
 (5, 'Autre');
 
-INSERT INTO `utilisateur` (`login`, `id_service`, `nom`, `prenom`, `email`, `password`, `code_ville`, `adresse`, `telephone`, `date`) VALUES
-('Annette', 2, 'Duhamel', 'Annette', 'annette.duhamel@gmail.com', 'annie', '2', '156 Rue du Général de Gaulle', 125659748, '2012-10-22 20:42:55'),
-('Blanche', 4, 'François', 'Blanche', 'blanche.francois@gmail.com', 'blanou', '3', '24 place rouge', 415623514, '2012-10-22 20:42:55'),
-('Gérard', 3, 'Hanconinna', 'Gérard', 'Gerard.hanconnina@gmail.com', 'gege', '2', '25 Rue pétain', 126548795, '2012-10-22 20:42:55'),
-('Jean-michel', 1, 'Durand', 'Jean-michel', 'jeanmichel.durand@gmail.com', 'jean-mi', '1', '95 Place de l''étoile', 562154987, '2012-10-22 20:42:55'),
-('Kévin', 5, 'Kitvikosky', 'Kévin', 'kevin.kitvikosky', 'keke', '5', '653 Main Street', 555365125, '2012-10-22 20:42:55');
+INSERT INTO `utilisateur` (`login`, `id_service`, `nom`, `prenom`, `email`, `password`, `code_ville`, `adresse`, `telephone`, `date`, `id_user_pilote`, `id_user`) VALUES
+('annette.duhamel@gmail.com', 2, 'Duhamel', 'Annette', 'annette.duhamel@gmail.com', 'annie', '2', '156 Rue du Général de Gaulle', 125659748, '2012-10-22 20:42:55', null, 1),
+('blanche.francois@gmail.com', 4, 'François', 'Blanche', 'blanche.francois@gmail.com', 'blanou', '3', '24 place rouge', 415623514, '2012-10-22 20:42:55', null, 2),
+('gerard.hanconnina@gmail.com', 3, 'Hanconinna', 'Gérard', 'gerard.hanconnina@gmail.com', 'gege', '2', '25 Rue pétain', 126548795, '2012-10-22 20:42:55', null, 3),
+('jeanmichel.durand@gmail.com', 1, 'Durand', 'Jean-michel', 'jeanmichel.durand@gmail.com', 'jean-mi', '1', '95 Place de l''étoile', 562154987, '2012-10-22 20:42:55', null, 4),
+('kevin.kitvikosky@gmail.com', 5, 'Kitvikosky', 'Kévin', 'kevin.kitvikosky@gmail.com', 'keke', '5', '653 Main Street', 555365125, '2012-10-22 20:42:55', null, 5),
+('marc.simoret@gmail.com', 8, 'Simoret', 'Marc', 'marc.simoret@gmail.com', 'marco', '5', '154 rue de moncuq', NULL, '2012-10-22 20:42:55', 1, 6),
+('paul.balouche@gmail.com', 8, 'Balouche', 'Paul', 'paul.balouche@gmail.com', 'paulo', '3', '562 place de la république', NULL, '2012-10-22 20:42:55', 2, 7),
+('paulo.vergoza@gmail.com', 8, 'Vergoza', 'Paulo', 'paulo.vergoza@gmail.com', 'paulo', '10', '153 de la plaza centrale', NULL, '2012-10-22 20:42:55', 3, 8),
+('daniel.jupon@gmail.com', 8, 'Jupon', 'Daniel', 'daniel.jupon@gmail.com', 'daniel', '6', '156 schrule das', NULL, '2012-10-22 20:42:55', 4, 9),
+('gazelle.kolibri@gmail.com', 8, 'Kolibri', 'Gazelle', 'gazelle.kolibri@gmail.com', 'gazou', '8', '561 chinatown', NULL, '2012-10-22 20:42:55', 5, 10),
+('franck.perget@gmail.com', 8, 'Peret', 'Franck', 'franck.perget@gmail.com', 'francky', '6', '6154 london park', NULL, '2012-10-22 20:42:55', 6, 11),
+('corentin.vasseur@gmail.com', 8, 'Vasseur', 'Corentin', 'corentin.vasseur@gmail.com', 'corentinou', '2', '456 rue de voltaire', NULL, '2012-10-22 20:42:55', 7, 12),
+('john.mcclane@gmail.com', 8, 'McClane', 'John', 'john.mcclane@gmail.com', 'yipikai', '9', '456 Madison Square Garden', NULL, '2012-10-22 20:42:55', 8, 13),
+('john.hancouille@gmail.com', 8, 'Hancouille', 'John', 'john.hancouille@gmail.com', 'hancock', '8', '415 de la cité interdite', NULL, '2012-10-22 20:42:55', 9, 14),
+('edgard.balhamy@gmail.com', 8, 'Belhamy', 'Edgard', 'edgard.balhamy@gmail.com', 'edgard', '2', '45 rue des riches', NULL, '2012-10-22 20:42:55', 10, 15);
 
 INSERT INTO `astreinte` (`id_aeroport`, `id_pilote`, `date_astreinte`) VALUES
-('CDG', 1, '2012-11-07 23:00:00'),
-('LYS', 1, '2012-11-04 23:00:00'),
-('CDG', 2, '2012-11-05 23:00:00'),
-('LYS', 2, '2012-11-04 23:00:00'),
-('MAN', 3, '2012-11-04 23:00:00'),
-('CDG', 4, '2012-10-22 18:58:01'),
-('MAN', 4, '2012-11-04 23:00:00'),
-('CDG', 5, '2012-11-05 23:00:00'),
-('CDG', 5, '2012-11-07 23:00:00'),
-('CDG', 6, '2012-10-22 18:58:41');
+('CDG', 1, '2012-11-07 22:00:00'),
+('CDG', 1, '2012-11-19 23:00:00'),
+('CDG', 1, '2012-12-14 23:00:00'),
+('LYS', 1, '2012-11-04 22:00:00'),
+('CDG', 2, '2012-11-05 22:00:00'),
+('CDG', 2, '2012-11-19 23:00:00'),
+('CDG', 2, '2012-12-14 23:00:00'),
+('LYS', 2, '2012-11-04 22:00:00'),
+('CDG', 3, '2012-11-23 23:00:00'),
+('MAN', 3, '2012-11-04 22:00:00'),
+('CDG', 4, '2012-10-22 16:58:01'),
+('MAN', 4, '2012-11-04 22:00:00'),
+('CDG', 5, '2012-11-05 22:00:00'),
+('CDG', 5, '2012-11-07 22:00:00'),
+('CDG', 6, '2012-10-22 16:58:41'),
+('CDG', 7, '2012-11-21 23:00:00'),
+('CDG', 7, '2012-11-23 23:00:00'),
+('CDG', 10, '2012-11-21 23:00:00');
 
 INSERT INTO `ligne` (`numero_ligne`, `id_aeroport_origine`, `id_aeroport_depart`, `id_aeroport_arrivee`, `heure_depart`, `heure_arrivee`,`tarif`, `distance`) VALUES
 (16, 'CDG', 'CDG', 'GIG', '10:13:18', '10:13:20', '5.00', 15000),
@@ -756,6 +778,7 @@ INSERT INTO `ligne` (`numero_ligne`, `id_aeroport_origine`, `id_aeroport_depart`
 (31, 'CDG', 'CDG', 'GIG', '16:15:26', '23:00:00', '50.00', 9177),
 (32, 'CDG', 'CDG', 'LHR', '16:16:25', '18:00:00', '30.00', 340),
 (33, 'CDG', 'CDG', 'SXF', '19:40:32', '23:45:00', '20.00', 688);
+
 
 INSERT INTO `periodicite` (`numero_ligne`, `numero_jour`) VALUES
 (20, 1),
@@ -805,18 +828,28 @@ INSERT INTO `vol` (`id_vol`, `numero_ligne`, `id_aeroport_depart_effectif`, `id_
 (1, 18, 'CDG', 'MRS', '2012-10-09', '2012-10-09', '2', 4, 3, '15:00:00', '5.00'),
 (2, 18, 'CDG', 'GIG', '2012-10-01', '2012-10-18', '4', 2, NULL, NULL, '5.00'),
 (3, 18, 'JFK', 'LHR', '2012-10-25', '2012-10-26', NULL, NULL, NULL, NULL, '5.00'),
+(5, 18, 'CDG', 'MRS', '2012-11-22', '2012-11-22', '4', 1, 8, '18:00:00', '5.00'),
 (1, 19, 'LYS', 'PEK', '2012-10-24', '2012-10-25', '2', 7, 2, '18:00:00', '5.00'),
 (1, 20, 'JFK', 'MRS', '2012-11-05', '2012-11-05', '3', 7, 10, '15:00:00', '5.00'),
+(2, 20, 'JFK', 'MRS', '2012-11-19', '2012-11-19', '1', 1, 2, '15:00:00', '5.00'),
+(3, 20, 'JFK', 'MRS', '2012-11-20', '2012-11-20', '4', 8, 10, '15:00:00', '5.00'),
 (1, 21, 'MAN', 'MUC', '2012-11-05', '2012-11-05', '6', 3, 5, '19:00:00', NULL),
 (1, 22, 'PEK', 'LYS', '2012-11-06', '2012-11-06', '4', 10, 8, '15:00:00', '5.00'),
+(2, 22, 'PEK', 'LYS', '2012-11-22', '2012-11-22', '3', 7, 10, '15:00:00', '5.00'),
+(3, 22, 'PEK', 'LYS', '2012-11-20', '2012-11-20', '6', 3, 5, '15:00:00', '5.00'),
 (1, 23, 'GIG', 'SXF', '2012-11-05', '2012-11-05', '2', 2, 3, '15:00:00', '5.00'),
 (1, 24, 'MAN', 'CDG', '2012-11-05', '2012-11-05', '1', 2, 3, '12:00:00', '5.00'),
+(2, 24, 'MAN', 'CDG', '2012-11-22', '2012-11-22', '1', 1, 2, '12:00:00', '5.00'),
+(1, 25, 'LHR', 'MUC', '2012-11-20', '2012-11-20', '10', 3, 7, '06:00:00', '5.00'),
 (1, 26, 'MUC', 'JFK', '2012-11-06', '2012-11-06', '1', 3, 1, '10:00:00', '5.00'),
 (1, 27, 'LYS', 'GIG', '2012-11-05', '2012-11-05', '10', 8, 1, '11:09:00', '600.00'),
 (1, 28, 'CDG', 'MUC', '2012-11-06', '2012-11-06', '10', 7, 8, '11:43:00', '30.00'),
 (2, 28, 'CDG', 'MUC', '2012-11-08', '2012-11-08', '3', 7, 10, '11:43:00', '30.00'),
 (1, 29, 'CDG', 'LYS', '2012-11-06', '2012-11-06', '1', 3, 1, '16:14:29', '30.00'),
 (2, 29, 'CDG', 'LYS', '2012-11-08', '2012-11-08', '1', 3, 2, '16:14:29', '30.00'),
+(3, 29, 'CDG', 'LYS', '2012-11-20', '2012-11-20', '2', 7, 8, '16:14:29', '30.00'),
 (1, 30, 'CDG', 'MRS', '2012-11-08', '2012-11-08', '4', 3, 8, '20:15:02', '30.00'),
-(1, 31, 'CDG', 'GIG', '2012-11-06', '2012-11-06', '4', 1, 3, '23:00:00', '50.00');
+(1, 31, 'CDG', 'GIG', '2012-11-06', '2012-11-06', '4', 1, 3, '23:00:00', '50.00'),
+(2, 31, 'CDG', 'GIG', '2012-11-22', '2012-11-22', '10', 2, 7, '23:00:00', '50.00'),
+(1, 33, 'CDG', 'SXF', '2012-11-22', '2012-11-22', '2', 1, 8, '23:45:00', '20.00');
 

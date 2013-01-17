@@ -1,0 +1,52 @@
+<h3 class="h3DRH">Fiche de l'employe : <?php echo $this->nom.' '.$this->prenom;?></h3>
+<br />
+<table>
+	<tr>
+		<td>Nom:</td><td><?php echo strtoupper($this->nom);?></td>
+	</tr>
+	<tr>
+		<td>Prénom:</td><td><?php echo ucwords($this->prenom);?></td>
+	</tr>
+	<tr>
+		<td>Adresse:</td><td><?php echo $this->adresse.', '.$this->nomVille.' ('.$this->nomPays.')';?></td>
+	</tr>
+	<tr>
+		<td>Adresse mail:</td><td><?php echo $this->email;?></td>
+	</tr>
+	<tr>
+		<td>Téléphone:</td><td><?php echo '(+33) '.$this->telephone; ?></td>
+	</tr>
+	<tr>
+		<td>Date d'embauche:</td><td><?php echo date('d/m/Y à H:i:s', strtotime($this->date)); ?></td>
+	</tr>
+	<?php 
+		if($this->service == 8){
+			
+			$disponibilite = ($this->dispo == 0) ? 'Non' : 'Oui';
+			
+			$select = '<select name="dispo" onchange="changeDisponibilite('.$this->idPilote.', this.value);"><option value="0">Non</option><option value="1" selected="selected">Oui</option></select>';
+			if($this->dispo == 0){
+				$select = '<select name="dispo" onchange="changeDisponibilite('.$this->idPilote.', this.value);"><option value="0" selected="selected">Non</option><option value="1">Oui</option></select>';
+			}
+			
+			echo '
+			<tr>
+				<td>Disponibilite:</td><td>'.$select.'</td>
+			</tr>';
+			
+			foreach($this->brevets as $brevet){
+				$timestamp = strtotime($brevet->date);
+				$newDate = mktime(0, 0, 0, date('m', $timestamp), date('d', $timestamp), date('Y', $timestamp) + 1);
+				echo '
+				<tr>
+					<td>'.$brevet->libelle.'</td><td>'.date('d/m/Y', $timestamp).' valable jusqu\'au '.date('d/m/Y', $newDate).' <span style="cursor:pointer;" onclick="prolongeBrevet('.$this->idPilote.', '.$brevet->id_type_avion.', \''.$brevet->date.'\')">Prolonger d\'un an</span></td>
+				</tr>
+				';
+			}
+			
+			echo '<tr>
+				<td>Temps de travail cet semaine: </td><td>'.$this->temps.'</td>
+			</tr>';
+		}
+	?>
+</table>

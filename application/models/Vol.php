@@ -162,5 +162,15 @@ class Vol extends Zend_Db_Table_Abstract
 	
 		return $req;
 	}
+	
+	public function getVolByPiloteByDate($idPilote, $timeLun, $timeDim){
+		$req = $this->select()
+					->setIntegrityCheck(false)
+					->from(array('vol' => $this->_name))
+					->join(array('lig' => 'ligne'), 'vol.numero_ligne = lig.numero_ligne')
+					->where('(id_pilote = '.$idPilote.' OR id_copilote = '.$idPilote.') AND (UNIX_TIMESTAMP(date_arrivee) BETWEEN '.$timeLun.' AND '.$timeDim.' OR UNIX_TIMESTAMP(date_depart) BETWEEN '.$timeLun.' AND '.$timeDim.')');
+				
+		return $this->fetchAll($req);
+	}
 
 }

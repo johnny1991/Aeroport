@@ -1,0 +1,14 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		changeVille(<?php echo $this->ville; ?>);
+		initBrevet(<?php echo $this->id; ?>);
+
+		$('select[name=service]').attr('onchange', 'initBrevet(<?php echo $this->id; ?>);addBrevet()');
+	});
+</script>
+
+<h3 class="h3DRH">Modifier l'employé : <?php echo $this->nom.' '.$this->prenom?></h3>
+<br />
+<?php 
+	echo $this->form;
+?>

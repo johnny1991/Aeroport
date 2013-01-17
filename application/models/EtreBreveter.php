@@ -21,5 +21,32 @@ class EtreBreveter extends Zend_Db_Table_Abstract
 		
 		return $req;
 	}
+	
+	public function getBrevetByIdPilote($idPilote){
+		$req = $this->select()
+					->from($this)
+					->where('id_pilote = ?', $idPilote);
+		
+		return $this->fetchAll($req);
+	}
+	
+	public function getBrevetByIdPiloteWithTypeAvion($idPilote){
+		$req = $this->select()
+					->setIntegrityCheck(false)
+					->from(array('bre' => $this->_name))
+					->join(array('type' => 'type_avion'), 'bre.id_type_avion = type.id_type_avion')
+					->where('id_pilote = ?', $idPilote);
+		
+		return $this->fetchAll($req);
+	}
+	
+	public function getBrevetByPiloteAndType($idPilote, $idTypeAvion){
+		$req = $this->select()
+					->from($this)
+					->where('id_pilote = ?', $idPilote)
+					->where('id_type_avion = ?', $idTypeAvion);
+		
+		return $this->fetchRow($req);
+	}
 
 }

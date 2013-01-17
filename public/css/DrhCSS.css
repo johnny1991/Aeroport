@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+.h3DRH{text-align:center;}
+
+.boxAjouterService{width:600px;border:1px #000 solid;margin:auto;text-align:center;}
+
+.tableService{border:1px #000 solid;width:100%;border-collapse:collapse;}
+.tableService th{border-bottom:1px #000 solid;background-color:#84a5c3;}
+.tableService th#asc{border-bottom:1px #000 solid;background-color:#84a5c3;}
+.tableService th#desc{border-bottom:1px #000 solid;background-color:#84a5c3;}
+
+.thDateEmbauche{text-align:center;}
+.tdLibelleService{padding-left:15px;}
+.tdOption{width:40px;text-align:center;}
+.tdOption div{margin-left:10px;cursor:pointer;}
+.tdOption a{margin-left:10px;}
+.errorForm{color:red;}
+.tdDateEmbauche{text-align:center;}
+.DivErreurForm{display:none;width:450px;min-height:30px;margin:auto;background-color:#ad2525;border:1px red solid;color:#290b0b;text-align:center;padding-top:10px;margin-bottom:20px;}

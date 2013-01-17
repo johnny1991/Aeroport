@@ -1,0 +1,31 @@
+<a href="/drh/ajouter-employe">Ajouter un employé</a><br />
+<a href="/drh/consulter-service">Consulter un service</a>
+<br />
+<br />
+<h3 class="h3DRH">Consulter les employés</h3>
+
+<table class="tableService">
+	<tr>
+		<?php 
+			echo $this->nom;
+			echo $this->service;
+			echo $this->date;
+		?>
+		<th colspan="2">Options</th>
+	</tr>
+	<?php 
+		foreach($this->employes as $employe){
+			
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().' employe-'.$employe['id_user'].'">';
+			echo '<td class="tdLibelleService"><a href="/drh/consulter-employe/id/'.$employe['id_user'].'">'.$employe['nom'] .' '.$employe['prenom'].'</a></td>';
+			echo '<td class="tdServiceEmploye">'.$employe['libelle_service'].'</td>';
+			echo '<td class="tdDateEmbauche">'.date('d/m/Y', strtotime($employe['date'])).'</td>';
+			echo '<td class="tdOption"><a href="/drh/modifier-employe/id/'.$employe['id_user'].'" class="icone_modifier_ligne updateEmploye"></a></td>';
+			echo '<td class="tdOption"><div class="icone_delete_ligne deleteEmploye"></div></td>';
+			echo '</tr>';
+		}
+	?>
+</table>
+<br />
+<br />
+<?php echo $this->paginationControl($this->employes, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>

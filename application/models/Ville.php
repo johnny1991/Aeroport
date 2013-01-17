@@ -8,4 +8,12 @@ class Ville extends Zend_Db_Table_Abstract
 					'columns'=>'code_pays',
 					'refTableClass'=>'Pays')
 	);
+	
+	public function getVillesByIdPays($idPays){
+		$req = $this->select()
+					->from($this)
+					->where('code_pays = ?', $idPays);
+		
+		return $this->fetchAll($req);
+	}
 }

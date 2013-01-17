@@ -19,7 +19,7 @@
         			'link' : '/planning/liste-vol/',
         			'infoDate' : false,
         			'colorDate' : {
-        				'trWeek' : null
+        				'0' : 'trWeek'
         			}
                 };
 
@@ -378,20 +378,18 @@
         	}
         	
         	function getClassColor(number){
-        		for(indexClass in colorDate){
-        			if(colorDate[indexClass] != null){
-	        			tabInterval = colorDate[indexClass].split('-');
-	        			
-	        			if(number <= tabInterval[1] && number >= tabInterval[0]){
-	        				return indexClass;
+        		if(number != null){
+	        		for(indexClass in colorDate){
+	        			if(indexClass != '0'){
+	        				if(number == indexClass)
+	        					return colorDate[number];
 	        			}
-        			}
+	        		}
+        		}else{
+        			return colorDate[0];
         		}
         		
-        		for(indexClass in colorDate){
-        			if(colorDate[indexClass] == null)
-        				return indexClass;
-        		}
+        		return colorDate[0];
         	}
         	
         	function colorDay(dateJour){
@@ -401,7 +399,9 @@
         			
         			formatDateSlash = getNumDay(dateJour)+'/'+(getNumMonth(dateJour))+'/'+dateJour.getFullYear();
 					if(array_key_exist(formatDateSlash, infoDate)){
-						valueInfoDate = infoDate[formatDateSlash]; 
+						for(key in infoDate[formatDateSlash]){
+							valueInfoDate = infoDate[formatDateSlash][key];
+						} 
 					}else{
 						valueInfoDate = '';
 					}
@@ -410,8 +410,8 @@
 						classColor = getClassColor(valueInfoDate);
 					}else{
 						for(indexClass in colorDate){
-		        			if(colorDate[indexClass] == null)
-		        				classColor = indexClass;
+		        			if(indexClass == '0')
+		        				classColor = colorDate[indexClass];
 		        		}
 					}
         			
@@ -543,7 +543,9 @@
         						
         						formatDateSlash = getNumDay(dateprev)+'/'+(getNumMonth(dateprev))+'/'+dateprev.getFullYear();
         						if(array_key_exist(formatDateSlash, infoDate)){
-        							valueInfoDate = infoDate[formatDateSlash]; 
+        							for(key in infoDate[formatDateSlash]){
+        								valueInfoDate = key;
+        							}
         						}else{
         							valueInfoDate = '';
         						}
@@ -567,7 +569,9 @@
 
         				formatDateSlash = getNumDay(date)+'/'+(getNumMonth(date))+'/'+date.getFullYear();
         				if(array_key_exist(formatDateSlash, infoDate)){
-							valueInfoDate = infoDate[formatDateSlash]; 
+        					for(key in infoDate[formatDateSlash]){
+								valueInfoDate = key;
+							}
 						}else{
 							valueInfoDate = '';
 						}
@@ -618,7 +622,9 @@
         			
         			formatDateSlash = getNumDay(datesuivant)+'/'+(getNumMonth(datesuivant))+'/'+datesuivant.getFullYear();
         			if(array_key_exist(formatDateSlash, infoDate)){
-						valueInfoDate = infoDate[formatDateSlash]; 
+        				for(key in infoDate[formatDateSlash]){
+							valueInfoDate = key;
+						}
 					}else{
 						valueInfoDate = '';
 					}

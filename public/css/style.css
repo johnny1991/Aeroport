@@ -185,7 +185,7 @@ nav a {
 	padding: 0px;
 }
 
-.table_consulter-ligne tr:hover,.table_consulter-vol tr:hover, .tableListeVol tr:hover, .tableAstreinte tr:hover {
+.table_consulter-ligne tr:hover,.table_consulter-vol tr:hover, .tableListeVol tr:hover, .tableAstreinte tr:hover, .tableService tr:hover {
 	background-color: #FFAC2A;
 }
 

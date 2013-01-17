@@ -1,0 +1,18 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		changeVille(0);
+
+		if($('#ajouterEmploye select[name=service]').length != 0){
+			if($('select[name=service]').val() == 8){
+				if($('.divBrevet').length == 0)
+					addBrevet();
+			}
+		}
+	});
+</script>
+
+<h3 class="h3DRH">Ajouter un employé</h3>
+<br />
+<?php 
+	echo $this->form;
+?>
