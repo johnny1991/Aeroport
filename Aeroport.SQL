@@ -713,7 +713,8 @@ INSERT INTO `service` (`id_service`, `libelle_service`) VALUES
 (5, 'Service planning'),
 (6, 'Service d''exploitation'),
 (7, 'Service de logistique commerciale'),
-(8, 'Service d''équipage');
+(8, 'Service d''équipage'),
+(9, 'Aucun Service');
 
 INSERT INTO `type_remarque` (`id_type_remarque`, `libelle_type_remarque`) VALUES
 (1, 'Cuisine'),

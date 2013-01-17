@@ -15,7 +15,7 @@ class AjouterService extends Zend_Form
 		$EService = new Zend_Form_Element_Text('service');
 		$ESubmit = new Zend_Form_Element_Submit('ajouter');
 		
-		$EService->addValidator(new Zend_Validate_Db_NoRecordExists('Service', 'libelle_service'));
+		$EService->addValidator(new Zend_Validate_Db_NoRecordExists('service', 'libelle_service'));
 		$EService->removeDecorator('label');
 		$EService->removeDecorator('HtmlTag');
 		$EService->removeDecorator('Errors');

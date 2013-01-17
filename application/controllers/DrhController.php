@@ -474,8 +474,8 @@ class DrhController extends Zend_Controller_Action{
 					$selected = ($types['id_type_avion'] == $brevet->id_type_avion) ? 'selected="selected"' : '';
 					$html .= '<option '.$selected.' value="'.$types['id_type_avion'].'">'.$types['libelle'].'</option>';
 				}
-				
-				$html .= '</select></dd><dd><input type="text" name="datebrevet'.$index.'" value="'.strstr($brevet->date, ' ', true).'"/></dd></div>';
+				$explode = explode(' ', $brevet->date);
+				$html .= '</select></dd><dd><input type="text" name="datebrevet'.$index.'" value="'.$explode[0].'"/></dd></div>';
 				
 				echo $html;
 			}
@@ -560,7 +560,7 @@ class DrhController extends Zend_Controller_Action{
 		
 		$users = $tableUser->getUserByIdService($idService);
 		foreach($users as $user){
-			$user->id_service = 11;
+			$user->id_service = 9;
 			$user->save();
 		}
 		
