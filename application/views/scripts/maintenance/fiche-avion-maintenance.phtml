@@ -1,0 +1,79 @@
+<?php 
+$doublons = array();
+foreach($this->messages as $message)
+	echo $message;
+?>
+<?php if(count($this->paginator) > 0){ ?>
+<h2>
+	Liste des maintenances de l'avion
+	<?= $this->id_avion ?>
+</h2>
+<?php if($this->double) : ?>
+<div class='no-exist'>
+	<label>Il y a des doublons, merci de les supprimer !!!</label>
+</div>
+<?php endif; ?>
+<table class="table_consulter-ligne">
+	<thead>
+		<tr id="TableHead">
+			<th><a>Id</a></th>
+			<th><a>Id de l'avion</a></th>
+			<th><a>Libellé</a></th>
+			<th><a>Heure total de vol</a></th>
+			<th><a>Date de début</a></th>
+			<th><a>Date de fin</a></th>
+			<th><a>Type Révision</a></th>
+			<th class="emplacement_icone"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php 
+	foreach ($this->paginator as $maintenance){ ?>
+		<tr
+			class="<?php echo $this->cycle(array("Odd", "Even"))->next();?><?php if(isset($doublons[$maintenance->id_avion])) echo " doublons"?>">
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+					<?php echo $maintenance->id_maintenance; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+					<?php echo $maintenance->id_avion; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+					<?php echo $maintenance->findParentRow('Avion')->findParentRow('TypeAvion')->libelle; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+					<?php echo $maintenance->findParentRow('Avion')->total_heure_vol; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+					<?php $dateDebut = new Zend_Date($maintenance->date_prevue)?> <?php echo $dateDebut->get('dd-MM-yyyy'); ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+					<?php $dateFin = new Zend_Date($maintenance->fin_prevue)?> <?php echo $dateFin->get('dd-MM-yyyy'); ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+					<?php $dateTemp = new Zend_Date($maintenance->date_prevue,'dd-MM-yy'); ?>
+					<?php $dateTemp->addDay(10); ?> <?php if($dateTemp == $dateFin) echo "Grosse révision (10 jours)"; else echo "Petite révision (2 jours)" ?>
+			</a></td>
+			<td><a
+				href="<?php echo $this->baseUrl('maintenance/supprimer-maintenance/id/').$maintenance->id_maintenance; ?>"
+				class="icone_delete_ligne"></a>
+			</td>
+		</tr>
+		<?php $doublons[$maintenance->id_avion] = true; ?>
+		<?php } ?>
+	</tbody>
+</table>
+<?php 
+echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->param));
+} else {?>
+<div class="noLine">Il n'y a jamais eu de maintenance sur cet avion</div>
+<?php } ?>
+
+
+

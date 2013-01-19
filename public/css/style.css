@@ -387,7 +387,7 @@ nav a {
 }
 
 .no-exist label {
-	color: #DF280A;
+	color: darkred;
 }
 
 /* pagination */
@@ -532,3 +532,5 @@ nav a {
 .noLine{
 	margin:20px;
 }
+
+.doublons a{color:darkred; font-weight:bold}

@@ -1,0 +1,63 @@
+<?php 
+foreach($this->messages as $message)
+	echo $message;
+?>
+<?php if(count($this->paginator) > 0){ ?>
+<table class="table_consulter-ligne">
+	<thead>
+		<tr id="TableHead">
+			<?php 
+			echo $this->Id;
+			echo $this->Nom;
+			echo $this->Rayon;
+			echo $this->Decollage;
+			echo $this->Atterrissage;
+			?>
+			<th class="emplacement_icone"></th>
+			<th class="emplacement_icone"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php 
+	foreach ($this->paginator as $typeAvion){ ?>
+		<tr class="<?php echo $this->cycle(array("Odd", "Even"))->next();?>">
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-modele-avion/id/').$typeAvion->id_type_avion; ?>">
+					<?php echo $typeAvion->id_type_avion; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-modele-avion/id/').$typeAvion->id_type_avion; ?>">
+					<?php echo $typeAvion->libelle; ?>
+							</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-modele-avion/id/').$typeAvion->id_type_avion; ?>">
+					<?php echo $typeAvion->rayon_action; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-modele-avion/id/').$typeAvion->id_type_avion; ?>">
+					<?php echo $typeAvion->longueur_decollage; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-modele-avion/id/').$typeAvion->id_type_avion; ?>">
+					<?php echo $typeAvion->longueur_atterrissage; ?>
+			</a></td>
+			<td><a
+				href="<?php echo $this->baseUrl('maintenance/modifier-modele-avion/id/').$typeAvion->id_type_avion; ?>"
+				class="icone_modifier_ligne"></a>
+			</td>
+			<td><a
+				href="<?php echo $this->baseUrl('maintenance/supprimer-modele-avion/id/').$typeAvion->id_type_avion; ?>"
+				class="icone_delete_ligne"></a>
+			</td>
+		</tr>
+		<?php } ?>
+	</tbody>
+</table>
+<?php 
+echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->param));
+} else {?>
+<div class="noLine">Aucun modèle d'avion</div>
+<?php } ?>
+
+
+

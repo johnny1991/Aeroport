@@ -99,7 +99,7 @@ class VolController extends Zend_Controller_Action
 		}
 	}
 
-	public function modifierLigneAction()  // OK 
+	public function modifierLigneAction()  // OK
 	{
 		$this->view->title = "Modifier une ligne";
 		$form = new FormulaireLigne();
@@ -243,7 +243,7 @@ class VolController extends Zend_Controller_Action
 		{
 			$insertion = "<div class='no-exist'><label>Cette ligne n'existe pas</label></div>";
 			$this->_helper->FlashMessenger($insertion);
-			$this->_redirector->gotoUrl('/vol/consulter-ligne');
+			$this->_redirector->gotoUrl($_SERVER["HTTP_REFERER"]);
 		}
 	}
 
@@ -262,14 +262,13 @@ class VolController extends Zend_Controller_Action
 				foreach($Ligne->findDependentRowset('Vol') as $vol)
 				$vol->delete();
 			$Ligne->delete();
-			$this->_redirector->gotoUrl('/vol/consulter-ligne');
+			$message = "<div class='insertion-ok'><label>Suppression réussi</label></div>";
 		}
 		else
-		{
-			$insertion = "<div class='no-exist'><label>Cette ligne n'existe pas</label></div>";
-			$this->_helper->FlashMessenger($insertion);
-			$this->_redirector->gotoUrl('/vol/consulter-ligne');
-		}
+			$message = "<div class='no-exist'><label>Cette ligne n'existe pas</label></div>";
+		$this->_helper->FlashMessenger($message);
+		$this->_redirector->gotoUrl($_SERVER["HTTP_REFERER"]);
+
 	}
 
 	public function rechercherAdresseAction(){ //OK
@@ -446,7 +445,7 @@ class VolController extends Zend_Controller_Action
 			else if($periodique == 2)
 				$requete->joinleft(array('p'=>'periodicite'),'p.numero_ligne=l.numero_ligne',array('p.numero_jour'))
 				->where('p.numero_jour IS NOT NULL');
-				
+
 		}
 		if($this->getRequest()->getParam('mot'))
 		{
@@ -575,7 +574,7 @@ class VolController extends Zend_Controller_Action
 		{
 			$insertion = "<div class='no-exist'><label>Cette ligne n'existe pas</label></div>";
 			$this->_helper->FlashMessenger($insertion);
-			$this->_redirector->gotoUrl('/vol/consulter-ligne');
+			$this->_redirector->gotoUrl($_SERVER["HTTP_REFERER"]);
 		}
 	}
 
@@ -628,7 +627,7 @@ class VolController extends Zend_Controller_Action
 		{
 			$message = "<div class='no-exist'><label>Cette ligne n'existe pas</label></div>";
 			$this->_helper->FlashMessenger($message);
-			$this->_redirector->gotoUrl('/vol/consulter-ligne');
+			$this->_redirector->gotoUrl($_SERVER["HTTP_REFERER"]);
 		}
 	}
 

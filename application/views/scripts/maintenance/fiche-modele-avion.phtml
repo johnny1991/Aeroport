@@ -1,0 +1,47 @@
+<?php 
+foreach($this->messages as $message)
+	echo $message;
+?>
+<?php $typeAvion = $this->typeAvion; ?>
+<h1>
+	Fiche du modèle d'avion
+	<?php echo $typeAvion->id_type_avion;?>
+</h1>
+<div class="fiche-vol">
+	<fieldset>
+		<legend>Informations sur le modèle d'avion</legend>
+		<div class="infoLigneRow">
+			<label for="numero">Numéro du modèle : </label>
+			<div class="" id="numero">
+				<?php echo $typeAvion->id_type_avion;?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="numero">Libellé du modèle : </label>
+			<div class="" id="numero">
+				<?php echo $typeAvion->libelle;?>
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="aeroport_origine">Rayon d'action : </label>
+			<div class="" id="aeroport_origine">
+				<?php echo $typeAvion->rayon_action; ?>
+				m
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="aeroport_depart">Longueur de décollage : </label>
+			<div class="" id="aeroport_depart">
+				<?php echo $typeAvion->longueur_decollage;?>
+				m
+			</div>
+		</div>
+		<div class="infoLigneRow">
+			<label for="aeroport_arrive">longueur d'atterrissage : </label>
+			<div class="" id="aeroport_arrive">
+				<?php echo $typeAvion->longueur_atterrissage;?>
+				m
+			</div>
+		</div>
+	</fieldset>
+</div>

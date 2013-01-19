@@ -21,9 +21,16 @@
 #tableCalendar td:hover{background:none;background:url('/img/background-td-hover.png') -30px -10px no-repeat;border: 1px #787878 inset;}
 #tableCalendar tr td:first-child{background:none;background-color:#b6b6b6;}
 
-
 #tableCalendar td.tdToday{background:none;background:url('/img/background-td-today.png') -30px -10px no-repeat;border:2px #787878 solid;}
+#tableCalendar td.tdToday.maintenanceAvion1,
+#tableCalendar td.tdToday.maintenanceAvion2,
+#tableCalendar td.tdToday.maintenanceAvion3, 
+#tableCalendar td.tdToday.maintenanceAvion4, 
 #tableCalendar td.tdToday.trWeek{background:none;background:url('/img/background-td-today.png') -30px -10px no-repeat;border:1px #000 solid;box-shadow:inset 2px 1px 8px #5e5e5e;}
+#tableCalendar td.tdToday.maintenanceAvion1:hover,
+#tableCalendar td.tdToday.maintenanceAvion2:hover,
+#tableCalendar td.tdToday.maintenanceAvion3:hover, 
+#tableCalendar td.tdToday.maintenanceAvion4:hover, 
 #tableCalendar td.tdToday.trWeek:hover{background:none;background:url('/img/background-td.png') -30px -10px no-repeat;border:1px #000 solid;}
 #tableCalendar td.tdToday.prevDay.trWeek{background:none;background:url('/img/background-td-today.png') -30px -10px no-repeat;border:1px #000 solid;box-shadow:inset 2px 1px 8px #5e5e5e;}
 #tableCalendar td.tdToday.prevDay.trWeek:hover{background:none;background:url('/img/background-td.png') -30px -10px no-repeat;border:1px #000 solid;}
@@ -62,5 +69,14 @@
 * ----------------  Fin de la class "intervaltest" ----------
 */
 
+
+#tableCalendar td.maintenanceAvion1{background:none;background:url('/img/background-td-update-jaune.png')  -0px -0px no-repeat;} 
+#tableCalendar td.maintenanceAvion2{background:none;background:url('/img/background-td-update-orange.png')  -0px -0px no-repeat;} 
+#tableCalendar td.maintenanceAvion3{background:none;background:url('/img/background-td-update-orange-red.png')  -0px -0px no-repeat;} 
+#tableCalendar td.maintenanceAvion4{background:none;background:url('/img/background-td-update-red.png')  -0px -0px no-repeat;} 
+#tableCalendar td.maintenanceAvion1:hover{background:none;background:url('/img/background-td-update-jaune-hover.png')  -0px -0px no-repeat;} 
+#tableCalendar td.maintenanceAvion2:hover{background:none;background:url('/img/background-td-update-orange-hover.png')  -0px -0px no-repeat;} 
+#tableCalendar td.maintenanceAvion3:hover{background:none;background:url('/img/background-td-update-orange-red-hover.png')  -0px -0px no-repeat;} 
+#tableCalendar td.maintenanceAvion4:hover{background:none;background:url('/img/background-td-update-red-hover.png')  -0px -0px no-repeat;} 
 
 

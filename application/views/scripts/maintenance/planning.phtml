@@ -1,0 +1,29 @@
+<script type="text/javascript">
+		$(document).ready(function(){
+			$('#calendar').calendar({
+				'nbSemaine' : 8,
+				'link' : '/maintenance/planning-jour/',
+					'colorDate' : {
+					4 : 'maintenanceAvion4',
+					3 : 'maintenanceAvion3',
+					2 : 'maintenanceAvion2',
+					1 : 'maintenanceAvion1',
+					0 : 'trWeek'
+				},
+				'infoDate' : {
+					<?php
+						$index = 0;
+						foreach($this->datePlanning as $date){
+							$index++;
+							echo '\''.$date['date'].'\' : {\''.$date['texte'].'\' : '.$date['indexClass'].'}';
+							if(count($this->datePlanning) != $index){
+								echo ',';
+							}
+						}
+					?>
+				}
+			});	
+		});
+	</script>
+<br />
+<div id="calendar"></div>

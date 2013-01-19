@@ -1,0 +1,70 @@
+<?php 
+foreach($this->messages as $message)
+	echo $message;
+?>
+<?php if(count($this->paginator) > 0){ ?>
+<h2>Liste des avions pour la maintenance</h2>
+<table class="table_consulter-ligne">
+	<thead>
+		<tr id="TableHead">
+			<?php 
+			echo $this->Id;
+			echo $this->Type;
+			echo $this->Places;
+			echo $this->Heures;
+			echo $this->Revision;
+			echo $this->NbVol;
+			echo $this->Disponibilite;
+			?>
+			<th class="emplacement_icone"></th>
+			<th class="emplacement_icone"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php 
+	foreach ($this->paginator as $avion){ ?>
+		<tr class="<?php echo $this->cycle(array("Odd", "Even"))->next();?>">
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$avion['id_avion']; ?>">
+					<?php echo $avion['id_avion']; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$avion['id_avion']; ?>">
+					<?php echo $avion['libelle']; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$avion['id_avion']; ?>">
+					<?php echo $avion['total_heure_vol']; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$avion['id_avion']; ?>">
+					<?php echo $avion['diff']; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$avion['id_avion']; ?>">
+					<?php echo $avion['nbVol']; ?>
+			</a></td>
+			<td class="ligne"><a
+				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$avion['id_avion']; ?>">
+					<?php echo ($avion['disponibilite_avion'])? "Disponible" : "En maintenance"; ?>
+			</a></td>
+			<td><a
+				href="<?php echo $this->baseUrl('maintenance/modifier-avion/id/').$avion['id_avion']; ?>"
+				class="icone_modifier_ligne"></a>
+			</td>
+			<td><a
+				href="<?php echo $this->baseUrl('maintenance/supprimer-avion/id/').$avion['id_avion']; ?>"
+				class="icone_delete_ligne"></a>
+			</td>
+		</tr>
+		<?php } ?>
+	</tbody>
+</table>
+<?php 
+echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->param));
+} else {?>
+<div class="noLine">Aucun avion</div>
+<?php } ?>
+
+
+
