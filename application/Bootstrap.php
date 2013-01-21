@@ -2,34 +2,71 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+
 	protected function _initDataBase(){
-		$config=new Zend_Config_Ini(APPLICATION_PATH.'/../../application.ini','development');
+		$config = new Zend_Config_Ini(APPLICATION_PATH.'/../../application.ini','development');
 		$db = Zend_Db::factory($config->database);
 		Zend_Db_Table_Abstract::setDefaultAdapter($db);
 		Zend_Registry::set('db',$db);
+		Zend_Registry::set('config',$config); // Mettre la config de application.ini dans le registre
 	}
 
-	protected function _initLibrairie(){
-		$autoloader= Zend_Loader_Autoloader::getInstance();
-		$autoloader->registerNamespace('Aeroport_');
-	}
 
-	protected function _initRouter() {
-		$front = $this->bootstrap('FrontController')->getResource('FrontController');
-		$router = $front->getRouter();
-		$route = new Zend_Controller_Router_Route('Nouvelle_Ligne', array('controller' => 'vol', 'action' => 'ajouter-ligne'));
-		$router->addRoute('Nouvelle_Ligne', $route);
-	}
 
-	protected function _initBreadcrumb(){
-		$this->bootstrap("layout");
-		$layout=$this->getResource("layout");
-		$view=$layout->getView();
-		$config=new Zend_Config(require APPLICATION_PATH.'/configs/navigation.php');
-		$navigation=new Zend_Navigation();
-		$view->navigation($navigation);
-		$navigation->addPage($config);
-	}
+/*
+	protected function _initApplication()
+	{
+		$this->bootstrap('frontcontroller');
+		$front = $this->getResource('frontcontroller');
+		$front->addModuleDirectory(dirname(__FILE__) . '/modules');
+	}*/
+/*
+protected function _initView(){
+
+	$this->bootstrap('View');
+	$view = $this->getResource('View');
+	$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper( 'ViewRenderer');
+	$viewRenderer->setView($view);
+	return $view;
+}*/
+
+
+/*
+protected function _initrouter()
+{
+	$frontController = Zend_Controller_Front::getInstance();
+	$frontController->setControllerDirectory(array(
+			'default' => APPLICATION_PATH.'/modules/controllers',
+			'shop'    => APPLICATION_PATH.'/modules/controllers'
+	));
+	$frontController->addModuleDirectory(APPLICATION_PATH.'/modules');
+ 
+}*/
+/*
+protected function _initAutoload()
+
+{
+
+	$defaultloader = new Zend_Application_Module_Autoloader(array(
+
+			'namespace' => '',
+
+			'basePath' => APPLICATION_PATH . '/modules/default/'));
+
+		  $defaultloader->addResourceType('form', 'forms/', 'Form')
+               ->addResourceType('model', 'models/', 'Model');
+
+	$mbloader = new Zend_Application_Module_Autoloader(array(
+
+			'namespace' => '',
+
+			'basePath' => APPLICATION_PATH . '/modules/shop/'));
+
+		  $mbloader->addResourceType('form', 'forms/', 'Form')
+               ->addResourceType('model', 'models/', 'Model');
+
+}*/
+
 
 	protected function _initTranslate(){
 		$translate=new Zend_Translate(array('adapter' => 'array', 'content' =>
@@ -37,5 +74,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				Zend_Translate::LOCALE_DIRECTORY));
 		Zend_Registry::set('Zend_Translate', $translate);
 	}
+	
 }
 

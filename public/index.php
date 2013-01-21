@@ -5,7 +5,7 @@ defined('APPLICATION_PATH')
 
 // Define application environment
 defined('APPLICATION_ENV')
-|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
 
 // Define library directory
 defined ('LIBRARY_PATH') || define('LIBRARY_PATH',
@@ -26,7 +26,6 @@ defined ('FORMS_PATH') || define('FORMS_PATH',
 //Define layouts directory
 defined ('LAYOUTS_PATH') || define('LAYOUTS_PATH',
 		realpath(APPLICATION_PATH. '/layouts'));
-
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
 		realpath(LIBRARY_PATH),
@@ -51,7 +50,7 @@ Zend_Loader::registerAutoload();
 // Create application, bootstrap, and run
 $application = new Zend_Application(
 		APPLICATION_ENV,
-		APPLICATION_PATH . '/configs/application.ini'
-);
+		APPLICATION_PATH . '/configs/application.ini');
+
 $application->bootstrap()
 ->run();

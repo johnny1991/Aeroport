@@ -1,0 +1,157 @@
+<?php $client = $this->client; ?>
+<?php $adresse = $this->adresse; ?>
+<?php $transport = $this->transport; ?>
+<?php $paiement = $this->paiement; ?>
+<?php $produits = $this->produits; ?>
+<?php $form = $this->form; ?>
+
+<h2>Information de facturation et de livraison</h2>
+
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>">
+	<div class="Block">
+		<div class="HeadBlock">
+			<div class="titleHead">Information sur les produits</div>
+			<div class="texteDroite">
+				<a href="<?= $this->baseUrl('client/panier'); ?>">Editer</a>
+			</div>
+		</div>
+		<div class="contentBLock">
+			<table id="Total">
+				<thead>
+					<tr>
+						<th class="designationInfoProduitClient">Désignation</th>
+						<th class="quantiteligneProduitClient">Quantité</th>
+						<th class="prixUInfoProduitClient">Prix unitaire</th>
+						<th class="PrixTInfoProduitClient">Prix Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php $TableProduit = new Produit; ?>
+					<?php foreach ($produits as $id => $quantite)
+					{ ?>
+					<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
+						<?php $produit = $TableProduit->find($id)->current(); ?>
+						<td><span class="designationInfoProduitClient1"><?= $produit->designation;?>
+						</span>
+						</td>
+						<td><span class="quantiteligneProduitClient" target="_blank"><?=  $quantite; ?>
+						</span></td>
+						<td><span class="prixUInfoProduitClient" target="_blank"><?= round($produit->prix,2).' €';?>
+						</span>
+						</td>
+						<td><span class="PrixTInfoProduitClient" target="_blank"><?= round(($produit->prix * $quantite),2).' €';?>
+						</span></td>
+					</tr>
+					<?php } ?>
+					<tr id="underline">
+						<td colspan="3"><span class="nom_total">Montant sous-Total</span>
+						</td>
+						<td><span class="prix_total"><?= round($this->montant,2).' €'; ?> </span></td>
+					</tr>
+					<tr>
+						<td colspan="3"><span class="nom_total">Frais de port (<?= $transport['libelle']; ?>)
+						</span></td>
+						<td><span class="prix_total"><?= round($transport['prix'],2).' €'; ?> </span>
+						</td>
+					</tr>
+					<tr class="Odd">
+						<td colspan="3"><span class="nom_total"><b>Montant Total</b> </span>
+						</td>
+						<td><span class="prix_total"><b><?= round(($this->montant+$transport['prix']),2).' €'; ?>
+							</b> </span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="Block">
+		<div class="HeadBlock">
+			<div class="titleHead">Adresse de facturation et de livraison</div>
+			<div class="texteDroite">
+				<a href="<?= $this->baseUrl('client/checkout-adresse'); ?>">Editer</a>
+			</div>
+		</div>
+		<div class="contentBLock">
+			<div class="contentSubContentInfoCompte">
+				<div class="rowBlock">
+					<?= $client->prenom." ".$client->nom; ?>
+				</div>
+				<div class="rowBlock">
+					<?= $adresse['adresse']; ?>
+				</div>
+				<div class="rowBlock">
+					<?= $adresse['code_postal'].", ".$adresse['ville']; ?>
+				</div>
+				<div class="rowBlock">
+					<?= $adresse['pays']; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block">
+		<div class="HeadBlock">
+			<div class="titleHead">Mode de transport</div>
+			<div class="texteDroite">
+				<a href="<?= $this->baseUrl('client/checkout-mode-livraison'); ?>">Editer</a>
+			</div>
+		</div>
+		<div class="contentBLock">
+			<div class="contentSubContentInfoCompte">
+				<div class="rowBlock">
+					<?= $transport['libelle']; ?>
+				</div>
+				<div class="rowBlock">
+					Livraison
+					<?= $transport['temps']."H"; ?>
+				</div>
+				<div class="rowBlock">
+					<?= $transport['prix']." €"; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block">
+		<div class="HeadBlock">
+			<div class="titleHead">Mode de paiement</div>
+			<div class="texteDroite">
+				<a href="<?= $this->baseUrl('client/checkout-mode-paiement'); ?>">Editer</a>
+			</div>
+		</div>
+		<div class="contentBLock">
+			<div class="contentSubContentInfoCompte">
+				<div class="rowBlock">
+					<?= $paiement['libelle']; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block">
+		<div class="HeadBlock">Commentaire</div>
+		<div class="contentBLock">
+			<div class="contentSubContentInfoCompte">
+				<div class="rowBlock3">
+					<?php $form->getElement("texte")->getDecorator('label')->setOption('tag', null); ?>
+					<div>
+						<?= $form->texte->renderLabel();?>
+					</div>
+					<div>
+						<?= $form->texte->renderViewHelper();?>
+					</div>
+					<div>
+						<?= $form->texte->renderErrors();?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block" id="underline">
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<div>
+					<? echo $form->confirmer->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

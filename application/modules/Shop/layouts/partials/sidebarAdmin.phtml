@@ -1,0 +1,50 @@
+<div id="sidebarPanel">
+	<div class="contenuSidebar">
+		<div class="headSidebar">
+			<div class="titleHeadSidebar">Administration</div>
+		</div>
+		<div id="contentSidebar">
+			<ul class="panel">
+				<li><div>Produits</div>
+					<ul class="sousMenu">
+						<li><a href="<?= $this->baseUrl('liste_produit');?>"><div>Catalogue</div>
+						</a>
+						</li>
+						<li><a href="<?= $this->baseUrl('ajout_produit');?>"><div>Ajouter</div>
+						</a>
+						</li>
+					</ul></li>
+				<li><div>Clients</div>
+					<ul class="sousMenu">
+						<li><a href="<?= $this->baseUrl('liste_client');?>"><div>Catalogue</div>
+						</a>
+						</li>
+						<li><a href="<?= $this->baseUrl('ajout_client');?>"><div>Ajouter</div>
+						</a>
+						</li>
+					</ul>
+				</li>
+				<li><div>Catégories</div>
+					<ul class="sousMenu">
+						<li><a href="<?= $this->baseUrl('liste_categorie');?>"><div>Catalogue</div>
+						</a>
+						</li>
+						<li><a href="<?= $this->baseUrl('ajout_categorie');?>"><div>Ajouter</div>
+						</a>
+						</li><li><a href="<?= $this->baseUrl('modifier_categorie');?>"><div>Modifier</div>
+						</a>
+						</li>
+					</ul></li>
+				<li><div>Commandes</div>
+					<ul class="sousMenu">
+						<li><a href="<?= $this->baseUrl('liste_commandes');?>"><div>Catalogue</div>
+						</a>
+						</li>
+					</ul>
+				</li>
+				<li><a href="<?= $this->baseUrl('parametres');?>"><div id="noChildren">Paramètres</div></a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

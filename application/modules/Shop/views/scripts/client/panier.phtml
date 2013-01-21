@@ -1,0 +1,83 @@
+<?php $produits = $this->produits;?>
+<?php $form = $this->form; ?>
+<?php if($produits != NULL) { ?>
+<h2 id="titre_panier">
+	Mon Panier
+	<?="(".count($produits).")"; ?>
+</h2>
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>">
+	<div class="content_panier">
+		<div class="head_content_panier">
+			<div class="produit_head_content_panier">
+				Produit
+				<?= (count($produits)>1)? 's' : ''; ?>
+			</div>
+			<div class="prix_head_content_panier">Prix</div>
+			<div class="quantite_head_content_panier">Quantité</div>
+			<div class="total_head_content_panier">Total</div>
+		</div>
+		<?php foreach($produits as $produit) { 
+			?>
+		<div class="ligne_content_panier">
+			<div class="photoPanier">
+				<a href="<?= $this->baseUrl('Article/'.$produit[4]); ?>"> <?php if(($produit[1]->photo1 != NULL) && (file_exists(APPLICATION_PATH.'/../public/shop/img/Produits/Thumbnails/'.$produit[1]->photo1))) {?>
+					<img class="product_thum" alt=""
+					src="<?= $this->baseUrl('/img/Produits/Thumbnails/'.$produit[1]->photo1); ?>">
+					<?php } else {?> <img class="product_thum" alt=""
+					src="<?= $this->baseUrl('/img/Produits/SmallNoPicture.png');?>"> <?php }?>
+				</a>
+			</div>
+			<div class="produit_ligne_content_panier">
+				<div class="description_produit_ligne_content_panier">
+					<a href="<?= $this->baseUrl('Article/'.$produit[4]); ?>"><b><?= $produit[1]->designation; ?>
+					</b> </a>
+				</div>
+				<div class="remove_produit_ligne_content_panier">
+					<a href="<?= $this->url(array('rm'=>$produit[0])); ?>">Supprimer ce
+						produit</a>
+				</div>
+			</div>
+			<div class="prix_ligne_content_panier">
+				<?= round($produit[1]->prix,2); ?>
+				€
+			</div>
+			<div class="quantite_ligne_content_panier">
+				<?= $form->$produit[3]->renderViewHelper(); ?>
+				<?= $form->$produit[3]->renderErrors(); ?>
+
+			</div>
+			<div class="total_ligne_content_panier">
+				<?= round(($produit[1]->prix*$produit[2]),2); ?>
+				€
+			</div>
+		</div>
+		<?php }	?>
+		<div class="update_content_panier">
+			<?= $form->update->renderViewHelper(); ?>
+		</div>
+		<div class="total_content_panier">
+			<div class="prix_total_content_panier">
+				<?= round($this->sousTotal,2); ?>
+				€
+			</div>
+			<div class="text_total_content_panier">Montant sous-total :</div>
+		</div>
+	</div>
+</form>
+<div class="confirm_content_panier">
+	<div>
+		<a href="<?php echo $this->baseUrl('Shop/client/checkout-adresse'); ?>"
+			class="bouton">Commander</a>
+	</div>
+</div>
+<?php } else { ?>
+<h2 id="titre_panier">Le panier est vide</h2>
+<div class="no_produit_panier">Votre panier est vide.</div>
+<?php } ?>
+
+<div class="shopping_content_panier">
+	<div>
+		<a href="<?= $this->baseUrl('accueil');?>" id="link_color"><< Continuer le shopping</a>
+	</div>
+</div>

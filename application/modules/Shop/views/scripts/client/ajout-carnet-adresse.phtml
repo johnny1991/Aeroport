@@ -1,0 +1,79 @@
+<h2><?= $this->h2;?></h2>
+<?php $form = $this->form; ?>
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>">
+	<div class="Block">
+		<div class="HeadBlock">Adresse</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $form->getElement("adresse")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->adresse->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->adresse->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->adresse->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("ville")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->ville->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->ville->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->ville->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("code_postal")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->code_postal->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->code_postal->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->code_postal->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("pays")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->pays->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->pays->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->pays->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock1">
+				<?php $form->getElement("defaut")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->defaut->renderViewHelper();?>
+				</div>
+				<div style="margin-top:3px;">
+					<?= $form->defaut->renderLabel();?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block" id="underline">
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<div>
+					<?= $form->ajouter->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<div>
+	<a href="<?= $this->baseUrl('carnet_adresses'); ?>" id="link_color"><small><<</small> Retour</a>
+</div>

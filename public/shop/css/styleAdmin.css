@@ -1,0 +1,215 @@
+@CHARSET "UTF-8";
+
+/* fiches admin */
+.optionPanel {
+	overflow: auto;
+	border-bottom: 1px solid #E3E3E3;
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+}
+
+.boutonModifierProduit {
+	background: url("../img/modifier.png") no-repeat;
+	float: left;
+	height: 25px;
+	margin: 10px 10px 7px 20px;
+	padding: 3px 0px 0px 25px;
+}
+
+.boutonAjouterProduit {
+	background: url("../img/ajouter.png") no-repeat;
+	float: left;
+	height: 25px;
+	margin: 10px 10px 7px 20px;
+	padding: 4px 0px 0px 32px;
+}
+
+.boutonStatutProduit {
+	background: url("../img/changement.png") no-repeat;
+	float: left;
+	height: 25px;
+	margin: 10px 10px 7px 20px;
+	padding: 3px 0px 0px 37px;
+}
+
+.boutonSupprimerProduit {
+	background: url("../img/supprimer.png") no-repeat;
+	float: left;
+	height: 25px;
+	margin: 10px 10px 7px 20px;
+	padding: 3px 0px 0px 27px;
+}
+
+.boutonConfigCommande{
+		background: url("../img/changement.png") no-repeat;
+	float: left;
+	height: 25px;
+	margin: 3px 0px 0px 20px;
+	padding: 3px 0px 0px 36px;
+}
+
+.boutonSupprimer {
+	background: url("../img/changement.png") no-repeat;
+	height: 25px;
+	width: 34px;
+	padding: 0px;
+	margin: 0px 5px 0px 2px;
+	display: block;
+}
+
+.boutonModifier {
+	background: url("../img/modifier.png") no-repeat;
+	height: 25px;
+	width: 25px;
+	padding: 0px;
+	margin: 0px 2px;
+	display: block;
+}
+
+/* Tableaux */
+.idLigneProduit,.idLigneClient,.idLigneCategorie,.idLigneSousCategorie,.idLigneCommande,.idInfoProduit
+	{
+	width: 35px;
+}
+
+.designationLigneProduit,.designationInfoProduit {
+	width: 234px;
+}
+
+.designationInfoProduit {
+	width: 230px;
+}
+
+.prixLigneProduit {
+	width: 55px;
+}
+
+.quantiteLigneProduit,.montantLigneCommande,.livreLigneCommande,.quantiteligneProduit
+	{
+	width: 65px;
+}
+
+.PhotoLigneProduit {
+	width: 45px;
+}
+
+.dateLigneProduit,.dateLigneClient,.nombreLigneCommande {
+	width: 95px;
+}
+
+.actifLigneProduit {
+	width: 35px;
+}
+
+.nomLigneClient/*,.prenomLigneClient*/ {
+	width: 75px;
+}
+.montantLigneClient{
+	width:92px;
+}
+
+.mailLigneClient {
+	width: 200px;
+}
+
+.loginLigneClient {
+	width: 80px;
+}
+
+.designationLigneCategorie,.designationLigneSousCategorie,.dateLigneCommande,.prenomLigneCommande
+	{
+	width: 100px;
+}
+
+.nomLigneCommande,.prixUInfoProduit {
+	width: 90px;
+}
+
+.PrixTInfoProduit {
+	width: 70px;
+}
+
+.quantiteRInfoProduit {
+	width: 120px;
+}
+
+#tableauListeCategorie,#tableauListeSousCategorie {
+	margin: 5px;
+	width: 94%;
+}
+
+.suppressionLigneCategorie,.suppressionHeadLigneCategorie {
+	width: 15px;
+	height: 15px;
+	padding: 0px;
+	margin: 10px 5px;
+}
+
+.suppressionLigneCategorie {
+	background: url("../img/supprimer_small.png") no-repeat scroll 0 0
+		transparent;
+}
+
+.headTableauListeCategorie {
+	border-bottom: 1px solid #CACACA;
+	padding: 5px;
+	color: #363636;
+	text-align: center;
+	font-weight: bold;
+}
+
+.contourTableauListeCategorie,.contourTableauListeSousCategorie {
+	border-radius: 5px;
+	border: 1px solid #CACACA;
+	float: left;
+	margin: 20px 0px 50px 20px;
+}
+
+/*fiche commande*/
+#infoCommande div,#infoCommande label,#infoClient div,#infoClient label
+	{
+	float: left;
+}
+
+#infoCommande label,#infoClient label {
+	font-weight: bold;
+}
+
+#infoProduit,#infoCommande,#infoClient {
+	margin: 10px;
+	color: #363636;
+}
+
+#infoProduit a,#infoProduit th {
+	font-size: 13px;
+	overflow: hidden;
+	padding: 10px 5px;
+	text-align: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#infoProduit a {
+	display: block;
+}
+
+#infoProduit table {
+	width: 99%;
+}
+
+#etatCommande #bouton2 {
+	display: inline;
+	margin-left: 50px;
+	font-weight: normal;
+	font-size: 12px;
+}
+
+#ficheProduitCommande {
+	width: 98%;
+}
+
+.CommandeLivre{
+	width:100%;
+	float:left;
+	margin-left:50px;
+}

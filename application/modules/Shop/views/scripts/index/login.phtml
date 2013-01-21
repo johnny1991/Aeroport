@@ -1,0 +1,76 @@
+<?php $form = $this->formLogin; ?>
+<h2>Identifiez-vous ou créez un compte</h2>
+<?php 
+if($this->message != NULL)
+	echo $this->message;
+?>
+<form method="get" action="<?= $this->baseUrl('nouveau_compte'); ?>">
+	<div class="subBlock">
+		<div class="HeadBlock">
+			<h3>Nouveaux clients</h3>
+		</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<div class="textBlock">Je suis un nouveau client. En créant votre
+					compte sur notre site, vous pourrez faire vos achats plus
+					rapidement</div>
+			</div>
+		</div>
+		<div class="Block" id="underline">
+			<div>
+				<div class="rowBlock">
+					<input type="submit" value="CREER UN COMPTE">
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>">
+	<div class="subBlock">
+		<div class="HeadBlock">
+			<h3>Clients enregistrés</h3>
+		</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<div class="textBlock">Si vous avez déjà un compte, veuillez vous
+					identifier.</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("login")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('login')->hasErrors())
+					$form->login->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->login->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->login->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->login->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("pass")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('pass')->hasErrors())
+					$form->pass->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->pass->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->pass->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->pass->renderErrors();?>
+				</div>
+			</div>
+		</div>
+		<div class="Block" id="underline">
+			<div>
+				<div class="rowBlock">
+					<?= $form->Connexion->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

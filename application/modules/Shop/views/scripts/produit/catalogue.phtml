@@ -1,0 +1,39 @@
+<?php if($this->paginator->getTotalItemCount() == 0) { ?>
+<div id="numberArticle">
+	<?php if($this->recherche) {?>
+	<b>Aucun article pour cette recherche</b>
+	<?php }else {?>
+	<b>Il n'y a aucun article dans cette catégorie.</b>
+	<?php } ?>
+</div>
+<?php } else { ?>
+<div id="choixArticle">
+	<div id="numberArticle">
+		Il y a
+		<?= $this->paginator->getTotalItemCount(); ?>
+		<?= ($this->paginator->getTotalItemCount() > 1) ? "articles :" :"article :"; ?>
+	</div>
+</div>
+<?php } 
+if($this->paginator->getTotalItemCount() > 0 ){ ?>
+<div class="Block1">
+	<div class="HeadBlock">
+		<h2 id="title_catalogue">
+			<?= $this->title;?>
+		</h2>
+		<div id="triArticle">
+			<?= $this->form->orderBy->renderViewHelper();?>
+		</div>
+	</div>
+	<div class="contentBLock1">
+		<?php 
+		foreach ($this->paginator as $vol) : ?>
+		<div class="block-liste">
+		
+		</div>
+		<!-- echo $this->action('bloc','produit','Shop',array('id_vol'=>$vol->id_vol, 'numero_ligne'=>$vol->numero_ligne)); -->
+		<?php endforeach;	?>
+	</div>
+</div>
+<?= $this->pagination; 
+} ?>

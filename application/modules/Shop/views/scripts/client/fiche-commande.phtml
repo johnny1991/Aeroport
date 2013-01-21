@@ -1,0 +1,155 @@
+<?php $commande = $this->commande;?>
+<?php $transport = $this->transport; ?>
+<?php $paiement = $this->paiement; ?>
+<?php $client = $this->client; ?>
+<?php $adresse = $this->adresse; ?>
+
+<h2>
+	Commande n°
+	<?=$commande->id_commande; ?>
+	-
+	<?php 	if($commande->Islivre){?>
+	Envoyée
+	<?php }else { ?>
+	En attente
+	<?php }?>
+</h2>
+<div class="Block">
+	<div class="HeadBlock">Informations sur la commande</div>
+	<div class="contentBLock">
+		<div class="rowBlock1">
+			<div>Date de commande :</div>
+			<div>
+				Le
+				<?= date("d/m/y à H:i",strtotime($commande->date)); ?>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Paiement par :</div>
+			<div>
+				<?= $paiement->libelle; ?>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Livraison par :</div>
+			<div>
+				<?= $transport->libelle; ?>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Montant total :</div>
+			<div>
+				<?= $commande->montant." €"; ?>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Statut :</div>
+			<div>
+				<?php 	if($commande->Islivre){?>
+				<span id='LivreOk'>Envoyée</span>
+				<?php }else { ?>
+				<span id='LivreNok'>En attente</span>
+				<?php }?>
+			</div>
+		</div>
+		<?php if ($commande->commentaire != NULL) {?>
+		<div class="rowBlock1">
+			<div>Commentaire :</div>
+			<div>
+				<?= $commande->commentaire;?>
+			</div>
+		</div>
+		<?php } ?>
+	</div>
+</div>
+<div class="Block">
+	<div class="HeadBlock">Adresse de livraison</div>
+	<div class="contentBLock">
+		<?php if ($adresse == NULL){?>
+		<div class="rowBlock1">
+			<div>L'adresse n'existe plus.</div>
+		</div>
+		<?php } else {?>
+		<div class="rowBlock1">
+			<?= $client->prenom." ".$client->nom; ?>
+		</div>
+		<div class="rowBlock1">
+			<?= $adresse->adresse; ?>
+		</div>
+		<div class="rowBlock1">
+			<?= $adresse->code_postal.", ".$adresse->ville; ?>
+		</div>
+		<div class="rowBlock1">
+			<?= $adresse->pays; ?>
+		</div>
+		<?php }?>
+	</div>
+</div>
+<?php $CommandeProduits = $this->commandeProduits; ?>
+<div class="Block">
+	<div class="HeadBlock">Informations sur les articles</div>
+	<div class="contentBLock">
+		<table id="Total">
+			<thead>
+				<tr>
+					<th class="designationInfoProduitClient">Désignation</th>
+					<th class="quantiteligneProduitClient">Quantité</th>
+					<th class="prixUInfoProduitClient">Prix unitaire</th>
+					<th class="PrixTInfoProduitClient">Prix Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($CommandeProduits as $CommandeProduit)
+					{ ?>
+				<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
+					<?php $produit = $CommandeProduit->findParentRow('Produit'); ?>
+					<?php if($produit != NULL) { ?>
+					<td><a
+						href="<?= $this->baseUrl('/produit/fiche/id/').$produit->id_produit; ?>"
+						class="designationInfoProduitClient" target="_blank"><b><?= $produit->designation;?>
+						</b> </a></td>
+					<td><a
+						href="<?= $this->baseUrl('/produit/fiche/id/').$produit->id_produit; ?>"
+						class="quantiteligneProduitClient" target="_blank"><?=  $CommandeProduit->quantite; ?>
+					</a></td>
+					<td><a
+						href="<?= $this->baseUrl('/produit/fiche/id/').$produit->id_produit; ?>"
+						class="prixUInfoProduitClient" target="_blank"><?= $produit->prix." €";?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('/produit/fiche/id/').$produit->id_produit; ?>"
+						class="PrixTInfoProduitClient" target="_blank"><?= ($produit->prix*$CommandeProduit->quantite)." €";?>
+					</a></td>
+					<?php } else {?>
+					<td colspan="4"><span><b>Cet article n'est plus en ligne</b> </span>
+					</td>
+					<?php } ?>
+				</tr>
+				<?php } ?>
+				<tr id="underline">
+					<td colspan="3"><span class="nom_total">Montant sous-Total</span>
+					</td>
+					<td><span class="prix_total"><?= ($commande->montant-$transport->prix)." €"; ?> </span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3"><span class="nom_total">Frais de port (<?= $transport->libelle; ?>)
+					</span></td>
+					<td><span class="prix_total"><?= $transport->prix." €"; ?> </span>
+					</td>
+				</tr>
+				<tr class="Odd">
+					<td colspan="3"><span class="nom_total"><b>Montant Total</b> </span>
+					</td>
+					<td><span class="prix_total"><b><?= $commande->montant." €"; ?>
+						</b> </span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div>
+	<a href="<?= $this->baseUrl('mes_commandes'); ?>" id="link_color"><small><<</small>
+		Retour</a>
+</div>

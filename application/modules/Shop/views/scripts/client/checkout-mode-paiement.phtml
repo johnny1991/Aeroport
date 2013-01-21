@@ -1,0 +1,37 @@
+<?php $form = $this->form; ?>
+<h2>Information sur le mode de paiement</h2>
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>">
+	<div class="Block">
+		<div class="HeadBlock">Choisissez un mode de paiement</div>
+		<?php $numItems = count($this->paiements);
+$i = 0;?>
+		<?php foreach ($this->paiements as $paiement) { ?>
+		<div
+			class="<?= (++$i === $numItems) ? "contentBlock2" : "contentBlock1"; ?>"
+			onclick="chooseModePaiement(<?= $paiement->id_paiement; ?>);"
+			id="<?= $paiement->id_paiement; ?>">
+			<div class="checkbox_checkout1">
+				<?php  echo $this->formRadio('choix', null,null,array($paiement->id_paiement => "")); ?>
+			</div>
+			<div class="content_checkout1">
+				<div class="image_paiement">
+					<img src="<?= $this->baseUrl('/img/paiement/'.$paiement->photo); ?>">
+				</div>
+				<div class="nom_paiement">
+					<b><?= $paiement->libelle?> </b>
+				</div>
+			</div>
+		</div>
+		<?php } ?>
+	</div>
+	<div class="Block" id="underline">
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<div>
+					<?= $form->Commander->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

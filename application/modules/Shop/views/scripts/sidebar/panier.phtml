@@ -1,0 +1,56 @@
+<?php $produits = $this->produits; ?>
+<div class="contenuSidebar">
+	<div class="headSidebar">
+		<span class="titleHeadSidebar"><a
+			href="<?= $this->baseUrl('panier');?>">Mon Panier</a> </span>
+	</div>
+	<div id="contentSidebar">
+		<div class="blockSidePanier">
+			<?php if(count($produits) > 0) {?>
+			<div class="nbProduitContentSidePanier">
+				Il y a <b><a href="<?= $this->baseUrl('panier'); ?>"><?=count($produits); ?>
+						article<?= (count($produits) > 1) ? 's' : ''; ?> </a> </b> dans
+				votre panier.
+			</div>
+			<?php foreach($produits as $produit) { ?>
+			<div class="ligneContentSidePanier">
+				<div class="photoContentSidePanier">
+					<?php 
+					if (($produit[1]->photo1 != NULL) && (file_exists(APPLICATION_PATH.'/../public/shop/img/Produits/'.$produit[1]->photo1))) {
+					$ImageSize = Application_Image_Tools::adaptationTailleImage(APPLICATION_PATH.'/../public/shop/img/Produits/'.$produit[1]->photo1,80,98); ?>
+					<a href="<?= $this->baseUrl('Article/'.$produit[3]);?>"><img
+						src="<?= $this->baseUrl('/shop/img/Produits/Thumbnails/'.$produit[1]->photo1); ?>"
+						width="<?= $ImageSize[0]; ?>px" height="<?= $ImageSize[1]; ?>px">
+					</a>
+					<?php } else { 
+					$ImageSize = Application_Image_Tools::adaptationTailleImage(APPLICATION_PATH.'/../public/shop/img/Produits/SmallNoPicture.png',80,98); ?>
+					<img src="<?=  $this->baseUrl('/shop/img/Produits/SmallNoPicture.png'); ?>"
+						width="<?= $ImageSize[0]; ?>px" height="<?= $ImageSize[1]; ?>px">
+					<?php }?>
+				</div>
+				<div class="contentSidePanier">
+					<div>
+						<a href="<?= $this->baseUrl('Article/'.$produit[3]);?>"><?=$produit[1]->designation; ?>
+						</a>
+					</div>
+					<div>
+						<b><?= $produit[2];?> </b> x
+						<?= $produit[1]->prix.'€'; ?>
+					</div>
+					<div id="iconeRemoveContentSidePanier">
+						<a
+							href="<?= $this->baseUrl('panier/'.$produit[1]->id_produit); ?>"
+							id="removeContentSidePanier"><span>Supprimer</span> </a>
+					</div>
+				</div>
+			</div>
+			<?php } ?>
+			<div id="sousTotalSidePanier">
+				Sous-total du panier : <b><?=$this->sousTotal." €";?> </b>
+			</div>
+			<?php } else {?>
+			<div class="videSidePanier">Votre panier est vide.</div>
+			<?php } ?>
+		</div>
+	</div>
+</div>

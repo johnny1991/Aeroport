@@ -1,0 +1,68 @@
+<h2>Catalogue des clients</h2>
+
+<div class="optionPanel">
+	<div>
+		<a href="<?= $this->baseUrl('ajout_client'); ?>"
+			class="boutonAjouterProduit" title="Ajouter un client">Ajouter un client</a>
+	</div>
+</div>
+<?php 
+foreach($this->messages as $message)
+	echo $message;
+?>
+<?php if($this->paginator->count() > 0) {?>
+<table class="liste">
+	<thead>
+		<tr class="Head">
+			<?php 
+			echo $this->HeadId;
+			echo $this->HeadNom;
+			echo $this->HeadMail;
+			echo $this->HeadLogin;
+			echo $this->HeadMontant;
+			echo $this->HeadDate;
+			?>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+		foreach ($this->paginator as $client)
+					{ ?>
+		<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
+			<td><a
+				href="<?= $this->baseUrl('fiche_client/').$client->id_client; ?>"
+				class="idLigneClient"> <?= $client->id_client; ?>
+			</a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_client/').$client->id_client; ?>"
+				class="nomLigneClient"> <?= $client->nom; ?>
+			</a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_client/').$client->id_client; ?>"
+				class="mailLigneClient"><?= $client->mail; ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_client/').$client->id_client; ?>"
+				class="loginLigneClient"><?= $client->login; ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_client/').$client->id_client; ?>"
+				class="montantLigneClient"><?= ($client->montant != NULL) ? round($client->montant,2)."€" : "";?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_client/').$client->id_client; ?>"
+				class="dateLigneProduit"><?php  
+				$madate = strtotime($client->date);
+				echo ($client->montant != NULL) ? date("d/m/y à H:i",$madate) : "";
+				?> </a>
+			</td>
+		</tr>
+		<?php }?>
+	</tbody>
+</table>
+<?= $this->pagination; ?>
+<?php } else {?>
+Aucun client enregistré dans la base de données
+<?php } ?>

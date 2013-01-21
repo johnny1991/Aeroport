@@ -1,0 +1,193 @@
+<?php $form = $this->form;?>
+<h2>Ajouter un produit</h2>
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>" enctype="multipart/form-data">
+	<div class="Block">
+		<div class="HeadBlock">
+			<h3>Information sur le produit</h3>
+		</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $form->getElement("designation")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('designation')->hasErrors())
+					$form->designation->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->designation->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->designation->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->designation->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("descriptionBreve")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->descriptionBreve->renderLabel();?>
+				</div>
+				<div
+				<?php if($form->getElement('descriptionBreve')->hasErrors()) echo 'class="inputRequired"';?>>
+					<?= $form->descriptionBreve->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->descriptionBreve->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("description")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->description->renderLabel();?>
+				</div>
+				<div
+				<?php if($form->getElement('description')->hasErrors()) echo 'class="inputRequired"';?>>
+					<?= $form->description->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->description->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("prix")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('prix')->hasErrors())
+					$form->prix->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->prix->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->prix->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->prix->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("quantite")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('quantite')->hasErrors())
+					$form->quantite->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->quantite->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->quantite->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->quantite->renderErrors();?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block">
+		<div class="HeadBlock">
+			<h3>Catégorie / Sous-catégorie *</h3>
+		</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $form->getElement("categorie")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('categorie')->hasErrors())
+					$form->categorie->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->categorie->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->categorie->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->categorie->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("sousCategorie")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('sousCategorie')->hasErrors())
+					$form->sousCategorie->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->sousCategorie->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->sousCategorie->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->sousCategorie->renderErrors();?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block">
+		<div class="HeadBlock">
+			<h3>Images (Jpeg / Png)</h3>
+		</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $form->getElement("photo1")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('photo1')->hasErrors())
+					$form->photo1->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->photo1->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->photo1->renderFile();?>
+				</div>
+				<div>
+					<?= $form->photo1->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("photo2")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('photo2')->hasErrors())
+					$form->photo2->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->photo2->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->photo2->renderFile();?>
+				</div>
+				<div>
+					<?= $form->photo2->renderErrors();?>
+				</div>
+			</div>
+			<div class=rowBlock>
+				<?php $form->getElement("photo3")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('photo3')->hasErrors())
+					$form->photo3->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->photo3->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->photo3->renderFile();?>
+				</div>
+				<div>
+					<?= $form->photo3->renderErrors();?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block">
+		<div class="HeadBlock">
+			<h3>Affichage du produit</h3>
+		</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $form->getElement("actif")->getDecorator('label')->setOption('tag', null);
+				if($form->getElement('actif')->hasErrors())
+					$form->actif->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->actif->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->actif->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->actif->renderErrors();?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block" id="underline">
+		<div class="contentBLock">
+			<div class="BoutonCreateContent">
+				<?= $form->Ajouter->renderViewHelper();?>
+			</div>
+		</div>
+	</div>
+
+</form>

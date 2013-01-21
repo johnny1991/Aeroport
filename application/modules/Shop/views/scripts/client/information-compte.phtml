@@ -1,0 +1,107 @@
+<?php $client = $this->client;?>
+<?php $form = $this->form;?>
+<?php 
+if($this->message != NULL)
+	echo $this->message;
+?>
+<h2>Éditer les informations du compte</h2>
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>">
+	<div class="Block">
+		<div class="HeadBlock">Information du compte</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $form->getElement("nom")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->nom->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->nom->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->nom->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("prenom")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->prenom->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->prenom->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->prenom->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("mail")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->mail->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->mail->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->mail->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("login")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $form->login->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->login->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->login->renderErrors();?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block">
+		<div class="HeadBlock">Modifier le mot de passe</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $form->getElement("oldPassword")->getDecorator('label')->setOption('tag', null); ?>
+				<div>Ancien mot de passe</div>
+				<div>
+					<?= $form->oldPassword->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->oldPassword->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("password")->getDecorator('label')->setOption('tag', null); ?>
+				<div>Nouveau mot de passe</div>
+				<div>
+					<?= $form->password->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->password->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("password1")->getDecorator('label')->setOption('tag', null); ?>
+				<div>Confirmer le nouveau mot de passe</div>
+				<div>
+					<?= $form->password1->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->password1->renderErrors();?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block" id="underline">
+			<div class="contentBLock">
+			<div class="rowBlock">
+				<div>
+					<?= $form->Valider->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

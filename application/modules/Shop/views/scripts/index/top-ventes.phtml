@@ -1,0 +1,21 @@
+<?php
+if($this->paginator->getTotalItemCount() > 0){ ?>
+<div class="Block1">
+	<div class="HeadBlock">
+		<h2 id="title_catalogue">
+			<?= $this->title;?>
+		</h2>
+	</div>
+	<div class="contentBLock1">
+		<?php
+		foreach ($this->paginator as $produit)
+			echo $this->action('bloc','produit',null,array('id'=>$produit->id_produit));
+		?>
+	</div>
+</div>
+<?= $this->pagination; 
+} else {?>
+<div id="numberArticle">
+	<b>Il n'y a aucun article dans le top ventes.</b>
+</div>
+<?php } ?>

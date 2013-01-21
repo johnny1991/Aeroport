@@ -1,0 +1,236 @@
+<?php $commande = $this->commande;?>
+<?php $transport = $this->transport; ?>
+<?php $paiement = $this->paiement; ?>
+<?php $client = $this->client; ?>
+<?php $adresse = $this->adresse; ?>
+
+<h2>
+	Commande n°
+	<?=$commande->id_commande; ?>
+	-
+	<?= ($commande->Islivre) ? "Reçu" : "En attente"; ?>
+</h2>
+<div class="Block">
+	<div class="HeadBlock">Information sur la commande</div>
+	<div class="contentBLock">
+		<div class="rowBlock1">
+			<div>Date de commande :</div>
+			<div>
+				Le
+				<?= date("d/m/y à H:i",strtotime($commande->date)); ?>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Paiement par :</div>
+			<div>
+				<b><?= $paiement->libelle; ?> </b>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Livraison par :</div>
+			<div>
+				<b><?= $transport->libelle; ?> </b>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Montant total :</div>
+			<div>
+				<?= $commande->montant."€"; ?>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Statut :</div>
+			<div>
+				<?php 	if($commande->Islivre){?>
+				<span id='LivreOk'>Livrée</span>
+				<?php }else { ?>
+				<span id='LivreNok'>Non livrée</span>
+				<?php }?>
+			</div>
+		</div>
+		<?php if ($commande->commentaire != NULL) {?>
+		<div class="rowBlock1">
+			<div>Commentaire :</div>
+			<div>
+				<?= $commande->commentaire;?>
+			</div>
+		</div>
+		<?php } ?>
+	</div>
+</div>
+<div class="Block">
+	<div class="HeadBlock">Information sur le client</div>
+	<div class="contentBLock">
+		<?php if ($client == NULL) { ?>
+		<div class="rowBlock1">
+			<div>Le client s'est désinscrit du site.</div>
+		</div>
+		<?php } else { ?>
+		<div class="rowBlock1">
+			<div>Nom :</div>
+			<div>
+				<?= $client->nom;?>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Prénom :</div>
+			<div>
+				<?= $client->prenom;?>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Email :</div>
+			<div>
+				<?= $client->mail;?>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Login :</div>
+			<div>
+				<?= $client->login;?>
+			</div>
+		</div>
+		<div class="rowBlock1">
+			<div>Date d'inscription :</div>
+			<div>
+				<?= date("d/m/y à H:i",strtotime($client->date)); ?>
+			</div>
+		</div>
+		<?php } ?>
+	</div>
+</div>
+<div class="Block">
+	<div class="HeadBlock">Adresse de livraison</div>
+	<div class="contentBLock">
+		<?php if ($adresse == NULL){?>
+		<div class="rowBlock1">
+			<div>L'adresse n'existe plus.</div>
+		</div>
+		<?php } else {?>
+		<div class="rowBlock1">
+			<?= $client->prenom." ".$client->nom; ?>
+		</div>
+		<div class="rowBlock1">
+			<?= $adresse->adresse; ?>
+		</div>
+		<div class="rowBlock1">
+			<?= $adresse->code_postal.", ".$adresse->ville; ?>
+		</div>
+		<div class="rowBlock1">
+			<?= $adresse->pays; ?>
+		</div>
+		<?php }?>
+	</div>
+</div>
+<?php $CommandeProduits = $this->commandeProduits; ?>
+<div class="Block">
+	<div class="HeadBlock">Information sur les produits</div>
+	<div class="contentBLock">
+		<?php if($CommandeProduits->count() > 0) { ?>
+		<table id="tableau2">
+			<thead>
+				<tr class="Head">
+					<th class="idInfoProduit">Id</th>
+					<th class="designationInfoProduit">Désignation</th>
+					<th class="quantiteligneProduit">Qté</th>
+										<th class="quantiteRInfoProduit"><?= ($commande->Islivre) ? 'Qté restante' : 'Qté après livraison' ;?>
+					<th class="prixUInfoProduit">Prix unitaire</th>
+					<th class="PrixTInfoProduit">Prix Total</th>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($CommandeProduits as $CommandeProduit)
+					{ ?>
+				<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
+					<?php $produit = $CommandeProduit->findParentRow('Produit'); ?>
+					<?php if($produit != NULL) { ?>
+					<td><a
+						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+						class="idInfoProduit" target="_blank"><?= $produit->id_produit;?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+						class="designationInfoProduit" target="_blank"><?= $produit->designation;?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+						class="quantiteligneProduit" target="_blank"><?=  $CommandeProduit->quantite; ?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+						class="quantiteRInfoProduit" target="_blank"> <?php if($commande->Islivre){?>
+							<?= $produit->quantite; ?> <?php } else { ?> <?=  ($produit->quantite-$CommandeProduit->quantite); ?>
+							<?php } ?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+						class="prixUInfoProduit" target="_blank"><?= $produit->prix.'€';?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+						class="PrixTInfoProduit" target="_blank"><?= ($produit->prix*$CommandeProduit->quantite).'€';?>
+					</a>
+					</td>
+					<?php } else {?>
+					<td colspan="6"><span><b>Cet article n'est plus en ligne</b> </span>
+					</td>
+					<?php } ?>
+				</tr>
+				<?php } ?>
+				<tr id="underline">
+					<td colspan="5"><span class="nom_total">Montant sous-Total</span>
+					</td>
+					<td><span class="prix_total"><?= ($commande->montant-$transport->prix)." €"; ?> </span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5"><span class="nom_total">Frais de port (<?= $transport->libelle; ?>)
+					</span></td>
+					<td><span class="prix_total"><?= $transport->prix." €"; ?> </span>
+					</td>
+				</tr>
+				<tr class="Odd">
+					<td colspan="5"><span class="nom_total"><b>Montant Total</b> </span>
+					</td>
+					<td><span class="prix_total"><b><?= $commande->montant." €"; ?>
+						</b> </span></td>
+				</tr>
+			</tbody>
+		</table>
+		<?php } else {?>
+		Le(s) produit(s) ont été supprimé(s)
+		<?php } ?>
+	</div>
+</div>
+<div class="Block" id="underline">
+	<div class="contentBLock">
+		<div class="rowBlock">
+			<div>
+				<?php if($commande->Islivre){?>
+				<form
+					action="<?= $this->baseUrl('commande/envoye/islivre/nonlivre/id/'.$commande->id_commande); ?>"
+					method="get">
+					<input type="submit" value="Marquer comme Non livrée">
+				</form>
+				<?php }else { ?>
+				<form
+					action="<?= $this->baseUrl('commande/envoye/islivre/livre/id/'.$commande->id_commande); ?>"
+					method="get">
+					<input type="submit" value="Marquer comme livrée">
+				</form>
+				<?php }?>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="page-retour">
+	<a href="javascript:window.history.go(-1);" id="link_color"><small><<</small>
+		Retour</a>
+</div>
+

@@ -1,0 +1,37 @@
+<?php if (count($this->total) > 0) {?>
+<div class="contenuSidebar">
+	<div class="headSidebar">
+		<span class="titleHeadSidebar">Catégories</span>
+	</div>
+	<div id="contentSidebar">
+		<ul class="categories">
+			<?php 
+			$NomCat = new Application_Url();
+			foreach($this->total as $Categorie) {
+				$nomCategorie = $NomCat::Rewrite($Categorie[0]['libelle']);	
+				?>
+			<li><?php if (count($Categorie[1]) > 1){?> <a
+				href="<?= $this->baseurl($nomCategorie); ?>"><div>
+						<?= $Categorie[0]['libelle']; ?>
+					</div> </a>
+				<ul class="sousCategorie">
+					<?php foreach ($Categorie[1] as $SousCategorie) { 
+						$nomSousCategorie = $NomCat::Rewrite($SousCategorie['libelle']);				
+						?>
+					<li><a
+						href="<?= $this->baseurl($nomCategorie.'/'.$nomSousCategorie); ?>">
+							<div>
+								<?= $SousCategorie['libelle']; ?>
+							</div>
+					</a></li>
+					<?php } ?>
+				</ul> <?php } else { ?> <a
+				href="<?= $this->baseurl($nomCategorie."-".$Categorie[0]['id_categorie']); ?>"><div
+						id="noChildren">
+						<?= $Categorie[0]['libelle']; ?>
+					</div> </a> <?php } ?></li>
+			<?php } ?>
+		</ul>
+	</div>
+</div>
+<?php } ?>

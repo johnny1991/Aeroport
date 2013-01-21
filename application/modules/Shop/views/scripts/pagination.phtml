@@ -1,0 +1,35 @@
+<?php if($this->first != $this->last) {?>
+<div class="pagination">
+	<div class="pagination-center">
+		<?php
+		$parametres = $this->param;
+		unset($parametres["controller"]);
+		unset($parametres["action"]);
+		unset($parametres["module"]);
+		?>
+
+		<!-- Previous page link -->
+
+		<?php if (isset($this->previous)) : $parametres['page'] = $this->previous;?>
+		<a href="<?= $this->url($parametres); ?>"> <span class="enabled"><<
+				Précedent</span>
+		</a>
+		<?php endif; ?>
+		<!-- Numbered page links -->
+		<?php foreach ($this->pagesInRange as $page) : ?>
+		<?php if ($page != $this->current) : $parametres['page']=$page; ?>
+		<a href="<?= $this->url($parametres); ?>"><span class="numero"><?= $page; ?>
+		</span> </a>
+		<?php else : ?>
+		<span class="numero_enabled"><?= $page; ?> </span>
+		<?php endif; ?>
+		<?php endforeach; ?>
+
+		<!-- Next page link -->
+		<?php if (isset($this->next)) : $parametres['page']=$this->next;?>
+		<a href="<?= $this->url($parametres); ?>"><span class="enabled">Suivant
+				>></span> </a>
+		<?php endif; ?>
+	</div>
+</div>
+<?php } ?>

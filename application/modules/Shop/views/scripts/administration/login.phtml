@@ -1,0 +1,77 @@
+<?php $form = $this->form; ?>
+<h2>Connexion Administrateur</h2>
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>">
+	<div class="Block">
+		<div class="HeadBlock">Connexion</div>
+		<?php 
+		if($this->message != NULL)
+			echo $this->message;
+		?>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $form->getElement("login")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('login')->hasErrors())
+					$form->login->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->login->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->login->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->login->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("pass")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('pass')->hasErrors())
+					$form->pass->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->pass->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->pass->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->pass->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("captcha")->getDecorator('HtmlTag')->setOption('tag', null);
+				$form->getElement("captcha")->getDecorator('label')->setOption('tag', null);
+				 $form->getElement("captcha")->getDecorator('errors')->setOption('tag', null);?>
+				<div>
+					<?php echo $form->captcha->renderLabel();
+					$sessionCaptcha = new Zend_Session_Namespace('Captcha');
+						$sessionCaptcha->valeur = $form->captcha->getCaptcha()->getWord(); ?>
+				</div>
+				<div id="captcha">
+					<div>
+						<img
+							src="shop/<?= $this->baseUrl($form->captcha->getCaptcha()->getImgUrl ().$form->captcha->getCaptcha()->getId().$form->captcha->getCaptcha()->getSuffix()); ?>" />
+					</div>
+					<div>
+						<input id="captcha-id" type="hidden"
+							value="<?= $form->captcha->getCaptcha()->getId()?>"
+							name="captcha[id]"> <input id="captcha-input" type="text"
+							value="" name="captcha[input]"
+							<?php if($form->getElement('captcha')->hasErrors()) echo "class='inputRequired'";?>>
+					</div>
+				</div>
+				<div>
+					<?php echo $form->captcha->renderErrors(); ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block" id="underline">
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<div>
+					<?= $form->Connexion->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

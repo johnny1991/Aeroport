@@ -1,0 +1,44 @@
+<?php $form = $this->form; ?>
+<h2>Information sur le mode de livraison</h2>
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>">
+	<div class="Block">
+		<div class="HeadBlock">Choisissez un mode de livraison</div>
+		<?php $numItems = count($this->transports);
+$i = 0;?>
+		<?php foreach ($this->transports as $transport) { ?>
+		<div
+			class="<?= (++$i === $numItems) ? "contentBlock2" : "contentBlock1"; ?>"
+			onclick="chooseModeLivraison(<?= $transport->id_transport; ?>);"
+			id="<?= $transport->id_transport; ?>">
+			<div class="checkbox_checkout1">
+				<?php  echo $this->formRadio('choix', null,null,array($transport->id_transport => "")); ?>
+			</div>
+			<div class="content_checkout1">
+				<div class="image_transport">
+					<img src="<?= $this->baseUrl('/shop/img/transport/'.$transport->photo); ?>">
+				</div>
+				<div class="nom_transport">
+					<b><?= $transport->libelle?> </b>
+				</div>
+				<div class="prix_transport">
+					<?= $transport->prix?>€
+				</div>
+				<div class="temps_transport">
+					Livraison
+					<?= $transport->temps?>H
+				</div>
+			</div>
+		</div>
+		<?php } ?>
+	</div>
+	<div class="Block" id="underline">
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<div>
+					<?= $form->Commander->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

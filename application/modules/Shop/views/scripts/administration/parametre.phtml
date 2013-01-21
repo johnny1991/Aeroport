@@ -1,0 +1,140 @@
+<h2>Paramètres administrateur</h2>
+<?php 
+if($this->message != NULL)
+	echo $this->message;
+?>
+<div class="textBlock">Vous pouvez ajouter un seul paramètre à la fois .</div>
+
+<div class="Block">
+	<div class="HeadBlock">
+		<h3>Paramètres de connexion administrateur</h3>
+	</div>
+	<?php $formConnexion = $this->formConnexion;?>
+	<form method="<?= $formConnexion->getMethod() ?>"
+		action="<?= $formConnexion->getAction();?>">
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $formConnexion->getElement("login")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $formConnexion->login->renderLabel();?>
+				</div>
+				<div>
+					<?= $formConnexion->login->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $formConnexion->login->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $formConnexion->getElement("password")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $formConnexion->password->renderLabel();?>
+				</div>
+				<div>
+					<?= $formConnexion->password->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $formConnexion->password->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<div class="BoutonCreateContent">
+					<?= $formConnexion->modifier->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="Block">
+	<div class="HeadBlock">
+		<h3>Paramètres de compte UPJV</h3>
+	</div>
+	<?php $formMail = $this->formMail;?>
+	<form method="<?= $formMail->getMethod() ?>"
+		action="<?= $formMail->getAction();?>">
+		<div class="contentBLock">
+			<div class="contentBLock">Cette adresse sera utilisée pour recevoir les bons de commandes en Copie carbone.</div>
+			<div class="rowBlock">
+				<?php $formMail->getElement("mail")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $formMail->mail->renderLabel();?>
+				</div>
+				<div>
+					<?= $formMail->mail->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $formMail->mail->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $formMail->getElement("password1")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $formMail->password1->renderLabel();?>
+				</div>
+				<div>
+					<?= $formMail->password1->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $formMail->password1->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<div class="BoutonCreateContent">
+					<?= $formMail->modifier1->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="Block">
+	<div class="HeadBlock">
+		<h3>Autres paramètres</h3>
+	</div>
+	<?php $formDetails = $this->formDetails;?>
+	<form method="<?= $formDetails->getMethod() ?>"
+		action="<?= $formDetails->getAction();?>">
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $formDetails->getElement("site")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $formDetails->site->renderLabel();?>
+				</div>
+				<div>
+					<?= $formDetails->site->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $formDetails->site->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $formDetails->getElement("nbElements")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $formDetails->nbElements->renderLabel();?>
+				</div>
+				<div>
+					<?= $formDetails->nbElements->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $formDetails->nbElements->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $formDetails->getElement("nbProduits")->getDecorator('label')->setOption('tag', null); ?>
+				<div>
+					<?= $formDetails->nbProduits->renderLabel();?>
+				</div>
+				<div>
+					<?= $formDetails->nbProduits->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $formDetails->nbProduits->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<div class="BoutonCreateContent">
+					<?= $formDetails->modifier2->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

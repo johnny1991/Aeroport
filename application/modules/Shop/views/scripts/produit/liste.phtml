@@ -1,0 +1,81 @@
+<h2>Catalogue des produits</h2>
+<div class="optionPanel">
+	<div>
+		<a href="<?= $this->baseUrl('ajout_produit'); ?>"
+			class="boutonAjouterProduit" title="Ajouter un produit">Ajouter un
+			produit</a>
+	</div>
+</div>
+<?php 
+$cheminPublic = 'shop/public';
+foreach($this->messages as $message)
+	echo $message;
+?>
+<?php if($this->paginator->count() > 0) {?>
+<table class="liste">
+	<thead>
+		<tr class="Head">
+			<?php 
+			echo $this->HeadId;
+			echo $this->HeadDesignation;
+			echo $this->HeadPrix;
+			echo $this->HeadQuantite;
+			?>
+			<th><span class="PhotoLigneProduit"><b>Photo</b></span></th>
+			<?php 			
+			echo $this->HeadDate;
+			echo $this->HeadActif;
+			?>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach ($this->paginator as $produit) { ?>
+		<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
+			<td><a
+				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+				class="idLigneProduit"><?= $produit->id_produit; ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+				class="designationLigneProduit"><?= $produit->designation; ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+				class="prixLigneProduit"><?= $produit->prix." €"; ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+				class="quantiteLigneProduit"><?= $produit->quantite; ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+				class="PhotoLigneProduit"><?= ((($produit->photo1)  != NULL) && (file_exists(APPLICATION_PATH.'/../'.$cheminPublic.'/img/Produits/'.$produit->photo1)))? "Oui" : "Non"; ?>
+			</a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+				class="dateLigneProduit"><?= date("d/m/y à H:i",strtotime($produit->date)); ?>
+			</a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+				class="actifLigneProduit"> <?= ($produit->actif) ? "Oui": "Non"; ?>
+			</a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('modifier_produit/').$produit->id_produit; ?>"
+				class="boutonModifier" title="Modifier"></a></td>
+			<td><a
+				href="<?= $this->baseUrl('statut_produit/').$produit->id_produit;?>"
+				class="boutonSupprimer" title="Activer/Désactiver la mise en ligne"></a>
+			</td>
+		</tr>
+		<?php }?>
+	</tbody>
+</table>
+<?= $this->pagination; ?>
+<?php } else {?>
+Le catalogue des produits est vide
+<?php } ?>

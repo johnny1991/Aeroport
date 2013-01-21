@@ -1,0 +1,40 @@
+<div class="blockProduit">
+	<?php if ($this->Nouveaute) { ?>
+	<div class="nouveaute"></div>
+	<?php } ?>
+	<div class="imgProduit">
+		<a
+			href="<?= $this->baseUrl('Article/'.$this->url);?>">
+			<img src="<?//= $this->baseUrl('/shop/img/Produits/'.$this->produit->photo1); ?>" alt="image"
+			width="<?=$this->TaillePhoto[0]; ?>px"
+			height="<?=$this->TaillePhoto[1]; ?>px"
+			title="<?//= $this->produit->designation;?>">
+		</a>
+	</div>
+	<div class="descriptionProduit"
+		title="<?//= $this->produit->designation;?>">
+		<h3>
+			<?//= $this->produit->designation;?>
+		</h3>
+	</div>
+	<div class="quantiteProduit1">
+		Disponibilité :
+		<?php //if($this->produit->quantite <= 0){ ?>
+		Epuisé
+		<?php //} else{ ?>
+		En stock
+		<?php //} ?>
+		<?//= "(".$this->produit->quantite.")"; ?>
+	</div>
+	<div class="basBlockProduit">
+		<div class="priceProduit">
+			<?//= round($this->produit->prix,2);?>
+			€
+		</div>
+		<div class="detailProduit">
+			<a
+				href="<?= $this->baseUrl('Article/'.$this->url);?>"
+				class="bouton">Voir détails</a>
+		</div>
+	</div>
+</div>

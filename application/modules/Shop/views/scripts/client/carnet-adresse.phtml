@@ -1,0 +1,78 @@
+<?php $client = $this->client;?>
+<?php $adresseDefault = $this->adresseDefault;?>
+<?php $adresses = $this->adresses;?>
+<?php 
+foreach($this->messages as $message)
+	echo $message;
+?>
+<h2>Carnet d'adresses</h2>
+<div class="subBlock1">
+	<div class="HeadBlock">
+		<h3>Adresse par défaut</h3>
+	</div>
+	<div class="contentBLock">
+		<?php if($adresseDefault != NULL){?>
+		<div class="subContentInfoCompte">Adresse de livraison par défaut :</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?= $client->prenom." ".$client->nom; ?>
+			</div>
+			<div class="rowBlock">
+				<?= $adresseDefault->adresse; ?>
+			</div>
+			<div class="rowBlock">
+				<?= $adresseDefault->code_postal.", ".$adresseDefault->ville; ?>
+			</div>
+			<div class="rowBlock">
+				<?= $adresseDefault->pays; ?>
+			</div>
+			<div class="rowBlock">
+				<a
+					href="<?= $this->baseUrl('modifier_adresse/'.$adresseDefault->id_adresse); ?>"
+					id="link_color">Modifier l'adresse de facturation</a>
+			</div>
+		</div>
+		<?php } else {
+			echo "Aucune adresse pour le moment";
+				}?>
+	</div>
+</div>
+<div class="subBlock1">
+	<div class="HeadBlock">
+		<h3>Saisies d'adresses supplémentaires</h3>
+	</div>
+
+	<?php if($adresses->count() != 0){?>
+	<?php foreach ($adresses as $adresse) {?>
+	<div class="contentBLock">
+		<div class="rowBlock">
+			<?= $client->prenom." ".$client->nom; ?>
+		</div>
+		<div class="rowBlock">
+			<?= $adresse->adresse; ?>
+		</div>
+		<div class="rowBlock">
+			<?= $adresse->code_postal.", ".$adresse->ville; ?>
+		</div>
+		<div class="rowBlock">
+			<?= $adresse->pays; ?>
+		</div>
+		<div class="rowBlock">
+			<a
+				href="<?= $this->baseUrl('modifier_adresse/'.$adresse->id_adresse); ?>"
+				id="link_color">Editer l'adresse</a> | <a
+				href="<?= $this->baseUrl('supprimer_adresse/'.$adresse->id_adresse); ?>"
+				id="link_color">Effacer l'adresse</a>
+		</div>
+	</div>
+
+	<?php } ?>
+	<?php } else { ?>
+	<div class="contentBLock">Aucune adresse suplémentaires</div>
+	<?php } ?>
+	<div class="boutonAjoutAdresse">
+		<a href="<?= $this->baseUrl('ajouter_adresse'); ?>" class="bouton">Saisir
+			une adresse suplémentaire</a>
+	</div>
+</div>
+

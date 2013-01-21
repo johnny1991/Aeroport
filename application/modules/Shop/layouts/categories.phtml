@@ -1,0 +1,45 @@
+<?= $this->doctype('HTML5');?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php 
+$this->headScript()->appendFile($this->baseUrl('js/fonctions.js'));
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.7.1.min.js');
+$this->headScript()->appendFile($this->baseUrl('js/jquery.nivo.slider.pack.js'));
+$this->headLink()->appendStylesheet($this->baseUrl('css/style.css'));
+$this->headLink()->appendStylesheet($this->baseUrl('css/Slide/styleSlide.css'));
+$this->headLink()->appendStylesheet($this->baseUrl('css/Slide/ThemeSlide.css'));
+$this->headLink()->appendStylesheet($this->baseUrl('css/Slide/nivo-slider.css'));
+$this->headLink()->headLink( array( 'rel' => 'favicon',
+		'href' => $this->baseUrl( 'favicon.ico' ),
+		'type' => 'image/x-icon' ));
+echo $this->headLink();
+echo $this->headScript();
+?>
+<script type="text/javascript">
+$(window).load(function() {
+	$('#slider').nivoSlider({pauseTime:7e3,animSpeed:500,direction:'left',effect:'fade',directionNav:false,pauseOnHover:true});
+});
+</script>
+<?php
+$TableParametre = new Shop_Model_Parametre();
+$Parametre = $TableParametre->fetchRow();
+?>
+<title><?= $Parametre->site. " | ".$this->escape($this->title); ?></title>
+</head>
+<body>
+	<div id="wrapper">
+		<?= $this->partial('partials/header.phtml');?>
+		<div id="page">
+			<?= $this->partial('partials/sidebar.phtml');?>
+			<div id="content">
+			<div class="breadCrumb">
+				Vous êtes ici : <?= $this->navigation()->breadcrumbs()->setMinDepth(0)->setLinkLast(true)->setSeparator(' / ');?>
+			</div>
+				<?//= $this->layout()->content; ?>
+			</div>
+		</div>
+		<?= $this->partial('partials/footer.phtml');?>
+	</div>
+</body>
+</html>

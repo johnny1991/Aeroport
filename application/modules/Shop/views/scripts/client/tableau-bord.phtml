@@ -1,0 +1,59 @@
+<?php $client = $this->client;?>
+<?php $adresse = $this->adresse;?>
+<h2>Mon tableau de bord</h2>
+<div class="textBlock">
+	<b>Bonjour, <?= $client->prenom." ".$client->nom; ?> !
+	</b><BR>Depuis le tableau de bord 'Mon compte', vous pouvez avoir un
+	aperçu de vos récentes commandes et mettre à jour les informations de
+	votre compte. Sélectionnez un lien ci-dessous pour voir ou modifier les
+	informations.
+</div>
+<div class="headInfoCompte">Information du compte</div>
+<div class="Block">
+	<div class="HeadBlock">Informations de contact</div>
+	<div class="contentBLock">
+		<div class="rowBlock">
+			<?= $client->prenom." ".$client->nom; ?>
+		</div>
+		<div class="rowBlock">
+			<?= $client->mail; ?>
+		</div>
+		<div class="rowBlock">
+			<a href="<?= $this->baseUrl('information_compte'); ?>" id="link_color">Modifier
+				le mot de passe</a>
+		</div>
+	</div>
+</div>
+<div class="Block">
+	<div class="HeadBlock">
+		<div class="titleHead">Carnet d'adresses</div>
+		<div class="texteDroite">
+			<a href="<?= $this->baseUrl('carnet_adresses'); ?>">Gérer les
+				adresses</a>
+		</div>
+	</div>
+	<div class="contentBLock">
+		<div class="subContentInfoCompte">Adresse de facturation par défaut :</div>
+		<div class="contentSubContentInfoCompte">
+			<?php if($adresse != NULL){?>
+			<div class="rowBlock">
+				<?= $client->prenom." ".$client->nom; ?>
+			</div>
+			<div class="rowBlock">
+				<?= $adresse->adresse; ?>
+			</div>
+			<div class="rowBlock">
+				<?= $adresse->code_postal.", ".$adresse->ville; ?>
+			</div>
+			<div class="rowBlock">
+				<?= $adresse->pays; ?>
+			</div>
+			<div class="rowBlock">
+				<a href="<?= $this->baseUrl('carnet_adresses'); ?>" id="link_color">Modifier</a>
+			</div>
+			<?php } else { ?>
+				<div class="rowBlock">Aucune adresse pour le moment</div>
+				<?php } ?>
+		</div>
+	</div>
+</div>

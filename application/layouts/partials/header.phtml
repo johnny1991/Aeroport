@@ -1,0 +1,33 @@
+<div id="header">
+	<div id="headerContent">
+		<div id="header-left">
+			<a href="<?= $this->baseUrl('accueil'); ?>"><img src="<?= $this->baseUrl('/img/logo.png'); ?>"> </a>
+		</div>
+		<div id="header-center">
+			<?php echo $this->action('recherche', 'produit','Shop');?>
+		</div>
+		<div id="header-right">
+			<div id="compte">
+				<?php if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_admin)) ){?>
+				<a href="<?= $this->baseUrl('menu'); ?>">Menu
+					Administration </a>
+				<?php } else { ?>
+				<a href="<?= $this->baseUrl('compte'); ?>">Mon Compte</a>
+				<?php } ?>
+				<?php if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_client)) ){?>
+				<a href="<?= $this->baseUrl('deconnexion'); ?>">Déconnexion</a>
+				<?php } else if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_admin)) ){?>
+				<a href="<?= $this->baseUrl('deconnexion'); ?>">Déconnexion</a>
+				<?php } else { ?>
+				<a href="<?= $this->baseUrl('nouveau_compte'); ?>">Créer un compte</a>
+				<?php } ?>
+			</div>
+			<div id="panier">
+				<?php $sessionPanier = new Zend_Session_Namespace('panier');?>
+				<a href="<?= $this->baseUrl('panier'); ?>">Mon panier (<?= count($sessionPanier->content); ?>)
+				</a>
+			</div>
+		</div>
+	</div>
+	<?= $this->partial('partials/menu.phtml');?>
+</div>

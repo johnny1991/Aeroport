@@ -1,0 +1,62 @@
+<h2>Mes commandes</h2>
+<?php if($this->paginator->count() != 0) { ?>
+<div class="Block">
+	<div class="HeadBlock">Liste de vos commandes</div>
+	<div class="contentBLock">
+		<table id="tableau1">
+			<thead>
+				<tr class="Head">
+					<?php 
+					echo $this->HeadId;
+					echo $this->HeadNom;
+					echo $this->HeadPrenom;
+					echo $this->HeadNombre;
+					echo $this->HeadMontant;
+					echo $this->HeadDate;
+					echo $this->HeadLivre;
+					?>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				foreach ($this->paginator as $commande)
+					{ ?>
+				<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
+					<td><a
+						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
+						class="idLigneCommande"><?= $commande->id_commande; ?> </a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
+						class="nomLigneCommande"><?= $commande->prenom." ".$commande->nom; ?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
+						class="nombreLigneCommande"><?= $commande->num; ?> </a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
+						class="montantLigneCommande"><?= $commande->montant." €"; ?> </a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
+						class="dateLigneCommande"><?= date("d/m/y à H:i",strtotime($commande->date));?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
+						class="montantLigneCommande"> <?php 	if($commande->Islivre){?> <span
+							id='LivreOk'>Envoyée</span> <?php }else { ?> <span id='LivreNok'>En attente</span> <?php }?>
+					</a>
+					</td>
+				</tr>
+				<?php }?>
+			</tbody>
+		</table>
+	</div>
+</div>
+<?= $this->pagination; ?>
+<?php } else {?>
+<div class="Block">Aucune commande pour le moment.</div>
+<?php }?>

@@ -1,0 +1,145 @@
+<?php $client = $this->client;?>
+<?php $adresseDefault = $this->adresseDefault->current();?>
+<?php $adresses = $this->adresses;?>
+<?php $form = $this->form;?>
+<h2>Information de facturation et de livraison</h2>
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>">
+	<?php if($adresseDefault != NULL){?>
+	<div class="Block">
+		<div class="HeadBlock">
+			<h3>Adresse par défaut</h3>
+		</div>
+		<div class="contentBlock2"
+			onclick="chooseAdresse(<?=$adresseDefault->id_adresse; ?>);"
+			id="<?=$adresseDefault->id_adresse; ?>">
+			<div class="checkbox_checkout">
+				<?php echo $this->formRadio('choix', null,array('checked'=>'checked'),array($adresseDefault->id_adresse => "")); ?>
+			</div>
+			<div class="content_checkout">
+				<div class="rowBlock">
+					<?= $client->prenom." ".$client->nom; ?>
+				</div>
+				<div class="rowBlock">
+					<?= $adresseDefault->adresse; ?>
+				</div>
+				<div class="rowBlock">
+					<?= $adresseDefault->code_postal.", ".$adresseDefault->ville; ?>
+				</div>
+				<div class="rowBlock">
+					<?= $adresseDefault->pays; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+	<?php if($adresses->count() != 0){?>
+	<div class="Block">
+		<div class="HeadBlock">
+			<h3>Adresses supplémentaires</h3>
+		</div>
+		<?php $numItems = count($adresses);
+$i = 0;?>
+		<?php foreach ($adresses as $adresse) {?>
+		<div class="<?= (++$i === $numItems) ? "contentBlock2" : "contentBlock1"; ?>"
+			onclick="chooseAdresse(<?= $adresse->id_adresse?>);"
+			id="<?=$adresse->id_adresse; ?>">
+			<div class="checkbox_checkout">
+				<?php echo $this->formRadio('choix', null,null,array($adresse->id_adresse => "")); ?>
+			</div>
+			<div class="content_checkout">
+				<div class="rowBlock">
+					<?= $client->prenom." ".$client->nom; ?>
+				</div>
+				<div class="rowBlock">
+					<?= $adresse->adresse; ?>
+				</div>
+				<div class="rowBlock">
+					<?= $adresse->code_postal.", ".$adresse->ville; ?>
+				</div>
+				<div class="rowBlock">
+					<?= $adresse->pays; ?>
+				</div>
+			</div>
+		</div>
+		<?php } ?>
+	</div>
+	<?php }?>
+	<div class="Block">
+		<div class="HeadBlock">Ajouter une nouvelle adresse</div>
+		<div class="contentBlock2" onclick="chooseAdresse(-1);" id="-1">
+			<div class="checkbox_checkout">
+				<?php echo $this->formRadio('choix', null,array('checked'=>'checked'),array('-1'=> "")); ?>
+			</div>
+			<div class="content_checkout">
+				<div class="rowBlock">
+					<?php $form->getElement("adresse")->getDecorator('label')->setOption('tag', null); 
+					if($form->getElement('adresse')->hasErrors())
+					$form->adresse->setAttrib('class','inputRequired');?>
+					<div>
+						<?= $form->adresse->renderLabel();?>
+					</div>
+					<div>
+						<?= $form->adresse->renderViewHelper();?>
+					</div>
+					<div>
+						<?= $form->adresse->renderErrors();?>
+					</div>
+				</div>
+				<div class="rowBlock">
+					<?php $form->getElement("ville")->getDecorator('label')->setOption('tag', null); 
+					if($form->getElement('ville')->hasErrors())
+					$form->ville->setAttrib('class','inputRequired');?>
+					<div>
+						<?= $form->ville->renderLabel();?>
+					</div>
+					<div>
+						<?= $form->ville->renderViewHelper();?>
+					</div>
+					<div>
+						<?= $form->ville->renderErrors();?>
+					</div>
+				</div>
+				<div class="rowBlock">
+					<?php $form->getElement("code_postal")->getDecorator('label')->setOption('tag', null); 
+					if($form->getElement('code_postal')->hasErrors())
+					$form->code_postal->setAttrib('class','inputRequired');?>
+					<div>
+						<?= $form->code_postal->renderLabel();?>
+					</div>
+					<div>
+						<?= $form->code_postal->renderViewHelper();?>
+					</div>
+					<div>
+						<?= $form->code_postal->renderErrors();?>
+					</div>
+				</div>
+				<div class="rowBlock">
+					<?php $form->getElement("pays")->getDecorator('label')->setOption('tag', null); 
+					if($form->getElement('pays')->hasErrors())
+					$form->pays->setAttrib('class','inputRequired');?>
+					<div>
+						<?= $form->pays->renderLabel();?>
+					</div>
+					<div>
+						<?= $form->pays->renderViewHelper();?>
+					</div>
+					<div>
+						<?= $form->pays->renderErrors();?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block" id="underline">
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<div>
+					<?= $form->ajouter->renderViewHelper();?>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+chooseAdresse(<?=$this->choose; ?>);</script>

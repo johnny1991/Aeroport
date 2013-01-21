@@ -1,0 +1,14 @@
+<?php if( isset($this->erreur)){ ?>
+<?= $this->erreur;?>
+<?php } ?>
+<h2>Votre commande a bien été reçue.</h2>
+<div class="commande_achever">
+<b>Merci de votre achat !</b>
+	<div class="texte_commande_achever">
+	Votre n° de commande est : <?= $this->numeroCommande; ?>.<BR>
+	Vous allez recevoir un mail de confirmation avec les détails de
+		votre commande.</div>
+</div>
+<div>
+	<a href="<?= $this->baseUrl('/'); ?>" id="link_color"><small><<</small> Retour à la page d'accueil</a>
+</div>

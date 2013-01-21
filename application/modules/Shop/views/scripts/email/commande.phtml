@@ -1,0 +1,197 @@
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+</head>
+<body style="color: #363636; font-family: Arial; font-size: 16px;">
+	<?php $commande = $this->commande1;?>
+	<?php $transport = $this->transport; ?>
+	<?php $paiement = $this->paiement; ?>
+	<?php $client = $this->client; ?>
+	<?php $adresse = $this->adresse; ?>
+	<div
+		style="width: 710px; background-color: white; overflow: hidden; padding: 0 0 30px;">
+		<h2
+			style="font-size: 19px; font-weight: bold; margin: 0 10px 20px 20px;">
+			Commande n°
+			<?=$commande->id_commande; ?>
+			-
+			<?= ($commande->Islivre) ? "Envoyée" : "En attente"; ?>
+		</h2>
+		<div style="margin: 5px; overflow: auto;">
+			<div
+				style="box-shadow: 3px 3px 3px #D3D9D9; font-size: 15px; line-height: 1.25; margin: 0 10px 12px 0; overflow: auto; padding: 5px 10px; color: white; background-color: black;">Information
+				sur la commande</div>
+			<div style="font-size: 14px; margin: 10px; overflow: auto;">
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<div style="float: left; margin-left: 5px;">Date de commande :</div>
+					<div style="float: left; margin-left: 5px;">
+						Le
+						<?= date("d/m/y à H:i",strtotime($commande->date)); ?>
+					</div>
+				</div>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<div style="float: left; margin-left: 5px;">Paiement par :</div>
+					<div style="float: left; margin-left: 5px;">
+						<?= $paiement->libelle; ?>
+					</div>
+				</div>
+					<div style="margin: 5px; overflow: auto; width: 95%;">
+					<div style="float: left; margin-left: 5px;">Livraison par :</div>
+					<div style="float: left; margin-left: 5px;">
+						<?= $transport->libelle.' ( '.$transport->prix.'€ )'; ?>
+					</div>
+				</div>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<div style="float: left; margin-left: 5px;">Montant total :</div>
+					<div style="float: left; margin-left: 5px;">
+						<b><?= $commande->montant."€"; ?> </b>
+					</div>
+				</div>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<div style="float: left; margin-left: 5px;">Statut :</div>
+					<div style="float: left; margin-left: 5px;">
+						<?php 	if($commande->Islivre){?>
+						<span style="color: green; font-weight: bold;">Envoyée</span>
+						<?php }else { ?>
+						<span style="color: red; font-weight: bold;">En attente</span>
+						<?php }?>
+					</div>
+				</div>
+				<?php if ($commande->commentaire != NULL) {?>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<div style="float: left; margin-left: 5px;">Commentaire :</div>
+					<div style="float: left; margin-left: 5px;">
+						<?= $commande->commentaire;?>
+					</div>
+				</div>
+				<?php } ?>
+			</div>
+		</div>
+		<div style="margin: 5px; overflow: auto;">
+			<div
+				style="box-shadow: 3px 3px 3px #D3D9D9; font-size: 15px; line-height: 1.25; margin: 0 10px 12px 0; overflow: auto; padding: 5px 10px; color: white; background-color: black;">Information
+				sur le client</div>
+			<div style="font-size: 14px; margin: 10px; overflow: auto;">
+				<?php if ($client == NULL) { ?>
+				Le client s'est désinscrit du site.
+				<?php } else { ?>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<div style="float: left; margin-left: 5px;">Nom :</div>
+					<div style="float: left; margin-left: 5px;">
+						<?= $client->nom;?>
+					</div>
+				</div>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<div style="float: left; margin-left: 5px;">Prénom :</div>
+					<div style="float: left; margin-left: 5px;">
+						<?= $client->prenom;?>
+					</div>
+				</div>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<div style="float: left; margin-left: 5px;">Email :</div>
+					<div style="float: left; margin-left: 5px;">
+						<?= $client->mail;?>
+					</div>
+				</div>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<div style="float: left; margin-left: 5px;">Login :</div>
+					<div style="float: left; margin-left: 5px;">
+						<?= $client->login;?>
+					</div>
+				</div>
+				<?php } ?>
+			</div>
+		</div>
+		<div style="margin: 5px; overflow: auto;">
+			<div
+				style="box-shadow: 3px 3px 3px #D3D9D9; font-size: 15px; line-height: 1.25; margin: 0 10px 12px 0; overflow: auto; padding: 5px 10px; color: white; background-color: black;">Adresse
+				de livraison</div>
+			<div style="font-size: 14px; margin: 10px; overflow: auto;">
+				<?php if ($client == NULL) { ?>
+				Le client s'est désinscrit du site.
+				<?php } else {?>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<?= $client->prenom." ".$client->nom; ?>
+				</div>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<?= $adresse->adresse; ?>
+				</div>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<?= $adresse->code_postal.", ".$adresse->ville; ?>
+				</div>
+				<div style="margin: 5px; overflow: auto; width: 95%;">
+					<?= $adresse->pays; ?>
+				</div>
+				<?php }?>
+			</div>
+		</div>
+		<?php $CommandeProduits = $this->commandeProduits; ?>
+		<div style="margin: 5px; overflow: auto;">
+			<div
+				style="box-shadow: 3px 3px 3px #D3D9D9; font-size: 15px; line-height: 1.25; margin: 0 10px 12px 0; overflow: auto; padding: 5px 10px; color: white; background-color: black;">Information
+				sur les produits</div>
+			<div style="font-size: 14px; margin: 10px; overflow: auto;">
+				<?php if($CommandeProduits->count() > 0) { ?>
+				<table style="width: auto; border-collapse: collapse; margin: 5px;">
+					<thead>
+						<tr>
+							<th
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 35px;">Id</th>
+							<th
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 358px;">Désignation</th>
+							<th
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 60px;">Qté</th>
+							<th
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 90px;">Prix
+								unitaire</th>
+							<th
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 70px;">Prix
+								Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($CommandeProduits as $CommandeProduit)
+					{ ?>
+						<tr style="overflow: hidden;<?= $this->cycle(array("background-color: #F4F4F4;", ""))->next();?>">
+							<?php $produit = $CommandeProduit->findParentRow('Produit'); ?>
+							<td style="padding: 5px 0;"><span
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 35px;"><?= $produit->id_produit;?>
+							</span>
+							</td>
+							<td style="padding: 5px 0;"><span
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 305px;"><?= $produit->designation;?>
+							</span>
+							</td>
+							<td style="padding: 5px 0;"><span
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 60px;"><?=  $CommandeProduit->quantite; ?>
+							</span>
+							</td>
+							<td style="padding: 5px 0;"><span
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 90px;"><?= $produit->prix.'€';?>
+							</span>
+							</td>
+							<td style="padding: 5px 0;"><span
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 70px;"><?= ($produit->prix*$CommandeProduit->quantite).'€';?>
+							</span>
+							</td>
+						</tr>
+						<?php } ?>
+						<tr>
+							<td colspan="2" style="border-top:1px solid #363636"></td>
+							<td style="padding: 5px 0px;border-top:1px solid #363636"><span
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 120px;"><b>Total (Transport inclus)</b>
+							</span></td>
+							<td colspan="2" style="padding: 5px 0;border-top:1px solid #363636"><span
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 120px;"><b><?= $commande->montant."€"; ?>
+								</b> </span></td>
+						</tr>
+					</tbody>
+				</table>
+				<?php } else {?>
+				Le(s) produit(s) ont été supprimé(s)
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

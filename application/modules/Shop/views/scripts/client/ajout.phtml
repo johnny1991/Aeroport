@@ -1,0 +1,119 @@
+<?php $form = $this->form;?>
+<h2>Créer un compte</h2>
+<form method="<?= $form->getMethod() ?>"
+	action="<?= $form->getAction();?>">
+	<div class="Block">
+		<div class="HeadBlock">
+			<h3>Informations personnelles</h3>
+		</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $form->getElement("prenom")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('prenom')->hasErrors())
+					$form->prenom->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->prenom->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->prenom->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->prenom->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("nom")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('nom')->hasErrors())
+					$form->nom->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->nom->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->nom->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->nom->renderErrors();?>
+				</div>
+			</div>
+			<div class="rowBlock">
+				<?php $form->getElement("mail")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('mail')->hasErrors())
+					$form->mail->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->mail->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->mail->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->mail->renderErrors();?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block">
+		<div class="HeadBlock">
+			<h3>Informations de connexion</h3>
+		</div>
+		<div class="contentBLock">
+			<div class="rowBlock">
+				<?php $form->getElement("login")->getDecorator('label')->setOption('tag', null); 
+				if($form->getElement('login')->hasErrors())
+					$form->login->setAttrib('class','inputRequired');?>
+				<div>
+					<?= $form->login->renderLabel();?>
+				</div>
+				<div>
+					<?= $form->login->renderViewHelper();?>
+				</div>
+				<div>
+					<?= $form->login->renderErrors();?>
+				</div>
+			</div>
+			<div
+			<?php
+			if($form->getElement('password')->getErrorMessages() != NULL)
+			$error = $form->getElement('password')->getErrorMessages();
+			else 
+				$error[0] = "";
+			if($error[0] == "Les mots de passe ne sont pas les mêmes") echo " id='two_pass'"; ?>>
+
+				<div class="rowBlock">
+					<?php $form->getElement("password")->getDecorator('label')->setOption('tag', null); 
+					if($form->getElement('password')->hasErrors())
+					$form->password->setAttrib('class','inputRequired');?>
+					<div>
+						<?= $form->password->renderLabel();?>
+					</div>
+					<div>
+						<?= $form->password->renderViewHelper();?>
+					</div>
+					<div>
+						<?= $form->password->renderErrors();?>
+					</div>
+				</div>
+				<div class=rowBlock>
+					<?php $form->getElement("password1")->getDecorator('label')->setOption('tag', null); 
+					if($form->getElement('password1')->hasErrors())
+					$form->password1->setAttrib('class','inputRequired');?>
+					<div>
+						<?= $form->password1->renderLabel();?>
+					</div>
+					<div>
+						<?= $form->password1->renderViewHelper();?>
+					</div>
+					<div>
+						<?= $form->password1->renderErrors();?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Block" id="underline">
+		<div class="contentBLock">
+			<div class="BoutonCreateContent">
+				<?= $form->Valider->renderViewHelper();?>
+			</div>
+		</div>
+	</div>
+</form>

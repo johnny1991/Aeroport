@@ -1,0 +1,74 @@
+
+<?php 
+foreach($this->messages as $message)
+	echo $message;
+?>
+<h2>Catalogue des catégories et des sous-catégories</h2>
+<div class="contourTableauListeCategorie">
+	<div class="headTableauListeCategorie">Catégories</div>
+	<table id="tableauListeCategorie" class="liste">
+		<thead>
+			<tr class="Head">
+				<?= $this->HeadId; ?>
+				<?= $this->HeadNom; ?>
+				<th class="suppressionHeadLigneCategorie"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php 
+		foreach ($this->categories as $categorie){ ?>
+			<tr
+				class="<?
+				if($this->idCategorie == $categorie->id_categorie){
+					echo "Select";
+				$this->cycle(array("Odd", "Even"))->next();
+				} 
+					else echo $this->cycle(array("Odd", "Even"))->next();?>">
+				<td><a
+					href="<?= $this->url(array('id'=>$categorie->id_categorie));?>"
+					class="idLigneCategorie"><?= $categorie->id_categorie; ?> </a></td>
+				<td><a
+					href="<?= $this->url(array('id'=>$categorie->id_categorie));?>"
+					class="designationLigneCategorie"><?= $categorie->libelle; ?> </a>
+				</td>
+				<td><a
+					href="<?= $this->baseUrl('/categorie/delete/id_categorie/'.$categorie->id_categorie);?>"
+					class="suppressionLigneCategorie"></a>
+				</td>
+			</tr>
+			<?php }?>
+		</tbody>
+	</table>
+</div>
+<?php 
+	if($this->sousCategorie != null){ ?>
+<div class="contourTableauListeSousCategorie">
+	<div class="headTableauListeCategorie">Sous-Catégories</div>
+	<table id="tableauListeSousCategorie" class="liste">
+		<thead>
+			<tr class="Head">
+				<?= $this->HeadId1; ?>
+				<?= $this->HeadNom1; ?>
+				<th class="suppressionHeadLigneCategorie"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php 
+		foreach ($this->sousCategorie as $sousCategorie){?>
+			<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
+				<td class="idLigneSousCategorie"><span><?= $sousCategorie->id_souscategorie; ?>
+				</span>
+				</td>
+				<td class="designationLigneSousCategorie"><span><?= $sousCategorie->libelle; ?>
+				</span>
+				</td>
+				<td><a
+					href="<?= $this->baseUrl('/categorie/delete/id_souscategorie/'.$sousCategorie->id_souscategorie);?>"
+					class="suppressionLigneCategorie"></a>
+				</td>
+			</tr>
+			<?php }?>
+		</tbody>
+	</table>
+</div>
+<?php 	}?>

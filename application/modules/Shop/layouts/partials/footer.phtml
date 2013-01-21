@@ -1,0 +1,60 @@
+<div id="footer">
+	<div id="adresse">
+		<div>48 rue Rue Raspail</div>
+		<div>02100 Saint-Quentin</div>
+		<div>Tel : +03 23 62 89 59</div>
+		<div>fax : +03 23 62 89 59</div>
+	</div>
+	<div id="sitemap">
+		<div class="categorie">
+			<div class="subCategorie1">
+				<a href="<?= $this->baseUrl('/');?>"><b>Accueil</b>
+				</a>
+			</div>
+			<div class="subCategorie1">
+				<a href="<?= $this->baseUrl('compte');?>"><b>Compte</b>
+				</a>
+			</div>
+			<div class="subCategorie1">
+				<a href="<?= $this->baseUrl('menu');?>"><b>Administration</b>
+				</a>
+			</div>
+		</div>
+		<?php
+		$tableCategories=new Categorie;
+		$tableSouscategorie=new SousCategorie;
+		$categories=$tableCategories->fetchAll();
+		$NomCat = new Application_Url();
+		
+		foreach($categories as $categorie)
+		{
+			?>
+		<div class="categorie">
+<?php 				$nomCategorie = $NomCat::Rewrite($categorie->libelle);	
+?>
+			<a
+				href="<?= $this->baseurl($nomCategorie);?>"><b><?= $categorie->libelle; ?>
+			</b> </a>
+			<?php 
+			$requete=$tableSouscategorie->select()->from($tableSouscategorie)->where("id_categorie=?",$categorie->id_categorie);
+			$souscategories=$tableSouscategorie->fetchAll($requete);
+			foreach ($souscategories as $souscategorie)
+			{
+				$nomSousCategorie = $NomCat::Rewrite($souscategorie->libelle);
+				?>
+			<div class="subCategorie">
+				<a
+					href="<?= $this->baseurl($nomCategorie.'/'.$nomSousCategorie);?>"><?= $souscategorie->libelle; ?>
+				</a>
+			</div>
+
+			<?php 
+			}
+			?>
+		</div>
+		<?php 
+		}
+		?>
+	</div>
+	<div id="powered">Powered By <a href="mailto:johnny.cottereau@gmail.com">Johnny Cottereau</a> - © Copyright <?php echo date('Y');?></div>
+</div>
