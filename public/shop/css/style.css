@@ -501,6 +501,23 @@ h2 {
 	vertical-align: middle;
 }
 
+/* liste Produit */
+.listeProduit {
+	font-size: 14px;
+	box-shadow: 2px 2px 3px #D3D9D9;
+	float: left;
+	margin: 0px 5px 15px 5px;
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #CACACA;
+	width:685px;
+}
+
+.listeProduit:hover {
+	box-shadow: 5px 5px 3px #D3D9D9;
+}
+
+.listeProduit .depart, .listeProduit .arrivee{float:left; padding:5px}
+
 /* Bloc Produit */
 .blockProduit {
 	font-size: 14px;
