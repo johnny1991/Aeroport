@@ -33,7 +33,7 @@ class Avion extends Zend_Db_Table_Abstract
 							->where('id_avion NOT IN ?', $subReqAvion)
 							->where('disponibilite_avion = 1')
 							->where('rayon_action > ?', $infosLigne->distance)
-							->where('longueur_atterissage < ?', $aeroportArrivee->longueur_piste)
+							->where('longueur_atterrissage < ?', $aeroportArrivee->longueur_piste)
 							->order('tyav.id_type_avion');
 		}
 		else{
@@ -48,7 +48,7 @@ class Avion extends Zend_Db_Table_Abstract
 							->where('id_avion NOT IN ?', $subReqAvion)
 							->where('disponibilite_avion = 1')
 							->where('rayon_action > ?', $infosLigne->distance)
-							->where('longueur_atterissage < ?', $aeroportArrivee->longueur_piste)
+							->where('longueur_atterrissage < ?', $aeroportArrivee->longueur_piste)
 							->orWhere('id_avion IN ('.$subReqAvionType.') AND id_avion = '.$infosVol['id_avion'])
 							->order('tyav.id_type_avion');
 		}
@@ -121,7 +121,7 @@ class Avion extends Zend_Db_Table_Abstract
 							->where('id_avion NOT IN ?', $subReqAvion)
 							->where('disponibilite_avion = 1')
 							->where('rayon_action > ?', $distance)
-							->where('longueur_atterissage < ?', $longueurPiste)
+							->where('longueur_atterrissage < ?', $longueurPiste)
 							->group('tyav.libelle')
 							->order('tyav.id_type_avion');
 		}
@@ -135,7 +135,7 @@ class Avion extends Zend_Db_Table_Abstract
 							->where('id_avion NOT IN ?', $subReqAvion)
 							->where('disponibilite_avion = 1')
 							->where('rayon_action > ?', $distance)
-							->where('longueur_atterissage < ?', $longueurPiste)
+							->where('longueur_atterrissage < ?', $longueurPiste)
 							->orWhere('id_avion = ?', $infosVol->id_avion)
 							->group('tyav.libelle')
 							->order('tyav.id_type_avion');
