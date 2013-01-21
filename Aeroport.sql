@@ -16,6 +16,11 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
+drop database if exists aeroport;
+
+create database if not exists aeroport;
+use aeroport;
+
 --
 -- Base de données: `aeroport`
 --
@@ -31,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `AdministrateurUser` (
   `login` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id_admin`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `AdministrateurUser`
@@ -56,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `AdresseClient` (
   `defaut` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_adresse`,`id_client`),
   KEY `id_client` (`id_client`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `AdresseClient`
@@ -117,8 +122,24 @@ CREATE TABLE IF NOT EXISTS `astreinte` (
 --
 
 INSERT INTO `astreinte` (`id_aeroport`, `id_pilote`, `date_astreinte`) VALUES
-('CDG', 4, '2012-10-22 18:58:01'),
-('CDG', 6, '2012-10-22 18:58:41');
+('CDG', 1, '2012-11-07 22:00:00'),
+('CDG', 1, '2012-11-19 23:00:00'),
+('CDG', 1, '2012-12-14 23:00:00'),
+('LYS', 1, '2012-11-04 22:00:00'),
+('CDG', 2, '2012-11-05 22:00:00'),
+('CDG', 2, '2012-11-19 23:00:00'),
+('CDG', 2, '2012-12-14 23:00:00'),
+('LYS', 2, '2012-11-04 22:00:00'),
+('CDG', 3, '2012-11-23 23:00:00'),
+('MAN', 3, '2012-11-04 22:00:00'),
+('CDG', 4, '2012-10-22 16:58:01'),
+('MAN', 4, '2012-11-04 22:00:00'),
+('CDG', 5, '2012-11-05 22:00:00'),
+('CDG', 5, '2012-11-07 22:00:00'),
+('CDG', 6, '2012-10-22 16:58:41'),
+('CDG', 7, '2012-11-21 23:00:00'),
+('CDG', 7, '2012-11-23 23:00:00'),
+('CDG', 10, '2012-11-21 23:00:00');
 
 -- --------------------------------------------------------
 
@@ -165,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `Categorie` (
   `id_categorie` int(11) NOT NULL AUTO_INCREMENT,
   `libelle` varchar(255) NOT NULL,
   PRIMARY KEY (`id_categorie`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -179,35 +200,7 @@ CREATE TABLE IF NOT EXISTS `CategorieProduit` (
   PRIMARY KEY (`id_categorie`,`id_produit`),
   KEY `id_categorie` (`id_categorie`),
   KEY `id_produit` (`id_produit`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `client`
---
-
-CREATE TABLE IF NOT EXISTS `client` (
-  `id_client` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) NOT NULL,
-  `prenom` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `code_ville` varchar(255) NOT NULL,
-  `adresse` varchar(255) NOT NULL,
-  `telephone` int(10) DEFAULT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_client`),
-  KEY `code_ville` (`code_ville`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Contenu de la table `client`
---
-
-INSERT INTO `client` (`id_client`, `nom`, `prenom`, `email`, `password`, `code_ville`, `adresse`, `telephone`, `date`) VALUES
-(1, 'Franquatin', 'Paulette', 'paulette.franquatin@gmail.com', 'paulou', '2', '12bis rue du jeu de paume', NULL, '2012-10-22 19:01:07'),
-(2, 'Mojou', 'Bertrand', 'bertrand.mojou@gmail.com', 'bertrand', '7', '415 place de rien', NULL, '2012-10-22 19:01:07');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -224,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `Client` (
   `password` varchar(255) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_client`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `Client`
@@ -250,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `Commande` (
   `id_paiement` int(11) NOT NULL,
   PRIMARY KEY (`id_commande`),
   KEY `id_client` (`id_client`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -263,7 +256,7 @@ CREATE TABLE IF NOT EXISTS `CommandeProduit` (
   `id_commande` int(6) NOT NULL,
   `quantite` int(11) NOT NULL,
   PRIMARY KEY (`id_produit`,`id_commande`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -333,30 +326,30 @@ CREATE TABLE IF NOT EXISTS `etre_breveter` (
 --
 
 INSERT INTO `etre_breveter` (`id_pilote`, `id_type_avion`, `date`) VALUES
-(1, 1, '2012-10-22 19:08:50'),
-(1, 2, '2012-10-22 19:08:50'),
-(1, 4, '2012-10-22 19:08:50'),
-(2, 1, '2012-10-22 19:08:50'),
-(2, 2, '2012-10-22 19:08:50'),
-(2, 3, '2012-10-22 19:08:50'),
-(3, 1, '2012-10-22 19:08:50'),
-(3, 2, '2012-10-22 19:08:50'),
-(3, 4, '2012-10-22 19:08:50'),
-(3, 6, '2012-10-22 19:08:50'),
-(4, 5, '2012-10-22 19:08:50'),
-(4, 6, '2012-10-22 19:08:50'),
-(5, 5, '2012-10-22 19:08:50'),
-(5, 6, '2012-10-22 19:08:50'),
-(6, 2, '2012-10-22 19:08:50'),
-(6, 3, '2012-10-22 19:08:50'),
-(7, 2, '2012-10-22 19:08:50'),
-(7, 3, '2012-10-22 19:08:50'),
-(8, 2, '2012-10-22 19:08:50'),
-(8, 4, '2012-10-22 19:08:50'),
-(9, 4, '2012-10-22 19:08:50'),
-(9, 6, '2012-10-22 19:08:50'),
-(10, 3, '2012-10-22 19:08:50'),
-(10, 4, '2012-10-22 19:08:50');
+(1, 1, '2012-10-22 21:08:50'),
+(1, 2, '2012-10-22 21:08:50'),
+(1, 4, '2012-10-22 21:08:50'),
+(2, 1, '2012-10-22 21:08:50'),
+(2, 2, '2012-10-22 21:08:50'),
+(2, 3, '2012-10-22 21:08:50'),
+(3, 1, '2012-10-22 21:08:50'),
+(3, 2, '2012-10-22 21:08:50'),
+(3, 4, '2012-10-22 21:08:50'),
+(3, 6, '2012-10-22 21:08:50'),
+(4, 5, '2012-10-22 21:08:50'),
+(4, 6, '2012-10-22 21:08:50'),
+(5, 5, '2012-10-22 21:08:50'),
+(5, 6, '2012-10-22 21:08:50'),
+(6, 2, '2012-10-22 21:08:50'),
+(6, 3, '2012-10-22 21:08:50'),
+(7, 2, '2012-10-22 21:08:50'),
+(7, 3, '2012-10-22 21:08:50'),
+(8, 2, '2012-10-22 21:08:50'),
+(8, 4, '2012-10-22 21:08:50'),
+(9, 4, '2012-10-22 21:08:50'),
+(9, 6, '2012-10-22 21:08:50'),
+(10, 3, '2012-10-22 21:08:50'),
+(10, 4, '2012-10-22 21:08:50');
 
 -- --------------------------------------------------------
 
@@ -505,7 +498,7 @@ CREATE TABLE IF NOT EXISTS `Paiement` (
   `libelle` varchar(255) NOT NULL,
   `photo` varchar(255) NOT NULL,
   PRIMARY KEY (`id_paiement`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -913,7 +906,7 @@ CREATE TABLE IF NOT EXISTS `Produit` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `actif` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_produit`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `Produit`
@@ -982,7 +975,9 @@ INSERT INTO `service` (`id_service`, `libelle_service`) VALUES
 (4, 'Direction des ressources humaines'),
 (5, 'Service planning'),
 (6, 'Service d''exploitation'),
-(7, 'Service de logistique commerciale');
+(7, 'Service de logistique commerciale'),
+(8, 'Service d''équipage'),
+(9, 'Aucun Service');
 
 -- --------------------------------------------------------
 
@@ -996,7 +991,7 @@ CREATE TABLE IF NOT EXISTS `SousCategorie` (
   `id_categorie` int(11) NOT NULL,
   PRIMARY KEY (`id_souscategorie`),
   KEY `id_categorie` (`id_categorie`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1010,7 +1005,7 @@ CREATE TABLE IF NOT EXISTS `SousCategorieProduit` (
   PRIMARY KEY (`id_souscategorie`,`id_produit`),
   KEY `id_souscategorie` (`id_souscategorie`),
   KEY `id_produit` (`id_produit`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1025,7 +1020,7 @@ CREATE TABLE IF NOT EXISTS `Transport` (
   `prix` float NOT NULL,
   `photo` varchar(255) NOT NULL,
   PRIMARY KEY (`id_transport`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Contenu de la table `Transport`
@@ -1104,21 +1099,34 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `adresse` varchar(255) NOT NULL,
   `telephone` int(10) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_user_pilote` integer null,
+  `id_user` integer not null,
   PRIMARY KEY (`login`),
   KEY `code_ville` (`code_ville`),
-  KEY `id_service` (`id_service`)
+  KEY `id_service` (`id_service`),
+  KEY `id_user_pilote` (`id_user_pilote`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `utilisateur`
 --
 
-INSERT INTO `utilisateur` (`login`, `id_service`, `nom`, `prenom`, `email`, `password`, `code_ville`, `adresse`, `telephone`, `date`) VALUES
-('Annette', 2, 'Duhamel', 'Annette', 'annette.duhamel@gmail.com', 'annie', '2', '156 Rue du Général de Gaulle', 125659748, '2012-10-22 18:42:55'),
-('Blanche', 4, 'François', 'Blanche', 'blanche.francois@gmail.com', 'blanou', '3', '24 place rouge', 415623514, '2012-10-22 18:42:55'),
-('Gérard', 3, 'Hanconinna', 'Gérard', 'Gerard.hanconnina@gmail.com', 'gege', '2', '25 Rue pétain', 126548795, '2012-10-22 18:42:55'),
-('Jean-michel', 1, 'Durand', 'Jean-michel', 'jeanmichel.durand@gmail.com', 'jean-mi', '1', '95 Place de l''étoile', 562154987, '2012-10-22 18:42:55'),
-('Kévin', 5, 'Kitvikosky', 'Kévin', 'kevin.kitvikosky', 'keke', '5', '653 Main Street', 555365125, '2012-10-22 18:42:55');
+INSERT INTO `utilisateur` (`login`, `id_service`, `nom`, `prenom`, `email`, `password`, `code_ville`, `adresse`, `telephone`, `date`, `id_user_pilote`, `id_user`) VALUES
+('annette.duhamel@gmail.com', 2, 'Duhamel', 'Annette', 'annette.duhamel@gmail.com', 'annie', '2', '156 Rue du Général de Gaulle', 125659748, '2012-10-22 20:42:55', null, 1),
+('blanche.francois@gmail.com', 4, 'François', 'Blanche', 'blanche.francois@gmail.com', 'blanou', '3', '24 place rouge', 415623514, '2012-10-22 20:42:55', null, 2),
+('gerard.hanconnina@gmail.com', 3, 'Hanconinna', 'Gérard', 'gerard.hanconnina@gmail.com', 'gege', '2', '25 Rue pétain', 126548795, '2012-10-22 20:42:55', null, 3),
+('jeanmichel.durand@gmail.com', 1, 'Durand', 'Jean-michel', 'jeanmichel.durand@gmail.com', 'jean-mi', '1', '95 Place de l''étoile', 562154987, '2012-10-22 20:42:55', null, 4),
+('kevin.kitvikosky@gmail.com', 5, 'Kitvikosky', 'Kévin', 'kevin.kitvikosky@gmail.com', 'keke', '5', '653 Main Street', 555365125, '2012-10-22 20:42:55', null, 5),
+('marc.simoret@gmail.com', 8, 'Simoret', 'Marc', 'marc.simoret@gmail.com', 'marco', '5', '154 rue de moncuq', NULL, '2012-10-22 20:42:55', 1, 6),
+('paul.balouche@gmail.com', 8, 'Balouche', 'Paul', 'paul.balouche@gmail.com', 'paulo', '3', '562 place de la république', NULL, '2012-10-22 20:42:55', 2, 7),
+('paulo.vergoza@gmail.com', 8, 'Vergoza', 'Paulo', 'paulo.vergoza@gmail.com', 'paulo', '10', '153 de la plaza centrale', NULL, '2012-10-22 20:42:55', 3, 8),
+('daniel.jupon@gmail.com', 8, 'Jupon', 'Daniel', 'daniel.jupon@gmail.com', 'daniel', '6', '156 schrule das', NULL, '2012-10-22 20:42:55', 4, 9),
+('gazelle.kolibri@gmail.com', 8, 'Kolibri', 'Gazelle', 'gazelle.kolibri@gmail.com', 'gazou', '8', '561 chinatown', NULL, '2012-10-22 20:42:55', 5, 10),
+('franck.perget@gmail.com', 8, 'Peret', 'Franck', 'franck.perget@gmail.com', 'francky', '6', '6154 london park', NULL, '2012-10-22 20:42:55', 6, 11),
+('corentin.vasseur@gmail.com', 8, 'Vasseur', 'Corentin', 'corentin.vasseur@gmail.com', 'corentinou', '2', '456 rue de voltaire', NULL, '2012-10-22 20:42:55', 7, 12),
+('john.mcclane@gmail.com', 8, 'McClane', 'John', 'john.mcclane@gmail.com', 'yipikai', '9', '456 Madison Square Garden', NULL, '2012-10-22 20:42:55', 8, 13),
+('john.hancouille@gmail.com', 8, 'Hancouille', 'John', 'john.hancouille@gmail.com', 'hancock', '8', '415 de la cité interdite', NULL, '2012-10-22 20:42:55', 9, 14),
+('edgard.balhamy@gmail.com', 8, 'Belhamy', 'Edgard', 'edgard.balhamy@gmail.com', 'edgard', '2', '45 rue des riches', NULL, '2012-10-22 20:42:55', 10, 15);
 
 -- --------------------------------------------------------
 
@@ -1208,7 +1216,7 @@ INSERT INTO `vol` (`id_vol`, `numero_ligne`, `id_aeroport_depart_effectif`, `id_
 --
 -- Contraintes pour les tables exportées
 --
-
+ALTER DATABASE aeroport charset=utf8;
 --
 -- Contraintes pour la table `aeroport`
 --
@@ -1227,12 +1235,6 @@ ALTER TABLE `astreinte`
 --
 ALTER TABLE `avion`
   ADD CONSTRAINT `avion_ibfk_1` FOREIGN KEY (`id_type_avion`) REFERENCES `type_avion` (`id_type_avion`);
-
---
--- Contraintes pour la table `client`
---
-ALTER TABLE `client`
-  ADD CONSTRAINT `client_ibfk_1` FOREIGN KEY (`code_ville`) REFERENCES `ville` (`code_ville`);
 
 --
 -- Contraintes pour la table `desservir_ville_aeroport`
@@ -1302,7 +1304,8 @@ ALTER TABLE `reservation`
 --
 ALTER TABLE `utilisateur`
   ADD CONSTRAINT `utilisateur_ibfk_1` FOREIGN KEY (`code_ville`) REFERENCES `ville` (`code_ville`),
-  ADD CONSTRAINT `utilisateur_ibfk_2` FOREIGN KEY (`id_service`) REFERENCES `service` (`id_service`);
+  ADD CONSTRAINT `utilisateur_ibfk_2` FOREIGN KEY (`id_service`) REFERENCES `service` (`id_service`),
+  ADD CONSTRAINT `utilisateur_ibfk_3` FOREIGN KEY (`id_user_pilote`) REFERENCES `pilote` (`id_pilote`);
 
 --
 -- Contraintes pour la table `ville`
