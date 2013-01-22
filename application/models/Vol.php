@@ -172,5 +172,14 @@ class Vol extends Zend_Db_Table_Abstract
 				
 		return $this->fetchAll($req);
 	}
+	
+	public function checkDispoAvion($idAvion, $dateDepart){
+		$req = $this->select()
+					->from($this)
+					->where('id_avion = ?', $idAvion)
+					->where('date_depart = ?', $dateDepart);
+	
+		return $this->fetchAll($req);
+	}
 
 }

@@ -1,0 +1,26 @@
+<a href="/crud/ajouter-ville/">Ajouter une ville</a>
+<br />
+<h3 style="text-align:center">Liste des villes</h3>
+
+<table class="tableService">
+	<tr>
+		<?php 
+			echo $this->nom;
+			echo $this->pays;
+		?>
+		<th style="width:60px;">Options</th>
+	</tr>
+	<?php 
+		foreach($this->ville as $ville){
+
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().' ville-'.$ville['code_ville'].'">';
+			echo '<td class="tdLibelleService">'.$ville['nom'].'</td>';
+			echo '<td class="tdLibelleService">'.$ville['nomPays'].'</td>';
+			echo '<td class="tdOption" style="text-align:center;"><a href="/crud/modifier-ville/id/'.$ville['code_ville'].'" class="icone_modifier_ligne updateEmploye"></a></td>';
+			echo '</tr>';
+		}
+	?>
+</table>
+<br />
+<br />
+<?php echo $this->paginationControl($this->ville, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>

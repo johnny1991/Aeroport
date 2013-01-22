@@ -30,6 +30,7 @@ class PlanificationVol extends Zend_Form
 		else
 			$listeAvions = $TableAvion->getTypeAvionDispoByVol($this->_numeroLigne, $this->_dateDepart, true);
 		
+
 		if(count($listeAvions) != 0){
 			
 			$EAvion = new Zend_Form_Element_Select('avion');
