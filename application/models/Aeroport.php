@@ -30,4 +30,13 @@ class Aeroport extends Zend_Db_Table_Abstract
 	
 		return $this->fetchRow($req);
 	}
+	
+	public function getAeroportByVille($idVille){
+		$req = $this->select()
+					->from($this)
+					->where('code_ville = ?', $idVille)
+					->order('nom asc');
+		
+		return $this->fetchAll($req);
+	}
 }

@@ -167,6 +167,30 @@ return array(
 									'title'		=>	'Consulter un employé'
 								)
 						)
+				),
+				
+				array(
+						'label'      => 'Service d\'exploitation',
+						'module'     => 'default',
+						'controller' => 'exploitation',
+						'action'     => 'index',
+						'title'		=>	'Service d\'exploitation',
+						'pages'      =>
+						array(	array(
+								'label'      => 'Consulter un vol',
+								'uri'		=>	'/exploitation/fiche-vol/',
+								'params' => array(
+										'ligne' => Aeroport_Fonctions::getParam('ligne'),
+										'vol' => Aeroport_Fonctions::getParam('vol')
+								),
+								'module'     => 'default',
+								'controller' => 'exploitation',
+								'action'     => 'fiche-vol',
+								'id'		=>	'ficheVol',
+								'title'		=>	'Détail du vol',
+								),
+
+						)
 				)
 		)
 )

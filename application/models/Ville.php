@@ -12,7 +12,8 @@ class Ville extends Zend_Db_Table_Abstract
 	public function getVillesByIdPays($idPays){
 		$req = $this->select()
 					->from($this)
-					->where('code_pays = ?', $idPays);
+					->where('code_pays = ?', $idPays)
+					->order('nom asc');
 		
 		return $this->fetchAll($req);
 	}
