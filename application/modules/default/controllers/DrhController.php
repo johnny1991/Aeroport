@@ -169,6 +169,7 @@ class DrhController extends Zend_Controller_Action{
 		$paginator->setItemCountPerPage(25);
 		$paginator->setCurrentPageNumber($page);
 		$this->view->services = $paginator;
+		$this->view->param = $this->getAllParams();
 		
 	}
 	

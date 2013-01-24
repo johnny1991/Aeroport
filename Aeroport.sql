@@ -928,6 +928,7 @@ CREATE TABLE IF NOT EXISTS `remarque` (
   `id_service` int(11) NOT NULL,
   `id_vol` int(11) NOT NULL,
   `numero_ligne` int(11) NOT NULL,
+  `traiter` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_remarque`),
   KEY `numero_ligne` (`numero_ligne`,`id_vol`),
   KEY `id_type_remarque` (`id_type_remarque`),
