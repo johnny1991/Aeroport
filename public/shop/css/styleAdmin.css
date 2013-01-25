@@ -67,13 +67,17 @@
 }
 
 /* Tableaux */
-.idLigneProduit,.idLigneClient,.idLigneCategorie,.idLigneSousCategorie,.idLigneCommande,.idInfoProduit
+.idLigneClient,.idLigneCategorie,.idLigneSousCategorie,.idLigneCommande,.idInfoProduit
 	{
 	width: 35px;
 }
 
-.designationLigneProduit,.designationInfoProduit {
-	width: 234px;
+.idLigneVol{
+	width: 25px;
+}
+
+.designationAeroportVol{
+	width: 170px;
 }
 
 .designationInfoProduit {
@@ -84,7 +88,15 @@
 	width: 55px;
 }
 
-.quantiteLigneProduit,.montantLigneCommande,.livreLigneCommande,.quantiteligneProduit
+.dateVol{
+		width: 65px;
+}
+
+.quantiteVol{
+		width: 53px;
+}
+
+.montantLigneCommande,.livreLigneCommande,.quantiteligneProduit
 	{
 	width: 65px;
 }

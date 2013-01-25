@@ -384,7 +384,7 @@ class Shop_ClientController extends Zend_Controller_Action
 		$this->view->title = "Mon panier";
 		$form = new Shop_Form_Panier;
 		$sessionPanier = new Zend_Session_Namespace('panier');
-		$TableProduit = new Shop_Model_Produit;
+		$TableVol = new Vol();
 		$produits = array();
 		$totalProduit = 0;
 		if($sessionPanier->content != NULL){
@@ -393,7 +393,7 @@ class Shop_ClientController extends Zend_Controller_Action
 				$element = new Zend_Form_Element_Text($nomElement);
 				$form->addElement($element);
 
-				$produit = $TableProduit->find($id)->current();
+				$produit = $TableVol->find($id)->current();
 				if($this->getRequest()->isPost())
 				{
 					$data = $this->getRequest()->getPost();

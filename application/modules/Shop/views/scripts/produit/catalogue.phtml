@@ -1,99 +1,111 @@
-
 <?php 
-
-$this->headScript()->prependFile('/js/jquery-ui-1.9.0.custom.min.js');
-$this->headScript()->prependFile('/js/jquery-1.8.2.min.js');
-$this->headScript()->appendFile('/../js/VolFonction.js');
-
 $form = $this->formRecherche; ?>
-<div class="search-ligne">
-	<form method="<?php echo $form->getMethod() ?>"
-		action="<?php echo $form->getAction();?>">
-		<div id="search-advanced-ligne">
-			<div class="search-row">
-				<div class="Aeroport">
-					<?php $form->getElement("aeroportDepart")->getDecorator('label')->setOption('tag', null); ?>
+<div class="RechercheVol">
+	<div class="sub-RechercheVol">
+		<form method="<?php echo $form->getMethod() ?>"
+			action="<?php echo $form->getAction();?>">
+			<div class="ligne">
+				<?php $form->getElement("aeroportDepart")->getDecorator('label')->setOption('tag', null); ?>
+				<div class="label">
 					<label>Au départ de : </label>
-					<?php //echo $form->aeroportDepart->renderLabel();?>
-					<?php echo $form->Depart->renderViewHelper();?>
-					<?php echo $form->aeroportDepart->renderViewHelper();?>
 				</div>
+				<div class="content">
+					<div class="sub-content">
+						<?php echo $form->Depart->renderViewHelper();?>
+					</div>
+					<div>
+						<?php echo $form->Depart->renderErrors();?>
+					</div>
+					<div class="sub-content">
+						<?php echo $form->aeroportDepart->renderViewHelper();?>
+					</div>
+					<div>
+						<?php echo $form->aeroportDepart->renderErrors();?>
+					</div>
+				</div>
+				<?php echo $form->PopulateDepart->renderViewHelper();?>
+				<?php echo $form->PopulateArrivee->renderViewHelper();?>
 			</div>
-			<div class="search-row">
-				<div class="Aeroport">
-					<?php $form->getElement("aeroportArrivee")->getDecorator('label')->setOption('tag', null); ?>
+			<div class="ligne">
+				<?php $form->getElement("aeroportArrivee")->getDecorator('label')->setOption('tag', null); ?>
+				<div class="label">
 					<label>A destination de : </label>
-					<?php //echo $form->aeroportArrivee->renderLabel();?>
-					<?php echo $form->Arrivee->renderViewHelper();?>
-					<?php echo $form->aeroportArrivee->renderViewHelper();?>
+				</div>
+				<div class="content">
+					<div class="sub-content">
+						<?php echo $form->Arrivee->renderViewHelper();?>
+					</div>
+					<div class="sub-content">
+						<?php echo $form->Arrivee->renderErrors();?>
+					</div>
+					<div class="sub-content">
+						<?php echo $form->aeroportArrivee->renderViewHelper();?>
+					</div>
+					<div class="sub-content">
+						<?php echo $form->aeroportArrivee->renderErrors();?>
+					</div>
 				</div>
 			</div>
-			<div class="search-row">
-				<div class="Date">
-					<?php $form->getElement("dateDepart")->getDecorator('label')->setOption('tag', null); ?>
+			<div class="ligne">
+				<?php $form->getElement("dateDepart")->getDecorator('label')->setOption('tag', null); ?>
+				<div class="label">
 					<?php echo $form->dateDepart->renderLabel();?>
+				</div>
+				<div class="content">
 					<?php echo $form->dateDepart->renderViewHelper();?>
+					<?php echo $form->dateDepart->renderErrors();?>
 				</div>
 			</div>
-			<?php echo $form->Rechercher->renderViewHelper();?>
-			<?php //echo $form->PopulateDepart->renderViewHelper();?>
-			<?php //echo $form->PopulateArrivee->renderViewHelper();?>
-		</div>
-	</form>
+			<div class="recherche">
+				<?php echo $form->Rechercher->renderViewHelper();?>
+			</div>
+		</form>
+	</div>
 </div>
+<?php if ($this->valid) :?>
 <?php if($this->paginator->getTotalItemCount() == 0) { ?>
 <div id="numberArticle">
 	<?php if($this->recherche) {?>
-	<b>Aucun article pour cette recherche</b>
+	<b>Aucun résultat pour cette recherche</b>
 	<?php }else {?>
-	<b>Il n'y a aucun article dans cette catégorie.</b>
+	<b>Aucun vol pour cette configuration.</b>
 	<?php } ?>
 </div>
-<?php } else { ?>
-<div id="choixArticle">
-	<div id="numberArticle">
-		Il y a
-		<?= $this->paginator->getTotalItemCount(); ?>
-		<?= ($this->paginator->getTotalItemCount() > 1) ? "articles :" :"article :"; ?>
-	</div>
-</div>
-<?php } 
+<?php }  
 if($this->paginator->getTotalItemCount() > 0 ){ ?>
 <div class="Block1">
 	<div class="HeadBlock">
 		<h2 id="title_catalogue">
 			<?= $this->title;?>
 		</h2>
-		<div id="triArticle">
-			<?= $this->form->orderBy->renderViewHelper();?>
-		</div>
 	</div>
 	<div class="contentBLock1">
 		<?php 
 		foreach ($this->paginator as $vol) : ?>
+		<?php $Date = new Zend_Date($vol->date_depart,'dd-MM-yy')?>
 		<div class="listeProduit">
-			<?//= $vol->id_vol; ?>
-			<?//= $vol->numero_ligne; ?>
-			<div class="depart">
-				<p>
-					<?= $vol->aeroportDepart; ?>
-				</p>
-				<p>
-					<?= $vol->date_depart." à ".$vol->heure_depart; ?>
-				</p>
+			<div class="date">
+				<?php $jours = array('1'=>'Lundi', '2'=>'Mardi', '3' => 'Mercredi', '4' => 'Jeudi', '5' => 'Vendredi', '6' => 'Samedi', '7' => 'Dimanche');?>
+				<?php $mois = array('01'=>'Janvier', '02'=>'Fevrier', '03' => 'Mars', '04' => 'Avril', '05' => 'Mai', '06' => 'Juin', '07' => 'Juillet', '08' => 'Aout', '09' => 'Septembre', '10' => 'Octobre', '11' => 'Novembre', '12' => 'Decembre');?>
+				<?php $jourTexte = $jours[$Date->get('e')]; ?>
+				<?php $moisTexte = $mois[$Date->get('MM')]; ?>
+				<?= $jourTexte." ".$Date->get('dd')." ".$moisTexte;//$Date->get('e-dd-MM');//." à ".$vol->heure_depart; ?>
 			</div>
-			<div class="arrivee">
-				<p>
-					<?= $vol->aeroportArrivee; ?>
-				</p>
-				<p>
-					<?= $vol->date_arrivee." à ".$vol->heure_arrivee; ?>
-				</p>
+			<div class="partir">
+				<label>A partir de </label>
+			</div>
+			<div class="prix">
+				<?php if($vol->tarif_effectif == 0) echo $vol->tarif; else echo $vol->tarif_effectif;?>
+				€
+			</div>
+			<div class="detailProduit">
+				<a class="bouton"
+					href="<?= $this->baseUrl('itineraire/').$vol->numero_ligne."_".$vol->id_vol; ?>">Voir détails</a>
 			</div>
 		</div>
-		<!-- echo $this->action('bloc','produit','Shop',array('id_vol'=>$vol->id_vol, 'numero_ligne'=>$vol->numero_ligne)); -->
 		<?php endforeach;	?>
 	</div>
 </div>
 <?= $this->pagination; 
 } ?>
+<?php endif; ?>

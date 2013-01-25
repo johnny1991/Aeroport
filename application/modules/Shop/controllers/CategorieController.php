@@ -1,4 +1,5 @@
 <?php
+/*
 class Shop_CategorieController extends Zend_Controller_Action
 {
 	public function ajoutAction(){ // OK
@@ -201,3 +202,4 @@ class Shop_CategorieController extends Zend_Controller_Action
 		
 	}
 }
+*/

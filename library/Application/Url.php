@@ -11,7 +11,7 @@ class Application_Url
 		return $temp;
 	}
 	
-	static public function getUrlProduit($produit){
+	/*static public function getUrlProduit($produit){
 
 		$categorieProduit = $produit->findDependentRowset('Shop_Model_CategorieProduit')->current();
 		$sousCategorieProduit = $produit->findDependentRowset('Shop_Model_SousCategorieProduit')->current();
@@ -35,5 +35,5 @@ class Application_Url
 		$Url .= $NomCat::Rewrite($produit->designation);
 		return $Url;
 	}
-	
+	*/
 }

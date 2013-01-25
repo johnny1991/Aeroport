@@ -1,9 +1,9 @@
 @CHARSET "UTF-8";
 
 /* Coeur */
-
 html {
-		background: url('../img/background.jpg') repeat-x scroll center top transparent;	
+	background: url('../img/background.jpg') repeat-x scroll center top
+		transparent;
 }
 
 html,body {
@@ -17,7 +17,8 @@ img {
 }
 
 body {
-	background: url('../img/carrousel_bg.png') no-repeat scroll center top transparent;
+	background: url('../img/carrousel_bg.png') no-repeat scroll center top
+		transparent;
 	background-attachment: fixed;
 	font-family: Arial;
 	font-size: 16px;
@@ -88,6 +89,19 @@ table td {
 .Odd,#Total .Odd:hover {
 	overflow: hidden;
 	background-color: #F4F4F4;
+}
+
+#ui-datepicker-div a,#ui-datepicker-div span {
+	text-align: center;
+	padding: 2px;
+	font-size: 0.9em;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.ui-datepicker-prev ui-corner-all span,ui-datepicker-next ui-corner-all span
+	{
+	padding: 0px
 }
 
 table a,table span /*,#tableauListeSousCategorie td */ {
@@ -227,15 +241,15 @@ table .Select a {
 }
 
 #page {
-	background-color:white;
+	background-color: white;
 	width: 100%;
 	heigth: auto;
 	margin-top: 7px;
-	padding-top:7px;
+	padding-top: 7px;
 	overflow: hidden;
 	padding-bottom: 180px;
-	border-radius:10px;
-	box-shadow:0 0 6px #8D9298;
+	border-radius: 10px;
+	box-shadow: 0 0 6px #8D9298;
 }
 
 #sidebar {
@@ -370,7 +384,8 @@ h2 {
 }
 
 .navigation a {
-	padding: 10px 16px 10px 20px; text-decoration : none;
+	padding: 10px 16px 10px 20px;
+	text-decoration: none;
 	display: block;
 	text-decoration: none;
 }
@@ -509,14 +524,35 @@ h2 {
 	margin: 0px 5px 15px 5px;
 	background: none repeat scroll 0 0 #FFFFFF;
 	border: 1px solid #CACACA;
-	width:685px;
+	width: 161px;
+	text-align: center;
 }
 
 .listeProduit:hover {
 	box-shadow: 5px 5px 3px #D3D9D9;
 }
 
-.listeProduit .depart, .listeProduit .arrivee{float:left; padding:5px}
+.listeProduit .date {
+	padding: 10px;
+	background-color: #CCCCCC;
+}
+
+.listeProduit .partir {
+	padding: 5px 10px 0 10px;
+}
+
+.listeProduit .prix {
+	padding: 3px 10px 10px 10px;
+	font-size: 15px;
+	color: black;
+	font-weight: bold;
+}
+
+/*
+.listeProduit .depart,.listeProduit .arrivee {
+	float: left;
+	padding: 5px
+}*/
 
 /* Bloc Produit */
 .blockProduit {
@@ -586,7 +622,6 @@ h2 {
 }
 
 .detailProduit {
-	float: right;
 	margin: 7px 2px;
 }
 
@@ -699,12 +734,12 @@ h2 {
 
 .quantiteLabel {
 	float: left;
-	width: 100px;
+	width: 200px;
 	padding-top: 7px;
 }
 
 #quantite {
-	width: 130px;
+	width: 50px;
 	font-size: 13px;
 }
 
@@ -1279,7 +1314,7 @@ fieldset .Global {
 	display: inline-block;
 	font-size: 13px;
 	width: 915px;
-	margin-left:5px;
+	margin-left: 5px;
 	padding: 15px 20px 0px 20px;
 	position: absolute;
 	bottom: 0;
@@ -1462,7 +1497,8 @@ fieldset .Global {
 }
 
 #captcha {
-	background: url("../img/fleche.png") no-repeat scroll 193px 26px transparent;
+	background: url("../img/fleche.png") no-repeat scroll 193px 26px
+		transparent;
 }
 
 #two_pass {
@@ -1470,19 +1506,78 @@ fieldset .Global {
 		transparent;
 }
 
-.lienMenu{
-	overflow:auto;
+.lienMenu {
+	overflow: auto;
 }
 
-.lienMenu div, .lienMenu span{
-	float:left;
+.lienMenu div,.lienMenu span {
+	float: left;
 }
 
 #child {
-	background: url("../img/down_menu.png") no-repeat scroll right
-		center transparent;
+	background: url("../img/down_menu.png") no-repeat scroll right center
+		transparent;
 	height: 3px;
 	width: 5px;
 	float: right;
 	margin: 8px 0 2px 5px;
 }
+
+.RechercheVol {
+	color: black;
+	margin: 0 10px 10px 6px;
+	background: url("../img/background-search.jpg") no-repeat scroll left
+		center transparent;
+}
+
+.RechercheVol .sub-RechercheVol {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.RechercheVol .label {
+	float: left;
+	width: 150px;
+	text-align: right;
+	margin: 3px 10px 0 0;
+	display: block;
+}
+
+.RechercheVol .content {
+	float: left;
+}
+
+.RechercheVol .ligne {
+	overflow: auto;
+	padding: 7px 0;
+}
+
+.RechercheVol .sub-content {
+	padding: 0 0 5px;
+}
+
+.RechercheVol .recherche {
+	margin-left: 160px;
+	padding-bottom: 10px;
+}
+
+.Map-New-Ligne {
+	float: left;
+	height: 300px;
+	width: 300px;
+	margin: 10px;
+}
+
+.Desc .contenuSidebar {
+	margin: 0 30px;
+	float: left;
+}
+
+.detailDesc label {
+	font-weight: bold;
+	margin-bottom:5px; display:block;
+}
+
+.detailDesc ul li {
+	margin-left: 10px;
+}
+ 

@@ -25,7 +25,6 @@ function initializeAeroport()
 
 function RechercheAeroport(provenance,pays)
 {
-	console.log("passe1");
 	var isValid;
 	if(provenance=='depart')
 		isValid=document.getElementById('PopulateDepart').value;
@@ -33,7 +32,6 @@ function RechercheAeroport(provenance,pays)
 		isValid=document.getElementById('PopulateArrivee').value;
 	else if(provenance=='origine')
 		isValid=document.getElementById('PopulateOrigine').value;
-	console.log("passe2");
 
 	$.ajax(
 			{
@@ -63,52 +61,51 @@ function RechercheAeroport(provenance,pays)
 }
 
 
-
-$(function(){
+jQuery(function(){
 	//$('#basic_example_3').datetimepicker({
-	$("input[name=dateDepart]").datepicker({
+	jQuery("input[name=dateDepart]").datepicker({
 		dateFormat: "dd-mm-yy",
 		timeFormat: "hh:mm:ss t",
 		ampm: false
 	});
 
-	$("input[name=dateArrivee]").datepicker({
+	jQuery("input[name=dateArrivee]").datepicker({
 		dateFormat: "dd-mm-yy",
 		timeFormat: "hh:mm:ss t",
 		ampm: false
 	});
 
-	$("input[name=heureDepart]").timepicker({
+	jQuery("input[name=heureDepart]").timepicker({
 		hourGrid: 4,
 		minuteGrid: 10,
 		timeFormat: "hh:mm:ss t",
 	});
 
-	$("input[name=heureArrivee]").timepicker({
+	jQuery("input[name=heureArrivee]").timepicker({
 		hourGrid: 4,
 		minuteGrid: 10,
 		timeFormat: "hh:mm:ss t",
 	});
 
-	$("input[name=heureDepartMin]").timepicker({
+	jQuery("input[name=heureDepartMin]").timepicker({
 		hourGrid: 4,
 		minuteGrid: 10,
 		timeFormat: "hh:mm t",
 	});
 
-	$("input[name=heureDepartMax]").timepicker({
+	jQuery("input[name=heureDepartMax]").timepicker({
 		hourGrid: 4,
 		minuteGrid: 10,
 		timeFormat: "hh:mm t",
 	});
 
-	$("input[name=heureArriveeMin]").timepicker({
+	jQuery("input[name=heureArriveeMin]").timepicker({
 		hourGrid: 4,
 		minuteGrid: 10,
 		timeFormat: "hh:mm t",
 	});
 
-	$("input[name=heureArriveeMax]").timepicker({
+	jQuery("input[name=heureArriveeMax]").timepicker({
 		hourGrid: 4,
 		minuteGrid: 10,
 		timeFormat: "hh:mm t",
@@ -167,7 +164,7 @@ function initializeMap() {
 			center: new google.maps.LatLng(48.8735087, 2.2958688999999595),
 			mapTypeControl:false,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
-	}
+	};
 	map = new google.maps.Map(document.getElementById("Map"), mapOptions);
 	path = new google.maps.MVCArray();
 	markers=new google.maps.MVCArray();
@@ -180,26 +177,55 @@ function initializeMap() {
 	});
 	traceParcours.setMap(map);
 }
+function initializeMap1() {
+	geocoder = new google.maps.Geocoder();
+	var mapOptions = {
+			zoom: 5,
+			center: new google.maps.LatLng(48.8735087, 2.2958688999999595),
+			mapTypeControl:false,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	map = new google.maps.Map(document.getElementById("Map"), mapOptions);
+	path = new google.maps.MVCArray();
+	markers=new google.maps.MVCArray();
+	bounds = new google.maps.LatLngBounds();
+	traceParcours = new google.maps.Polyline({
+		path: path,//chemin du tracé
+		strokeColor: "#ff9305",//couleur du tracé
+		strokeOpacity: 1.0,//opacité du tracé
+		strokeWeight: 2//grosseur du tracé
+	});
+	traceParcours.setMap(map);
+	showAdresse();
+}
 
 function showAdresse(){
-	var newAdresseDepart=document.getElementById("adresseDepart").value;
-	var newAdresseArrivee=document.getElementById("adresseArrivee").value;
+	
+	var newAdresseDepart = document.getElementById("adresseDepart").value;
+	var newAdresseArrivee = document.getElementById("adresseArrivee").value;
 	geocoder.geocode( { 'address': newAdresseDepart}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
 			point=new google.maps.LatLng(results[0].geometry.location.lat(),results[0].geometry.location.lng());
 			bounds.extend(point);
 			var myMarkerImage = new google.maps.MarkerImage('/img/map-icon1.png');
+			var titleMarker = "";
+			try {
+				titleMarker = document.getElementById('aeroportDepart').options[document.getElementById('aeroportDepart').selectedIndex].text;
+			} catch(err){}
 			marker = new google.maps.Marker({
 				position: point,
 				map: map,
 				icon : myMarkerImage,
-				title: document.getElementById('aeroportDepart').options[document.getElementById('aeroportDepart').selectedIndex].text
+				title: titleMarker
 			});
 			if(markers.getAt(0)!=null)
 				markers.getAt(0).setMap(null);
 			markers.setAt(0,marker);
 			path.setAt(0,point);
-			document.getElementById('legendDepart').style.display = 'block';
+			try {
+				document.getElementById('legendDepart').style.display = 'block';
+			} catch(err){}
+
 		}
 	});
 
@@ -208,34 +234,43 @@ function showAdresse(){
 			point=new google.maps.LatLng(results[0].geometry.location.lat(),results[0].geometry.location.lng());
 			bounds.extend(point);
 			var myMarkerImage = new google.maps.MarkerImage('/img/map-icon.png');
+			var titleMarker1 = "";
+			try {
+				titleMarker1 = document.getElementById('aeroportArrivee').options[document.getElementById('aeroportArrivee').selectedIndex].text;
+			} catch(err){}
 			marker = new google.maps.Marker({
 				position: point,
 				map: map,
 				icon : myMarkerImage,
-				title: document.getElementById('aeroportArrivee').options[document.getElementById('aeroportArrivee').selectedIndex].text
+				title: titleMarker1
 			});
 			if(markers.getAt(1)!=null)
 				markers.getAt(1).setMap(null);
 			markers.setAt(1,marker);
 			path.setAt(1,point);
-			document.getElementById('legendArrivee').style.display = 'block';
+			try {
+				document.getElementById('legendArrivee').style.display = 'block';
+			} catch(err){}
 		}
 	});
-
 	traceParcours.setPath(path);
 
 	setTimeout(function(){
 		var distance = google.maps.geometry.spherical.computeLength(path); 
-		document.getElementById("distance").value = parseInt(Math.floor(distance)/1000);
+		try{
+			document.getElementById("distance").value = parseInt(Math.floor(distance)/1000);
+		} catch(err){}
 		getMilieu();
-	},500);
+	},2500);
 
 }
 
 function getMilieu(){
 	var lat = new Array();
 	var lng = new Array();
-	for(var i=0;i<=1;i++){
+	var i; 
+
+	for( i = 0 ; i <= 1 ; i++){
 		lat.push(markers.getAt(i).getPosition().lat());
 		lng.push(markers.getAt(i).getPosition().lng());
 	}
@@ -255,12 +290,9 @@ function searchLigne(){
 	}
 
 }
- 
-function resetSearch(){
-	console.log(document.getElementById('mot').value);
-	document.getElementById('mot').value=" ";
-	console.log(document.getElementById('mot').value);
 
+function resetSearch(){
+	document.getElementById('mot').value=" ";
 	document.getElementById('Origine').value="0";
 	document.getElementById('aeroportOrigine').value="0";
 	document.getElementById('Depart').value="0";

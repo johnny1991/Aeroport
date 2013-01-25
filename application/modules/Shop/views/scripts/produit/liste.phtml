@@ -1,11 +1,4 @@
-<h2>Catalogue des produits</h2>
-<div class="optionPanel">
-	<div>
-		<a href="<?= $this->baseUrl('ajout_produit'); ?>"
-			class="boutonAjouterProduit" title="Ajouter un produit">Ajouter un
-			produit</a>
-	</div>
-</div>
+<h2>Catalogue des vols</h2>
 <?php 
 $cheminPublic = 'shop/public';
 foreach($this->messages as $message)
@@ -16,60 +9,54 @@ foreach($this->messages as $message)
 	<thead>
 		<tr class="Head">
 			<?php 
-			echo $this->HeadId;
-			echo $this->HeadDesignation;
-			echo $this->HeadPrix;
-			echo $this->HeadQuantite;
+			echo $this->HeadIdLigne;
+			echo $this->HeadIdVol;
+			echo $this->HeadAeroDepart;
+			echo $this->HeadAeroArrive;
+			echo $this->HeadDateDepart;
+			echo $this->HeadDateArrivee;
+			echo $this->HeadTotalPlaces;
+			echo $this->HeadRestantePlaces;
 			?>
-			<th><span class="PhotoLigneProduit"><b>Photo</b></span></th>
-			<?php 			
-			echo $this->HeadDate;
-			echo $this->HeadActif;
-			?>
-			<th></th>
-			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($this->paginator as $produit) { ?>
+		<?php foreach ($this->paginator as $vol) { ?>
+		<?php $DateDepart = new Zend_Date($vol->date_depart,'dd-MM-yy')?>
+		<?php $DateArrivee = new Zend_Date($vol->date_arrivee,'dd-MM-yy')?>
 		<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-				class="idLigneProduit"><?= $produit->id_produit; ?> </a>
+				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				class="idLigneVol"><?= $vol->numero_ligne; ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-				class="designationLigneProduit"><?= $produit->designation; ?> </a>
+				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				class="idLigneVol"><?= $vol->id_vol; ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-				class="prixLigneProduit"><?= $produit->prix." €"; ?> </a>
+				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				class="designationAeroportVol"><?= $vol->aeroportDepart; ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-				class="quantiteLigneProduit"><?= $produit->quantite; ?> </a>
+				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				class="designationAeroportVol"><?= $vol->aeroportArrivee; ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-				class="PhotoLigneProduit"><?= ((($produit->photo1)  != NULL) && (file_exists(APPLICATION_PATH.'/../'.$cheminPublic.'/img/Produits/'.$produit->photo1)))? "Oui" : "Non"; ?>
+				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				class="dateVol"><?=$DateDepart->get('dd-MM-yyyy'); ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				class="dateVol"><?= $DateArrivee->get('dd-MM-yyyy'); ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				class="quantiteVol"><?= ($vol->nb_places != NULL) ? $vol->nb_places : "NULL";    ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				class="quantiteVol"><?= ($vol->nb_places != NULL) ? $vol->nb_places - $vol->nbreservations : "NULL";  ?>
 			</a>
-			</td>
-			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-				class="dateLigneProduit"><?= date("d/m/y à H:i",strtotime($produit->date)); ?>
-			</a>
-			</td>
-			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-				class="actifLigneProduit"> <?= ($produit->actif) ? "Oui": "Non"; ?>
-			</a>
-			</td>
-			<td><a
-				href="<?= $this->baseUrl('modifier_produit/').$produit->id_produit; ?>"
-				class="boutonModifier" title="Modifier"></a></td>
-			<td><a
-				href="<?= $this->baseUrl('statut_produit/').$produit->id_produit;?>"
-				class="boutonSupprimer" title="Activer/Désactiver la mise en ligne"></a>
 			</td>
 		</tr>
 		<?php }?>

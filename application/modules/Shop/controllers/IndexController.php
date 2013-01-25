@@ -6,13 +6,13 @@ class Shop_IndexController extends Zend_Controller_Action
 	{
 		$this->view->title="Page d'Accueil";
 		$this->_helper->layout->setLayout('categories');
-		$TableProduit = new Shop_Model_Produit;
-		$requete = $TableProduit->select()->where('actif=1')->order('date desc')->limit('6');
-		$this->view->produits = $TableProduit->fetchAll($requete);
-		$requete1 = $TableProduit->select()->setIntegrityCheck(false)->from(array('p'=>'Produit'))->where('actif=1')
+		$TableVol = new Vol();
+		//$requete = $TableVol->select()->order('date_depart desc')->limit('6');
+		//$this->view->vols = $TableVol->fetchAll($requete);
+		/*$requete1 = $TableVol->select()->setIntegrityCheck(false)->from(array('p'=>'Produit'))->where('actif=1')
 		->joinLeft(array('cp'=>'CommandeProduit'),'p.id_produit = cp.id_produit',array('nbProduit' => 'count(cp.id_produit)'))
 		->order('nbProduit desc')->group('id_produit')->limit('6');
-		$this->view->produits1 = $TableProduit->fetchAll($requete1);
+		$this->view->produits1 = $TableVol->fetchAll($requete1);*/
 	}
 
 	public function loginAction(){ // Page de connexion client
@@ -59,7 +59,7 @@ class Shop_IndexController extends Zend_Controller_Action
 
 	}
 
-	public function newAction(){ // Page de nouveautés
+	/*public function newAction(){ // Page de nouveautés
 		$this->_helper->layout->setLayout('categories');
 		$this->view->title = "Nouveautés";
 		$TableProduit = new Shop_Model_Produit;
@@ -76,7 +76,7 @@ class Shop_IndexController extends Zend_Controller_Action
 		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
 		$this->view->pagination = $this->view->paginationControl($paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->getAllParams()));
 		$this->view->paginator = $paginator;
-	}
+	}*/
 
 	public function topVentesAction(){ // Page de top-ventes
 		$this->_helper->layout->setLayout('categories');

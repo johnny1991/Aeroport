@@ -13,8 +13,8 @@ class RechercheLigne extends Zend_Form{
 		$EHeureDepartMax =	new Zend_Form_Element_Text('heureDepartMax');
 		$EHeureArriveeMin =	new Zend_Form_Element_Text('heureArriveeMin');
 		$EHeureArriveeMax =	new Zend_Form_Element_Text('heureArriveeMax');
-		$ETarifMin =			new Zend_Form_Element_Text('tarifMin');
-		$ETarifMax =			new Zend_Form_Element_Text('tarifMax');
+		$ETarifMin =		new Zend_Form_Element_Text('tarifMin');
+		$ETarifMax =		new Zend_Form_Element_Text('tarifMax');
 		$EPeriodicite =		new Zend_Form_Element_Radio('periodicite');
 		$EDateDepart = 		new Zend_Form_Element_Text('dateDepart');
 		$EDateArrivee =		new Zend_Form_Element_Text('dateArrivee');

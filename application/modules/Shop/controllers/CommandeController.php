@@ -4,25 +4,37 @@ class Shop_CommandeController extends Zend_Controller_Action
 	public function listeAction(){ // Liste des Commandes
 
 		$this->view->title = "Catalogue commande";
-		$TableCommande = new Shop_Model_Commande;
-		$requete = $TableCommande
+		$TableReservation = new Reservation();
+		$requete = $TableReservation
 		->select()
-		->from(array('c'=>'Commande'))
+		->from(array('r'=>'reservation'))
+		
 		->setIntegrityCheck(false)
-		->joinLeft(array('cl'=>'Client'),'cl.id_client=c.id_client',array('cl.nom','cl.prenom'))
+		->joinLeft(array('cl'=>'Client'),'cl.id_client=r.id_client',array('cl.nom','cl.prenom'))
+		->joinLeft(array('l'=>'ligne'),'r.numero_ligne=l.numero_ligne',array('l.tarif'))
+		->joinLeft(array('v'=>'vol'),'r.id_vol=v.id_vol',array('v.tarif_effectif'))
+		->group('r.id_reservation')
+		
+		
+		/*
+		 ->from(array('c'=>'Commande'))
 		->joinLeft(array('cp'=>'CommandeProduit'), 'cp.id_commande=c.id_commande',array("num"=>"COUNT(cp.id_produit)",'cp.id_produit'))
-		->group('c.id_commande');
+		->group('c.id_commande')
+		*/
+		;
+		
+		echo $requete;
 		$nbCommande = $this->view->nbCommande;
 
-		if($this->getRequest()->getParam('livre') == 'livre')
+		/*if($this->getRequest()->getParam('livre') == 'livre')
 			$this->view->livre = false;
 		else
 		{
 			$requete->where('c.Islivre=?',0);
 			$this->view->livre = true;
-		}
+		}*/
 
-		if($this->getRequest()->getParam('orderBy'))
+	/*	if($this->getRequest()->getParam('orderBy'))
 			$orderBy = $this->getRequest()->getParam('orderBy');
 		else
 			$orderBy = "Id_Asc";
@@ -43,18 +55,18 @@ class Shop_CommandeController extends Zend_Controller_Action
 			case "Date_Desc": $requete->order("c.date desc"); break;
 			case "Etat_Asc": $requete->order("c.Islivre asc"); break;
 			case "Etat_Desc": $requete->order("c.Islivre desc"); break;
-		}
+		}*/
 
-		$this->view->HeadId = Application_Tableau_OrderColumn::orderColumns($this, "Id",$orderBy,"idLigneCommande","Id");
+	/*	$this->view->HeadId = Application_Tableau_OrderColumn::orderColumns($this, "Id",$orderBy,"idLigneCommande","Id");
 		$this->view->HeadNom = Application_Tableau_OrderColumn::orderColumns($this,"Nom",$orderBy,"nomLigneCommande","Nom client");
 		$this->view->HeadPrenom = Application_Tableau_OrderColumn::orderColumns($this,"Prenom",$orderBy,"prenomLigneCommande","Prénom client");
 		$this->view->HeadNombre = Application_Tableau_OrderColumn::orderColumns($this,"Nombre",$orderBy,"nombreLigneCommande","Nb de produits");
 		$this->view->HeadMontant = Application_Tableau_OrderColumn::orderColumns($this,"Montant",$orderBy,"montantLigneCommande","Montant");
 		$this->view->HeadDate = Application_Tableau_OrderColumn::orderColumns($this,"Date",$orderBy,"dateLigneCommande","Date et Heure");
 		$this->view->HeadLivre = Application_Tableau_OrderColumn::orderColumns($this,"Etat",$orderBy,"livreLigneCommande","Etat");
-
-		$Commandes = $TableCommande->fetchAll($requete);
-		$this->view->order = $orderBy;
+*/
+		$Commandes = $TableReservation->fetchAll($requete);
+		//$this->view->order = $orderBy;
 		$paginator = Zend_Paginator::factory($Commandes);
 		$paginator->setItemCountPerPage($nbCommande);
 		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));

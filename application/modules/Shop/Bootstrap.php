@@ -60,7 +60,7 @@ class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 		$router->addRoute('fichesCommandes', new Zend_Controller_Router_Route('fiche_commande/:id', array('module' => 'Shop', 'controller' => 'commande', 'action' => 'fiche')));
 		$router->addRoute('livreCommandes', new Zend_Controller_Router_Route('livre_commande/:id/:islivre', array('module' => 'Shop', 'controller' => 'commande', 'action' => 'envoye')));
 		$router->addRoute('ficheProduitAdmin', new Zend_Controller_Router_Route('fiche_produit_admin/:id', array('module' => 'Shop', 'controller' => 'administration', 'action' => 'fiche-produit')));
-		$router->addRoute('listeProduit', new Zend_Controller_Router_Route('liste_produit/:orderBy/:page', array('module' => 'Shop', 'controller' => 'produit', 'action' => 'liste','orderBy'=>'Id_Desc', 'page'=>'')));
+		$router->addRoute('listeProduit', new Zend_Controller_Router_Route('liste_produit/:orderBy/:page', array('module' => 'Shop', 'controller' => 'produit', 'action' => 'liste','orderBy'=>'Ligne_Asc', 'page'=>'')));
 		$router->addRoute('ajoutProduit', new Zend_Controller_Router_Route('ajout_produit', array('module' => 'Shop', 'controller' => 'produit', 'action' => 'ajout')));
 		$router->addRoute('listeClient', new Zend_Controller_Router_Route('liste_client/:orderBy/:page', array('module' => 'Shop', 'controller' => 'client', 'action' => 'liste','orderBy'=>'', 'page'=>'')));
 		$router->addRoute('ajoutClient', new Zend_Controller_Router_Route('ajout_client', array('module' => 'Shop', 'controller' => 'client', 'action' => 'ajout-admin')));

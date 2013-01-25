@@ -1,59 +1,47 @@
-<?php $form = $this->form; 
-$cheminPublic = 'public/shop';
+<?php 
+$form = $this->form;
+$vol = $this->vol;
+
+$ligne = $vol->findParentRow('Ligne');
+
+$AeroportDepart = $ligne->findParentRow('Aeroport','aeroport_depart');
+$VilleDepart = $AeroportDepart->findParentRow('Ville');
+$AeroportArrivee = $ligne->findParentRow('Aeroport','aeroport_arrivee');
+$VilleArrivee = $AeroportArrivee->findParentRow('Ville');
 ?>
+<input type="hidden" id="adresseDepart"
+	value="<?= $AeroportDepart->adresse.", ".$VilleDepart->nom.", ".$VilleDepart->findParentRow('Pays')->nom; ?>"
+	name="adresseDepart">
+<input type="hidden" id="adresseArrivee"
+	value="<?= $AeroportArrivee->adresse.", ".$VilleArrivee->nom.", ".$VilleArrivee->findParentRow('Pays')->nom; ?>"
+	name="adresseArrivee">
 <div class="subContentProduit">
 	<h1>
-		<?= $this->produit->designation;?>
+		<?= "De ".$vol->aeroportDepart." (".$vol->pays_Depart.") à destination de ".$vol->aeroportArrivee." (".$vol->pays_Arrive.")"?>
 	</h1>
 	<?php if ($this->Nouveaute) {?>
 	<div class="nouveaute"></div>
 	<?php } ?>
 	<div id="photosProduit">
-		<div id="primaryPhotoProduit">
-			<img
-				src="<?= $this->baseUrl('/shop/img/Produits/'.$this->produit->photo1); ?>"
-				id="big_photo">
-		</div>
-		<?php if((($this->produit->photo2 != NULL)||($this->produit->photo3 != NULL))  && (file_exists(APPLICATION_PATH.'/../'.$cheminPublic.'/img/Produits/Thumbnails/'.$this->produit->photo1))){ ?>
-		<div class="secondariesPhotoProduit" id="first_photo">
-			<img
-				src="<?= $this->baseUrl('/shop/img/Produits/Thumbnails/'.$this->produit->photo1); ?>"
-				id="primary_photo" onClick="AffichageImage(this);">
-		</div>
-		<?php } ?>
-		<?php if(($this->produit->photo2 != NULL) && (file_exists(APPLICATION_PATH.'/../'.$cheminPublic.'/img/Produits/Thumbnails/'.$this->produit->photo2))) { ?>
-		<div class="secondariesPhotoProduit">
-			<img
-				src="<?= $this->baseUrl('/shop/img/Produits/Thumbnails/'.$this->produit->photo2); ?>"
-				id="secondary_photo" onClick="AffichageImage(this);">
-		</div>
-		<?php } 
-		?>
-		<?php if(($this->produit->photo3 != NULL) && (file_exists(APPLICATION_PATH.'/../'.$cheminPublic.'/img/Produits/Thumbnails/'.$this->produit->photo3))) { ?>
-		<div class="secondariesPhotoProduit" id="third_photo">
-			<img
-				src="<?= $this->baseUrl('/shop/img/Produits/Thumbnails/'.$this->produit->photo3); ?>"
-				id="third_photo" onClick="AffichageImage(this);">
-		</div>
-		<?php } ?>
+		<div id="Map" class="Map-New-Ligne"></div>
 	</div>
 	<div id="detailProduit">
 		<div id="priceProduit">
-			<label>Prix : </label><span id="priceProduit2"><?= round($this->produit->prix,2)." €"; ?>
+			<label>Prix : </label><span id="priceProduit2"> <?php if($vol->tarif_effectif == 0) echo $vol->tarif; else echo $vol->tarif_effectif;?>€
 			</span>
 		</div>
 		<form method="<?= $form->getMethod() ?>"
 			action="<?= $form->getAction();?>">
 			<?= $form->id->renderViewHelper();?>
 			<div class="quantiteProduit">
-				<label class="quantiteLabel"> Quantité : </label>
+				<label class="quantiteLabel"> Nombre de reservations : </label>
 				<?= $form->quantite->renderViewHelper();?>
 				<div>
 					<label><?= $form->quantite->renderErrors();?> </label>
 				</div>
 			</div>
-			<?php if($this->produit->quantite <= 0) {?>
-			<div class="enCours">En cours de réappovisionnement</div>
+			<?php if(($vol->nb_places - $vol->nbreservations) <= 0) {?>
+			<div class="enCours">Vol complet</div>
 			<?php } else {?>
 			<div class="ajout">
 				<?= $form->ajouter->renderViewHelper();?>
@@ -61,7 +49,7 @@ $cheminPublic = 'public/shop';
 			<?php } ?>
 		</form>
 		<?php $sessionPanier = new Zend_Session_Namespace('panier');?>
-		<?php if ( (isset($sessionPanier->content[$this->produit->id_produit])) && ($sessionPanier->content[$this->produit->id_produit] != NULL) ) { ?>
+		<?php if ( (isset($sessionPanier->content[$vol->id_vol])) && ($sessionPanier->content[$vol->id_vol] != NULL) ) { ?>
 		<div class="panierProduit">
 			<span id="already">Déjà ajouté au panier</span> <span><a
 				href="<?= $this->baseUrl('client/panier'); ?>">Voir le panier</a> ou
@@ -71,14 +59,50 @@ $cheminPublic = 'public/shop';
 		<div>
 			<label class="DescBrefLabel">Description rapide : </label>
 			<div class="DescBref">
-				<?= $this->produit->descriptionBreve;?>
+				<div>
+					<label>Départ : </label>
+					<?= $vol->aeroportDepart;?>
+				</div>
+				<div>
+					<label>Arrivée : </label>
+					<?= $vol->aeroportDepart;?>
+				</div>
 			</div>
 		</div>
 	</div>
 	<div class="DescProduit">
-		<label class="DescLabel">Description du produit : </label>
+		<label class="DescLabel">Description du vol : </label>
 		<div class="Desc">
-			<?= $this->produit->description; ?>
+			<div class="contenuSidebar">
+				<div class="headSidebar">
+					<span class="titleHeadSidebar"><a href="/panier">Départ</a> </span>
+				</div>
+				<div id="contentSidebar">
+					<div class="blockSidePanier">
+						<ul>
+							<li><?= $vol->aeroportDepart;?></li>
+							<li><?= $vol->pays_Depart;?></li>
+							<li><?= $vol->date_depart;?></li>
+							<li><?= $vol->heure_depart;?></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="contenuSidebar">
+				<div class="headSidebar">
+					<span class="titleHeadSidebar"><a href="/panier">Arrivée</a> </span>
+				</div>
+				<div id="contentSidebar">
+					<div class="blockSidePanier">
+						<ul>
+							<li><?= $vol->aeroportDepart;?></li>
+							<li><?= $vol->pays_Arrive;?></li>
+							<li><?= $vol->date_arrivee;?></li>
+							<li><?= $vol->heure_arrivee;?></li>
+						</ul>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="diversProduit">

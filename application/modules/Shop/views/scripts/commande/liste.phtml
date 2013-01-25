@@ -1,12 +1,12 @@
-<h2>Catalogue des commandes</h2>
+<h2>Catalogue des reservations</h2>
 <?php 
 foreach($this->messages as $message)
 	echo $message;
 ?>
 <div id="texteDroite2">
 	<?php if($this->livre){?>
-	<a href="<?= $this->baseUrl('liste_commandes/livre');?>">Afficher toutes les
-		commandes</a>
+	<a href="<?= $this->baseUrl('liste_commandes/livre');?>">Afficher
+		toutes les commandes</a>
 	<?php } else {?>
 	<a href="<?= $this->baseUrl('liste_commandes');?>">Afficher uniquement
 		les commandes non livrés</a>
@@ -18,57 +18,58 @@ foreach($this->messages as $message)
 	<thead>
 		<tr class="Head">
 			<?php 
-			echo $this->HeadId;
-			echo $this->HeadNom;
+			/*echo $this->HeadId;
+			 echo $this->HeadNom;
 			echo $this->HeadPrenom;
 			echo $this->HeadNombre;
 			echo $this->HeadMontant;
 			echo $this->HeadDate;
-			echo $this->HeadLivre;
+			echo $this->HeadLivre;*/
 			?>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
-		foreach ($this->paginator as $commande)
+		foreach ($this->paginator as $reservation)
 					{?>
 		<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
 			<td><a
-				href="<?= $this->baseUrl('fiche_commande/').$commande->id_commande; ?>"
-				class="idLigneCommande"><?= $commande->id_commande; ?> </a>
+				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
+				class="idLigneCommande"><?= $reservation->id_reservation; ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_commande/').$commande->id_commande; ?>"
-				class="nomLigneCommande"><?= ($commande->nom) ? $commande->nom : "Inconnu"; ?>
+				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
+				class="nombreLigneCommande"><?= $reservation->numero_ligne; ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
+				class="nombreLigneCommande"><?= $reservation->id_vol; ?> </a>
+			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
+				class="nomLigneCommande"><?= ($reservation->nom) ? $reservation->nom : "Inconnu"; ?>
 			</a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_commande/').$commande->id_commande; ?>"
-				class="prenomLigneCommande"><?= ($commande->prenom) ? $commande->prenom : "Iconnu"; ?>
+				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
+				class="prenomLigneCommande"><?= ($reservation->prenom) ? $reservation->prenom : "Inconnu"; ?>
 			</a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_commande/').$commande->id_commande; ?>"
-				class="nombreLigneCommande"><?= $commande->num; ?> </a>
+				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
+				class="montantLigneCommande"><?= ($reservation->tarif_effectif == 0) ? $reservation->tarif."€" : $reservation->tarif_effectif."€"; ?></a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_commande/').$commande->id_commande; ?>"
-				class="montantLigneCommande"><?= $commande->montant."€"; ?> </a>
-			</td>
-			<td><a
-				href="<?= $this->baseUrl('fiche_commande/').$commande->id_commande; ?>"
-				class="dateLigneCommande"><?= date("d/m/y à H:i",strtotime($commande->date));?>
+				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
+				class="dateLigneCommande"><?= date("d/m/y à H:i",strtotime($reservation->date));?>
 			</a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_commande/').$commande->id_commande; ?>"
-				class="montantLigneCommande"> <?php if($commande->Islivre){?> <span
-					id='LivreOk'>Livrée</span> <?php }else { ?> <span id='LivreNok'>Non
-						livrée</span> <?php }?>
-			</a>
-			</td>
-			<td><a href="<?= $this->baseUrl('livre_commande/'.$commande->id_commande.'/'); ?><?= ($commande->Islivre) ? 'nonlivre' : 'livre'; ?>" class="boutonConfigCommande" title="<?= ($commande->Islivre) ? 'Marqué comme non livré' : 'Marqué comme livré'; ?>"></a>
+				href="<?//= $this->baseUrl('livre_commande/'.$reservation->id_reservation.'/'); ?><?//= ($reservation->Islivre) ? 'nonlivre' : 'livre'; ?>"
+				class="boutonConfigCommande"
+				title="<?//= ($reservation->Islivre) ? 'Marqué comme non livré' : 'Marqué comme livré'; ?>"></a>
+		
 		</tr>
 		<?php }?>
 	</tbody>

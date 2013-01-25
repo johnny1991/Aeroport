@@ -1,3 +1,8 @@
+<script type="text/javascript">
+$(window).load(function() {
+	$('#slider').nivoSlider({pauseTime:7e3,animSpeed:500,direction:'left',effect:'fade',directionNav:false,pauseOnHover:true});
+});
+</script>
 <div class="Slide">
 	<div class="slider-wrapper theme-default">
 		<div class="ribbon"></div>
@@ -11,24 +16,26 @@
 		</div>
 	</div>
 </div>
-<?php if(count($this->produits) > 0) {?>
+<!--
+<?php //if(count($this->vols) > 0) {?>
 <div class="Block1">
 	<div class="HeadBlock">Nouveautés</div>
 	<div class="contentBLock1">
 		<?php
-		foreach ($this->produits as $produit)
-			echo $this->action('bloc','produit','Shop',array('id'=>$produit->id_produit));
+		//foreach ($this->vols as $vol)
+			//echo $this->action('bloc','produit','Shop',array('id_vol'=>$vol->id_vol, 'numero_ligne'=>$vol->numero_ligne));
 		?>
 	</div>
-</div>
-<?php } if(count($this->produits1) > 0) {
+</div>-->
+<?php //}
+ if(count($this->vols1) > 0) {
 	?>
 <div class="Block1">
 	<div class="HeadBlock">Top ventes</div>
 	<div class="contentBLock1">
 		<?php
-		foreach ($this->produits1 as $produit)
-			echo $this->action('bloc','produit','Shop',array('id'=>$produit->id_produit));
+		foreach ($this->vols1 as $vol)
+			//echo $this->action('bloc','produit','Shop',array('id_vol'=>$vol->id_vol, 'numero_ligne'=>$vol->numero_ligne));
 		?>
 	</div>
 </div>
