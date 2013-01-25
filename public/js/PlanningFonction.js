@@ -35,7 +35,7 @@ function MaJCoPilote(numSelect){
 	    
 	    var i;
 	    var j;
-	    
+	    index = 0;
 	    //On boucle sur tous les selects suivant celui sélectionné;
 	    for(i = nextElts; i <= nbSelect; i++){
 	       var flagSelected = false;

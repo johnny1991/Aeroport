@@ -167,6 +167,64 @@ return array(
 									'title'		=>	'Consulter un employé'
 								)
 						)
+				),
+				
+				array(
+						'label'      => 'Service d\'exploitation',
+						'module'     => 'default',
+						'controller' => 'exploitation',
+						'action'     => 'index',
+						'title'		=>	'Service d\'exploitation',
+						'pages'      =>
+						array(	array(
+								'label'      => 'Consulter un vol',
+								'uri'		=>	'/exploitation/fiche-vol/',
+								'params' => array(
+										'ligne' => Aeroport_Fonctions::getParam('ligne'),
+										'vol' => Aeroport_Fonctions::getParam('vol')
+								),
+								'module'     => 'default',
+								'controller' => 'exploitation',
+								'action'     => 'fiche-vol',
+								'id'		=>	'ficheVol',
+								'title'		=>	'Détail du vol'
+								)
+
+						)
+				),
+				
+				array(
+						'label'      => 'Service de logistique commerciale',
+						'module'     => 'default',
+						'controller' => 'logistique',
+						'action'     => 'index',
+						'title'		=>	'Service de logistique commerciale',
+						'pages'      =>
+						array(	array(
+									'label'      => 'Consulter un vol',
+									'uri'		=>	'/logistique/fiche-vol/',
+									'params' => array(
+											'ligne' => Aeroport_Fonctions::getParam('ligne'),
+											'vol' => Aeroport_Fonctions::getParam('vol')
+									),
+									'module'     => 'default',
+									'controller' => 'logistique',
+									'action'     => 'fiche-vol',
+									'id'		=>	'ficheVol',
+									'title'		=>	'Détail du vol'
+								),
+								
+								array(
+									'label'      => 'Consulter les types de remarque',
+									'uri'		=>	'/logistique/consulter-remarque/',
+									'module'     => 'default',
+									'controller' => 'logistique',
+									'action'     => 'consulter-remarque',
+									'id'		=>	'consulterRemarque',
+									'title'		=>	'Les types de remarques'
+								)
+				
+						)
 				)
 		)
 )

@@ -95,6 +95,16 @@ class PlanningController extends Zend_Controller_Action
 						$idAvion = $tableAvion->getAvionDispoByTypeByVol($numeroLigne, $dateParam, $form->getValue('avion'));
 						$idVol = $tableVol->getLastId($numeroLigne) + 1;
 						
+						$idAvionDispo = '';
+						foreach($idAvion as $avion){
+							$req = $tableVol->checkDispoAvion($avion->id_avion, $dateParam);
+							
+							if(count($req) == 0){
+								$idAvionDispo = $avion->id_avion;
+								break;
+							}
+						}
+						
 						$Vol = $tableVol->createRow();
 						$Vol->id_vol = $idVol;
 						$Vol->numero_ligne = $numeroLigne;
@@ -102,7 +112,7 @@ class PlanningController extends Zend_Controller_Action
 						$Vol->id_aeroport_arrivee_effectif = $laLigne->id_aeroport_arrivee;
 						$Vol->date_depart = $dateParam;
 						$Vol->date_arrivee = $dateArrivee;
-						$Vol->id_avion = $idAvion->id_avion;
+						$Vol->id_avion = $idAvionDispo;
 						$Vol->id_pilote = $form->getValue('pilote0');
 						$Vol->id_copilote = $form->getValue('pilote1');
 						$Vol->heure_arrivee_effective = $laLigne->heure_arrivee;
@@ -112,7 +122,21 @@ class PlanningController extends Zend_Controller_Action
 					else{
 						$idAvion = $tableAvion->getAvionDispoByTypeByVol($numeroLigne, $dateParam, $form->getValue('avion'), true);
 						
-						$leVol->id_avion = $idAvion->id_avion;
+						$idAvionDispo = '';
+						foreach($idAvion as $avion){
+							$req = $tableVol->checkDispoAvion($avion->id_avion, $dateParam);
+								
+							if(count($req) == 0){
+								$idAvionDispo = $avion->id_avion;
+								break;
+							}
+						}
+						
+						if($idAvionDispo == ''){
+							$idAvionDispo = $leVol->id_avion;
+						}
+						
+						$leVol->id_avion = $idAvionDispo;
 						$leVol->id_pilote = $form->getValue('pilote0');
 						$leVol->id_copilote = $form->getValue('pilote1');
 						$leVol->heure_arrivee_effective = $laLigne->heure_arrivee;

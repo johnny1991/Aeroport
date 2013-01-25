@@ -1,0 +1,30 @@
+<a href="/crud/ajouter-pays/">Ajouter un pays</a>
+<br />
+<h3 style="text-align:center">Liste des pays</h3>
+
+<table class="tableService">
+	<tr>
+		<?php 
+			echo $this->code;
+			echo $this->nom;
+			echo $this->alpha2;
+			echo $this->alpha3;
+		?>
+		<th style="width:60px;">Options</th>
+	</tr>
+	<?php 
+		foreach($this->pays as $pays){
+			
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().' pays-'.$pays['code_pays'].'">';
+			echo '<td class="tdLibelleService">'.$pays['code_pays'].'</td>';
+			echo '<td class="tdLibelleService">'.$pays['nom'].'</td>';
+			echo '<td style="text-align:center;">'.$pays['alpha2'].'</td>';
+			echo '<td style="text-align:center;">'.$pays['alpha3'].'</td>';
+			echo '<td class="tdOption" style="text-align:center;"><a href="/crud/modifier-pays/id/'.$pays['code_pays'].'" class="icone_modifier_ligne updateEmploye"></a></td>';
+			echo '</tr>';
+		}
+	?>
+</table>
+<br />
+<br />
+<?php echo $this->paginationControl($this->pays, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>

@@ -1,0 +1,30 @@
+<a href="/crud/ajouter-aeroport/">Ajouter un aéroport</a>
+<br />
+<h3 style="text-align:center">Liste des aéroports</h3>
+
+<table class="tableService">
+	<tr>
+		<?php 
+			echo $this->trigramme;
+			echo $this->nom;
+			echo $this->ville;
+			echo $this->pays;
+		?>
+		<th style="width:60px;">Options</th>
+	</tr>
+	<?php 
+		foreach($this->aeroport as $aeroport){
+			
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().' aeroport-'.$aeroport['id_aeroport'].'">';
+			echo '<td class="tdLibelleService">'.$aeroport['id_aeroport'].'</td>';
+			echo '<td class="tdLibelleService">'.$aeroport['nom'].'</td>';
+			echo '<td style="text-align:center;">'.$aeroport['nomVille'].'</td>';
+			echo '<td style="text-align:center;">'.$aeroport['nomPays'].'</td>';
+			echo '<td class="tdOption" style="text-align:center;"><a href="/crud/modifier-aeroport/id/'.$aeroport['id_aeroport'].'" class="icone_modifier_ligne updateEmploye"></a></td>';
+			echo '</tr>';
+		}
+	?>
+</table>
+<br />
+<br />
+<?php echo $this->paginationControl($this->aeroport, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>

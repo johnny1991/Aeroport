@@ -331,13 +331,17 @@ class Shop_ProduitController extends Zend_Controller_Action
 	}
 
 	public function catalogueAction(){ // Page de catalogue produit
+
+
+		$this->view->formRecherche = new RechercheLigne();
+
 		$this->view->title = "Catalogue"; // Attribution du titre de la page
 		$this->_helper->layout->setLayout('categories');
-		//$tableProduit = new Shop_Model_Produit;
-		//$requete = $tableProduit->select()->setIntegrityCheck(false)->from(array('p'=>'Produit'))->where('p.actif=?',true);
 		$tableVol = new Vol();
-		$requete = $tableVol->select();//->setIntegrityCheck(false)->from(array('p'=>'Produit'))->where('p.actif=?',true);
-		
+		$requete = $tableVol->select()->setIntegrityCheck(false)->from(array('v'=>'vol'))
+		->join(array('l'=>'ligne'), 'v.numero_ligne = l.numero_ligne')
+		->join(array('ad'=>'aeroport'),'ad.id_aeroport = l.id_aeroport_depart',array('ad.nom as aeroportDepart','ad.id_aeroport'))
+		->join(array('aa'=>'aeroport'),'aa.id_aeroport = l.id_aeroport_arrivee',array('aa.nom as aeroportArrivee','aa.id_aeroport'));
 		$this->view->recherche = false;
 		$url="";
 		$url1="";
@@ -359,52 +363,23 @@ class Shop_ProduitController extends Zend_Controller_Action
 			$this->view->navigation()->findOneBy("id","catalogue")->setVisible(true)->setLabel("Résultat de recherche pour : '".$mot."'")->setTarget('test');
 			$this->view->recherche = true;
 		}
-		else
-		{	
-			$idCategorie = $this->getRequest()->getParam('categorie');
-			if($idCategorie)
-			{
-				// Si l'on se trouve dans une catégorie
-				$this->view->navigation()->findOneBy("id",$idCategorie)->setActive(true);
-				$TableCategorie = new Shop_Model_Categorie;
-				$nomCategorie = $TableCategorie->find($idCategorie)->current()->libelle;
-				$nomCategorie1 = $NomCat::Rewrite($nomCategorie); // Permet de supprimer les caratères non acceptables et peut pratique dans une barre d'adresse en renvoie une chaine sans c'est caractères
-				$url = '/'.$nomCategorie1.'/';
-				$this->view->title = $nomCategorie; // Attribution du titre de la page		exit();
-				
-				if($this->getRequest()->getParam('sous_categorie'))
-				{
-					// Si l'on se trouve dans une sous-categorie
-					$requete->join(array('scp'=>'SousCategorieProduit'),'p.id_produit = scp.id_produit',array('scp.id_souscategorie'))
-					->where('scp.id_souscategorie=?',$this->getRequest()->getParam('sous_categorie'));
-					$TableSousCategorie = new Shop_Model_SousCategorie;
-					$nomSousCategorie = $TableSousCategorie->find($this->getRequest()->getParam('sous_categorie'))->current()->libelle;
-					$this->view->title = $nomSousCategorie; // Attribution du titre de la page
-					$nomSousCategorie1 = $NomCat::Rewrite($nomSousCategorie);
-					$url = '/'.$nomCategorie1.'/'.$nomSousCategorie1.'/';
-					$this->view->navigation()->findOneBy("id",$idCategorie.'-'.$this->getRequest()->getParam('sous_categorie'))->setActive(true);
-				}
-				else
-				{
-					// Si l'on se trouve dans le catalogue
-					$requete->joinLeft(array('cp'=>'CategorieProduit'),'p.id_produit = cp.id_produit',array('cp.id_categorie'))
-					->joinLeft(array('scp'=>'SousCategorieProduit'),'p.id_produit = scp.id_produit',array('scp.id_souscategorie'))
-					->joinLeft(array('sc'=>'SousCategorie'),'sc.id_souscategorie = scp.id_souscategorie',array('scp.id_souscategorie'))
-					->where("cp.id_categorie=? OR sc.id_categorie=?",$this->getRequest()->getParam('categorie'),$idCategorie);
-					$this->view->navigation()->findOneBy("id","catalogue")->setVisible(true);
+		else{
+			if($this->getParam('Rechercher')){
+				if($this->getParam('dateDepart')){
+					$requete->where('date_depart=?',$this->getParam('dateDepart'));
 				}
 			}
 		}
 
+
 		$form = new Zend_Form(); // On créer un formulaire pour trier les articles
 		$Trie = new Zend_Form_Element_Select('orderBy');
 		$Trie->addMultiOption(0,'Trier par :');
-		$Trie->addMultiOption('Prix_Asc','Prix croissant');
-		$Trie->addMultiOption('Prix_Desc','Prix décroissant');
-		$Trie->addMultiOption('Designation_Asc','Désignation (A à Z)');
-		$Trie->addMultiOption('Designation_Desc','Désignation (Z à A)');
-		$Trie->addMultiOption('Quantite_Asc','Quantité croissante');
-		$Trie->addMultiOption('Quantite_Desc','Quantité décroissante');
+		$Trie->addMultiOption('_Asc','Aeroport de départ');
+		$Trie->addMultiOption('Prix_Desc',"Aeroport d'arrivée");
+		$Trie->addMultiOption('Designation_Asc','Date de départ');
+		$Trie->addMultiOption('Designation_Desc',"Date d'arrivée");
+		$Trie->addMultiOption('Quantite_Asc','Places restantes');
 		$form->addElement($Trie);
 		$form->setMethod("get");
 		$form->setName("Trie");
@@ -427,14 +402,16 @@ class Shop_ProduitController extends Zend_Controller_Action
 
 		switch ($orderBy)
 		{
-			case "Designation_Asc": $requete->order("designation asc"); break;
-			case "Designation_Desc": $requete->order("designation desc"); break;
+			case "Id_Asc": $requete->order("id_vol asc"); break;
+			case "Id_Asc": $requete->order("id_vol desc"); break;
 			case "Prix_Asc": $requete->order("p.prix asc"); break;
 			case "Prix_Desc": $requete->order("p.prix desc"); break;
 			case "Quantite_Asc": $requete->order("quantite asc"); break;
 			case "Quantite_Desc": $requete->order("quantite desc"); break;
 			case "Date_Asc": $requete->order("date_depart asc"); break;
 			case "Date_Desc": $requete->order("date_depart desc"); break;
+			case "Date1_Asc": $requete->order("date_arrivee asc"); break;
+			case "Date1_Desc": $requete->order("date_arrivee desc"); break;
 		}
 
 		$paginator = Zend_Paginator::factory($tableVol->fetchAll($requete));
@@ -457,7 +434,7 @@ class Shop_ProduitController extends Zend_Controller_Action
 			$this->_redirector->gotoUrl($_SERVER['HTTP_REFERER']);
 
 		$navigation = Zend_Registry::get('navigation');
-		
+
 		if($produit != NULL){
 			if($this->getRequest()->isPost())
 			{
@@ -497,7 +474,7 @@ class Shop_ProduitController extends Zend_Controller_Action
 				$navigation->findOneBy("id",$Categorie->id_categorie.'-'.$SousCategorie->id_souscategorie)->setActive(true);
 
 			}
-				
+
 			$navigation->findOneBy("id","p_".$produit->id_produit)->setActive(true);
 			$this->view->title = $produit->designation; // Attribution du titre de la page
 			if($produit ==  NULL)
@@ -521,7 +498,7 @@ class Shop_ProduitController extends Zend_Controller_Action
 		$this->_helper->layout->setLayout('categories');
 		//$tableProduit = new Shop_Model_Produit;
 		$tableVol = new Vol();
-		
+
 		$this->view->produit = $tableVol->find($this->getRequest()->getParam('id_vol'), $this->getRequest()->getParam('numero_ligne'))->current();
 		$MiseEnLigne = new Zend_Date($this->view->produit->date_depart, 'dd-MM-yy');
 		$cheminPublic = 'shop/public';
@@ -533,8 +510,8 @@ class Shop_ProduitController extends Zend_Controller_Action
 		/*if(($this->view->produit->photo1 != NULL) && (file_exists(APPLICATION_PATH.'/../'.$cheminPublic.'/img/Produits/'.$this->view->produit->photo1)))
 			$this->view->TaillePhoto = $imageTool::adaptationTailleImage(APPLICATION_PATH.'/../'.$cheminPublic.'/img/Produits/'.$this->view->produit->photo1,202,140);
 		else{
-			$this->view->produit->photo1 = "NoPicture.png";
-			$this->view->TaillePhoto = array(202,140);
+		$this->view->produit->photo1 = "NoPicture.png";
+		$this->view->TaillePhoto = array(202,140);
 		}*/
 
 		//$categorieProduit = $this->view->produit->findDependentRowset('Shop_Model_CategorieProduit')->current();

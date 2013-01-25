@@ -1,0 +1,30 @@
+<h3 class="h3DRH">Ajouter un type de remarque</h3>
+<?php echo $this->action('ajouter-remarque', 'logistique');?>
+<br /><br />
+<h3 class="h3DRH">Consulter les types de remarque</h3>
+<div class="DivErreurForm MessageContentModifier"></div>
+<table class="tableService">
+	<tr>
+		<?php 
+			echo $this->libelle;
+		?>
+		<th colspan="2">Options</th>
+	</tr>
+	<?php 
+		foreach($this->remarques as $remarque){
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().' remarque-'.$remarque['id_type_remarque'].'">';
+			if($remarque['id_type_remarque'] != 5){
+				echo '<td class="tdLibelleService updateRemarque"><div onclick="CreationInput('.$remarque['id_type_remarque'].', \''.addslashes($remarque['libelle_type_remarque']).'\', \'remarque\');">'.stripslashes($remarque['libelle_type_remarque']).'</div><form style="display:none;margin-top:10px;" method="post" onsubmit="AjaxModifierLibelle('.$remarque['id_type_remarque'].', \''.addslashes($remarque['libelle_type_remarque']).'\', \'remarque\', \''.$this->order.'\', '.$this->page.');return false;"><input type="text" name="modifier" size="70" value="'.stripslashes($remarque['libelle_type_remarque']).'"/></form></td>';
+				echo '<td class="tdOption"><div onclick="CreationInput('.$remarque['id_type_remarque'].', \''.addslashes($remarque['libelle_type_remarque']).'\', \'remarque\');" class="icone_modifier_ligne updateRemarque"></div></td>';
+				echo '<td class="tdOption"><div class="icone_delete_ligne deleteRemarque"></div></td>';
+			}else{
+				echo '<td class="tdLibelleService updateRemarque"><div>'.stripslashes($remarque['libelle_type_remarque']).'</div></td>';
+				echo '<td colspan="2"></td>';
+			}
+			echo '</tr>';
+		}
+	?>
+</table>
+<br />
+<br />
+<?php echo $this->paginationControl($this->remarques, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>

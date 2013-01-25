@@ -1,3 +1,46 @@
+
+<?php 
+
+$this->headScript()->prependFile('/js/jquery-ui-1.9.0.custom.min.js');
+$this->headScript()->prependFile('/js/jquery-1.8.2.min.js');
+$this->headScript()->appendFile('/../js/VolFonction.js');
+
+$form = $this->formRecherche; ?>
+<div class="search-ligne">
+	<form method="<?php echo $form->getMethod() ?>"
+		action="<?php echo $form->getAction();?>">
+		<div id="search-advanced-ligne">
+			<div class="search-row">
+				<div class="Aeroport">
+					<?php $form->getElement("aeroportDepart")->getDecorator('label')->setOption('tag', null); ?>
+					<label>Au départ de : </label>
+					<?php //echo $form->aeroportDepart->renderLabel();?>
+					<?php echo $form->Depart->renderViewHelper();?>
+					<?php echo $form->aeroportDepart->renderViewHelper();?>
+				</div>
+			</div>
+			<div class="search-row">
+				<div class="Aeroport">
+					<?php $form->getElement("aeroportArrivee")->getDecorator('label')->setOption('tag', null); ?>
+					<label>A destination de : </label>
+					<?php //echo $form->aeroportArrivee->renderLabel();?>
+					<?php echo $form->Arrivee->renderViewHelper();?>
+					<?php echo $form->aeroportArrivee->renderViewHelper();?>
+				</div>
+			</div>
+			<div class="search-row">
+				<div class="Date">
+					<?php $form->getElement("dateDepart")->getDecorator('label')->setOption('tag', null); ?>
+					<?php echo $form->dateDepart->renderLabel();?>
+					<?php echo $form->dateDepart->renderViewHelper();?>
+				</div>
+			</div>
+			<?php echo $form->Rechercher->renderViewHelper();?>
+			<?php //echo $form->PopulateDepart->renderViewHelper();?>
+			<?php //echo $form->PopulateArrivee->renderViewHelper();?>
+		</div>
+	</form>
+</div>
 <?php if($this->paginator->getTotalItemCount() == 0) { ?>
 <div id="numberArticle">
 	<?php if($this->recherche) {?>
@@ -28,8 +71,25 @@ if($this->paginator->getTotalItemCount() > 0 ){ ?>
 	<div class="contentBLock1">
 		<?php 
 		foreach ($this->paginator as $vol) : ?>
-		<div class="block-liste">
-		
+		<div class="listeProduit">
+			<?//= $vol->id_vol; ?>
+			<?//= $vol->numero_ligne; ?>
+			<div class="depart">
+				<p>
+					<?= $vol->aeroportDepart; ?>
+				</p>
+				<p>
+					<?= $vol->date_depart." à ".$vol->heure_depart; ?>
+				</p>
+			</div>
+			<div class="arrivee">
+				<p>
+					<?= $vol->aeroportArrivee; ?>
+				</p>
+				<p>
+					<?= $vol->date_arrivee." à ".$vol->heure_arrivee; ?>
+				</p>
+			</div>
 		</div>
 		<!-- echo $this->action('bloc','produit','Shop',array('id_vol'=>$vol->id_vol, 'numero_ligne'=>$vol->numero_ligne)); -->
 		<?php endforeach;	?>

@@ -1,0 +1,46 @@
+<a href="/logistique/consulter-remarque/">Gérer les remarques</a>
+<h3 style="text-align:center">Liste des vols de la journée</h3>
+
+<table class="tableService">
+	<tr>
+		<?php 
+			echo $this->ligne;
+			echo $this->aerdep;
+			echo $this->aerarr;
+			echo $this->heudep;
+			echo $this->heuarr;
+		?>
+		<th style="width:60px;">Status</th>
+	</tr>
+	<?php 
+		foreach($this->vol as $vols){
+			$mytime = time();
+			$timeDep = strtotime($vols['date_depart'].' '.$vols['heure_depart']);
+			$timeArr = strtotime($vols['date_arrivee'].' '.$vols['heure_arrivee_effective']);
+			
+			if($mytime >= $timeDep){
+				if($mytime <= $timeArr){
+					$status = 'En cours';
+				}else{
+					$status = 'Arrivée';
+				}
+			}else{
+				$status = 'Bientot';
+			}
+			
+			$lien = '/logistique/fiche-vol/ligne/'.$vols['numero_ligne'].'/vol/'.$vols['id_vol'];
+			
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().'">';
+			echo '<td class="tdLibelleService"><a href="'.$lien.'">'.$vols['numero_ligne'].'</a></td>';
+			echo '<td class="tdLibelleService"><a href="'.$lien.'">'.$vols['aeroport_depart'].'</a></td>';
+			echo '<td class="tdLibelleService"><a href="'.$lien.'">'.$vols['aeroport_arrivee'].'</a></td>';
+			echo '<td style="text-align:center;"><a href="'.$lien.'">'.$vols['heure_depart'].'</a></td>';
+			echo '<td style="text-align:center;"><a href="'.$lien.'">'.$vols['heure_arrivee_effective'].'</a></td>';
+			echo '<td class="tdOption" style="text-align:center;"><a href="'.$lien.'">'.$status.'</a></td>';
+			echo '</a></tr>';
+		}
+	?>
+</table>
+<br />
+<br />
+<?php echo $this->paginationControl($this->vol, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>

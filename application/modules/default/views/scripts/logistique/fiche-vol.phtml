@@ -1,0 +1,52 @@
+<h3 class="h3DRH">Liste des remarques pour le vol <?php echo $this->idVol;?> de la ligne n°<?php echo $this->numeroLigne;?></h3>
+<br />
+<?php 
+	if(count($this->remarques) != 0){
+		$typeRemarque = '';
+		$nbCategorie = 0;
+		$nbRemarque = count($this->remarques);
+		$countTick = 0;
+		
+		$countTickCategorie = 0;
+		$countRealTickCategorie = 0;
+		
+		$categoriePrec = 0;
+		foreach($this->remarques as $remarque){
+			
+			if($typeRemarque != $remarque->libelle_type_remarque){
+				if($nbCategorie != 0){
+					$buttonCategorie = ($countTickCategorie != $countRealTickCategorie) ? '<button onclick="traiterCategorie('.$categoriePrec.', '.$remarque->numero_ligne.', '.$remarque->id_vol.')">Tous traiter pour '.$typeRemarque.'</button>' : '';
+					echo '</fieldset>'.$buttonCategorie;
+				}
+				echo '<fieldset><legend>'.$remarque->libelle_type_remarque.'</legend>';
+				$typeRemarque = $remarque->libelle_type_remarque;
+				$nbCategorie++;
+				$numeroRemarque = 1;
+				
+				$countTickCategorie = 0;
+				$countRealTickCategorie = 0;
+				
+				$categoriePrec = $remarque->id_type_remarque;
+			}
+			
+			$countRealTickCategorie++;
+			
+			$button = ($remarque->traiter == 0) ? '<button onclick="traiterRemarque('.$remarque->id_remarque.', '.$remarque->numero_ligne.', '.$remarque->id_vol.')">Traité</button>' : '';
+			if($remarque->traiter == 1){
+				$countTick++;
+				$countTickCategorie++;
+				$tick = '<img style="position:relative;top:6px;" src="/img/ok.png" width="25" height="25"/>';
+			}else{
+				$tick = '';
+			}
+			
+			echo $tick.'<b>Remarque n°'.$numeroRemarque.'</b>: '.$remarque->libelle_remarque.' '.$button.' <br />';
+			$numeroRemarque++;
+		}
+		
+		$buttonAll = ($countTick != $nbRemarque) ? '<div style="text-align:center;"><button onclick="traiterAll('.$remarque->numero_ligne.', '.$remarque->id_vol.')">Tous traiter</button></div>' : '';
+		$buttonCateogorie = ($countTickCategorie != $countRealTickCategorie) ? '<button onclick="traiterCategorie('.$categoriePrec.', '.$remarque->numero_ligne.', '.$remarque->id_vol.')">Tous traiter pour '.$typeRemarque.'</button>' : '';
+		
+		echo '</fieldset>'.$buttonCateogorie.'<br />'.$buttonAll;
+	}
+?>

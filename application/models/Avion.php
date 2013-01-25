@@ -33,7 +33,7 @@ class Avion extends Zend_Db_Table_Abstract
 							->where('id_avion NOT IN ?', $subReqAvion)
 							->where('disponibilite_avion = 1')
 							->where('rayon_action > ?', $infosLigne->distance)
-							->where('longueur_atterissage < ?', $aeroportArrivee->longueur_piste)
+							->where('longueur_atterrissage < ?', $aeroportArrivee->longueur_piste)
 							->order('tyav.id_type_avion');
 		}
 		else{
@@ -48,13 +48,13 @@ class Avion extends Zend_Db_Table_Abstract
 							->where('id_avion NOT IN ?', $subReqAvion)
 							->where('disponibilite_avion = 1')
 							->where('rayon_action > ?', $infosLigne->distance)
-							->where('longueur_atterissage < ?', $aeroportArrivee->longueur_piste)
+							->where('longueur_atterrissage < ?', $aeroportArrivee->longueur_piste)
 							->orWhere('id_avion IN ('.$subReqAvionType.') AND id_avion = '.$infosVol['id_avion'])
 							->order('tyav.id_type_avion');
 		}
 		
 		
-		return $this->fetchRow($reqAvion);
+		return $this->fetchAll($reqAvion);
 	}
 	
 	public function getReqIdAvionByType($idTypeAvion){
@@ -101,6 +101,7 @@ class Avion extends Zend_Db_Table_Abstract
 	public function getTypeAvionDispoByVol($numeroLigne, $dateDepart, $update = false){
 		$TableVol = new Vol;
 		$TableLigne = new Ligne;
+		$TableMaintenance = new Maintenance();
 		
 		$infosLigne = $TableLigne->find($numeroLigne)->current();
 		$aeroportArrivee = $infosLigne->findParentRow('Aeroport','aeroport_arrivee');
@@ -108,10 +109,13 @@ class Avion extends Zend_Db_Table_Abstract
 		$distance = $infosLigne->distance;
 		$longueurPiste = $aeroportArrivee->longueur_piste;
 		
-		if($update == false)
+		if($update == false){
 			$subReqAvion = $TableVol->getIdAvionNoDispoByVol($numeroLigne, $dateDepart);
-		else
+			$subReqMaintenance = $TableMaintenance->getReqIdAvionMaintenanceByDate($numeroLigne, $dateDepart);
+		}else{
 			$subReqAvion = $TableVol->getIdAvionNoDispoByVol($numeroLigne, $dateDepart, true);
+			$subReqMaintenance = $TableMaintenance->getReqIdAvionMaintenanceByDate($numeroLigne, $dateDepart, true);
+		}
 		
 		if($update == false){
 			$reqAvion = $this->select()
@@ -119,9 +123,10 @@ class Avion extends Zend_Db_Table_Abstract
 							->from(array('avi' => 'avion'))
 							->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion', array('tyav.libelle', 'tyav.id_type_avion'))
 							->where('id_avion NOT IN ?', $subReqAvion)
+							->where('id_avion NOT IN ?', $subReqMaintenance)
 							->where('disponibilite_avion = 1')
 							->where('rayon_action > ?', $distance)
-							->where('longueur_atterissage < ?', $longueurPiste)
+							->where('longueur_atterrissage < ?', $longueurPiste)
 							->group('tyav.libelle')
 							->order('tyav.id_type_avion');
 		}
@@ -133,9 +138,10 @@ class Avion extends Zend_Db_Table_Abstract
 							->from(array('avi' => 'avion'))
 							->joinLeft(array('tyav' => 'type_avion'), 'avi.id_type_avion = tyav.id_type_avion', array('tyav.libelle', 'tyav.id_type_avion'))
 							->where('id_avion NOT IN ?', $subReqAvion)
+							->where('id_avion NOT IN ?', $subReqMaintenance)
 							->where('disponibilite_avion = 1')
 							->where('rayon_action > ?', $distance)
-							->where('longueur_atterissage < ?', $longueurPiste)
+							->where('longueur_atterrissage < ?', $longueurPiste)
 							->orWhere('id_avion = ?', $infosVol->id_avion)
 							->group('tyav.libelle')
 							->order('tyav.id_type_avion');
@@ -144,5 +150,6 @@ class Avion extends Zend_Db_Table_Abstract
 		return $this->fetchAll($reqAvion);
 		
 	}
+	
 }
 
