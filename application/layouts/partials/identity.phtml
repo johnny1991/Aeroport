@@ -1,0 +1,21 @@
+<?php $auth = Zend_Auth::getInstance();
+$nom = $auth->getIdentity()->nom;
+$prenom = $auth->getIdentity()->prenom;
+$libelle = $auth->getIdentity()->id_service;
+//Zend_Debug::dump($libelle);exit();
+
+$service= new Service(); // on initialise un nouveau modèle TCommandes
+$requete = $service->select()->setIntegrityCheck(false)
+->from(array('s'=>'service'),array('s.id_service','s.libelle_service'))
+->join(array('u'=>'utilisateur'),'u.id_service = s.id_service')
+->where('s.id_service = ?', $libelle);
+$result = $service->fetchRow($requete);
+//Zend_Debug::dump($result);?>
+<p>
+	<?php echo $nom,' ',$prenom; ?>
+	<br />
+	<?php echo $result->libelle_service; ?>
+</p>
+<p>
+	<a href="<?php echo $this->baseUrl('index/deconnexion') ?>">Déconnexion</a>
+</p>

@@ -5,7 +5,7 @@ class Login extends Zend_Form
 	{
 		$this->setMethod('post');
 		$this->addElement(
-				'text', 'username', array(
+				'text', 'login', array(
 						'required' => true,
 						'filters'    => array('StringTrim'),
 				));

@@ -21,15 +21,12 @@ $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerN
 		<div id="header">
 			<div id="logo"></div>
 			<div id="connect">
-				<?php echo $this->action('login','index'); ?>
+				<?php echo $this->partial('partials/identity.phtml'); ?>
 			</div>
 		</div>
 		<div id="side_bar"></div>
-		<nav>
-
-				<?php echo $this->navigation()->breadcrumbs();?>
-
-		</nav>
+		<div id="breadcrumbs"><?php echo $this->navigation()->breadcrumbs();?></div>
+		<nav><?php echo $this->partial('partials/navigation.phtml'); ?></nav>
 		<?php echo $this->layout()->content; ?>
 		<div id="footer">
 			<p>Copyright INSSET Airlines - 2012</p>

@@ -689,6 +689,13 @@ class VolController extends Zend_Controller_Action
 		$this->view->headScript()->appendFile('/js/VolFonction.js');
 		$this->view->headScript()->appendFile('http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry');
 
+		$acl = new Aeroport_LibraryAcl();
+		$SRole = new Zend_Session_Namespace('Role');
+		if(!$acl->isAllowed($SRole->id_service, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))
+		{
+			$this->_redirector->gotoUrl('/');
+		}
+		
 		parent::init();
 	}
 }

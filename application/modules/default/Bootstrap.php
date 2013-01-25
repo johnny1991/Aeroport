@@ -42,6 +42,18 @@ class Default_Bootstrap extends Zend_Application_Module_Bootstrap
 		}
 
 	}
+	
+	protected function _initAccess(){
+		$SRole = new Zend_Session_Namespace('Role');
+		$identity = Zend_Auth::getInstance()->getStorage()->read();
+		if(isset($identity)){
+			$SRole->id_service = $identity->id_service;
+		}
+		else
+		{
+			$SRole->id_service = "NOT_LOGGED";
+		}
+	}
 
 
 }

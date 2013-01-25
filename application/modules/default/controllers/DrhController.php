@@ -7,6 +7,19 @@ class DrhController extends Zend_Controller_Action{
 		$this->view->headScript()->appendFile('/js/jquery-ui-timepicker-addon.js');
 		$this->view->headLink()->appendStylesheet('/css/jquery-ui-timepicker-addon.css');
 		$this->view->headLink()->appendStylesheet('/css/jquery-ui-1.8.23.css');
+		
+		$this->_redirector = $this->_helper->getHelper('Redirector');
+		
+		$acl = new Aeroport_LibraryAcl();
+		$SRole = new Zend_Session_Namespace('Role');
+		if(!$acl->isAllowed($SRole->id_service, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))
+		{
+			//echo $SRole->id_service . '<br />';
+			//echo $this->getRequest()->getControllerName(). '<br />';
+			//echo $this->getRequest()->getActionName();
+			$this->_redirector->gotoUrl('/');
+		}
+		
 		parent::init();
 	}
 	

@@ -548,5 +548,12 @@ class MaintenanceController extends Zend_Controller_Action
 
 		$this->view->headLink()->appendStylesheet('/css/calendar.jquery.css');
 		$this->view->headScript()->appendFile('/js/calendar.jquery.js');
+		
+		$acl = new Aeroport_LibraryAcl();
+		$SRole = new Zend_Session_Namespace('Role');
+		if(!$acl->isAllowed($SRole->id_service, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))
+		{
+			$this->_redirector->gotoUrl('/');
+		}
 	}
 }
