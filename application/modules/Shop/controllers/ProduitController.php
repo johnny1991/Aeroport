@@ -509,13 +509,13 @@ public function ficheAction(){ // Fiche d'un produit
 			$data = $this->getRequest()->getPost();
 			if($form->isValid($data))
 			{
-				if($vol->quantite >= $data['quantite'])
+				if(($vol->nb_places - $vol->nbreservations) >= $data['quantite'])
 					$panier->content[$data['id']] = $data['quantite'];
 				else
 				{
-					$panier->content[$data['id']] = $vol->quantite;
-					$form->getElement('quantite')->addError("Maximum : ".$vol->quantite);
-					$form->getElement('quantite')->setValue($vol->quantite);
+					$panier->content[$data['id']] = $vol->nb_places - $vol->nbreservations;
+					$form->getElement('quantite')->addError("Maximum : ".($vol->nb_places - $vol->nbreservations));
+					$form->getElement('quantite')->setValue($vol->nb_places - $vol->nbreservations);
 				}
 			}
 		}
@@ -600,7 +600,8 @@ public function init(){
 	$SessionRole = new Zend_Session_Namespace('Role');  // Récupération de la session Role (definit dans le bootsrap)
 	$acl = new Application_Acl_Acl();
 	if(!($acl->isAllowed($SessionRole->Role,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName()))) // Si l'utilisateur n'a pas le droit d'acceder à cette page, on le redirige vers une page d'erreur
-		$this->_redirector->gotoUrl('accueil');
+		//$this->_redirector->gotoUrl('accueil'); 
+	echo $SessionRole->Role,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName();
 }
 
 }

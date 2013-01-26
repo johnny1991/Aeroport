@@ -46,7 +46,7 @@ class Default_Bootstrap extends Zend_Application_Module_Bootstrap
 	protected function _initAccess(){
 		$SRole = new Zend_Session_Namespace('Role');
 		$identity = Zend_Auth::getInstance()->getStorage()->read();
-		if(isset($identity)){
+		if(isset($identity->id_service)){
 			$SRole->id_service = $identity->id_service;
 		}
 		else

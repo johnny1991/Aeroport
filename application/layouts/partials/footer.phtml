@@ -13,9 +13,11 @@
 			<div class="subCategorie1">
 				<a href="<?= $this->baseUrl('compte');?>"><b>Compte</b> </a>
 			</div>
+			<?php  if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_service)) ) : ?>
 			<div class="subCategorie1">
-				<a href="<?= $this->baseUrl('menu');?>"><b>Administration</b> </a>
+				<a href="<?= $this->baseUrl('liste_commandes');?>"><b>Administration</b> </a>
 			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 	<div id="powered">

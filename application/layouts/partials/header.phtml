@@ -13,7 +13,7 @@
 				<?php } ?>
 				<?php if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_client)) ){?>
 				<a href="<?= $this->baseUrl('deconnexion'); ?>">Déconnexion</a>
-				<?php } else if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_admin)) ){?>
+				<?php } else if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_service)) ){?>
 				<a href="<?= $this->baseUrl('deconnexion'); ?>">Déconnexion</a>
 				<?php } else { ?>
 				<a href="<?= $this->baseUrl('nouveau_compte'); ?>">Créer un compte</a>

@@ -2,16 +2,16 @@
 
 class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 {
-	
-	
+
+
 	/*
 	 protected function _initDataBase(){ // Initialisation de la base de données
-	
-		$config = new Zend_Config_Ini(APPLICATION_PATH.'/configs/application.ini','development');
-		$db = Zend_Db::factory($config->database1);
-		Zend_Db_Table_Abstract::setDefaultAdapter($db);
-		Zend_Registry::set('db',$db);
-		Zend_Registry::set('config',$config); // Mettre la config de application.ini dans le registre
+
+	$config = new Zend_Config_Ini(APPLICATION_PATH.'/configs/application.ini','development');
+	$db = Zend_Db::factory($config->database1);
+	Zend_Db_Table_Abstract::setDefaultAdapter($db);
+	Zend_Registry::set('db',$db);
+	Zend_Registry::set('config',$config); // Mettre la config de application.ini dans le registre
 	}
 	*/
 
@@ -20,7 +20,6 @@ class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 		$autoloader->registerNamespace('Application_');
 	}
 
-	
 	protected function _initBreadcrumb(){ // Initialisation de la navigation (fil d'ariane)
 
 		$layout = $this->bootstrap('layout')->getResource('layout');
@@ -31,12 +30,13 @@ class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 		$navigation->addPage($config);
 		Zend_Registry::set('navigation',$navigation);
 	}
-/*
-	protected function _initTranslate(){ // Initialisation De la traduction en Francais
-		$translate = new Zend_Translate(array('adapter' => 'array', 'content' =>
-				realpath(APPLICATION_PATH . '/../resources/languages'), 'locale' => 'fr', 'scan' =>
-				Zend_Translate::LOCALE_DIRECTORY));
-		Zend_Registry::set('Zend_Translate', $translate);
+	
+	/*
+	 protected function _initTranslate(){ // Initialisation De la traduction en Francais
+	$translate = new Zend_Translate(array('adapter' => 'array', 'content' =>
+			realpath(APPLICATION_PATH . '/../resources/languages'), 'locale' => 'fr', 'scan' =>
+			Zend_Translate::LOCALE_DIRECTORY));
+	Zend_Registry::set('Zend_Translate', $translate);
 	}*/
 
 	protected function _initRouter() { // Initialisation de la redirection des pages (URl Rewriting)
@@ -77,24 +77,32 @@ class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 		$router->addRoute('recherche', new Zend_Controller_Router_Route('recherche/:mot/:orderBy/:page', array('module' => 'Shop', 'controller' => 'produit', 'action' => 'catalogue', 'mot'=>'', 'page'=>'', 'orderBy'=>'Date_Desc')));
 		$router->addRoute('new', new Zend_Controller_Router_Route('new/:orderBy/:page', array('module' => 'Shop', 'controller' => 'index', 'action' => 'new', 'page'=>'', 'orderBy'=>'Date_Desc')));
 		$router->addRoute('topVentes', new Zend_Controller_Router_Route('top_ventes/:orderBy/:page', array('module' => 'Shop', 'controller' => 'index', 'action' => 'top-ventes', 'page'=>'', 'orderBy'=>'Date_Desc')));
-		
+
 	}
 
 	/*
-	protected function _initSession(){ // Initialisation de la session Panier
-		$sessionConfig = Zend_registry::get('config')->session;
-		$session = $sessionConfig->toArray();
-		$panier = new Zend_Session_Namespace('panier');
-		$panier->setExpirationSeconds($session['time_panier']);
+	 protected function _initSession(){ // Initialisation de la session Panier
+	$sessionConfig = Zend_registry::get('config')->session;
+	$session = $sessionConfig->toArray();
+	$panier = new Zend_Session_Namespace('panier');
+	$panier->setExpirationSeconds($session['time_panier']);
 	}
-*/
+	*/
 	protected function _initAccessControlList(){ // Initialisation des ACL
 		$SessionRole = new Zend_Session_Namespace('Role');
+		$identity = Zend_Auth::getInstance()->getStorage()->read();
+
 		if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_client)) )
 			$SessionRole->Role = "Member"; // Membre
-		else if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_admin)) )
-			$SessionRole->Role = "Admin"; // Administrateur
+		/*else if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_service)) )
+		{
+			$identity = Zend_Auth::getInstance()->getStorage()->read();
+			if(isset($identity)){
+				$SRole->id_service = $identity->id_service;
+			}	
+		}
 		else
 			$SessionRole->Role = "Visitor"; // Visiteur
+			*/		
 	}
 }

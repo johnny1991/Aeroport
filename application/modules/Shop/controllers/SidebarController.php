@@ -5,12 +5,14 @@ class Shop_SidebarController extends Zend_Controller_Action
 
 		$sessionPanier = new Zend_Session_Namespace('panier');
 		$TableVol = new Vol();
-		$totalProduit = 0;
+		$totalVol = 0;
 		$produits = array();
 		if($sessionPanier->content != NULL){
 			foreach($sessionPanier->content as $id => $quantite) {
-				$produit = $TableVol->find($id)->current();
-				$totalProduit += ($produit->prix * $quantite);
+				$ids = explode("_",$id);
+				
+				$vol = $TableVol->find($ids[0],$ids[1])->current();
+				$totalVol += ($vol->prix * $quantite);
 				if( (($this->getRequest()->getParam('rm') != NULL) && ($this->getRequest()->getParam('rm') == $id)) || ($quantite == 0) )
 				{
 					unset($sessionPanier->content[$id]);
@@ -18,12 +20,12 @@ class Shop_SidebarController extends Zend_Controller_Action
 				}
 				else{
 					$urlProd = new Application_Url();
-					$produits[] = array($id,$produit,$quantite,$urlProd::getUrlProduit($produit));
+					$produits[] = array($id,$vol,$quantite,$urlProd::getUrlProduit($vol));
 				}
 			}
 		}
 		$this->view->produits = $produits;
-		$this->view->sousTotal = $totalProduit;
+		$this->view->sousTotal = $totalVol;
 
 	}
 

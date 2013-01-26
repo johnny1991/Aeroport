@@ -710,8 +710,8 @@ class Shop_ClientController extends Zend_Controller_Action
 		$this->view->nbCommande = $Parametre->nbElements;
 		$SessionRole = new Zend_Session_Namespace('Role');
 		$acl = new Application_Acl_Acl();
-		if(!($acl->isAllowed($SessionRole->Role,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName())))
-			$this->_redirector->gotoUrl('accueil');
+		//if(!($acl->isAllowed($SessionRole->Role,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName())))
+			//$this->_redirector->gotoUrl('accueil');
 
 	}
 }

@@ -2,7 +2,7 @@
 class Shop_AdministrationController extends Zend_Controller_Action
 {
 
-	public function loginAction(){ // Page de connexion Administrateur
+	/*public function loginAction(){ // Page de connexion Administrateur
 
 		if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_admin)) )
 			$this->_redirector->gotoUrl('liste_commandes'); // Si l'administrateur est loggé, on le redirige vers la page commande
@@ -44,7 +44,7 @@ class Shop_AdministrationController extends Zend_Controller_Action
 			$this->view->form = $form; // On envoie le formualire à la vue
 		}
 
-	}
+	}*/
 
 	public function ficheProduitAction(){ // Page d'affichage d'un produit coté administrateur
 
