@@ -45,7 +45,7 @@ class IndexController extends Zend_Controller_Action
 						$this->_helper->redirector('consulter-ligne','vol');
 					}
 					elseif($auth->getIdentity()->id_service == "2"){// service commercial
-						$this->_helper->redirector('index','index','Shop');
+						$this->_helper->redirector('liste','commande','Shop');
 					}
 					elseif($auth->getIdentity()->id_service == "3"){// service maintenance
 						$this->_helper->redirector('consulter-maintenance','maintenance');

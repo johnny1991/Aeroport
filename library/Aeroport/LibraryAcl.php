@@ -24,11 +24,13 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		$this->addResource('maintenance');
 		$this->addResource('planning');
 		
+		// shop
+		$this->addResource('commande');
 		
 		
 		// index
 		$this->allow(null, 'index');
-		// ajouter-employe
+		
 		// drh
 		$this->allow('4', 'drh', array('index','consulter-employe', 'change-disponibilite', 'prolonge-brevet', 'consulter-service', 'ajouter-employe', 'modifier-employe', 'supprimer-employe', 'change-ville', 'get-brevet', 'ajouter-service', 'modifier-service', 'supprimer-service', 'get-typeavion'));
 		
@@ -36,14 +38,15 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		$this->allow('3', 'maintenance', array('index','consulter-avion','ajouter-avion','modifier-avion', 'fiche-avion-maintenance','fiche-avion','ajouter-maintenance','supprimer-avion','ajouter-modele-avion','modifier-modele-avion','supprimer-modele-avion','consulter-modele-avion','fiche-modele-avion','supprimer-maintenance','planning','planning-jour','consulter-maintenance'));
 		
 		// strategique
-		
 		$this->allow('1', 'vol', array('index','ajouter-ligne', 'consulter-ligne', 'consulter-vol', 'fiche-vol', 'modifier-ligne', 'rechercher-adresse', 'rechercher-aeroport', 'supprimer-ligne'));
 		
+		// planning
 		$this->allow('5', 'planning', array('index','planifier-vol','liste-vol','recherchepilote','planifier-astreinte','planning-liste','fiche-astreinte'));
-
 		
+		// commercial
+		$this->allow('2', 'commande', 'liste');
 		
-		
+		$this->allow(array('1','2','3','4','5','6','7'), 'vol', 'rechercher-aeroport');
 		
 	}
 }

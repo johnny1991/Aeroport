@@ -12,10 +12,10 @@ $requete = $service->select()->setIntegrityCheck(false)
 $result = $service->fetchRow($requete);
 //Zend_Debug::dump($result);?>
 <p>
-	<?php echo $nom,' ',$prenom; ?>
+	<strong><?php echo $nom,' ',$prenom; ?></strong>
 	<br />
 	<?php echo $result->libelle_service; ?>
 </p>
 <p>
-	<a href="<?php echo $this->baseUrl('index/deconnexion') ?>">Déconnexion</a>
+	<a href="<?php echo $this->baseUrl('index/deconnexion') ?>"><u>Déconnexion</u></a>
 </p>

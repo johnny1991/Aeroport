@@ -1,6 +1,7 @@
 <?php echo $this->doctype('HTML5');?>
 <html>
-<head><meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php 
@@ -15,8 +16,7 @@ $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerN
 <title><?php echo $this->escape($this->title); ?>
 </title>
 </head>
-<body
-<?php if ($controller=="vol") echo 'onload="initialisation()"'; ?>>
+<body <?php if ($controller=="vol") echo 'onload="initialisation()"'; ?>>
 	<div id="pere">
 		<div id="header">
 			<div id="logo"></div>
@@ -25,12 +25,17 @@ $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerN
 			</div>
 		</div>
 		<div id="side_bar"></div>
-		<div id="breadcrumbs"><?php echo $this->navigation()->breadcrumbs();?></div>
-		<nav><?php echo $this->partial('partials/navigation.phtml'); ?></nav>
-		<?php echo $this->layout()->content; ?>
-		<div id="footer">
-			<p>Copyright INSSET Airlines - 2012</p>
+		<div id="breadcrumbs">
+			<?php echo $this->navigation()->breadcrumbs();?>
 		</div>
+		<nav>
+			<?php echo $this->partial('partials/navigation.phtml'); ?>
+		</nav>
+		<?php echo $this->layout()->content; ?>
+
+	</div>
+	<div id="footer">
+		<p>Copyright INSSET Airlines - 2012</p>
 	</div>
 </body>
 </html>
