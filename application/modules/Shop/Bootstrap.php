@@ -88,12 +88,23 @@ class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 	$panier->setExpirationSeconds($session['time_panier']);
 	}
 	*/
-	protected function _initAccessControlList(){ // Initialisation des ACL
-		$SessionRole = new Zend_Session_Namespace('Role');
+	/*protected function _initAccessControlList(){ // Initialisation des ACL
+		//$SessionRole = new Zend_Session_Namespace('Role');
 		$identity = Zend_Auth::getInstance()->getStorage()->read();
 
 		if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_client)) )
-			$SessionRole->Role = "Member"; // Membre
+			$SRole->id_service = "MEMBER"; 
+		echo $SRole->id_service; // Membre
+		//else if(isset($identity->id_service)){
+			//$SRole->id_service = $identity->id_service;
+				
+//			$SessionRole->Role = $identity->id_service;
+		//}
+		//else
+			//$SRole->id_service = $identity->id_service;
+				
+			//$SessionRole->Role = "Visitor"; // Visiteur
+		
 		/*else if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_service)) )
 		{
 			$identity = Zend_Auth::getInstance()->getStorage()->read();
@@ -103,6 +114,6 @@ class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 		}
 		else
 			$SessionRole->Role = "Visitor"; // Visiteur
-			*/		
-	}
+			*/
+	//}*/
 }

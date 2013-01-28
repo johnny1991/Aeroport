@@ -138,9 +138,12 @@ class MaintenanceController extends Zend_Controller_Action
 		$TableMaintenance = new Maintenance();
 		$currentDate = new Zend_Date();
 		$requete = $TableMaintenance->select()->where('fin_prevue >?',$currentDate->get('yyyy-MM-dd'))->where('id_avion=?',$id);
+		$requete1 = $TableMaintenance->select()->where('id_avion=?',$id);
+		
 		$Maintenances = $TableMaintenance->fetchAll($requete);
 		$Maintenances1 = $TableMaintenance->fetchAll();
-
+		$this->view->maintenanceAvion = $TableMaintenance->fetchAll($requete1);
+		
 		$this->view->title = "Fiche de l'avion ".$id;
 		$avion = $TableAvion->find($id)->current();
 

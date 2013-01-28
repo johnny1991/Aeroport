@@ -19,8 +19,9 @@ $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerN
 	
 	<li <?php if($controller == 'maintenance') : ?> class="current" <?php endif;?>><a href="#">Gérer la maintenance</a>
 		<ul>
+					<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','consulter-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/consulter-maintenance') ?>" class="nocurrent"<?php endif;?>>Consulter les avions/maintenances</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','consulter-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/consulter-avion') ?>" class="nocurrent"<?php endif;?>>Consulter un avion</a></li>
-			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','planning')) : ?> href="<?php echo $this->baseUrl('maintenance/planning') ?>" class="nocurrent"<?php endif;?>>Consulter un planning</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','planning')) : ?> href="<?php echo $this->baseUrl('maintenance/planning') ?>" class="nocurrent"<?php endif;?>>Consulter le planning</a></li>
 		</ul>
 	</li>
 

@@ -459,9 +459,16 @@ h2 {
 
 .contentSidePanier {
 	float: left;
-	margin-top: 15px;
 	line-height: 1.5;
-	width: 110px;
+	cursor:pointer;
+}
+
+.contentSidePanier ul {
+	margin: 5px;
+}
+
+.contentSidePanier li {
+	margin-left: 10px;
 }
 
 #iconeRemoveContentSidePanier {
@@ -480,7 +487,7 @@ h2 {
 }
 
 .ligneContentSidePanier {
-	padding: 10px 0 10px 5px;
+	padding: 0 0 10px 5px;
 	overflow: auto;
 	border-bottom: 1px solid #CACACA;
 }
@@ -970,11 +977,11 @@ fieldset .Global {
 .produit_head_content_panier,.prix_head_content_panier,.quantite_head_content_panier,.total_head_content_panier
 	{
 	float: left;
-	padding: 15px;
+	padding: 10px;
 }
 
 .produit_head_content_panier {
-	width: 585px;
+	width: 595px;
 }
 
 .prix_head_content_panier {
@@ -982,11 +989,12 @@ fieldset .Global {
 }
 
 .quantite_head_content_panier {
-	width: 71px;
+	width: 100px;
 }
 
 .total_head_content_panier {
 	width: 81px;
+	padding-right:0px;
 }
 
 .ligne_content_panier {
@@ -1000,12 +1008,26 @@ fieldset .Global {
 	float: left;
 }
 
+.produit_ligne_content_panier ul {
+	float: left;
+	width:295px
+}
+
+.produit_ligne_content_panier ul li{
+	margin-left:10px
+}
+
+.remove_produit_ligne_content_panier{
+	float:left;
+	margin-top:10px;
+}
+
 .photo_ligne_content_panier {
 	width: 62px;
 }
 
 .produit_ligne_content_panier {
-	width: 460px;
+	width: 590px;
 	padding: 0px 10px;
 	height: 130px;
 }
@@ -1021,8 +1043,8 @@ fieldset .Global {
 }
 
 .quantite_ligne_content_panier {
-	padding: 0px 20px 0px 5px;
-	width: 70px;
+	padding: 0px 10px 0px 5px;
+	width: 80px;
 }
 
 .update_content_panier {
@@ -1572,12 +1594,16 @@ fieldset .Global {
 	float: left;
 }
 
+.Desc .blockSidePanier{
+	padding:5px 15px;
+}
+
 .detailDesc label {
 	font-weight: bold;
-	margin-bottom:5px; display:block;
+	margin-bottom: 5px;
+	display: block;
 }
 
 .detailDesc ul li {
 	margin-left: 10px;
 }
- 

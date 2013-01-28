@@ -49,10 +49,13 @@ class Default_Bootstrap extends Zend_Application_Module_Bootstrap
 		if(isset($identity->id_service)){
 			$SRole->id_service = $identity->id_service;
 		}
-		else
+		else if(isset($identity->id_client)) {
+			$SRole->id_service = "MEMBER"; 
+		} else
 		{
 			$SRole->id_service = "NOT_LOGGED";
 		}
+		
 	}
 
 

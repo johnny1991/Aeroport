@@ -476,7 +476,7 @@ public function catalogueAction(){ // Page de catalogue produit
 }
 
 public function ficheAction(){ // Fiche d'un produit
-	
+
 	$form = new Shop_Form_AjoutProduitPanier;
 	$panier = new Zend_Session_Namespace('panier');
 	if (!($this->getRequest()->getParam('layout')))
@@ -500,7 +500,7 @@ public function ficheAction(){ // Fiche d'un produit
 	$vol = $TableVol->fetchRow($requete4);
 	//exit();
 	//if (!($this->getRequest()->getParam('layout')))
-		//$this->_redirector->gotoUrl($_SERVER['HTTP_REFERER']);
+	//$this->_redirector->gotoUrl($_SERVER['HTTP_REFERER']);
 	$navigation = Zend_Registry::get('navigation');
 
 	if($vol != NULL){
@@ -509,8 +509,10 @@ public function ficheAction(){ // Fiche d'un produit
 			$data = $this->getRequest()->getPost();
 			if($form->isValid($data))
 			{
-				if(($vol->nb_places - $vol->nbreservations) >= $data['quantite'])
+				if(($vol->nb_places - $vol->nbreservations) >= $data['quantite']){
+					unset($panier->content);
 					$panier->content[$data['id']] = $data['quantite'];
+				}
 				else
 				{
 					$panier->content[$data['id']] = $vol->nb_places - $vol->nbreservations;
@@ -520,21 +522,21 @@ public function ficheAction(){ // Fiche d'un produit
 			}
 		}
 
-	/*	$MiseEnLigne = new Zend_Date($vol->date_depart, 'dd-MM-yy');
+		/*	$MiseEnLigne = new Zend_Date($vol->date_depart, 'dd-MM-yy');
 
 		if(Zend_Date::now() < $MiseEnLigne->addDay("15"))
 			$this->view->Nouveaute = true;
 		else
-		*/	$this->view->Nouveaute = false;
+			*/	$this->view->Nouveaute = false;
 
 		$navigation->findOneBy("id",$vol->numero_ligne."_".$vol->id_vol)->setActive(true);
 		//$this->view->title = $vol->designation; // Attribution du titre de la page
-		
+
 		if (($this->getRequest()->getParam('layout')))
 			$form->getElement('quantite')->setValue($vol->quantite);
 		$this->view->vol = $vol;
 		$form->getElement('id')->setValue($this->getRequest()->getParam('id'));
-	//	$cheminPublic = 'public/shop';
+		//	$cheminPublic = 'public/shop';
 		$this->view->form = $form;
 		//if(($this->view->produit->photo1 == NULL) || (!file_exists(APPLICATION_PATH.'/../'.$cheminPublic.'/img/Produits/'.$this->view->produit->photo1)))
 		//	$this->view->produit->photo1 = "BigNoPicture.png";
@@ -599,9 +601,9 @@ public function init(){
 
 	$SessionRole = new Zend_Session_Namespace('Role');  // Récupération de la session Role (definit dans le bootsrap)
 	$acl = new Application_Acl_Acl();
-	if(!($acl->isAllowed($SessionRole->Role,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName()))) // Si l'utilisateur n'a pas le droit d'acceder à cette page, on le redirige vers une page d'erreur
-		//$this->_redirector->gotoUrl('accueil'); 
-	echo $SessionRole->Role,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName();
+	if(!($acl->isAllowed($SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName()))) // Si l'utilisateur n'a pas le droit d'acceder à cette page, on le redirige vers une page d'erreur
+		$this->_redirector->gotoUrl('accueil');
+	//echo $SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName();
 }
 
 }

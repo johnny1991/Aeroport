@@ -385,7 +385,7 @@ class Shop_ClientController extends Zend_Controller_Action
 		$form = new Shop_Form_Panier;
 		$sessionPanier = new Zend_Session_Namespace('panier');
 		$TableVol = new Vol();
-		$produits = array();
+		$vols = array();
 		$totalProduit = 0;
 		if($sessionPanier->content != NULL){
 			foreach($sessionPanier->content as $id => &$quantite){
@@ -393,19 +393,40 @@ class Shop_ClientController extends Zend_Controller_Action
 				$element = new Zend_Form_Element_Text($nomElement);
 				$form->addElement($element);
 
-				$produit = $TableVol->find($id)->current();
+				$ids = explode("_",$id);
+				$requete = $TableVol->select()->setIntegrityCheck(false)->from(array('v'=>'vol'))
+				->join(array('l'=>'ligne'), 'v.numero_ligne = l.numero_ligne')
+				->join(array('ad'=>'aeroport'),'ad.id_aeroport = l.id_aeroport_depart',array('ad.nom as aeroportDepart','ad.id_aeroport'))
+				->join(array('vd'=>'ville'),'ad.code_ville = vd.code_ville',array('vd.code_pays as code_pays_Depart','vd.code_ville'))
+				->join(array('pd'=>'pays'),'pd.code_pays = vd.code_pays',array('pd.nom as pays_Depart','pd.nom'))
+				->join(array('aa'=>'aeroport'),'aa.id_aeroport = l.id_aeroport_arrivee',array('aa.nom as aeroportArrivee','aa.id_aeroport'))
+				->join(array('va'=>'ville'),'aa.code_ville = va.code_ville',array('va.code_pays as code_pays_Arrivee','va.code_ville'))
+				->join(array('pa'=>'pays'),'pa.code_pays = va.code_pays',array('pa.nom as pays_Arrive','pa.nom'))
+				->joinLeft(array('av'=>'avion'),'av.id_avion = v.id_avion',array('av.nb_places'))
+				->joinLeft(array('r'=>'reservation'),'(r.numero_ligne = v.numero_ligne) and (r.id_vol = v.id_vol)',array('SUM(r.nbreservation) as nbreservations'))
+				->group('v.numero_ligne')
+				->group('v.id_vol')
+				->where('v.id_vol=?',$ids[1])
+				->where('v.numero_ligne=?',$ids[0]);
+
+				$vol = $TableVol->fetchRow($requete);
+				if($vol->tarif_effectif == 0)
+					$prix = $vol->tarif;
+				else
+					$prix = $vol->tarif_effectif;
+
 				if($this->getRequest()->isPost())
 				{
 					$data = $this->getRequest()->getPost();
 					if($form->isValid($data))
 					{
-						if($produit->quantite >= $data[$nomElement])
+						if(($vol->nb_places - $vol->nbreservations) >= $data[$nomElement])
 							$quantite = $data[$nomElement];
 						else
 						{
-							$quantite = $produit->quantite;
-							$form->getElement($nomElement)->addError("Max : ".$produit->quantite);
-							$form->getElement($nomElement)->setValue($produit->quantite);
+							$quantite = ($vol->nb_places - $vol->nbreservations);
+							$form->getElement($nomElement)->addError("Max : ".($vol->nb_places - $vol->nbreservations));
+							$form->getElement($nomElement)->setValue($vol->nb_places - $vol->nbreservations);
 						}
 					}
 				}
@@ -415,10 +436,9 @@ class Shop_ClientController extends Zend_Controller_Action
 					$this->_redirector->gotoUrl($_SERVER["HTTP_REFERER"]);
 				}
 				else{
-					$urlProd = new Application_Url();
-					$produits[] = array($id,$produit,$quantite,$nomElement,$urlProd::getUrlProduit($produit));
+					$vols[] = array($id,$vol,$quantite,$nomElement,$vol->numero_ligne."_".$vol->id_vol,$prix);
 				}
-				$totalProduit += ($produit->prix * $quantite);
+				$totalProduit += ($prix * $quantite);
 				$element->setAttrib('size',2);
 				$element->setValue($quantite);
 			}
@@ -426,7 +446,7 @@ class Shop_ClientController extends Zend_Controller_Action
 		$sessionPanier->sousTotal = $totalProduit;
 		$this->view->sousTotal = $totalProduit;
 		$this->view->form = $form;
-		$this->view->produits = $produits;
+		$this->view->vol = $vols;
 
 	}
 
@@ -475,7 +495,7 @@ class Shop_ClientController extends Zend_Controller_Action
 					}
 					else
 						$commande->adresse = $TableAdresseClient->find($data['choix'],$id)->current()->toArray();
-					$this->_redirector->gotoUrl('Shop/client/checkout-mode-livraison');
+					$this->_redirector->gotoUrl('Shop/client/checkout-mode-paiement');
 				}
 				else {
 					$this->view->choose = $data['choix'];
@@ -491,7 +511,7 @@ class Shop_ClientController extends Zend_Controller_Action
 
 	}
 
-	public function checkoutModeLivraisonAction(){ // Page de choix de livraison pour une commande client
+	/*public function checkoutModeLivraisonAction(){ // Page de choix de livraison pour une commande client
 
 		$this->view->title = "Commander";
 		$commande = new Zend_Session_Namespace('commande');
@@ -528,10 +548,9 @@ class Shop_ClientController extends Zend_Controller_Action
 			$commande->isLogin = false;
 			$this->_redirector->gotoUrl('/index/login');
 		}
-	}
+	}*/
 
 	public function checkoutModePaiementAction(){ // Page de choix de paiement pour une commande client
-
 		$this->view->title = "Commander";
 		$commande = new Zend_Session_Namespace('commande');
 		$sessionPanier = new Zend_Session_Namespace('panier');
@@ -559,7 +578,7 @@ class Shop_ClientController extends Zend_Controller_Action
 			if(($this->getRequest()->isPost()) && ($form->isValid($data)))
 			{
 				$commande->paiement = $TablePaiement->find($data['choix'])->current()->toArray();
-				$this->_redirector->gotoUrl('/client/checkout-confirmation');
+				$this->_redirector->gotoUrl('Shop/client/checkout-confirmation');
 			}
 		}
 		else
@@ -630,7 +649,7 @@ class Shop_ClientController extends Zend_Controller_Action
 				}
 				$sessionPanier->unsetAll();
 				$commande->id_commande = $IdCommande;
-				$this->_redirector->gotoUrl('/client/commande-confirmer');
+				$this->_redirector->gotoUrl('Shop/client/commande-confirmer');
 			}
 		}
 		else
@@ -710,8 +729,9 @@ class Shop_ClientController extends Zend_Controller_Action
 		$this->view->nbCommande = $Parametre->nbElements;
 		$SessionRole = new Zend_Session_Namespace('Role');
 		$acl = new Application_Acl_Acl();
-		//if(!($acl->isAllowed($SessionRole->Role,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName())))
-			//$this->_redirector->gotoUrl('accueil');
-
+		//if(!($acl->isAllowed($SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName())))
+		//	$this->_redirector->gotoUrl('accueil');
+			//echo $SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName();
+					
 	}
 }

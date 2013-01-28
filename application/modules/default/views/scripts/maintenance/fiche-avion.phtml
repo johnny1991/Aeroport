@@ -90,7 +90,8 @@ foreach($this->messages as $message)
 	<fieldset>
 		<legend>Informations maintenances</legend>
 		<?php $maintenances = $this->maintenance; ?>
-		<?php if($maintenances->count()) {?>
+		<?php if($maintenances->count()) 
+		{?>
 		<?php foreach($maintenances as $maintenance) : ?>
 		<?php $dateDebut = new Zend_Date($maintenance->date_prevue,'dd-MM-yy'); ?>
 		<?php $dateFin = new Zend_Date($maintenance->fin_prevue,'dd-MM-yy'); ?>
@@ -121,11 +122,15 @@ foreach($this->messages as $message)
 				<?php echo $dateFin->get('dd-MM-yyyy');?>
 			</div>
 		</div>
-		<?php endforeach; ?>
-		<a href="<?= $this->baseUrl('maintenance/fiche-avion-maintenance/id/').$avion->id_avion ?>">Voir toutes les maintenances sur cet avion</a>
-	<?php } else {?>
-	<div class="noLine">Il n'y a jamais eu de maintenance sur cet avion</div>
-	<?php } ?>
+		<?php endforeach; 
+		}?>
+		<?php if(($this->maintenanceAvion->count()) || ($maintenances->count())) {?>
+		<a
+			href="<?= $this->baseUrl('maintenance/fiche-avion-maintenance/id/').$avion->id_avion ?>">Voir
+			toutes les maintenances sur cet avion</a>
+		<?php } else if($this->maintenanceAvion->count() == 0) {?>
+		<div class="noLine">Il n'y a jamais eu de maintenance sur cet avion</div>
+		<?php } ?>
 	</fieldset>
 </div>
 <h2>Planifier une nouvelle maintenance :</h2>

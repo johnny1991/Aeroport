@@ -215,7 +215,7 @@ class Shop_AdministrationController extends Zend_Controller_Action
 
 		$SessionRole = new Zend_Session_Namespace('Role');  // Récupération de la session Role (definit dans le bootsrap)
 		$acl = new Application_Acl_Acl();
-		if(!($acl->isAllowed($SessionRole->Role,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName()))) // Si l'utilisateur n'a pas le droit d'acceder à cette page, on le redirige vers une page d'erreur
-			$this->_redirector->gotoUrl('');
+		if(!($acl->isAllowed($SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName()))) // Si l'utilisateur n'a pas le droit d'acceder à cette page, on le redirige vers une page d'erreur
+			$this->_redirector->gotoUrl('accueil');
 	}
 }

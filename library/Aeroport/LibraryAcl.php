@@ -15,7 +15,8 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		
 		$this->addRole(new Zend_Acl_Role(array('1','2','3','4','5','6','7')),'NOT_LOGGED');
 		$this->addRole(new Zend_Acl_Role('LOGGED',array('1','2','3','4','5','6','7')));
-		$this->addRole(new Zend_Acl_Role('admin'),'LOGGED');
+		$this->addRole(new Zend_Acl_Role('ADMIN'),'LOGGED');
+		$this->addRole(new Zend_Acl_Role('CLIENT'),'NOT_LOGGED');
 		
 		
 		$this->addResource('index');

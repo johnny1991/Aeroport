@@ -1,54 +1,72 @@
-<?php $produits = $this->produits;?>
+<?php $vols = $this->vol;?>
 <?php $form = $this->form; ?>
-<?php if($produits != NULL) { ?>
+<?php if($vols != NULL) { ?>
 <h2 id="titre_panier">
 	Mon Panier
-	<?="(".count($produits).")"; ?>
+	<?="(".count($vols).")"; ?>
 </h2>
 <form method="<?= $form->getMethod() ?>"
 	action="<?= $form->getAction();?>">
 	<div class="content_panier">
 		<div class="head_content_panier">
 			<div class="produit_head_content_panier">
-				Produit
-				<?= (count($produits)>1)? 's' : ''; ?>
+				Vol
+				<?= (count($vols)>1)? 's' : ''; ?>
 			</div>
 			<div class="prix_head_content_panier">Prix</div>
-			<div class="quantite_head_content_panier">Quantité</div>
+			<div class="quantite_head_content_panier">Nombre de reservation</div>
 			<div class="total_head_content_panier">Total</div>
 		</div>
-		<?php foreach($produits as $produit) { 
+		<?php foreach($vols as $vol) { 
 			?>
 		<div class="ligne_content_panier">
-			<div class="photoPanier">
-				<a href="<?= $this->baseUrl('Article/'.$produit[4]); ?>"> <?php if(($produit[1]->photo1 != NULL) && (file_exists(APPLICATION_PATH.'/../public/shop/img/Produits/Thumbnails/'.$produit[1]->photo1))) {?>
+			<!-- <div class="photoPanier">
+				<a href="<?//= $this->baseUrl('Article/'.$vol[4]); ?>"> <?php //if(($vol[1]->photo1 != NULL) && (file_exists(APPLICATION_PATH.'/../public/shop/img/Produits/Thumbnails/'.$vol[1]->photo1))) {?>
 					<img class="product_thum" alt=""
-					src="<?= $this->baseUrl('/img/Produits/Thumbnails/'.$produit[1]->photo1); ?>">
-					<?php } else {?> <img class="product_thum" alt=""
-					src="<?= $this->baseUrl('/img/Produits/SmallNoPicture.png');?>"> <?php }?>
+					src="<?//= $this->baseUrl('/img/Produits/Thumbnails/'.$vol[1]->photo1); ?>">
+					<?php //} else {?> <img class="product_thum" alt=""
+					src="<?//= $this->baseUrl('/img/Produits/SmallNoPicture.png');?>"> <?php //}?>
 				</a>
-			</div>
+			</div>-->
 			<div class="produit_ligne_content_panier">
-				<div class="description_produit_ligne_content_panier">
-					<a href="<?= $this->baseUrl('Article/'.$produit[4]); ?>"><b><?= $produit[1]->designation; ?>
-					</b> </a>
-				</div>
+				<ul>
+					<label>Départ :</label>
+					<li><?= $vol[1]->aeroportDepart;?></li>
+					<li><?= $vol[1]->pays_Depart;?></li>
+					<?php $Date = new Zend_Date($vol[1]->date_depart,'dd-MM-yy')?>
+					<?php $jours = array('1'=>'Lundi', '2'=>'Mardi', '3' => 'Mercredi', '4' => 'Jeudi', '5' => 'Vendredi', '6' => 'Samedi', '7' => 'Dimanche');?>
+					<?php $mois = array('01'=>'Janvier', '02'=>'Fevrier', '03' => 'Mars', '04' => 'Avril', '05' => 'Mai', '06' => 'Juin', '07' => 'Juillet', '08' => 'Aout', '09' => 'Septembre', '10' => 'Octobre', '11' => 'Novembre', '12' => 'Decembre');?>
+					<?php $jourTexte = $jours[$Date->get('e')]; ?>
+					<?php $moisTexte = $mois[$Date->get('MM')]; ?>
+					<li><?= $jourTexte." ".$Date->get('dd')." ".$moisTexte;?></li>
+					<li><?= $vol[1]->heure_depart;?></li>
+				</ul>
+				<ul>
+					<label>Arrivée :</label>
+					<li><?= $vol[1]->aeroportArrivee;?></li>
+					<li><?= $vol[1]->pays_Arrive;?></li>
+					<?php $Date1 = new Zend_Date($vol[1]->date_arrivee,'dd-MM-yy')?>
+					<?php $jourTexte1 = $jours[$Date1->get('e')]; ?>
+					<?php $moisTexte1 = $mois[$Date1->get('MM')]; ?>
+					<li><?= $jourTexte1." ".$Date1->get('dd')." ".$moisTexte1;?></li>
+					<li><?= $vol[1]->heure_arrivee;?></li>
+				</ul>
 				<div class="remove_produit_ligne_content_panier">
-					<a href="<?= $this->url(array('rm'=>$produit[0])); ?>">Supprimer ce
-						produit</a>
+					<a href="<?= $this->url(array('rm'=>$vol[0])); ?>">Supprimer le
+						vol</a>
 				</div>
 			</div>
 			<div class="prix_ligne_content_panier">
-				<?= round($produit[1]->prix,2); ?>
+				<?= round($vol[5],2); ?>
 				€
 			</div>
 			<div class="quantite_ligne_content_panier">
-				<?= $form->$produit[3]->renderViewHelper(); ?>
-				<?= $form->$produit[3]->renderErrors(); ?>
+				<?= $form->$vol[3]->renderViewHelper(); ?>
+				<?= $form->$vol[3]->renderErrors(); ?>
 
 			</div>
 			<div class="total_ligne_content_panier">
-				<?= round(($produit[1]->prix*$produit[2]),2); ?>
+				<?= round(($vol[5]*$vol[2]),2); ?>
 				€
 			</div>
 		</div>
@@ -61,13 +79,14 @@
 				<?= round($this->sousTotal,2); ?>
 				€
 			</div>
-			<div class="text_total_content_panier">Montant sous-total :</div>
+			<div class="text_total_content_panier">Montant Total :</div>
 		</div>
 	</div>
 </form>
 <div class="confirm_content_panier">
 	<div>
-		<a href="<?php echo $this->baseUrl('Shop/client/checkout-adresse'); ?>"
+		<a
+			href="<?php echo $this->baseUrl('Shop/client/checkout-adresse'); ?>"
 			class="bouton">Commander</a>
 	</div>
 </div>
@@ -78,6 +97,7 @@
 
 <div class="shopping_content_panier">
 	<div>
-		<a href="<?= $this->baseUrl('accueil');?>" id="link_color"><< Continuer le shopping</a>
+		<a href="<?= $this->baseUrl('accueil');?>" id="link_color"><<
+			Continuer le shopping</a>
 	</div>
 </div>

@@ -5,8 +5,8 @@
 		</div>
 		<div id="header-right">
 			<div id="compte">
-				<?php if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_admin)) ){?>
-				<a href="<?= $this->baseUrl('menu'); ?>">Menu
+				<?php if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_service)) ){?>
+				<a href="<?= $this->baseUrl('liste_commandes'); ?>">Menu
 					Administration </a>
 				<?php } else { ?>
 				<a href="<?= $this->baseUrl('compte'); ?>">Mon Compte</a>

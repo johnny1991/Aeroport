@@ -82,9 +82,9 @@ if($this->paginator->getTotalItemCount() > 0 ){ ?>
 	<div class="contentBLock1">
 		<?php 
 		foreach ($this->paginator as $vol) : ?>
-		<?php $Date = new Zend_Date($vol->date_depart,'dd-MM-yy')?>
 		<div class="listeProduit">
 			<div class="date">
+				<?php $Date = new Zend_Date($vol->date_depart,'dd-MM-yy')?>
 				<?php $jours = array('1'=>'Lundi', '2'=>'Mardi', '3' => 'Mercredi', '4' => 'Jeudi', '5' => 'Vendredi', '6' => 'Samedi', '7' => 'Dimanche');?>
 				<?php $mois = array('01'=>'Janvier', '02'=>'Fevrier', '03' => 'Mars', '04' => 'Avril', '05' => 'Mai', '06' => 'Juin', '07' => 'Juillet', '08' => 'Aout', '09' => 'Septembre', '10' => 'Octobre', '11' => 'Novembre', '12' => 'Decembre');?>
 				<?php $jourTexte = $jours[$Date->get('e')]; ?>
@@ -100,7 +100,8 @@ if($this->paginator->getTotalItemCount() > 0 ){ ?>
 			</div>
 			<div class="detailProduit">
 				<a class="bouton"
-					href="<?= $this->baseUrl('itineraire/').$vol->numero_ligne."_".$vol->id_vol; ?>">Voir détails</a>
+					href="<?= $this->baseUrl('itineraire/').$vol->numero_ligne."_".$vol->id_vol; ?>">Voir
+					détails</a>
 			</div>
 		</div>
 		<?php endforeach;	?>

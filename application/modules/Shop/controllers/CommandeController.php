@@ -8,63 +8,63 @@ class Shop_CommandeController extends Zend_Controller_Action
 		$requete = $TableReservation
 		->select()
 		->from(array('r'=>'reservation'))
-		
+
 		->setIntegrityCheck(false)
 		->joinLeft(array('cl'=>'Client'),'cl.id_client=r.id_client',array('cl.nom','cl.prenom'))
 		->joinLeft(array('l'=>'ligne'),'r.numero_ligne=l.numero_ligne',array('l.tarif'))
 		->joinLeft(array('v'=>'vol'),'r.id_vol=v.id_vol',array('v.tarif_effectif'))
 		->group('r.id_reservation')
-		
-		
+
+
 		/*
 		 ->from(array('c'=>'Commande'))
 		->joinLeft(array('cp'=>'CommandeProduit'), 'cp.id_commande=c.id_commande',array("num"=>"COUNT(cp.id_produit)",'cp.id_produit'))
 		->group('c.id_commande')
 		*/
 		;
-		
-		echo $requete;
+
+		//echo $requete;
 		$nbCommande = $this->view->nbCommande;
 
 		/*if($this->getRequest()->getParam('livre') == 'livre')
 			$this->view->livre = false;
 		else
 		{
-			$requete->where('c.Islivre=?',0);
-			$this->view->livre = true;
+		$requete->where('c.Islivre=?',0);
+		$this->view->livre = true;
 		}*/
 
-	/*	if($this->getRequest()->getParam('orderBy'))
+		/*	if($this->getRequest()->getParam('orderBy'))
 			$orderBy = $this->getRequest()->getParam('orderBy');
 		else
 			$orderBy = "Id_Asc";
 
 		switch ($orderBy)
 		{
-			case "Id_Asc": $requete->order("c.id_commande asc"); break;
-			case "Id_Desc": $requete->order("c.id_commande desc"); break;
-			case "Nom_Asc": $requete->order("cl.nom asc"); break;
-			case "Nom_Desc": $requete->order("cl.nom desc"); break;
-			case "Prenom_Asc": $requete->order("cl.prenom asc"); break;
-			case "Prenom_Desc": $requete->order("cl.prenom desc"); break;
-			case "Nombre_Asc": $requete->order("num asc"); break;
-			case "Nombre_Desc": $requete->order("num desc"); break;
-			case "Montant_Asc": $requete->order("montant asc"); break;
-			case "Montant_Desc": $requete->order("montant desc"); break;
-			case "Date_Asc": $requete->order("c.date asc"); break;
-			case "Date_Desc": $requete->order("c.date desc"); break;
-			case "Etat_Asc": $requete->order("c.Islivre asc"); break;
-			case "Etat_Desc": $requete->order("c.Islivre desc"); break;
+		case "Id_Asc": $requete->order("c.id_commande asc"); break;
+		case "Id_Desc": $requete->order("c.id_commande desc"); break;
+		case "Nom_Asc": $requete->order("cl.nom asc"); break;
+		case "Nom_Desc": $requete->order("cl.nom desc"); break;
+		case "Prenom_Asc": $requete->order("cl.prenom asc"); break;
+		case "Prenom_Desc": $requete->order("cl.prenom desc"); break;
+		case "Nombre_Asc": $requete->order("num asc"); break;
+		case "Nombre_Desc": $requete->order("num desc"); break;
+		case "Montant_Asc": $requete->order("montant asc"); break;
+		case "Montant_Desc": $requete->order("montant desc"); break;
+		case "Date_Asc": $requete->order("c.date asc"); break;
+		case "Date_Desc": $requete->order("c.date desc"); break;
+		case "Etat_Asc": $requete->order("c.Islivre asc"); break;
+		case "Etat_Desc": $requete->order("c.Islivre desc"); break;
 		}*/
 
-	/*	$this->view->HeadId = Application_Tableau_OrderColumn::orderColumns($this, "Id",$orderBy,"idLigneCommande","Id");
-		$this->view->HeadNom = Application_Tableau_OrderColumn::orderColumns($this,"Nom",$orderBy,"nomLigneCommande","Nom client");
+		/*	$this->view->HeadId = Application_Tableau_OrderColumn::orderColumns($this, "Id",$orderBy,"idLigneCommande","Id");
+		 $this->view->HeadNom = Application_Tableau_OrderColumn::orderColumns($this,"Nom",$orderBy,"nomLigneCommande","Nom client");
 		$this->view->HeadPrenom = Application_Tableau_OrderColumn::orderColumns($this,"Prenom",$orderBy,"prenomLigneCommande","Prénom client");
 		$this->view->HeadNombre = Application_Tableau_OrderColumn::orderColumns($this,"Nombre",$orderBy,"nombreLigneCommande","Nb de produits");
 		$this->view->HeadMontant = Application_Tableau_OrderColumn::orderColumns($this,"Montant",$orderBy,"montantLigneCommande","Montant");
 		$this->view->HeadDate = Application_Tableau_OrderColumn::orderColumns($this,"Date",$orderBy,"dateLigneCommande","Date et Heure");
 		$this->view->HeadLivre = Application_Tableau_OrderColumn::orderColumns($this,"Etat",$orderBy,"livreLigneCommande","Etat");
-*/
+		*/
 		$Commandes = $TableReservation->fetchAll($requete);
 		//$this->view->order = $orderBy;
 		$paginator = Zend_Paginator::factory($Commandes);
@@ -139,10 +139,10 @@ class Shop_CommandeController extends Zend_Controller_Action
 					$pass = $this->view->parametre->password;
 					$nomSite = $this->view->parametre->site;
 					$mail->setFrom($emailAdmin, $nomSite);
-					
+						
 					$transport = new Zend_Mail_Transport_Smtp('mailx.u-picardie.fr', array('port' => '25', 'username' => $emailAdmin, 'password' => $pass));
 					//$transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', array('auth'=>'login', 'ssl'=>'ssl', 'port' => '465', 'username' => $emailAdmin, 'password' => $pass));
-						
+
 					try {
 						$mail->send($transport);
 						$message = "<div id='message_ok'><label>Commande ".$Commande->id_commande." livré (Email envoyé au client).</label></div>";
@@ -185,8 +185,8 @@ class Shop_CommandeController extends Zend_Controller_Action
 
 		$SessionRole = new Zend_Session_Namespace('Role');
 		$acl = new Application_Acl_Acl();
-		if(!($acl->isAllowed($SessionRole->Role,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName())))
-		{ }//$this->_redirector->gotoUrl('accueil');
+		if(!($acl->isAllowed($SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName())))
+			$this->_redirector->gotoUrl('accueil');
 
 	}
 }

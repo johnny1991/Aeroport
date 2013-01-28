@@ -38,14 +38,14 @@ table a {
 fieldset {
 	margin: 15px;
 	border-radius: 5px;
-	border: 1px solid white;
+	border: 1px solid black;
 }
 
 fieldset legend {
 	font-weight: bold;
 	margin-left: 10px;
 	padding: 0px 5px;
-	color: white
+	color: black;
 }
 
 h1 {

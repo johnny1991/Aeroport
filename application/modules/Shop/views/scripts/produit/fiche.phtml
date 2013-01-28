@@ -49,7 +49,7 @@ $VilleArrivee = $AeroportArrivee->findParentRow('Ville');
 			<?php } ?>
 		</form>
 		<?php $sessionPanier = new Zend_Session_Namespace('panier');?>
-		<?php if ( (isset($sessionPanier->content[$vol->id_vol])) && ($sessionPanier->content[$vol->id_vol] != NULL) ) { ?>
+		<?php if ( (isset($sessionPanier->content[$vol->id_vol."_".$vol->numero_ligne])) && ($sessionPanier->content[$vol->id_vol."_".$vol->numero_ligne] != NULL) ) { ?>
 		<div class="panierProduit">
 			<span id="already">Déjà ajouté au panier</span> <span><a
 				href="<?= $this->baseUrl('client/panier'); ?>">Voir le panier</a> ou
@@ -65,7 +65,7 @@ $VilleArrivee = $AeroportArrivee->findParentRow('Ville');
 				</div>
 				<div>
 					<label>Arrivée : </label>
-					<?= $vol->aeroportDepart;?>
+					<?= $vol->aeroportArrivee;?>
 				</div>
 			</div>
 		</div>
@@ -82,7 +82,12 @@ $VilleArrivee = $AeroportArrivee->findParentRow('Ville');
 						<ul>
 							<li><?= $vol->aeroportDepart;?></li>
 							<li><?= $vol->pays_Depart;?></li>
-							<li><?= $vol->date_depart;?></li>
+							<?php $Date = new Zend_Date($vol->date_depart,'dd-MM-yy')?>
+							<?php $jours = array('1'=>'Lundi', '2'=>'Mardi', '3' => 'Mercredi', '4' => 'Jeudi', '5' => 'Vendredi', '6' => 'Samedi', '7' => 'Dimanche');?>
+							<?php $mois = array('01'=>'Janvier', '02'=>'Fevrier', '03' => 'Mars', '04' => 'Avril', '05' => 'Mai', '06' => 'Juin', '07' => 'Juillet', '08' => 'Aout', '09' => 'Septembre', '10' => 'Octobre', '11' => 'Novembre', '12' => 'Decembre');?>
+							<?php $jourTexte = $jours[$Date->get('e')]; ?>
+							<?php $moisTexte = $mois[$Date->get('MM')]; ?>
+							<li><?= $jourTexte." ".$Date->get('dd')." ".$moisTexte;?></li>
 							<li><?= $vol->heure_depart;?></li>
 						</ul>
 					</div>
@@ -95,9 +100,12 @@ $VilleArrivee = $AeroportArrivee->findParentRow('Ville');
 				<div id="contentSidebar">
 					<div class="blockSidePanier">
 						<ul>
-							<li><?= $vol->aeroportDepart;?></li>
+							<li><?= $vol->aeroportArrivee;?></li>
 							<li><?= $vol->pays_Arrive;?></li>
-							<li><?= $vol->date_arrivee;?></li>
+							<?php $Date1 = new Zend_Date($vol->date_arrivee,'dd-MM-yy')?>
+							<?php $jourTexte1 = $jours[$Date1->get('e')]; ?>
+							<?php $moisTexte1 = $mois[$Date1->get('MM')]; ?>
+							<li><?= $jourTexte1." ".$Date1->get('dd')." ".$moisTexte1;?></li>
 							<li><?= $vol->heure_arrivee;?></li>
 						</ul>
 					</div>
