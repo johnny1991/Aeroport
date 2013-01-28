@@ -71,7 +71,7 @@ class Vol extends Zend_Db_Table_Abstract
 		$idAvion = $infosVol['id_avion'];
 		
 		if($heureArrivee < $heureDepart)
-			$dateArrivee = date(‘Y-m-d’, strtotime('+1 days', $timestampDepart));
+			$dateArrivee = date('Y-m-d', strtotime('+1 days', $timestampDepart));
 		else
 			$dateArrivee = $dateDepart;
 		
@@ -106,7 +106,7 @@ class Vol extends Zend_Db_Table_Abstract
 		$timestampDepart = strtotime($dateDepart);
 	
 		if($heureArrivee < $heureDepart)
-			$dateArrivee = date(‘Y-m-d’, strtotime('+1 days', $timestampDepart));
+			$dateArrivee = date('Y-m-d', strtotime('+1 days', $timestampDepart));
 		else
 			$dateArrivee = $dateDepart;
 	
@@ -140,7 +140,7 @@ class Vol extends Zend_Db_Table_Abstract
 		$timestampDepart = strtotime($dateDepart);
 	
 		if($heureArrivee < $heureDepart)
-			$dateArrivee = date(‘Y-m-d’, strtotime('+1 days', $timestampDepart));
+			$dateArrivee = date('Y-m-d', strtotime('+1 days', $timestampDepart));
 		else
 			$dateArrivee = $dateDepart;
 	
