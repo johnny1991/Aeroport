@@ -349,7 +349,8 @@ INSERT INTO `etre_breveter` (`id_pilote`, `id_type_avion`, `date`) VALUES
 (9, 4, '2012-10-22 21:08:50'),
 (9, 6, '2012-10-22 21:08:50'),
 (10, 3, '2012-10-22 21:08:50'),
-(10, 4, '2012-10-22 21:08:50');
+(10, 4, '2012-10-22 21:08:50'),
+(11, 6, '2013-01-01 23:00:00');
 
 -- --------------------------------------------------------
 
@@ -885,7 +886,9 @@ INSERT INTO `pilote` (`id_pilote`, `nom`, `prenom`, `email`, `password`, `code_v
 (7, 'Vasseur', 'Corentin', 'corentin.vasseur@gmail.com', 'corentinou', '2', '456 rue de voltaire', NULL, 1),
 (8, 'McClane', 'John', 'john.mcclane@gmail.com', 'yipikai', '9', '456 Madison Square Garden', NULL, 1),
 (9, 'Hancouille', 'John', 'john.hancouille@gmail.com', 'hancock', '8', '415 de la cité interdite', NULL, 0),
-(10, 'Belhamy', 'Edgard', 'edgard.balhamy@gmail.com', 'edgard', '2', '45 rue des riches', NULL, 1);
+(10, 'Belhamy', 'Edgard', 'edgard.balhamy@gmail.com', 'edgard', '2', '45 rue des riches', NULL, 1),
+(11, 'pilote', 'pilote', 'pilote@pilote.fr', '7e7842781c2cc8a4cb7c037222a2799c', '3', '44 rue de pilote', 123456789, 1);
+
 
 -- --------------------------------------------------------
 
@@ -1128,7 +1131,15 @@ INSERT INTO `utilisateur` (`id_user`, `login`, `id_service`, `nom`, `prenom`, `e
 (12, 'Corentin', 8, 'Vasseur', 'Corentin', 'corentin.vasseur@gmail.com', '78808a7b85211c8dd91587fcd02f2a2b', '2', '456 rue de voltaire', NULL, '2012-10-22 20:42:55', 7),
 (13, 'John', 8, 'McClane', 'John', 'john.mcclane@gmail.com', 'b1fb0e918a755d182b941826d010fc5c', '9', '456 Madison Square Garden', NULL, '2012-10-22 20:42:55', 8),
 (14, 'John', 8, 'Hancouille', 'John', 'john.hancouille@gmail.com', '906c5718311fba0770a783514111fb2d', '8', '415 de la cité interdite', NULL, '2012-10-22 20:42:55', 9),
-(15, 'Edgard', 8, 'Belhamy', 'Edgard', 'edgard.balhamy@gmail.com', '7d4396bcc7e10c47e0e0dfadb2cc2397', '2', '45 rue des riches', NULL, '2012-10-22 20:42:55', 10);
+(15, 'Edgard', 8, 'Belhamy', 'Edgard', 'edgard.balhamy@gmail.com', '7d4396bcc7e10c47e0e0dfadb2cc2397', '2', '45 rue des riches', NULL, '2012-10-22 20:42:55', 10),
+(18, 'commercial', 2, 'commercial', 'commercial', 'commercial@commercial.fr', 'df2375cd0f7593835392e2ecf79ab2b0', '3', '44 rue commercial', 123456789, '2013-01-28 13:33:51', NULL),
+(16, 'drh', 4, 'drh', 'drh', 'drh@drh.fr', '147de4c9d38de7fc9029aafbf0cc25a1', '3', '44 rue DRH', 123456789, '2013-01-28 13:30:29', NULL),
+(20, 'exploitation', 6, 'exploitation', 'exploitation', 'exploitation@exploitation.fr', '5b451e763c7e8196364f41a9566a47d9', '3', '44 rue exploitation', 123456789, '2013-01-28 13:52:43', NULL),
+(21, 'logistique', 7, 'logistique', 'logistique', 'logistique@logistique.com', '6755ff5ce272ac20df79294ca8dd9e1e', '3', '44 rue logistique', 123456789, '2013-01-28 13:53:34', NULL),
+(22, 'maintenance', 3, 'maintenance', 'maintenance', 'maintenance@maintenance.fr', '57cb773ae7a82c8c8aae12fa8f8d7abd', '3', '44 rue maintenance', 12456789, '2013-01-28 13:54:20', NULL),
+(19, 'pilote', 8, 'pilote', 'pilote', 'pilote@pilote.fr', '7e7842781c2cc8a4cb7c037222a2799c', '3', '44 rue de pilote', 123456789, '2013-01-28 13:52:03', 11),
+(23, 'planning', 5, 'planning', 'planning', 'planning@planning.fr', '98ded198ba3a0a30e7cc64e4a6a93f45', '3', '44 rue planning', 123456789, '2013-01-28 13:54:56', NULL),
+(17, 'strategique', 1, 'strategique', 'strategique', 'strategique@strategique.fr', '97f8daee2c0a6aed4d52305548d2c25c', '3', '44 rue strategique', 123456789, '2013-01-28 13:32:37', NULL);
 
 -- --------------------------------------------------------
 
