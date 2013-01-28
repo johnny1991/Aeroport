@@ -415,7 +415,7 @@ class PlanningController extends Zend_Controller_Action
 				$page = 1;
 			
 			$paginator = Zend_Paginator::factory($tabVol);
-			$paginator->setItemCountPerPage(25);
+			$paginator->setItemCountPerPage(2);
 			$paginator->setCurrentPageNumber($page);
 			$this->view->paginator = $paginator;
 			
@@ -423,6 +423,7 @@ class PlanningController extends Zend_Controller_Action
 			$paginatorAst->setItemCountPerPage(25);
 			$paginatorAst->setCurrentPageNumber($page);
 			$this->view->paginatorAstreinte = $paginatorAst;
+			
 		}else{
 			Aeroport_Fonctions::redirector('/planning/liste-vol/date/'.date('Y-m-d', $timestampDernierDimanche));
 		}

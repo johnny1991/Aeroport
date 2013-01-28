@@ -18,7 +18,7 @@
 
 	<?php if (isset($this->previous)): 
 	$parametres['page']=$this->previous;?>
-	<a href="<?= $this->url($parametres); ?>">
+	<a href="<?php echo $this->url($parametres); ?>">
 		<span class="enabled"><< Précedent</span></a>
 	<?php else: ?>
 	<span class="disabled"><< Précedent</span>
@@ -28,17 +28,17 @@
 	<?php if ($page != $this->current): 
 		$parametres['page']=$page;
 	?>
-	<a href="<?= $this->url(/*array(*/$parametres/*,'page' => $page*//*)*/); ?>"><span class="numero"><?= $page; ?></span>
+	<a href="<?php echo $this->url(/*array(*/$parametres/*,'page' => $page*//*)*/); ?>"><span class="numero"><?php echo $page; ?></span>
 	</a>
 	<?php else: ?>
-	<span class="numero_enabled"><?= $page; ?></span>
+	<span class="numero_enabled"><?php echo $page; ?></span>
 	<?php endif; ?>
 	<?php endforeach; ?>
 
 	<!-- Next page link -->
 	<?php if (isset($this->next)):
 		$parametres['page']=$this->next;?>
-	<a href="<?= $this->url($parametres); ?>"><span class="enabled">Suivant >></span></a>
+	<a href="<?php echo $this->url($parametres); ?>"><span class="enabled">Suivant >></span></a>
 	<?php else: ?>
 	<span class="disabled">Suivant >></span>
 	<?php endif; ?>
