@@ -57,10 +57,13 @@ class IndexController extends Zend_Controller_Action
 						$this->_helper->redirector('index','planning');
 					}
 					elseif($auth->getIdentity()->id_service == "6"){// service exploitation
-						$this->_helper->redirector('index','vol');
+						$this->_helper->redirector('index','exploitation');
 					}
 					elseif($auth->getIdentity()->id_service == "7"){// logistique commerciale
-						$this->_helper->redirector('index','vol');
+						$this->_helper->redirector('index','logistique');
+					}
+					elseif($auth->getIdentity()->id_service == "8"){// Pilote
+						$this->_helper->redirector('index','pilote');
 					}
 					
 					//Zend_Debug::dump($auth->getIdentity()->id_service);exit();

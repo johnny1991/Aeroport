@@ -415,7 +415,7 @@ class PlanningController extends Zend_Controller_Action
 				$page = 1;
 			
 			$paginator = Zend_Paginator::factory($tabVol);
-			$paginator->setItemCountPerPage(2);
+			$paginator->setItemCountPerPage(25);
 			$paginator->setCurrentPageNumber($page);
 			$this->view->paginator = $paginator;
 			

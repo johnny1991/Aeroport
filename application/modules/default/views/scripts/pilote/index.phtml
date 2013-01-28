@@ -1,0 +1,73 @@
+<h3 class="h3DRH">Vol de la journée</h3>
+<br />
+<?php 
+	if(count($this->volJournee) != 0){
+?>
+<table class="tableService">
+	<tr>
+		<?php 
+			echo $this->datedep;
+			echo $this->heuredep;
+			echo $this->aeroportdep;
+			echo $this->datearr;
+			echo $this->heurearr;
+			echo $this->aeroportarr;
+		?>
+	</tr>
+	<?php 
+		foreach($this->volJournee as $vols){
+			$lien = '/vol/fiche-vol/ligne/'.$vols['numero_ligne'].'/vol/'.$vols['id_vol'].'/';
+			
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().'">';
+			echo '<td style="text-align:center;"><a href="'.$lien.'">'.$vols['date_depart'].'</a></td>';
+			echo '<td style="text-align:center;"><a href="'.$lien.'">'.$vols['heure_depart'].'</a></td>';
+			echo '<td class="tdLibelleService"><a href="'.$lien.'">'.$vols['aeroportDepart'].'</a></td>';
+			echo '<td style="text-align:center;"><a href="'.$lien.'">'.$vols['date_arrivee'].'</a></td>';
+			echo '<td style="text-align:center;"><a href="'.$lien.'">'.$vols['heure_arrivee_effective'].'</a></td>';
+			echo '<td class="tdLibelleService"><a href="'.$lien.'">'.$vols['aeroportArrivee'].'</a></td>';
+			echo '</a></tr>';
+		}
+	?>
+</table>
+<br />
+<br />
+<?php echo $this->paginationControl($this->volJournee, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>
+
+<?php }else{echo '<div style="text-align:center;">Aucun vol pour aujourd\'hui.</div>';}?>
+<br />
+<h3 class="h3DRH">Vol de la semaine</h3>
+<br />
+<?php 
+	if(count($this->volSemaine) != 0){
+?>
+<table class="tableService">
+	<tr>
+		<?php 
+			echo $this->datedep;
+			echo $this->heuredep;
+			echo $this->aeroportdep;
+			echo $this->datearr;
+			echo $this->heurearr;
+			echo $this->aeroportarr;
+		?>
+	</tr>
+	<?php 
+		foreach($this->volSemaine as $vols){
+			$lien = '/vol/fiche-vol/ligne/'.$vols['numero_ligne'].'/vol/'.$vols['id_vol'].'/';
+			
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().'">';
+			echo '<td style="text-align:center;"><a href="'.$lien.'">'.$vols['date_depart'].'</a></td>';
+			echo '<td style="text-align:center;"><a href="'.$lien.'">'.$vols['heure_depart'].'</a></td>';
+			echo '<td class="tdLibelleService"><a href="'.$lien.'">'.$vols['aeroportDepart'].'</a></td>';
+			echo '<td style="text-align:center;"><a href="'.$lien.'">'.$vols['date_arrivee'].'</a></td>';
+			echo '<td style="text-align:center;"><a href="'.$lien.'">'.$vols['heure_arrivee_effective'].'</a></td>';
+			echo '<td class="tdLibelleService"><a href="'.$lien.'">'.$vols['aeroportArrivee'].'</a></td>';
+			echo '</a></tr>';
+		}
+	?>
+</table>
+<br />
+<br />
+<?php echo $this->paginationControl($this->volSemaine, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>
+
+<?php }else{echo '<div style="text-align:center;">Aucun vol pour la semaine.</div>';}?>
