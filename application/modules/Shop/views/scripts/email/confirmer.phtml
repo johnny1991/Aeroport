@@ -3,8 +3,7 @@
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 </head>
 <body style="color: #363636; font-family: Arial; font-size: 16px;">
-	<?php $commande = $this->commande1;?>
-	<?php $transport = $this->transport; ?>
+	<?php $reservation = $this->reservation;?>
 	<?php $paiement = $this->paiement; ?>
 	<?php $client = $this->client; ?>
 	<?php $adresse = $this->adresse; ?>
@@ -12,10 +11,11 @@
 		style="width: 710px; background-color: white; overflow: hidden; padding: 0 0 30px;">
 		<h2
 			style="font-size: 19px; font-weight: bold; margin: 0 10px 20px 20px; color:green;">
-			Votre commande n°
-			<?=$commande->id_commande; ?>
-			vient d'être envoyée.
+			Votre réservation n°
+			<?=$reservation->id_reservation; ?>
+			vient d'être acceptée.
 		</h2>
+		<div style="color:red; font-size:16px; margin:10px">Vous pouvez dès à présent nous transmettre des commentaires liés à ce vol dans votre compte, partie Reservations.</div>
 		<div style="margin: 5px; overflow: auto;">
 			<div
 				style="box-shadow: 3px 3px 3px #D3D9D9; font-size: 15px; line-height: 1.25; margin: 0 10px 12px 0; overflow: auto; padding: 5px 10px; color: white; background-color: black;">Information
@@ -25,7 +25,7 @@
 					<div style="float: left; margin-left: 5px;">Date de commande :</div>
 					<div style="float: left; margin-left: 5px;">
 						Le
-						<?= date("d/m/y à H:i",strtotime($commande->date)); ?>
+						<?= date("d/m/y à H:i",strtotime($reservation->date)); ?>
 					</div>
 				</div>
 				<div style="margin: 5px; overflow: auto; width: 95%;">
@@ -35,35 +35,21 @@
 					</div>
 				</div>
 				<div style="margin: 5px; overflow: auto; width: 95%;">
-					<div style="float: left; margin-left: 5px;">Livraison par :</div>
-					<div style="float: left; margin-left: 5px;">
-						<?= $transport->libelle.' ( '.$transport->prix.'€ )'; ?>
-					</div>
-				</div>
-				<div style="margin: 5px; overflow: auto; width: 95%;">
 					<div style="float: left; margin-left: 5px;">Montant total :</div>
 					<div style="float: left; margin-left: 5px;">
-						<b><?= $commande->montant."€"; ?> </b>
+						<b><?= $reservation->montant."€"; ?> </b>
 					</div>
 				</div>
 				<div style="margin: 5px; overflow: auto; width: 95%;">
 					<div style="float: left; margin-left: 5px;">Statut :</div>
 					<div style="float: left; margin-left: 5px;">
-						<?php 	if($commande->Islivre){?>
-						<span style="color: green; font-weight: bold;">Envoyée</span>
+						<?php 	if($reservation->is_valid){?>
+						<span style="color: green; font-weight: bold;">Accepté</span>
 						<?php }else { ?>
 						<span style="color: red; font-weight: bold;">En attente</span>
 						<?php }?>
 					</div>
 				</div>
-				<?php if ($commande->commentaire != NULL) {?>
-				<div style="margin: 5px; overflow: auto; width: 95%;">
-					<div style="float: left; margin-left: 5px;">Commentaire :</div>
-					<div style="float: left; margin-left: 5px;">
-						<?= $commande->commentaire;?>
-					</div>
-				</div>
-				<?php } ?>
 			</div>
 		</div>
 		<div style="margin: 5px; overflow: auto;">
@@ -104,7 +90,7 @@
 		<div style="margin: 5px; overflow: auto;">
 			<div
 				style="box-shadow: 3px 3px 3px #D3D9D9; font-size: 15px; line-height: 1.25; margin: 0 10px 12px 0; overflow: auto; padding: 5px 10px; color: white; background-color: black;">Adresse
-				de livraison</div>
+				de facturation</div>
 			<div style="font-size: 14px; margin: 10px; overflow: auto;">
 				<?php if ($client == NULL) { ?>
 				Le client s'est désinscrit du site.
@@ -124,22 +110,21 @@
 				<?php }?>
 			</div>
 		</div>
-		<?php $CommandeProduits = $this->commandeProduits; ?>
 		<div style="margin: 5px; overflow: auto;">
 			<div
 				style="box-shadow: 3px 3px 3px #D3D9D9; font-size: 15px; line-height: 1.25; margin: 0 10px 12px 0; overflow: auto; padding: 5px 10px; color: white; background-color: black;">Information
-				sur les produits</div>
+				sur le vol</div>
 			<div style="font-size: 14px; margin: 10px; overflow: auto;">
-				<?php if($CommandeProduits->count() > 0) { ?>
+				<?php if(true/*$CommandeProduits->count() > 0*/) { ?>
 				<table style="width: auto; border-collapse: collapse; margin: 5px;">
 					<thead>
 						<tr>
 							<th
 								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 35px;">Id</th>
 							<th
-								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 358px;">Désignation</th>
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 358px;">Vol</th>
 							<th
-								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 60px;">Qté</th>
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 60px;">Reservation</th>
 							<th
 								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 90px;">Prix
 								unitaire</th>
@@ -149,48 +134,92 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($CommandeProduits as $CommandeProduit)
-					{ ?>
 						<tr style="overflow: hidden;<?= $this->cycle(array("background-color: #F4F4F4;", ""))->next();?>">
-							<?php $produit = $CommandeProduit->findParentRow('Produit'); ?>
 							<td style="padding: 5px 0;"><span
-								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 35px;"><?= $produit->id_produit;?>
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 35px;"><?= $reservation->id_reservation;?>
 							</span>
 							</td>
 							<td style="padding: 5px 0;"><span
-								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 305px;"><?= $produit->designation;?>
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 305px;">
+									<?php $TableVol = new Vol;?> 
+									<?php $requete = $TableVol->select()->setIntegrityCheck(false)->from(array('v'=>'vol'))
+									->join(array('l'=>'ligne'), 'v.numero_ligne = l.numero_ligne')
+									->join(array('ad'=>'aeroport'),'ad.id_aeroport = l.id_aeroport_depart',array('ad.nom as aeroportDepart','ad.id_aeroport'))
+									->join(array('vd'=>'ville'),'ad.code_ville = vd.code_ville',array('vd.code_pays as code_pays_Depart','vd.code_ville'))
+									->join(array('pd'=>'pays'),'pd.code_pays = vd.code_pays',array('pd.nom as pays_Depart','pd.nom'))
+									->join(array('aa'=>'aeroport'),'aa.id_aeroport = l.id_aeroport_arrivee',array('aa.nom as aeroportArrivee','aa.id_aeroport'))
+									->join(array('va'=>'ville'),'aa.code_ville = va.code_ville',array('va.code_pays as code_pays_Arrivee','va.code_ville'))
+									->join(array('pa'=>'pays'),'pa.code_pays = va.code_pays',array('pa.nom as pays_Arrive','pa.nom'))
+									->joinLeft(array('av'=>'avion'),'av.id_avion = v.id_avion',array('av.nb_places'))
+									->joinLeft(array('r'=>'reservation'),'(r.numero_ligne = v.numero_ligne) and (r.id_vol = v.id_vol)',array('SUM(r.nbreservation) as nbreservations'))
+									->group('v.numero_ligne')
+									->group('v.id_vol')
+									->where('v.id_vol=?',$reservation->id_vol)
+									->where('v.numero_ligne=?',$reservation->numero_ligne);
+									$vol = $TableVol->fetchRow($requete);?>
+									<ul style="margin: 0px; list-style:none outside none; float:left; padding:3px">
+										<label>Départ :</label>
+										<li style="margin-left:10px"><?= $vol->aeroportDepart;?>
+										</li>
+										<li style="margin-left:10px"><?= $vol->pays_Depart;?>
+										</li>
+										<?php $Date = new Zend_Date($vol->date_depart,'dd-MM-yy')?>
+										<?php $jours = array('1'=>'Lundi', '2'=>'Mardi', '3' => 'Mercredi', '4' => 'Jeudi', '5' => 'Vendredi', '6' => 'Samedi', '7' => 'Dimanche');?>
+										<?php $mois = array('01'=>'Janvier', '02'=>'Fevrier', '03' => 'Mars', '04' => 'Avril', '05' => 'Mai', '06' => 'Juin', '07' => 'Juillet', '08' => 'Aout', '09' => 'Septembre', '10' => 'Octobre', '11' => 'Novembre', '12' => 'Decembre');?>
+										<?php $jourTexte = $jours[$Date->get('e')]; ?>
+										<?php $moisTexte = $mois[$Date->get('MM')]; ?>
+										<li style="margin-left:10px"><?= $jourTexte." ".$Date->get('dd')." ".$moisTexte;?>
+										</li>
+										<li style="margin-left:10px"><?= $vol->heure_depart;?>
+										</li>
+									</ul>
+									<ul style="margin: 0px; list-style:none outside none; float:left; padding:3px">
+										<label>Arrivée :</label>
+										<li style="margin-left:10px"><?= $vol->aeroportArrivee;?>
+										</li>
+										<li style="margin-left:10px"><?= $vol->pays_Arrive;?>
+										</li>
+										<?php $Date1 = new Zend_Date($vol->date_arrivee,'dd-MM-yy')?>
+										<?php $jourTexte1 = $jours[$Date1->get('e')]; ?>
+										<?php $moisTexte1 = $mois[$Date1->get('MM')]; ?>
+										<li style="margin-left:10px"><?= $jourTexte1." ".$Date1->get('dd')." ".$moisTexte1;?>
+										</li>
+										<li style="margin-left:10px"><?= $vol->heure_arrivee;?>
+										</li>
+									</ul>
 							</span>
 							</td>
 							<td style="padding: 5px 0;"><span
-								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 60px;"><?=  $CommandeProduit->quantite; ?>
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 60px;"><?=  $reservation->nbreservation; ?>
 							</span>
 							</td>
 							<td style="padding: 5px 0;"><span
-								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 90px;"><?= $produit->prix.'€';?>
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 90px;"><?= $reservation->montant.'€';?>
 							</span>
 							</td>
 							<td style="padding: 5px 0;"><span
-								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 70px;"><?= ($produit->prix*$CommandeProduit->quantite).'€';?>
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 70px;"><?= ($reservation->montant*$reservation->nbreservation).'€';?>
 							</span>
 							</td>
 						</tr>
-						<?php } ?>
 						<tr>
-							<td colspan="2" style="border-top:1px solid #363636"></td>
-							<td colspan="2" style="padding: 5px 0px;border-top:1px solid #363636"><span
-								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 120px;"><b>Total (Transport inclus)</b>
+							<td colspan="3" style="border-top: 1px solid #363636"></td>
+							<td style="padding: 5px 0px; border-top: 1px solid #363636"><span
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 120px;"><b>Total</b>
 							</span></td>
-							<td style="padding: 5px 0;border-top:1px solid #363636"><span
-								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 120px;"><b><?= $commande->montant."€"; ?>
+							<td colspan="2"
+								style="padding: 5px 0; border-top: 1px solid #363636"><span
+								style="font-size: 13px; overflow: hidden; padding: 10px 5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; margin: 0; width: 120px;"><b><?= $reservation->montant."€"; ?>
 								</b> </span></td>
 						</tr>
 					</tbody>
 				</table>
 				<?php } else {?>
-				Le(s) produit(s) ont été supprimé(s)
+				Le vol n'existe plus.
 				<?php } ?>
 			</div>
 		</div>
 	</div>
 </body>
 </html>
+		

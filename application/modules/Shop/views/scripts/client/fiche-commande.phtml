@@ -1,15 +1,16 @@
-<?php $commande = $this->commande;?>
+<?php $reservation = $this->reservation;?>
 <?php $transport = $this->transport; ?>
 <?php $paiement = $this->paiement; ?>
 <?php $client = $this->client; ?>
 <?php $adresse = $this->adresse; ?>
+<?php $remarques = $this->remarques; ?>
 
 <h2>
 	Commande n°
-	<?=$commande->id_commande; ?>
+	<?=$reservation->id_reservation; ?>
 	-
-	<?php 	if($commande->Islivre){?>
-	Envoyée
+	<?php 	if($reservation->is_valid){?>
+	Validé
 	<?php }else { ?>
 	En attente
 	<?php }?>
@@ -21,7 +22,7 @@
 			<div>Date de commande :</div>
 			<div>
 				Le
-				<?= date("d/m/y à H:i",strtotime($commande->date)); ?>
+				<?= date("d/m/y à H:i",strtotime($reservation->date)); ?>
 			</div>
 		</div>
 		<div class="rowBlock1">
@@ -31,39 +32,33 @@
 			</div>
 		</div>
 		<div class="rowBlock1">
-			<div>Livraison par :</div>
-			<div>
-				<?= $transport->libelle; ?>
-			</div>
-		</div>
-		<div class="rowBlock1">
 			<div>Montant total :</div>
 			<div>
-				<?= $commande->montant." €"; ?>
+				<?= $reservation->montant." €"; ?>
 			</div>
 		</div>
 		<div class="rowBlock1">
 			<div>Statut :</div>
 			<div>
-				<?php 	if($commande->Islivre){?>
-				<span id='LivreOk'>Envoyée</span>
+				<?php 	if($reservation->is_valid){?>
+				<span id='LivreOk'>Validé</span>
 				<?php }else { ?>
 				<span id='LivreNok'>En attente</span>
 				<?php }?>
 			</div>
 		</div>
-		<?php if ($commande->commentaire != NULL) {?>
-		<div class="rowBlock1">
+		<?php // if ($reservation->commentaire != NULL) {?>
+		<!-- <div class="rowBlock1">
 			<div>Commentaire :</div>
 			<div>
-				<?= $commande->commentaire;?>
+				<?//= $reservation->commentaire;?>
 			</div>
-		</div>
-		<?php } ?>
+		</div>-->
+		<?php //} ?>
 	</div>
 </div>
 <div class="Block">
-	<div class="HeadBlock">Adresse de livraison</div>
+	<div class="HeadBlock">Adresse de facturation</div>
 	<div class="contentBLock">
 		<?php if ($adresse == NULL){?>
 		<div class="rowBlock1">
@@ -85,13 +80,29 @@
 		<?php }?>
 	</div>
 </div>
-<?php $CommandeProduits = $this->commandeProduits; ?>
+<?php $TableVol = new Vol;?>
+<?php $requete = $TableVol->select()->setIntegrityCheck(false)->from(array('v'=>'vol'))
+->join(array('l'=>'ligne'), 'v.numero_ligne = l.numero_ligne')
+->join(array('ad'=>'aeroport'),'ad.id_aeroport = l.id_aeroport_depart',array('ad.nom as aeroportDepart','ad.id_aeroport'))
+->join(array('vd'=>'ville'),'ad.code_ville = vd.code_ville',array('vd.code_pays as code_pays_Depart','vd.code_ville'))
+->join(array('pd'=>'pays'),'pd.code_pays = vd.code_pays',array('pd.nom as pays_Depart','pd.nom'))
+->join(array('aa'=>'aeroport'),'aa.id_aeroport = l.id_aeroport_arrivee',array('aa.nom as aeroportArrivee','aa.id_aeroport'))
+->join(array('va'=>'ville'),'aa.code_ville = va.code_ville',array('va.code_pays as code_pays_Arrivee','va.code_ville'))
+->join(array('pa'=>'pays'),'pa.code_pays = va.code_pays',array('pa.nom as pays_Arrive','pa.nom'))
+->joinLeft(array('av'=>'avion'),'av.id_avion = v.id_avion',array('av.nb_places'))
+->joinLeft(array('r'=>'reservation'),'(r.numero_ligne = v.numero_ligne) and (r.id_vol = v.id_vol)',array('SUM(r.nbreservation) as nbreservations'))
+->group('v.numero_ligne')
+->group('v.id_vol')
+->where('v.id_vol=?',$reservation->id_vol)
+->where('v.numero_ligne=?',$reservation->numero_ligne);
+$vol = $TableVol->fetchRow($requete);
+?>
 <div class="Block">
-	<div class="HeadBlock">Informations sur les articles</div>
+	<div class="HeadBlock">Informations sur le vol</div>
 	<div class="contentBLock">
 		<table id="Total">
 			<thead>
-				<tr>
+				<tr class="Odd">
 					<th class="designationInfoProduitClient">Désignation</th>
 					<th class="quantiteligneProduitClient">Quantité</th>
 					<th class="prixUInfoProduitClient">Prix unitaire</th>
@@ -99,54 +110,91 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($CommandeProduits as $CommandeProduit)
-					{ ?>
-				<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
-					<?php $produit = $CommandeProduit->findParentRow('Produit'); ?>
-					<?php if($produit != NULL) { ?>
+				<tr class="Even">
+					<?php if($vol != NULL) { ?>
 					<td><a
-						href="<?= $this->baseUrl('/produit/fiche/id/').$produit->id_produit; ?>"
-						class="designationInfoProduitClient" target="_blank"><b><?= $produit->designation;?>
-						</b> </a></td>
-					<td><a
-						href="<?= $this->baseUrl('/produit/fiche/id/').$produit->id_produit; ?>"
-						class="quantiteligneProduitClient" target="_blank"><?=  $CommandeProduit->quantite; ?>
-					</a></td>
-					<td><a
-						href="<?= $this->baseUrl('/produit/fiche/id/').$produit->id_produit; ?>"
-						class="prixUInfoProduitClient" target="_blank"><?= $produit->prix." €";?>
+						href="<?= $this->baseUrl('/vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
+						class="designationInfoProduit" target="_blank">
+							<ul>
+								<label>Départ :</label>
+								<li><?= $vol->aeroportDepart;?></li>
+								<li><?= $vol->pays_Depart;?></li>
+								<?php $Date = new Zend_Date($vol->date_depart,'dd-MM-yy')?>
+								<?php $jours = array('1'=>'Lundi', '2'=>'Mardi', '3' => 'Mercredi', '4' => 'Jeudi', '5' => 'Vendredi', '6' => 'Samedi', '7' => 'Dimanche');?>
+								<?php $mois = array('01'=>'Janvier', '02'=>'Fevrier', '03' => 'Mars', '04' => 'Avril', '05' => 'Mai', '06' => 'Juin', '07' => 'Juillet', '08' => 'Aout', '09' => 'Septembre', '10' => 'Octobre', '11' => 'Novembre', '12' => 'Decembre');?>
+								<?php $jourTexte = $jours[$Date->get('e')]; ?>
+								<?php $moisTexte = $mois[$Date->get('MM')]; ?>
+								<li><?= $jourTexte." ".$Date->get('dd')." ".$moisTexte;?></li>
+								<li><?= $vol->heure_depart;?></li>
+							</ul>
+							<ul>
+								<label>Arrivée :</label>
+								<li><?= $vol->aeroportArrivee;?></li>
+								<li><?= $vol->pays_Arrive;?></li>
+								<?php $Date1 = new Zend_Date($vol->date_arrivee,'dd-MM-yy')?>
+								<?php $jourTexte1 = $jours[$Date1->get('e')]; ?>
+								<?php $moisTexte1 = $mois[$Date1->get('MM')]; ?>
+								<li><?= $jourTexte1." ".$Date1->get('dd')." ".$moisTexte1;?></li>
+								<li><?= $vol->heure_arrivee;?></li>
+							</ul>
 					</a>
 					</td>
 					<td><a
-						href="<?= $this->baseUrl('/produit/fiche/id/').$produit->id_produit; ?>"
-						class="PrixTInfoProduitClient" target="_blank"><?= ($produit->prix*$CommandeProduit->quantite)." €";?>
-					</a></td>
+						href="<?= $this->baseUrl('/vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
+						class="quantiteligneProduit" target="_blank"><?=  $reservation->nbreservation; ?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('/vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
+						class="quantiteRInfoProduit" target="_blank"> <?php if($vol->tarif_effectif == 0) echo $vol->tarif; else echo $vol->tarif_effectif; ?>€
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
+						class="PrixTInfoProduit" target="_blank"><?= $reservation->montant." €";?>
+					</a>
+					</td>
 					<?php } else {?>
-					<td colspan="4"><span><b>Cet article n'est plus en ligne</b> </span>
+					<td colspan="4"><span><b> Le vol a été supprimé </b> </span>
 					</td>
 					<?php } ?>
-				</tr>
-				<?php } ?>
-				<tr id="underline">
-					<td colspan="3"><span class="nom_total">Montant sous-Total</span>
-					</td>
-					<td><span class="prix_total"><?= ($commande->montant-$transport->prix)." €"; ?> </span>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3"><span class="nom_total">Frais de port (<?= $transport->libelle; ?>)
-					</span></td>
-					<td><span class="prix_total"><?= $transport->prix." €"; ?> </span>
-					</td>
 				</tr>
 				<tr class="Odd">
 					<td colspan="3"><span class="nom_total"><b>Montant Total</b> </span>
 					</td>
-					<td><span class="prix_total"><b><?= $commande->montant." €"; ?>
+					<td><span class="prix_total"><b><?= $reservation->montant." €"; ?>
 						</b> </span></td>
 				</tr>
 			</tbody>
 		</table>
+	</div>
+</div>
+<div class="Block">
+	<div class="HeadBlock">Commentaires</div>
+	<div class="contentBLock">
+		<?php if($remarques->count() > 0) {?>
+		<table id="Total">
+			<thead>
+				<tr>
+					<th class="idRemarqueClient">Id</th>
+					<th class="infosRemarqueClient">Informations</th>
+					<th class="typeRemarqueClient">Type de remarque</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($remarques as $remarque) {?>
+				<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
+					<td><span><?= $remarque->id_remarque; ?> </span></td>
+					<td><span><?= $remarque->libelle_remarque ; ?> </span></td>
+					<td><span><?= $remarque->findParentRow('TypeRemarque')->libelle_type_remarque; ?>
+					</span></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
+		<?php } else {?>
+		Aucun commentaires pour le moment.
+		<?php } ?>
 	</div>
 </div>
 <div>

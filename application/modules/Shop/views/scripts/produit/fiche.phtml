@@ -19,9 +19,6 @@ $VilleArrivee = $AeroportArrivee->findParentRow('Ville');
 	<h1>
 		<?= "De ".$vol->aeroportDepart." (".$vol->pays_Depart.") à destination de ".$vol->aeroportArrivee." (".$vol->pays_Arrive.")"?>
 	</h1>
-	<?php if ($this->Nouveaute) {?>
-	<div class="nouveaute"></div>
-	<?php } ?>
 	<div id="photosProduit">
 		<div id="Map" class="Map-New-Ligne"></div>
 	</div>
@@ -49,7 +46,10 @@ $VilleArrivee = $AeroportArrivee->findParentRow('Ville');
 			<?php } ?>
 		</form>
 		<?php $sessionPanier = new Zend_Session_Namespace('panier');?>
-		<?php if ( (isset($sessionPanier->content[$vol->id_vol."_".$vol->numero_ligne])) && ($sessionPanier->content[$vol->id_vol."_".$vol->numero_ligne] != NULL) ) { ?>
+		<?php if (
+				($sessionPanier->id_vol == $vol->id_vol) &&
+				($sessionPanier->numero_ligne == $vol->numero_ligne)
+				) { ?>
 		<div class="panierProduit">
 			<span id="already">Déjà ajouté au panier</span> <span><a
 				href="<?= $this->baseUrl('client/panier'); ?>">Voir le panier</a> ou

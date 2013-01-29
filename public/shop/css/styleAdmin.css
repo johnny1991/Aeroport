@@ -40,8 +40,8 @@
 	padding: 3px 0px 0px 27px;
 }
 
-.boutonConfigCommande{
-		background: url("../img/changement.png") no-repeat;
+.boutonConfigCommande {
+	background: url("../img/changement.png") no-repeat;
 	float: left;
 	height: 25px;
 	margin: 3px 0px 0px 20px;
@@ -72,12 +72,12 @@
 	width: 35px;
 }
 
-.idLigneVol{
+.idLigneVol {
 	width: 25px;
 }
 
-.designationAeroportVol{
-	width: 170px;
+.designationAeroportVol {
+	width: 120px;
 }
 
 .designationInfoProduit {
@@ -88,16 +88,18 @@
 	width: 55px;
 }
 
-.dateVol{
-		width: 65px;
+.dateVol {
+	width: 75px;
 }
 
-.quantiteVol{
-		width: 53px;
+.quantiteVol {
+	width: 100px;
 }
 
-.montantLigneCommande,.livreLigneCommande,.quantiteligneProduit
-	{
+.etatVol{
+	width:75px;
+}
+.montantLigneCommande,.livreLigneCommande,.quantiteligneProduit {
 	width: 65px;
 }
 
@@ -105,19 +107,28 @@
 	width: 45px;
 }
 
-.dateLigneProduit,.dateLigneClient,.nombreLigneCommande {
+.dateLigneProduit,.dateLigneClient {
 	width: 95px;
+}
+
+.nombreLigneCommande {
+	width: 130px;
+}
+
+.quantiteLigneCommande{
+	width:85px;
 }
 
 .actifLigneProduit {
 	width: 35px;
 }
 
-.nomLigneClient/*,.prenomLigneClient*/ {
+.nomLigneClient /*,.prenomLigneClient*/ {
 	width: 75px;
 }
-.montantLigneClient{
-	width:92px;
+
+.montantLigneClient {
+	width: 92px;
 }
 
 .mailLigneClient {
@@ -220,8 +231,8 @@
 	width: 98%;
 }
 
-.CommandeLivre{
-	width:100%;
-	float:left;
-	margin-left:50px;
+.CommandeLivre {
+	width: 100%;
+	float: left;
+	margin-left: 50px;
 }

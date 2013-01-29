@@ -4,6 +4,23 @@ $cheminPublic = 'shop/public';
 foreach($this->messages as $message)
 	echo $message;
 ?>
+<div id="mode_liste">
+	<ul>
+		<li><a
+			href="<?php echo $this->baseUrl('liste_produit/Ligne_Asc/1/tous'); ?>">Afficher
+				Tous les vols</a></li>
+		<li><a
+			href="<?php echo $this->baseUrl('liste_produit/Ligne_Asc/1/now_futur'); ?>">Afficher
+				les vols en cours / futurs</a></li>
+		<li><a
+			href="<?php echo $this->baseUrl('liste_produit/Ligne_Asc/1/precedent'); ?>">Afficher
+				les vols précedents</a></li>
+		<li><a
+			href="<?php echo $this->baseUrl('liste_produit/Ligne_Asc/1/attente'); ?>">Afficher
+				les vols en attente de validation de temps de vol</a></li>
+	</ul>
+</div>
+
 <?php if($this->paginator->count() > 0) {?>
 <table class="liste">
 	<thead>
@@ -16,7 +33,7 @@ foreach($this->messages as $message)
 			echo $this->HeadDateDepart;
 			echo $this->HeadDateArrivee;
 			echo $this->HeadTotalPlaces;
-			echo $this->HeadRestantePlaces;
+			echo $this->HeadEtatPlaces;
 			?>
 		</tr>
 	</thead>
@@ -26,36 +43,42 @@ foreach($this->messages as $message)
 		<?php $DateArrivee = new Zend_Date($vol->date_arrivee,'dd-MM-yy')?>
 		<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				href="<?= $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
 				class="idLigneVol"><?= $vol->numero_ligne; ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				href="<?= $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
 				class="idLigneVol"><?= $vol->id_vol; ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				href="<?= $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
 				class="designationAeroportVol"><?= $vol->aeroportDepart; ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				href="<?= $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
 				class="designationAeroportVol"><?= $vol->aeroportArrivee; ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				href="<?= $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
 				class="dateVol"><?=$DateDepart->get('dd-MM-yyyy'); ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
+				href="<?= $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
 				class="dateVol"><?= $DateArrivee->get('dd-MM-yyyy'); ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
-				class="quantiteVol"><?= ($vol->nb_places != NULL) ? $vol->nb_places : "NULL";    ?> </a>
+				href="<?= $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
+				class="quantiteVol"><?= ($vol->nb_places != NULL) ? $vol->nb_places - $vol->nbreservations : "NULL"; ?>
+					/ <?= ($vol->nb_places != NULL) ? $vol->nb_places : "NULL"; ?> </a>
 			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_produit_admin/').$vol->numero_ligne."_".$vol->id_vol; ?>"
-				class="quantiteVol"><?= ($vol->nb_places != NULL) ? $vol->nb_places - $vol->nbreservations : "NULL";  ?>
+				href="<?= $this->baseUrl('vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
+				class="etatVol"> <?php 
+				if ($vol->is_arrive) { ?> <span style="color: green">Arrivé</span> <?php } else {
+					if($vol->date_arrivee <= Zend_Date::now()->get('yyyy-MM-dd')) {
+						?> <span style="color: red">En attente</span> <?php } else if(($vol->date_depart <= Zend_Date::now()->get('yyyy-MM-dd'))&& ($vol->date_arrivee >= Zend_Date::now()->get('yyyy-MM-dd'))) { ?>
+					<span style="color: blue">En vol</span> <?php } 
+				}?>
 			</a>
 			</td>
 		</tr>
@@ -64,5 +87,5 @@ foreach($this->messages as $message)
 </table>
 <?= $this->pagination; ?>
 <?php } else {?>
-Le catalogue des produits est vide
+Le catalogue des vols est vide
 <?php } ?>

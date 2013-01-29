@@ -56,11 +56,11 @@ class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 		$router->addRoute('modifierAdresse', new Zend_Controller_Router_Route('modifier_adresse/:id', array('module' => 'Shop', 'controller' => 'client', 'action' => 'ajout-carnet-adresse')));
 		$router->addRoute('supprimerAdresse', new Zend_Controller_Router_Route('supprimer_adresse/:id', array('module' => 'Shop', 'controller' => 'client', 'action' => 'delete-carnet-adresse','id' => '')));
 		$router->addRoute('mesFichesCommandes', new Zend_Controller_Router_Route('fiches_commandes/:id', array('module' => 'Shop', 'controller' => 'client', 'action' => 'fiche-commande','id' => '')));
-		$router->addRoute('listeCommandes', new Zend_Controller_Router_Route('liste_commandes/:livre/:orderBy/:page', array('module' => 'Shop', 'controller' => 'commande', 'action' => 'liste', 'livre'=>'nonlivre', 'orderBy'=>'Id_Asc', 'page'=>'')));
+		$router->addRoute('listeCommandes', new Zend_Controller_Router_Route('liste_commandes/:orderBy/:page', array('module' => 'Shop', 'controller' => 'commande', 'action' => 'liste', 'orderBy'=>'Id_Asc', 'page'=>'')));
 		$router->addRoute('fichesCommandes', new Zend_Controller_Router_Route('fiche_commande/:id', array('module' => 'Shop', 'controller' => 'commande', 'action' => 'fiche')));
 		$router->addRoute('livreCommandes', new Zend_Controller_Router_Route('livre_commande/:id/:islivre', array('module' => 'Shop', 'controller' => 'commande', 'action' => 'envoye')));
 		$router->addRoute('ficheProduitAdmin', new Zend_Controller_Router_Route('fiche_produit_admin/:id', array('module' => 'Shop', 'controller' => 'administration', 'action' => 'fiche-produit')));
-		$router->addRoute('listeProduit', new Zend_Controller_Router_Route('liste_produit/:orderBy/:page', array('module' => 'Shop', 'controller' => 'produit', 'action' => 'liste','orderBy'=>'Ligne_Asc', 'page'=>'')));
+		$router->addRoute('listeProduit', new Zend_Controller_Router_Route('liste_produit/:orderBy/:page/:mode', array('module' => 'Shop', 'controller' => 'produit', 'action' => 'liste', 'orderBy'=>'Ligne_Asc', 'page'=>'', 'mode' => 'now_futur')));
 		$router->addRoute('ajoutProduit', new Zend_Controller_Router_Route('ajout_produit', array('module' => 'Shop', 'controller' => 'produit', 'action' => 'ajout')));
 		$router->addRoute('listeClient', new Zend_Controller_Router_Route('liste_client/:orderBy/:page', array('module' => 'Shop', 'controller' => 'client', 'action' => 'liste','orderBy'=>'', 'page'=>'')));
 		$router->addRoute('ajoutClient', new Zend_Controller_Router_Route('ajout_client', array('module' => 'Shop', 'controller' => 'client', 'action' => 'ajout-admin')));

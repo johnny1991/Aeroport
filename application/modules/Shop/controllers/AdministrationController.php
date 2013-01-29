@@ -46,12 +46,12 @@ class Shop_AdministrationController extends Zend_Controller_Action
 
 	}*/
 
-	public function ficheProduitAction(){ // Page d'affichage d'un produit coté administrateur
+/*	public function ficheProduitAction(){ // Page d'affichage d'un produit coté administrateur
 
 		$this->view->title = "Affichage du produit"; // Attribution du titre de la page
 		$this->view->id = $this->getRequest()->getParam('id'); // On envoie l'identifiant produit à la vue
 
-	}
+	}*/
 
 	public function ficheClientAction(){ // Page de visualisation/modification des clients
 

@@ -2,8 +2,8 @@
 <?php $adresse = $this->adresse; ?>
 <?php $transport = $this->transport; ?>
 <?php $paiement = $this->paiement; ?>
-<?php $produits = $this->produits; ?>
-<?php $form = $this->form; ?>
+<?php $vol = $this->vol; ?>
+<?php $form = $this->form;?>
 
 <h2>Information de facturation et de livraison</h2>
 
@@ -20,46 +20,51 @@
 			<table id="Total">
 				<thead>
 					<tr>
-						<th class="designationInfoProduitClient">Désignation</th>
-						<th class="quantiteligneProduitClient">Quantité</th>
+						<th class="designationInfoProduitClient">Vol</th>
+						<th class="quantiteligneProduitClient">Reservation</th>
 						<th class="prixUInfoProduitClient">Prix unitaire</th>
 						<th class="PrixTInfoProduitClient">Prix Total</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php $TableProduit = new Produit; ?>
-					<?php foreach ($produits as $id => $quantite)
-					{ ?>
-					<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
-						<?php $produit = $TableProduit->find($id)->current(); ?>
-						<td><span class="designationInfoProduitClient1"><?= $produit->designation;?>
+					<tr class="Even">
+						<td class="designationInfoProduitClient1">
+							<ul>
+								<label>Départ :</label>
+								<li><?= $vol[1]->aeroportDepart;?></li>
+								<li><?= $vol[1]->pays_Depart;?></li>
+								<?php $Date = new Zend_Date($vol[1]->date_depart,'dd-MM-yy')?>
+								<?php $jours = array('1'=>'Lundi', '2'=>'Mardi', '3' => 'Mercredi', '4' => 'Jeudi', '5' => 'Vendredi', '6' => 'Samedi', '7' => 'Dimanche');?>
+								<?php $mois = array('01'=>'Janvier', '02'=>'Fevrier', '03' => 'Mars', '04' => 'Avril', '05' => 'Mai', '06' => 'Juin', '07' => 'Juillet', '08' => 'Aout', '09' => 'Septembre', '10' => 'Octobre', '11' => 'Novembre', '12' => 'Decembre');?>
+								<?php $jourTexte = $jours[$Date->get('e')]; ?>
+								<?php $moisTexte = $mois[$Date->get('MM')]; ?>
+								<li><?= $jourTexte." ".$Date->get('dd')." ".$moisTexte;?></li>
+								<li><?= $vol[1]->heure_depart;?></li>
+							</ul>
+							<ul>
+								<label>Arrivée :</label>
+								<li><?= $vol[1]->aeroportArrivee;?></li>
+								<li><?= $vol[1]->pays_Arrive;?></li>
+								<?php $Date1 = new Zend_Date($vol[1]->date_arrivee,'dd-MM-yy')?>
+								<?php $jourTexte1 = $jours[$Date1->get('e')]; ?>
+								<?php $moisTexte1 = $mois[$Date1->get('MM')]; ?>
+								<li><?= $jourTexte1." ".$Date1->get('dd')." ".$moisTexte1;?></li>
+								<li><?= $vol[1]->heure_arrivee;?></li>
+							</ul>
+						</td>
+						<td><span class="quantiteligneProduitClient" target="_blank"><?=  $vol[2]; ?>
+						</span></td>
+						<td><span class="prixUInfoProduitClient" target="_blank"><?= round($vol[4],2).' €';?>
 						</span>
 						</td>
-						<td><span class="quantiteligneProduitClient" target="_blank"><?=  $quantite; ?>
-						</span></td>
-						<td><span class="prixUInfoProduitClient" target="_blank"><?= round($produit->prix,2).' €';?>
-						</span>
-						</td>
-						<td><span class="PrixTInfoProduitClient" target="_blank"><?= round(($produit->prix * $quantite),2).' €';?>
+						<td><span class="PrixTInfoProduitClient" target="_blank"><?= round(($vol[4] * $vol[2]),2).' €';?>
 						</span></td>
 					</tr>
-					<?php } ?>
-					<tr id="underline">
-						<td colspan="3"><span class="nom_total">Montant sous-Total</span>
+					<tr class="montant-confirmation">
+						<td colspan="3"><span class="nom_total">Montant Total</span>
 						</td>
-						<td><span class="prix_total"><?= round($this->montant,2).' €'; ?> </span></td>
-					</tr>
-					<tr>
-						<td colspan="3"><span class="nom_total">Frais de port (<?= $transport['libelle']; ?>)
+						<td><span class="prix_total"><?= round($this->montant,2).' €'; ?>
 						</span></td>
-						<td><span class="prix_total"><?= round($transport['prix'],2).' €'; ?> </span>
-						</td>
-					</tr>
-					<tr class="Odd">
-						<td colspan="3"><span class="nom_total"><b>Montant Total</b> </span>
-						</td>
-						<td><span class="prix_total"><b><?= round(($this->montant+$transport['prix']),2).' €'; ?>
-							</b> </span></td>
 					</tr>
 				</tbody>
 			</table>
@@ -67,7 +72,7 @@
 	</div>
 	<div class="Block">
 		<div class="HeadBlock">
-			<div class="titleHead">Adresse de facturation et de livraison</div>
+			<div class="titleHead">Adresse de facturation</div>
 			<div class="texteDroite">
 				<a href="<?= $this->baseUrl('client/checkout-adresse'); ?>">Editer</a>
 			</div>
@@ -91,28 +96,6 @@
 	</div>
 	<div class="Block">
 		<div class="HeadBlock">
-			<div class="titleHead">Mode de transport</div>
-			<div class="texteDroite">
-				<a href="<?= $this->baseUrl('client/checkout-mode-livraison'); ?>">Editer</a>
-			</div>
-		</div>
-		<div class="contentBLock">
-			<div class="contentSubContentInfoCompte">
-				<div class="rowBlock">
-					<?= $transport['libelle']; ?>
-				</div>
-				<div class="rowBlock">
-					Livraison
-					<?= $transport['temps']."H"; ?>
-				</div>
-				<div class="rowBlock">
-					<?= $transport['prix']." €"; ?>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="Block">
-		<div class="HeadBlock">
 			<div class="titleHead">Mode de paiement</div>
 			<div class="texteDroite">
 				<a href="<?= $this->baseUrl('client/checkout-mode-paiement'); ?>">Editer</a>
@@ -126,25 +109,25 @@
 			</div>
 		</div>
 	</div>
-	<div class="Block">
+	<!--<div class="Block">
 		<div class="HeadBlock">Commentaire</div>
 		<div class="contentBLock">
 			<div class="contentSubContentInfoCompte">
 				<div class="rowBlock3">
-					<?php $form->getElement("texte")->getDecorator('label')->setOption('tag', null); ?>
+					<?php //$form->getElement("texte")->getDecorator('label')->setOption('tag', null); ?>
 					<div>
-						<?= $form->texte->renderLabel();?>
+						<label>Commentaire sur le vol (allergies, repas spéciaux ...) : </label>
 					</div>
 					<div>
-						<?= $form->texte->renderViewHelper();?>
+						<?//= $form->texte->renderViewHelper();?>
 					</div>
 					<div>
-						<?= $form->texte->renderErrors();?>
+						<?//= $form->texte->renderErrors();?>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
 	<div class="Block" id="underline">
 		<div class="contentBLock">
 			<div class="rowBlock">

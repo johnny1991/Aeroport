@@ -294,51 +294,52 @@ class Shop_ClientController extends Zend_Controller_Action
 
 	public function commandeAction(){ // page d'affichage des commandes d'un client
 
-		$this->view->title = "Mes commandes";
+		$this->view->title = "Mes reservations";
 		$this->_helper->layout->setLayout('client');
-		$nbCommande = $this->view->nbCommande;
-		$TableCommande = new Shop_Model_Commande;
-		$requete = $TableCommande
+		$nbRservation = $this->view->nbReservation;
+		$TableReservation = new Reservation();
+		$requete = $TableReservation
 		->select()
-		->from(array('c'=>'Commande'))
+		->from(array('r'=>'reservation'))
 		->setIntegrityCheck(false)
-		->join(array('cl'=>'Client'),'cl.id_client=c.id_client',array('cl.nom','cl.prenom'))
-		->join(array('cp'=>'CommandeProduit'), 'cp.id_commande=c.id_commande',array("num"=>"COUNT(cp.id_produit)",'cp.id_produit'))
-		->where('c.id_client=?',Zend_Auth::getInstance()->getIdentity()->id_client)
-		->group('c.id_commande');
+		->join(array('cl'=>'Client'),'cl.id_client=r.id_client',array('cl.nom','cl.prenom'))
+		->joinLeft(array('l'=>'ligne'),'r.numero_ligne=l.numero_ligne',array('l.tarif'))
+		->joinLeft(array('v'=>'vol'),'r.id_vol=v.id_vol',array('v.tarif_effectif'))
+		->where('r.id_client=?',Zend_Auth::getInstance()->getIdentity()->id_client)
+		->group('r.id_reservation');
 
 		if($this->getRequest()->getParam('orderBy'))
 			$orderBy = $this->getRequest()->getParam('orderBy');
 		else
-			$orderBy = "Id_Desc";
+			$orderBy = "Id_Asc";
 
 		switch ($orderBy)
 		{
-			case "Id_Asc": $requete->order("c.id_commande asc"); break;
-			case "Id_Desc": $requete->order("c.id_commande desc"); break;
-			case "Nom_Asc": $requete->order("cl.nom asc"); break;
-			case "Nom_Desc": $requete->order("cl.nom desc"); break;
-			case "Prenom_Asc": $requete->order("cl.prenom asc"); break;
-			case "Prenom_Desc": $requete->order("cl.prenom desc"); break;
-			case "Nombre_Asc": $requete->order("num asc"); break;
-			case "Nombre_Desc": $requete->order("num desc"); break;
-			case "Montant_Asc": $requete->order("montant asc"); break;
-			case "Montant_Desc": $requete->order("montant desc"); break;
-			case "Date_Asc": $requete->order("c.date asc"); break;
-			case "Date_Desc": $requete->order("c.date desc"); break;
-			case "Livre_Asc": $requete->order("c.Islivre asc"); break;
-			case "Livre_Desc": $requete->order("c.Islivre desc"); break;
+			case "Id_Asc": $requete->order("r.id_reservation asc"); break;
+			case "Id_Desc": $requete->order("r.id_reservation desc"); break;
+			case "Client_Asc": $requete->order("cl.nom asc"); break;
+			case "Client_Desc": $requete->order("cl.nom desc"); break;
+			case "Quantite_Asc": $requete->order("r.nbreservation asc"); break;
+			case "Quantite_Desc": $requete->order("r.nbreservation desc"); break;
+			case "Montant_Asc": $requete->order("r.montant asc"); break;
+			case "Montant_Desc": $requete->order("r.montant desc"); break;
+			case "Date_Asc": $requete->order("r.date asc"); break;
+			case "Date_Desc": $requete->order("r.date desc"); break;
+			case "Etat_Asc": $requete->order("r.is_valid asc"); break;
+			case "Etat_Desc": $requete->order("r.is_valid desc"); break;
 		}
 
-		$this->view->HeadId = Application_Tableau_OrderColumn::orderColumns($this, "Id",$orderBy,"idLigneCommandeClient","Id");
-		$this->view->HeadNom = Application_Tableau_OrderColumn::orderColumns($this,"Nom",$orderBy,"nomLigneCommandeClient","Livré à");
-		$this->view->HeadNombre = Application_Tableau_OrderColumn::orderColumns($this,"Nombre",$orderBy,"nombreLigneCommandeClient","Nb de produits");
-		$this->view->HeadMontant = Application_Tableau_OrderColumn::orderColumns($this,"Montant",$orderBy,"montantLigneCommandeClient","Montant");
-		$this->view->HeadDate = Application_Tableau_OrderColumn::orderColumns($this,"Date",$orderBy,"dateLigneCommandeClient","Date et Heure");
-		$this->view->HeadLivre = Application_Tableau_OrderColumn::orderColumns($this,"Livre",$orderBy,"livreLigneCommandeClient","Statut");
-			
-		$paginator = Zend_Paginator::factory($TableCommande->fetchAll($requete));
-		$paginator->setItemCountPerPage($nbCommande);
+		$this->view->HeadId = Application_Tableau_OrderColumn::orderColumns($this, "Id",$orderBy,"idLigneCommande","Id");
+		$this->view->HeadVol = Application_Tableau_OrderColumn::orderColumns($this,"Vol",$orderBy,"idLigneCommande","Vol");
+		$this->view->HeadLigne = Application_Tableau_OrderColumn::orderColumns($this,"Ligne",$orderBy,"idLigneCommande","Ligne");
+		$this->view->HeadClient = Application_Tableau_OrderColumn::orderColumns($this,"Client",$orderBy,"nomLigneCommande","Client");
+		$this->view->HeadQuantite = Application_Tableau_OrderColumn::orderColumns($this,"Quantite",$orderBy,"quantiteLigneCommande","Reservations");
+		$this->view->HeadMontant = Application_Tableau_OrderColumn::orderColumns($this,"Montant",$orderBy,"montantLigneCommande","Montant");
+		$this->view->HeadDate = Application_Tableau_OrderColumn::orderColumns($this,"Date",$orderBy,"dateLigneCommande","Date de reservation");
+		$this->view->HeadEtat = Application_Tableau_OrderColumn::orderColumns($this,"Etat",$orderBy,"livreLigneCommande","Etat");
+
+		$paginator = Zend_Paginator::factory($TableReservation->fetchAll($requete));
+		$paginator->setItemCountPerPage($nbRservation);
 		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
 		$this->view->pagination = $this->view->paginationControl($paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->getAllParams()));
 		$this->view->paginator = $paginator;
@@ -349,29 +350,30 @@ class Shop_ClientController extends Zend_Controller_Action
 
 		$this->_helper->layout->setLayout('client');
 		$id = $this->getRequest()->getParam('id');
-		$TableCommande = new Shop_Model_Commande;
+		$TableReservation = new Reservation();
 		$TableAdresseCLient = new Shop_Model_AdresseClient;
-		$Commande = $TableCommande->find($id)->current();
-		$TableTransport = new Shop_Model_Transport;
-		$this->view->transport = $TableTransport->find($Commande->id_transport)->current();
+		$Reservation = $TableReservation->find($id)->current();
 		$TablePaiement = new Shop_Model_Paiement;
-		$this->view->paiement = $TablePaiement->find($Commande->id_paiement)->current();
+		$this->view->paiement = $TablePaiement->find($Reservation->id_paiement)->current();
+		$TableRemarque = new Remarque();
+		$requete = $TableRemarque->select()->setIntegrityCheck(false)->from(array('r'=>'remarque'))->where('id_client=?',Zend_Auth::getInstance()->getIdentity()->id_client);
+		$Remarques = $TableRemarque->fetchAll($requete);
+		$this->view->remarques = $Remarques;
 
-		if( ($id != NULL) && ($Commande) && ($Commande->id_client == Zend_Auth::getInstance()->getIdentity()->id_client) )
+		if( ($id != NULL) && ($Reservation) && ($Reservation->id_client == Zend_Auth::getInstance()->getIdentity()->id_client) )
 		{
-			$this->view->client = $Commande->findParentRow('Client');
+			$this->view->client = $Reservation->findParentRow('Shop_Model_Client');
 			if($this->view->client != NULL)
-				$this->view->adresse = $TableAdresseCLient->fetchRow($TableAdresseCLient->select()->where('id_client=?',$this->view->client->id_client)->where('id_adresse=?',$Commande->id_adresse));
+				$this->view->adresse = $TableAdresseCLient->fetchRow($TableAdresseCLient->select()->where('id_client=?',$this->view->client->id_client)->where('id_adresse=?',$Reservation->id_adresse));
 
-			$this->view->commande = $Commande;
-			$this->view->commandeProduits = $Commande->findDependentRowset('CommandeProduit');
+			$this->view->reservation = $Reservation;
 		}
 		else
 			$this->_redirector->gotoUrl('mes_commandes');
 
-		$title = "Commande n°".$this->view->commande->id_commande." - ";
-		if($this->view->commande->Islivre)
-			$title .= "Reçu";
+		$title = "Commande n°".$this->view->reservation->id_reservation." - ";
+		if($this->view->reservation->is_valid)
+			$title .= "Validé";
 		else
 			$title .= "En attente";
 			
@@ -379,83 +381,139 @@ class Shop_ClientController extends Zend_Controller_Action
 
 	}
 
-	public function panierAction(){ // Page panier
+	public function commentaireAction(){
+		$this->_helper->layout->setLayout('client');
+		$id = $this->getRequest()->getParam('id');
+		
+		$TableReservation = new Reservation();
+		$Reservation = $TableReservation->find($id)->current();
+		$TableRemarque = new Remarque();
+		$TableTypeRemarque = new TypeRemarque();
+		
+		
+		$libelle = new Zend_Form_Element_Text('libelle');
+		$libelle->setRequired(true);
+		$libelle->setLabel('Informations *');
+		$submit = new Zend_Form_Element_Submit('Ajouter');
+		
+		$type = new Zend_Form_Element_Select('type');
+		$type->setRequired(true);
+		$type->setLabel('Type *');
+		$TypeRemarques = $TableTypeRemarque->fetchAll();
+		$type->addMultiOption('0',"Choisissez un type de remarque");
+		$type->setAttrib("disable",array("0"));
+		$type->setValue("0");
+		
+		foreach ($TypeRemarques as $TypeRemarque)
+		{
+			$type->addMultiOption($TypeRemarque->id_type_remarque,$TypeRemarque->libelle_type_remarque);
+		}
+		
+		$form = new Zend_Form();
+		$form->addElement($type);
+		$form->addElement($libelle);
+		$form->addElement($submit);
+		$form->setMethod('post');
+		$data = $this->getRequest()->getPost();
+		
+		if($this->getRequest()->isPost())
+		{
+			if($form->isValid($data))
+			{
+				$newRemarque = $TableRemarque->createRow();
+				$newRemarque->libelle_remarque = $data['libelle'];
+				$newRemarque->id_type_remarque = $data['type'];
+				$newRemarque->id_client = Zend_Auth::getInstance()->getIdentity()->id_client;
+				$newRemarque->id_vol = $Reservation->id_vol;
+				$newRemarque->numero_ligne = $Reservation->numero_ligne;
+				$newRemarque->save();
+			}
+		}
+		$form->populate($data);
+		$this->view->form = $form;
 
+		$requete = $TableRemarque->select()->setIntegrityCheck(false)->from(array('r'=>'remarque'))->where('id_client=?',Zend_Auth::getInstance()->getIdentity()->id_client);
+		$Remarques = $TableRemarque->fetchAll($requete);
+		$this->view->remarques = $Remarques;
+
+
+	}
+
+	public function panierAction(){ // Page panier
 		$this->view->title = "Mon panier";
 		$form = new Shop_Form_Panier;
 		$sessionPanier = new Zend_Session_Namespace('panier');
 		$TableVol = new Vol();
-		$vols = array();
+		$this->view->vol = NULL;
+
 		$totalProduit = 0;
-		if($sessionPanier->content != NULL){
-			foreach($sessionPanier->content as $id => &$quantite){
-				$nomElement = 'quantite_'.$id;
-				$element = new Zend_Form_Element_Text($nomElement);
-				$form->addElement($element);
+		if(($sessionPanier->id_vol != NULL)&&($sessionPanier->numero_ligne != NULL)){
+			$nomElement = 'quantite';
+			$element = new Zend_Form_Element_Text($nomElement);
+			$form->addElement($element);
 
-				$ids = explode("_",$id);
-				$requete = $TableVol->select()->setIntegrityCheck(false)->from(array('v'=>'vol'))
-				->join(array('l'=>'ligne'), 'v.numero_ligne = l.numero_ligne')
-				->join(array('ad'=>'aeroport'),'ad.id_aeroport = l.id_aeroport_depart',array('ad.nom as aeroportDepart','ad.id_aeroport'))
-				->join(array('vd'=>'ville'),'ad.code_ville = vd.code_ville',array('vd.code_pays as code_pays_Depart','vd.code_ville'))
-				->join(array('pd'=>'pays'),'pd.code_pays = vd.code_pays',array('pd.nom as pays_Depart','pd.nom'))
-				->join(array('aa'=>'aeroport'),'aa.id_aeroport = l.id_aeroport_arrivee',array('aa.nom as aeroportArrivee','aa.id_aeroport'))
-				->join(array('va'=>'ville'),'aa.code_ville = va.code_ville',array('va.code_pays as code_pays_Arrivee','va.code_ville'))
-				->join(array('pa'=>'pays'),'pa.code_pays = va.code_pays',array('pa.nom as pays_Arrive','pa.nom'))
-				->joinLeft(array('av'=>'avion'),'av.id_avion = v.id_avion',array('av.nb_places'))
-				->joinLeft(array('r'=>'reservation'),'(r.numero_ligne = v.numero_ligne) and (r.id_vol = v.id_vol)',array('SUM(r.nbreservation) as nbreservations'))
-				->group('v.numero_ligne')
-				->group('v.id_vol')
-				->where('v.id_vol=?',$ids[1])
-				->where('v.numero_ligne=?',$ids[0]);
+			$requete = $TableVol->select()->setIntegrityCheck(false)->from(array('v'=>'vol'))
+			->join(array('l'=>'ligne'), 'v.numero_ligne = l.numero_ligne')
+			->join(array('ad'=>'aeroport'),'ad.id_aeroport = l.id_aeroport_depart',array('ad.nom as aeroportDepart','ad.id_aeroport'))
+			->join(array('vd'=>'ville'),'ad.code_ville = vd.code_ville',array('vd.code_pays as code_pays_Depart','vd.code_ville'))
+			->join(array('pd'=>'pays'),'pd.code_pays = vd.code_pays',array('pd.nom as pays_Depart','pd.nom'))
+			->join(array('aa'=>'aeroport'),'aa.id_aeroport = l.id_aeroport_arrivee',array('aa.nom as aeroportArrivee','aa.id_aeroport'))
+			->join(array('va'=>'ville'),'aa.code_ville = va.code_ville',array('va.code_pays as code_pays_Arrivee','va.code_ville'))
+			->join(array('pa'=>'pays'),'pa.code_pays = va.code_pays',array('pa.nom as pays_Arrive','pa.nom'))
+			->joinLeft(array('av'=>'avion'),'av.id_avion = v.id_avion',array('av.nb_places'))
+			->joinLeft(array('r'=>'reservation'),'(r.numero_ligne = v.numero_ligne) and (r.id_vol = v.id_vol)',array('SUM(r.nbreservation) as nbreservations'))
+			->group('v.numero_ligne')
+			->group('v.id_vol')
+			->where('v.id_vol=?',$sessionPanier->id_vol)
+			->where('v.numero_ligne=?',$sessionPanier->numero_ligne);
 
-				$vol = $TableVol->fetchRow($requete);
-				if($vol->tarif_effectif == 0)
-					$prix = $vol->tarif;
-				else
-					$prix = $vol->tarif_effectif;
+			$vol = $TableVol->fetchRow($requete);
+			if($vol->tarif_effectif == 0)
+				$prix = $vol->tarif;
+			else
+				$prix = $vol->tarif_effectif;
 
-				if($this->getRequest()->isPost())
+			if($this->getRequest()->isPost())
+			{
+				$data = $this->getRequest()->getPost();
+				if($form->isValid($data))
 				{
-					$data = $this->getRequest()->getPost();
-					if($form->isValid($data))
+					if(($vol->nb_places - $vol->nbreservations) >= $data[$nomElement])
+						$sessionPanier->quantite = $data[$nomElement];
+					else
 					{
-						if(($vol->nb_places - $vol->nbreservations) >= $data[$nomElement])
-							$quantite = $data[$nomElement];
-						else
-						{
-							$quantite = ($vol->nb_places - $vol->nbreservations);
-							$form->getElement($nomElement)->addError("Max : ".($vol->nb_places - $vol->nbreservations));
-							$form->getElement($nomElement)->setValue($vol->nb_places - $vol->nbreservations);
-						}
+						$sessionPanier->quantite = ($vol->nb_places - $vol->nbreservations);
+						$form->getElement($nomElement)->addError("Max : ".($vol->nb_places - $vol->nbreservations));
+						$form->getElement($nomElement)->setValue($vol->nb_places - $vol->nbreservations);
 					}
 				}
-				if( (($this->getRequest()->getParam('rm') != NULL) && ($this->getRequest()->getParam('rm') == $id)) || ($quantite == 0) )
-				{
-					unset($sessionPanier->content[$id]);
-					$this->_redirector->gotoUrl($_SERVER["HTTP_REFERER"]);
-				}
-				else{
-					$vols[] = array($id,$vol,$quantite,$nomElement,$vol->numero_ligne."_".$vol->id_vol,$prix);
-				}
-				$totalProduit += ($prix * $quantite);
-				$element->setAttrib('size',2);
-				$element->setValue($quantite);
 			}
+
+			if( (($this->getRequest()->getParam('rm') != NULL) && ($this->getRequest()->getParam('rm') == $vol->numero_ligne.'_'.$vol->id_vol)) || ($sessionPanier->quantite == 0) )
+			{
+				unset($sessionPanier->id_vol);
+				unset($sessionPanier->numero_ligne);
+				unset($sessionPanier->quantite);
+				$this->_redirector->gotoUrl($_SERVER["HTTP_REFERER"]);
+			}
+			else{
+				$this->view->vol = array($vol->numero_ligne.'_'.$vol->id_vol,$vol,$sessionPanier->quantite,$nomElement,$vol->numero_ligne."_".$vol->id_vol,$prix);
+			}
+			$totalProduit += ($prix * $sessionPanier->quantite);
+			$element->setAttrib('size',2);
+			$element->setValue($sessionPanier->quantite);
 		}
 		$sessionPanier->sousTotal = $totalProduit;
 		$this->view->sousTotal = $totalProduit;
 		$this->view->form = $form;
-		$this->view->vol = $vols;
 
 	}
 
 	public function checkoutAdresseAction(){ // Page de choix d'adresse pour une commande client
-
 		$this->view->title = "Commander";
 		$commande = new Zend_Session_Namespace('commande');
 		$sessionPanier = new Zend_Session_Namespace('panier');
-		if(count($sessionPanier->content) == 0){
+		if(!isset($sessionPanier->id_vol)){
 			$commande->isLogin = false;
 			$this->_redirector->gotoUrl('/panier');
 		}
@@ -511,52 +569,13 @@ class Shop_ClientController extends Zend_Controller_Action
 
 	}
 
-	/*public function checkoutModeLivraisonAction(){ // Page de choix de livraison pour une commande client
-
-		$this->view->title = "Commander";
-		$commande = new Zend_Session_Namespace('commande');
-		$sessionPanier = new Zend_Session_Namespace('panier');
-		if(count($sessionPanier->content) == 0){
-			$commande->isLogin = false;
-			$this->_redirector->gotoUrl('/client/panier');
-		}
-		if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_client)) )
-		{
-			$form = new Zend_Form();
-			$submit = new Zend_Form_Element_Submit('Commander');
-			$choix = new Zend_Form_Element_Radio('choix');
-			$TableTransport = new Shop_Model_Transport;
-			$transports = $TableTransport->fetchAll();
-			$this->view->transports = $transports;
-			foreach ($transports as $transport)
-				$choix->addMultiOption($transport->id_transport,"");
-			$choix->setRequired(true);
-			$form->addElement($choix);
-			$form->addElement($submit);
-			$form->setMethod('post');
-			$this->view->form = $form;
-			$data = $this->getRequest()->getPost();
-
-			if(($this->getRequest()->isPost()) && ($form->isValid($data)))
-			{
-				$commande->transport = $TableTransport->find($data['choix'])->current()->toArray();
-				$this->_redirector->gotoUrl('/client/checkout-mode-paiement');
-			}
-		}
-		else
-		{
-			$commande->isLogin = false;
-			$this->_redirector->gotoUrl('/index/login');
-		}
-	}*/
-
 	public function checkoutModePaiementAction(){ // Page de choix de paiement pour une commande client
 		$this->view->title = "Commander";
 		$commande = new Zend_Session_Namespace('commande');
 		$sessionPanier = new Zend_Session_Namespace('panier');
-		if(count($sessionPanier->content) == 0){
+		if(!isset($sessionPanier->id_vol)){
 			$commande->isLogin = false;
-			$this->_redirector->gotoUrl('/client/panier');
+			$this->_redirector->gotoUrl('panier');
 		}
 		if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_client)) )
 		{
@@ -584,19 +603,18 @@ class Shop_ClientController extends Zend_Controller_Action
 		else
 		{
 			$commande->isLogin = false;
-			$this->_redirector->gotoUrl('/index/login');
+			$this->_redirector->gotoUrl('connexion');
 		}
 
 	}
 
 	public function checkoutConfirmationAction(){ // Page de confirmation pour une commande client
-
 		$this->view->title = "Commander";
 		$commande = new Zend_Session_Namespace('commande');
 		$sessionPanier = new Zend_Session_Namespace('panier');
-		if(count($sessionPanier->content) == 0){
+		if(!isset($sessionPanier->id_vol)){
 			$commande->isLogin = false;
-			$this->_redirector->gotoUrl('/client/panier');
+			$this->_redirector->gotoUrl('/panier');
 		}
 		if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_client)) )
 		{
@@ -616,46 +634,68 @@ class Shop_ClientController extends Zend_Controller_Action
 			$this->view->adresse = $commande->adresse;
 			$this->view->transport = $commande->transport;
 			$this->view->paiement = $commande->paiement;
-			$this->view->produits = $sessionPanier->content;
+			$TableVol = new Vol();
+			$requete = $TableVol->select()->setIntegrityCheck(false)->from(array('v'=>'vol'))
+			->join(array('l'=>'ligne'), 'v.numero_ligne = l.numero_ligne')
+			->join(array('ad'=>'aeroport'),'ad.id_aeroport = l.id_aeroport_depart',array('ad.nom as aeroportDepart','ad.id_aeroport'))
+			->join(array('vd'=>'ville'),'ad.code_ville = vd.code_ville',array('vd.code_pays as code_pays_Depart','vd.code_ville'))
+			->join(array('pd'=>'pays'),'pd.code_pays = vd.code_pays',array('pd.nom as pays_Depart','pd.nom'))
+			->join(array('aa'=>'aeroport'),'aa.id_aeroport = l.id_aeroport_arrivee',array('aa.nom as aeroportArrivee','aa.id_aeroport'))
+			->join(array('va'=>'ville'),'aa.code_ville = va.code_ville',array('va.code_pays as code_pays_Arrivee','va.code_ville'))
+			->join(array('pa'=>'pays'),'pa.code_pays = va.code_pays',array('pa.nom as pays_Arrive','pa.nom'))
+			->joinLeft(array('av'=>'avion'),'av.id_avion = v.id_avion',array('av.nb_places'))
+			->joinLeft(array('r'=>'reservation'),'(r.numero_ligne = v.numero_ligne) and (r.id_vol = v.id_vol)',array('SUM(r.nbreservation) as nbreservations'))
+			->group('v.numero_ligne')
+			->group('v.id_vol')
+			->where('v.id_vol=?',$sessionPanier->id_vol)
+			->where('v.numero_ligne=?',$sessionPanier->numero_ligne);
+			$vol = $TableVol->fetchRow($requete);
+			if($vol->tarif_effectif == 0)
+				$prix = $vol->tarif;
+			else
+				$prix = $vol->tarif_effectif;
+			$this->view->vol = array(NULL,$vol,$sessionPanier->quantite,$vol->numero_ligne."_".$vol->id_vol,$prix);
+
 			$this->view->montant = $sessionPanier->sousTotal;
 			$data = $this->getRequest()->getPost();
 
 			if(($this->getRequest()->isPost()) && ($form->isValid($data)))
 			{
-				$TableCommande = new Shop_Model_Commande;
-				$NewCommande = $TableCommande->createRow();
-				$NewCommande->id_client = Zend_Auth::getInstance()->getIdentity()->id_client;
-				$NewCommande->montant = $sessionPanier->sousTotal+$commande->transport['prix'];
-				$NewCommande->Islivre = 0;
-				$NewCommande->commentaire = $data['texte'];
-				$NewCommande->id_paiement = $commande->paiement['id_paiement'];
-				$NewCommande->id_transport = $commande->transport['id_transport'];
-				$NewCommande->id_adresse = $commande->adresse['id_adresse'];
+				$TableReservation = new Reservation();
+				$Reservation = $TableReservation->createRow();
+				$Reservation->id_client = Zend_Auth::getInstance()->getIdentity()->id_client;
+				$Reservation->id_vol = $sessionPanier->id_vol;
+				$Reservation->nbreservation = $sessionPanier->quantite;
+				$Reservation->numero_ligne = $sessionPanier->numero_ligne;
+				$Reservation->montant = $sessionPanier->sousTotal;
+				$Reservation->is_valid = 0;
+				$Reservation->id_paiement = $commande->paiement['id_paiement'];
+				$Reservation->id_adresse = $commande->adresse['id_adresse'];
+				$IdReservation = $Reservation->save();
 
-				$TableCommandeProduit = new Shop_Model_CommandeProduit();
-				$IdCommande = $NewCommande->save();
-				$TableProduit = new Shop_Model_Produit;
-				foreach ($sessionPanier->content as $id => $quantite){
-					$commandeProduit = $TableCommandeProduit->createRow();
-					$commandeProduit->id_commande = $IdCommande;
-					$commandeProduit->id_produit = $id;
-					$commandeProduit->quantite = $quantite;
-					$commandeProduit->save();
-					$produit = $TableProduit->find($id)->current();
-					if($produit != NULL){
-						$produit->quantite -= $quantite;
-						$produit->save();
-					}
-				}
+				/*if($data['texte'] != NULL) {
+					$TableRemarque = new Remarque();
+				$Remarque = $TableRemarque->createRow();
+				$Remarque->libelle_remarque = "";
+				$Remarque->id_type_remarque = "";
+				$Remarque->id_service = "7";
+				$Remarque->id_vol = $sessionPanier->id_vol;
+				$Remarque->numero_ligne = $sessionPanier->numero_ligne;
+				}*/
+
+
+				//	$NewCommande->commentaire = $data['texte'];
+
+
 				$sessionPanier->unsetAll();
-				$commande->id_commande = $IdCommande;
+				$commande->id_reservation = $IdReservation;
 				$this->_redirector->gotoUrl('Shop/client/commande-confirmer');
 			}
 		}
 		else
 		{
 			$commande->isLogin = false;
-			$this->_redirector->gotoUrl('/index/login');
+			$this->_redirector->gotoUrl('connexion');
 		}
 
 	}
@@ -664,28 +704,23 @@ class Shop_ClientController extends Zend_Controller_Action
 
 		$this->view->title = "Commander";
 		$commande = new Zend_Session_Namespace('commande');
-		if($commande->id_commande != NULL){
-			$this->view->numeroCommande = $commande->id_commande;
+		if($commande->id_reservation != NULL){
+			$this->view->numeroReservation = $commande->id_reservation;
 			$TableClient = new Shop_Model_Client();
 			$client = $TableClient->find(Zend_Auth::getInstance()->getIdentity()->id_client)->current();
-			$TableCommande = new Shop_Model_Commande;
+			$TableReservation = new Reservation();
 
-			$TableTransport = new Shop_Model_Transport;
 			$TablePaiement = new Shop_Model_Paiement;
 			$TableAdresseCLient = new Shop_Model_AdresseClient;
-			$commande1 = $TableCommande->find($commande->id_commande)->current();
-			$transport = $TableTransport->find($commande1->id_transport)->current();
-			$paiement = $TablePaiement->find($commande1->id_paiement)->current();
+			$reservation = $TableReservation->find($commande->id_reservation)->current();
+			$paiement = $TablePaiement->find($reservation->id_paiement)->current();
 			if($client != NULL)
 				$adresse = $TableAdresseCLient->fetchRow($TableAdresseCLient->select()->where('id_client=?',$client->id_client)->where('id_adresse=?',$commande->adresse['id_adresse']));
-			$commandeProduits = $commande1->findDependentRowset('CommandeProduit');
 
 			$mail = new Zend_Mail('UTF-8');
 			$mail->setBodyHtml($this->view->partial('email/commande.phtml',
-					array('commande1'=>$commande1,
-							'transport'=>$transport,
+					array('reservation'=>$reservation,
 							'paiement'=>$paiement,
-							'commandeProduits'=>$commandeProduits,
 							'client'=>$client,
 							'adresse'=>$adresse)));
 			$mail->addTo($client->mail, $client->prenom." ".$client->nom);
@@ -696,9 +731,8 @@ class Shop_ClientController extends Zend_Controller_Action
 				$pass = $this->view->parametre->password;
 				$nomSite = $this->view->parametre->site;
 				$mail->setFrom($emailAdmin, $nomSite);
-				$transport = new Zend_Mail_Transport_Smtp('mailx.u-picardie.fr', array('port' => '25', 'username' => $emailAdmin, 'password' => $pass));
-				//$transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', array('auth'=>'login', 'ssl'=>'ssl', 'port' => '465', 'username' => $emailAdmin, 'password' => $pass));
-					
+				//$transport = new Zend_Mail_Transport_Smtp('mailx.u-picardie.fr', array('port' => '25', 'username' => $emailAdmin, 'password' => $pass));
+				$transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', array('auth'=>'login', 'ssl'=>'ssl', 'port' => '465', 'username' => $emailAdmin, 'password' => $pass));
 
 				try {
 					$mail->send($transport);
@@ -712,7 +746,7 @@ class Shop_ClientController extends Zend_Controller_Action
 			$commande->unsetAll();
 		}
 		else
-			$this->_redirector->gotoUrl('');
+			$this->_redirector->gotoUrl('accueil');
 
 	}
 
@@ -726,12 +760,12 @@ class Shop_ClientController extends Zend_Controller_Action
 		$Parametre = $TableParametre->fetchRow();
 		$this->view->parametre = $Parametre;
 		$this->view->nbClient = $Parametre->nbProduits;
-		$this->view->nbCommande = $Parametre->nbElements;
+		$this->view->nbReservation = $Parametre->nbElements;
 		$SessionRole = new Zend_Session_Namespace('Role');
 		$acl = new Application_Acl_Acl();
 		//if(!($acl->isAllowed($SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName())))
 		//	$this->_redirector->gotoUrl('accueil');
-			//echo $SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName();
-					
+		//echo $SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName();
+
 	}
 }

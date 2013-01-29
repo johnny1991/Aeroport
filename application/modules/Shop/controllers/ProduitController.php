@@ -285,12 +285,10 @@ class Shop_ProduitController extends Zend_Controller_Action
 
 	public function listeAction(){ // Page Liste vols (coté administrateur)
 	$this->view->title = "Catalogue des vols"; // Attribution du titre de la page
-	//$tableProduit = new Shop_Model_Produit;
-
 	$tableVol = new Vol();
 
 	if($this->getRequest()->getParam('orderBy')) // On récupère l'ordre dans les paramètres
-	 $orderBy = $this->getRequest()->getParam('orderBy');
+		$orderBy = $this->getRequest()->getParam('orderBy');
 	else
 		$orderBy = "Ligne_Asc"; // Sinon on l'initialise
 
@@ -303,6 +301,18 @@ class Shop_ProduitController extends Zend_Controller_Action
 	->group('v.numero_ligne')
 	->group('v.id_vol');
 
+	if($this->getRequest()->getParam('mode'))
+		$mode = $this->getRequest()->getParam('mode');
+	else
+		$mode = "now_futur";
+
+	switch ($mode)
+	{
+		case "now_futur" :$requete->where('v.date_depart >=?',Zend_Date::now()->get('yyyy-MM-dd')); break;
+		case "precedent" : $requete->where('v.date_depart <?',Zend_Date::now()->get('yyyy-MM-dd')); break;
+		case "attente" : $requete->where('v.date_arrivee <=?',Zend_Date::now()->get('yyyy-MM-dd'))->where('v.is_arrive=?',0); break;
+
+	}
 
 	switch ($orderBy) // Selon la valeur de $orderBy, les vols seront affiché differemment
 	{
@@ -318,8 +328,6 @@ class Shop_ProduitController extends Zend_Controller_Action
 		case "DateDepart_Desc": $requete->order("date_depart desc"); break;
 		case "DateArrivee_Asc": $requete->order("date_arrivee asc"); break;
 		case "DateArrivee_Desc": $requete->order("date_arrivee desc"); break;
-		case "TotalPlaces_Asc": $requete->order("nb_places asc"); break;
-		case "TotalPlaces_Desc": $requete->order("nb_places desc"); break;
 		case "RestantesPlaces_Asc": $requete->order("nbreservations asc"); break;
 		case "RestantesPlaces_Desc": $requete->order("nbreservations desc"); break;
 	}
@@ -333,12 +341,11 @@ class Shop_ProduitController extends Zend_Controller_Action
 	$this->view->HeadAeroArrive = Application_Tableau_OrderColumn::orderColumns($this,"AeroArrive",$orderBy,"designationAeroportVol","Aéroport d'arrivé");
 	$this->view->HeadDateDepart= Application_Tableau_OrderColumn::orderColumns($this,"DateDepart",$orderBy,"dateVol","Date départ");
 	$this->view->HeadDateArrivee = Application_Tableau_OrderColumn::orderColumns($this,"DateArrivee",$orderBy,"dateVol","Date arrivée");
-	$this->view->HeadTotalPlaces= Application_Tableau_OrderColumn::orderColumns($this,"TotalPlaces",$orderBy,"quantiteVol","Total");
-	$this->view->HeadRestantePlaces = Application_Tableau_OrderColumn::orderColumns($this,"RestantesPlaces",$orderBy,"quantiteVol","Reste");
+	$this->view->HeadTotalPlaces= Application_Tableau_OrderColumn::orderColumns($this,"TotalPlaces",$orderBy,"quantiteVol","Places Restantes");
+	$this->view->HeadEtatPlaces = Application_Tableau_OrderColumn::orderColumns($this,"RestantesPlaces",$orderBy,"etatVol","Etat");
 
 	$vols = $tableVol->fetchAll($requete);
 	$this->view->order = $orderBy;
-	echo $requete;
 	$paginator = Zend_Paginator::factory($vols); // Zend_Paginator permet d'indexer les pages
 	$paginator->setItemCountPerPage($this->view->nbProduits);
 	$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
@@ -366,6 +373,7 @@ public function catalogueAction(){ // Page de catalogue produit
 	->join(array('l'=>'ligne'), 'v.numero_ligne = l.numero_ligne')
 	->join(array('ad'=>'aeroport'),'ad.id_aeroport = l.id_aeroport_depart',array('ad.nom as aeroportDepart','ad.id_aeroport'))
 	->join(array('aa'=>'aeroport'),'aa.id_aeroport = l.id_aeroport_arrivee',array('aa.nom as aeroportArrivee','aa.id_aeroport'));
+
 	$this->view->recherche = false;
 	//$url="";
 	//$url1="";
@@ -498,7 +506,6 @@ public function ficheAction(){ // Fiche d'un produit
 	->where('v.id_vol=?',$ids[1])
 	->where('v.numero_ligne=?',$ids[0]);
 	$vol = $TableVol->fetchRow($requete4);
-	//exit();
 	//if (!($this->getRequest()->getParam('layout')))
 	//$this->_redirector->gotoUrl($_SERVER['HTTP_REFERER']);
 	$navigation = Zend_Registry::get('navigation');
@@ -509,25 +516,20 @@ public function ficheAction(){ // Fiche d'un produit
 			$data = $this->getRequest()->getPost();
 			if($form->isValid($data))
 			{
-				if(($vol->nb_places - $vol->nbreservations) >= $data['quantite']){
-					unset($panier->content);
-					$panier->content[$data['id']] = $data['quantite'];
+
+				$panier->id_vol = $ids[1];
+				$panier->numero_ligne = $ids[0];
+				if(($vol->nb_places - $vol->nbreservations) >= $data['quantite']){ // quantite Ok
+					$panier->quantite = $data['quantite'];
 				}
 				else
-				{
-					$panier->content[$data['id']] = $vol->nb_places - $vol->nbreservations;
+				{ // quantite trop grande
+					$panier->quantite = $vol->nb_places - $vol->nbreservations;
 					$form->getElement('quantite')->addError("Maximum : ".($vol->nb_places - $vol->nbreservations));
 					$form->getElement('quantite')->setValue($vol->nb_places - $vol->nbreservations);
 				}
 			}
 		}
-
-		/*	$MiseEnLigne = new Zend_Date($vol->date_depart, 'dd-MM-yy');
-
-		if(Zend_Date::now() < $MiseEnLigne->addDay("15"))
-			$this->view->Nouveaute = true;
-		else
-			*/	$this->view->Nouveaute = false;
 
 		$navigation->findOneBy("id",$vol->numero_ligne."_".$vol->id_vol)->setActive(true);
 		//$this->view->title = $vol->designation; // Attribution du titre de la page

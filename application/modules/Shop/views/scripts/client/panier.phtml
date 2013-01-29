@@ -1,9 +1,8 @@
-<?php $vols = $this->vol;?>
+<?php $vol = $this->vol; ?>
 <?php $form = $this->form; ?>
-<?php if($vols != NULL) { ?>
+<?php if($vol != NULL) { ?>
 <h2 id="titre_panier">
 	Mon Panier
-	<?="(".count($vols).")"; ?>
 </h2>
 <form method="<?= $form->getMethod() ?>"
 	action="<?= $form->getAction();?>">
@@ -11,14 +10,12 @@
 		<div class="head_content_panier">
 			<div class="produit_head_content_panier">
 				Vol
-				<?= (count($vols)>1)? 's' : ''; ?>
 			</div>
 			<div class="prix_head_content_panier">Prix</div>
 			<div class="quantite_head_content_panier">Nombre de reservation</div>
 			<div class="total_head_content_panier">Total</div>
 		</div>
-		<?php foreach($vols as $vol) { 
-			?>
+
 		<div class="ligne_content_panier">
 			<!-- <div class="photoPanier">
 				<a href="<?//= $this->baseUrl('Article/'.$vol[4]); ?>"> <?php //if(($vol[1]->photo1 != NULL) && (file_exists(APPLICATION_PATH.'/../public/shop/img/Produits/Thumbnails/'.$vol[1]->photo1))) {?>
@@ -52,8 +49,7 @@
 					<li><?= $vol[1]->heure_arrivee;?></li>
 				</ul>
 				<div class="remove_produit_ligne_content_panier">
-					<a href="<?= $this->url(array('rm'=>$vol[0])); ?>">Supprimer le
-						vol</a>
+					<a href="<?= $this->url(array('rm'=>$vol[0])); ?>">Supprimer le vol</a>
 				</div>
 			</div>
 			<div class="prix_ligne_content_panier">
@@ -70,7 +66,6 @@
 				€
 			</div>
 		</div>
-		<?php }	?>
 		<div class="update_content_panier">
 			<?= $form->update->renderViewHelper(); ?>
 		</div>
