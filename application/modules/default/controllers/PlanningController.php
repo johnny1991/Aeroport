@@ -423,6 +423,7 @@ class PlanningController extends Zend_Controller_Action
 			$paginatorAst->setItemCountPerPage(25);
 			$paginatorAst->setCurrentPageNumber($page);
 			$this->view->paginatorAstreinte = $paginatorAst;
+			
 		}else{
 			Aeroport_Fonctions::redirector('/planning/liste-vol/date/'.date('Y-m-d', $timestampDernierDimanche));
 		}

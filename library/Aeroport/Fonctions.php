@@ -106,4 +106,10 @@ class Aeroport_Fonctions{
 		
 		return $heureArrondit.'h'.$minuteArrondit.'min';
 	}
+	
+	public static function filter($in) {
+		$search = array ('@[éèêëÊË]@i','@[àâäÂÄ]@i','@[îïÎÏ]@i','@[ûùüÛÜ]@i','@[ôöÔÖ]@i','@[ç]@i');
+		$replace = array ('e','a','i','u','o','c');
+		return preg_replace($search, $replace, $in);
+	}
 }

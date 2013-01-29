@@ -201,8 +201,8 @@ class DrhController extends Zend_Controller_Action{
 				$telephone = htmlentities($formAjouterEmploye->getValue('telephone'), ENT_QUOTES, 'UTF-8');
 				$service = htmlentities($formAjouterEmploye->getValue('service'), ENT_QUOTES, 'UTF-8');
 				
-				$login = $mail;
-				$password = $prenom;
+				$login = $prenom;
+				$password = md5(Aeroport_Fonctions::filter($prenom));
 				$date = date('Y-m-d H-i-s'); 
 				
 				$tableUser = new Utilisateur();
