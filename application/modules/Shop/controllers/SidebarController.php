@@ -36,25 +36,7 @@ class Shop_SidebarController extends Zend_Controller_Action
 
 	}
 
-	public function topVentesAction(){ // Block sibeBar Top Ventes
-		$TableVol = new Vol();
-		$requete = $TableVol->select()->setIntegrityCheck(false)->from(array('p'=>'Produit'))->where('actif=1')
-		->joinLeft(array('cp'=>'CommandeProduit'),'p.id_produit = cp.id_produit',array('nbProduit' => 'count(cp.id_produit)'))
-		->order('nbProduit desc')->group('id_produit')->limit(3);
-		$produits1 = $TableVol->fetchAll($requete);
-		$produits = array();
-		foreach ($produits1 as $produit)
-		{
-			$urlProd = new Application_Url();
-			$produits[] = array($produit,$urlProd::Rewrite($produit->designation));
-		}
-		//$this->view->produits = $produits;
-
-	}
-
 	public function init(){
-
 		$this->_redirector = $this->_helper->getHelper('Redirector');
-
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 class Shop_Model_AdresseClient extends Zend_Db_Table
 {
-	protected $_name="AdresseClient";
+	protected $_name="adresseclient";
 	protected $_primary=array('id_adresse','id_client');
 	protected $_referenceMap=array(
 			'Client'=>array(

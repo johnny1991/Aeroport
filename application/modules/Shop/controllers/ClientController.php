@@ -673,20 +673,6 @@ class Shop_ClientController extends Zend_Controller_Action
 				$Reservation->id_adresse = $commande->adresse['id_adresse'];
 				$IdReservation = $Reservation->save();
 
-				/*if($data['texte'] != NULL) {
-					$TableRemarque = new Remarque();
-				$Remarque = $TableRemarque->createRow();
-				$Remarque->libelle_remarque = "";
-				$Remarque->id_type_remarque = "";
-				$Remarque->id_service = "7";
-				$Remarque->id_vol = $sessionPanier->id_vol;
-				$Remarque->numero_ligne = $sessionPanier->numero_ligne;
-				}*/
-
-
-				//	$NewCommande->commentaire = $data['texte'];
-
-
 				$sessionPanier->unsetAll();
 				$commande->id_reservation = $IdReservation;
 				$this->_redirector->gotoUrl('Shop/client/commande-confirmer');

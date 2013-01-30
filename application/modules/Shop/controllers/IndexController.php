@@ -6,13 +6,6 @@ class Shop_IndexController extends Zend_Controller_Action
 	{
 		$this->view->title="Page d'Accueil";
 		$this->_helper->layout->setLayout('categories');
-		$TableVol = new Vol();
-		//$requete = $TableVol->select()->order('date_depart desc')->limit('6');
-		//$this->view->vols = $TableVol->fetchAll($requete);
-		/*$requete1 = $TableVol->select()->setIntegrityCheck(false)->from(array('p'=>'Produit'))->where('actif=1')
-		->joinLeft(array('cp'=>'CommandeProduit'),'p.id_produit = cp.id_produit',array('nbProduit' => 'count(cp.id_produit)'))
-		->order('nbProduit desc')->group('id_produit')->limit('6');
-		$this->view->produits1 = $TableVol->fetchAll($requete1);*/
 	}
 
 	public function loginAction(){ // Page de connexion client
@@ -59,52 +52,8 @@ class Shop_IndexController extends Zend_Controller_Action
 
 	}
 
-	/*public function newAction(){ // Page de nouveautés
-		$this->_helper->layout->setLayout('categories');
-		$this->view->title = "Nouveautés";
-		$TableProduit = new Shop_Model_Produit;
-		$requete = $TableProduit->select()->where('actif=1')->order('date desc');
-
-		if($this->getRequest()->getParam('orderBy'))
-			$orderBy = $this->getRequest()->getParam('orderBy');
-		else
-			$orderBy = "Id_Asc";
-
-		$this->view->produits = $TableProduit->fetchAll($requete);
-		$paginator = Zend_Paginator::factory($TableProduit->fetchAll($requete));
-		$paginator->setItemCountPerPage($this->view->nbElements);
-		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-		$this->view->pagination = $this->view->paginationControl($paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->getAllParams()));
-		$this->view->paginator = $paginator;
-	}*/
-
-	public function topVentesAction(){ // Page de top-ventes
-		$this->_helper->layout->setLayout('categories');
-		
-		$this->view->title = "Top Ventes";
-		$TableProduit = new Shop_Model_Produit;
-		$requete = $TableProduit->select()->setIntegrityCheck(false)->from(array('p'=>'Produit'))->where('actif=1')
-		->joinLeft(array('cp'=>'CommandeProduit'),'p.id_produit = cp.id_produit',array('nbProduit' => 'count(cp.id_produit)'))
-		->order('nbProduit desc')->group('id_produit');
-
-		if($this->getRequest()->getParam('orderBy'))
-			$orderBy = $this->getRequest()->getParam('orderBy');
-		else
-			$orderBy = "Id_Asc";
-
-		$paginator = Zend_Paginator::factory($TableProduit->fetchAll($requete));
-		$paginator->setItemCountPerPage($this->view->nbElements);
-		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-		$this->view->pagination = $this->view->paginationControl($paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->getAllParams()));
-		$this->view->paginator = $paginator;
-	}
-
 	public function init()
 	{
-		//parent::init();
-		//$models = $this->_request->getParam('module').'/models';
-		
-		//set_include_path(APPLICATION_PATH.'/modules/shop/models'. PATH_SEPARATOR . get_include_path());
 		$this->view->messages = $this->_helper->FlashMessenger->getMessages();
 		$this->_redirector = $this->_helper->getHelper('Redirector');
 		$TableParametre = new Shop_Model_Parametre();

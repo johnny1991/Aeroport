@@ -2,57 +2,6 @@
 class Shop_AdministrationController extends Zend_Controller_Action
 {
 
-	/*public function loginAction(){ // Page de connexion Administrateur
-
-		if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_admin)) )
-			$this->_redirector->gotoUrl('liste_commandes'); // Si l'administrateur est loggé, on le redirige vers la page commande
-		else{
-			//  // Si l'administrateur n'est pas loggé, on affiche le formulaire de connexion
-			$this->view->title = "Connexion Administration"; // Attribution du titre de la page
-			$this->_helper->layout->setLayout('categories'); // Attribution du layout Categories (Page avec une colonne à droite)
-			$form = new Shop_Form_Login; // Nouveau formulaire Login (utilisé aussi pour la connexion client)
-
-			$captcha = new Zend_Captcha_Image(); // Nouveau élément Captcha pour la connexion admin
-			$cheminPublic = 'public/shop';
-			$captcha->setDotNoiseLevel(25)->setLineNoiseLevel(2)->setWordLen(4)->setHeight(75)->setWidth(200)
-			->setFont(APPLICATION_PATH.'/../'.$cheminPublic.'/font/Arial.ttf')->setFontSize(28)->setSuffix(".png")
-			->setImgDir(APPLICATION_PATH.'/../'.$cheminPublic.'/captcha/')->setImgUrl('/captcha/')
-			->setMessage("La valeur du captcha est fausse", 'badCaptcha');
-			// Captcha avec mot de 4 lettres, 2 lignes barrées avec une hauteur de 75px et une largeur de 200px
-
-			$Captcha = new Zend_Form_Element_Captcha('captcha', array('label'   => "Captcha *",'captcha' => $captcha));
-			$Captcha->setRequired(true); // Captcha obligatoire
-			$form->addElement($Captcha);
-			$data = $this->getRequest()->getPost(); // Récupération des données en POST
-			if(($this->getRequest()->isPost()) && ($form->isValid($data) && ($captcha->isValid($this->getRequest()->getParam('captcha')))))
-			{
-				// Si les données sont valident (pour le formulaire)
-				$auth = Zend_Auth::getInstance(); // Création d'un zend_auth pour authentifier l'administateur
-				$DbAdapter = new Zend_Auth_Adapter_DbTable(Zend_Registry::get('db'),'AdministrateurUser','login','password');
-				$DbAdapter->setIdentity($data['login']);
-				$DbAdapter->setCredential(md5($data['pass']));
-				if($auth->authenticate($DbAdapter)->isValid()){
-					// Si l'administrateur existe dans la bdd
-					$auth->getStorage()->write($DbAdapter->getResultRowObject(null,'password')); // On met en "mémoire" l'administrateur
-					$this->_redirector->gotoUrl('liste_commandes'); // On le redirige vers la page commande
-				}
-				else
-					$this->view->message = "<div id='message_nok'><label>Identifiant ou mot de passe invalide.</label></div>"; // Si l'administrateur n'existe pas dans la bdd, on affiche un message d'erreur
-			}				
-				
-			$form->populate($data); // On remplit le formulaire avec les données récupéré en POST
-			$this->view->form = $form; // On envoie le formualire à la vue
-		}
-
-	}*/
-
-/*	public function ficheProduitAction(){ // Page d'affichage d'un produit coté administrateur
-
-		$this->view->title = "Affichage du produit"; // Attribution du titre de la page
-		$this->view->id = $this->getRequest()->getParam('id'); // On envoie l'identifiant produit à la vue
-
-	}*/
-
 	public function ficheClientAction(){ // Page de visualisation/modification des clients
 
 		$id = $this->getRequest()->getParam('id'); // On récupère l'identifiant produit

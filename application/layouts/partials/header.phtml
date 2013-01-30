@@ -21,7 +21,7 @@
 			</div>
 			<div id="panier">
 				<?php $sessionPanier = new Zend_Session_Namespace('panier');?>
-				<a href="<?= $this->baseUrl('panier'); ?>">Mon panier (<?= count($sessionPanier->content); ?>)
+				<a href="<?= $this->baseUrl('panier'); ?>">Mon panier (<?= ($sessionPanier->id_vol) ? "1" : "0" ?>)
 				</a>
 			</div>
 		</div>
