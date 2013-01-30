@@ -194,7 +194,12 @@ nav a {
 	background: url('/img/modifier-icone.png') no-repeat;
 	padding: 0px;
 }
-
+.icone_modifier_maintenance {
+	width: 22px;
+	height: 22px;
+	background: url('/img/modif_icone.jpg') no-repeat;
+	padding: 0px;
+}
 .icone_delete_ligne {
 	width: 22px;
 	height: 22px;

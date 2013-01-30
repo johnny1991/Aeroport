@@ -545,12 +545,70 @@ class MaintenanceController extends Zend_Controller_Action
 		return $sorted_arr;
 	}
 
+	public function interventionAction(){
+		$this->view->title = "Intervention";
+		$nbLigne = 25; //Nombre de lignes par pages
+		
+		$form = new InterventionForm();
+		$TableIntervention = new Intervention();
+		
+		$auth = Zend_Auth::getInstance();
+		$nom = $auth->getIdentity()->nom;
+		
+		$TableAvion = new Avion();
+		$id = $this->_getParam('id');
+		$avion = $TableAvion->find($id)->current();
+		
+		$TableMaintenance = new Maintenance();
+		$requeteM = $TableMaintenance->select()
+		->setIntegrityCheck(false)
+		->from(array('ma'=>'maintenance'))
+		->where('ma.date_prevue <=?',Zend_Date::now()->get('yyyy-MM-dd'))
+		->where('ma.fin_prevue >=?',Zend_Date::now()->get('yyyy-MM-dd'))
+		->where('ma.id_avion=?',$id);
+		$resultM = $TableMaintenance->fetchRow($requeteM);
+		
+		
+		if( ($this->getRequest()->isPost()) && ($form->isValid($this->getRequest()->getPost())) )
+		{
+			$TableIntervention = new Intervention();
+			$intervention = $TableIntervention->createRow();
+			$intervention->login = $nom;
+			$intervention->id_maintenance = $resultM->id_maintenance;
+			$intervention->date_effective = Zend_Date::now()->get('yyyy-MM-dd');
+			$intervention->duree_effective = $form->getValue('Duree');
+			$intervention->commentaire = $form->getValue('Commentaire');
+			$intervention->save();
+		}
+		
+		$requete = $TableIntervention->select()
+		->setIntegrityCheck(false)
+		->from(array('i'=>'intervention'))
+		->joinLeft(array('ma'=>'maintenance'), 'ma.id_maintenance = i.id_maintenance')
+		->joinLeft(array('a'=>'avion'), 'a.id_avion = ma.id_avion');
+		
+		$result = $TableIntervention->fetchAll($requete);
+			
+		$paginator = Zend_Paginator::factory($result);
+		$paginator->setItemCountPerPage($nbLigne);
+		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+		$this->view->param=$this->getAllParams();
+		$this->view->paginator = $paginator;
+		
+		$this->view->form = $form;
+	
+	}
+	
 	public function init(){ //OK
 		$this->view->messages = $this->_helper->FlashMessenger->getMessages();
 		$this->_redirector = $this->_helper->getHelper('Redirector');
 
 		$this->view->headLink()->appendStylesheet('/css/calendar.jquery.css');
 		$this->view->headScript()->appendFile('/js/calendar.jquery.js');
+		$this->view->headScript()->appendFile('/js/jquery-ui-sliderAccess.js');
+		$this->view->headScript()->appendFile('/js/jquery-ui-timepicker-addon.js');
+		$this->view->headLink()->appendStylesheet('/css/jquery-ui-timepicker-addon.css');
+		$this->view->headLink()->appendStylesheet('/css/jquery-ui-1.8.23.css');
 		
 		$acl = new Aeroport_LibraryAcl();
 		$SRole = new Zend_Session_Namespace('Role');
