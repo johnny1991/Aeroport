@@ -21,6 +21,7 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		
 		
 		$this->addResource('index');
+		$this->addResource('crud');
 		$this->addResource('vol');
 		$this->addResource('drh');
 		$this->addResource('maintenance');
@@ -38,19 +39,15 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		$this->addResource('Shop/sidedar');
 		/* FIN MAGASIN WEB */
 		
-		// shop
-		//$this->addResource('commande');
 		
+		$this->allow('LOGGED', 'vol', array('fiche-vol'));	
 		
 		// index
 		$this->allow(null, 'index');
 		
 		// strategique
-		$this->allow('1', 'vol', array('index','ajouter-ligne', 'consulter-ligne', 'consulter-vol', 'fiche-vol', 'modifier-ligne', 'rechercher-adresse', 'rechercher-aeroport', 'supprimer-ligne'));
-		
-		// commercial
-		//$this->allow('2', 'commande', 'liste');
-		
+		$this->allow('1',array('vol','crud'));
+				
 		// maintenance
 		$this->allow('3', 'maintenance', array('intervention','index','consulter-avion','ajouter-avion','modifier-avion', 'fiche-avion-maintenance','fiche-avion','ajouter-maintenance','supprimer-avion','ajouter-modele-avion','modifier-modele-avion','supprimer-modele-avion','consulter-modele-avion','fiche-modele-avion','supprimer-maintenance','planning','planning-jour','consulter-maintenance'));
 		// drh
@@ -58,8 +55,6 @@ class Aeroport_LibraryAcl extends Zend_Acl
 
 		// planning
 		$this->allow('5', 'planning', array('index','planifier-vol','liste-vol','recherchepilote','planifier-astreinte','planning-liste','fiche-astreinte'));
-		$this->allow('LOGGED', 'vol', array('fiche-vol'));
-		echo $this->isAllowed('2', 'vol','fiche-vol') ? 'autorisé' : 'refusé';
 		
 		//exploitation
 		$this->allow('6', 'exploitation', array('index', 'fiche-vol', 'rechercher-aeroport', 'rechercher-ville'));

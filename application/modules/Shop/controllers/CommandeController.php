@@ -9,7 +9,7 @@ class Shop_CommandeController extends Zend_Controller_Action
 		->select()
 		->from(array('r'=>'reservation'))
 		->setIntegrityCheck(false)
-		->joinLeft(array('cl'=>'Client'),'cl.id_client=r.id_client',array('cl.nom','cl.prenom'))
+		->joinLeft(array('cl'=>'Shop_Model_Client'),'cl.id_client=r.id_client',array('cl.nom','cl.prenom'))
 		->group('r.id_reservation');
 
 		$nbCommande = $this->view->nbCommande;
