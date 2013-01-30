@@ -1,20 +1,27 @@
-<h2 align="center">Informations concernant l'équipage d'astreinte de <?php echo $this->aeroport; ?> du <?php echo $this->date; ?></h2>
+<h2 align="center">Liste des pilotes d'astreinte de <?php echo $this->aeroport; ?> du <?php echo $this->date; ?></h2>
 <br />
 
 <?php 
 	$pilotes = $this->pilote;
 	if(count($pilotes) != 0){
 ?>
-
-	Liste des pilotes de l'équipage d'astreinte:
+<table class="tablePilote">
+	<tr>
+		<?php 
+			echo $this->nom;
+		?>
+	</tr>
 	<?php 
-
-		echo '<ul>';
 		foreach($pilotes as $pilote){
-			echo '<li>'.$pilote->nom.' '.$pilote->prenom.'</li>';
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().'">';
+			echo '<td class="tdPilote">'.ucfirst($pilote['nom']).' '.ucfirst($pilote['prenom']).'</td>';
+			echo '</a></tr>';
 		}
-		echo '</ul>';
 	?>
+</table>
+<br />
+<br />
+<?php echo $this->paginationControl($pilotes, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>
 
 <?php }else{
 		echo '<div align="center">Aucun équipage d\'astreinte pour ce jour.</div>';

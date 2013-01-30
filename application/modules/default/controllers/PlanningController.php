@@ -778,6 +778,24 @@ class PlanningController extends Zend_Controller_Action
 				$date = htmlentities($this->getParam('date'), ENT_QUOTES, 'UTF-8');
 				$idAeroport = htmlentities($this->getParam('idaeroport'), ENT_QUOTES, 'UTF-8');
 				
+				if($this->getRequest()->getParam('page')){
+					$pageParam = htmlentities($this->getParam('page'), ENT_QUOTES, 'UTF-8');
+					$params = array($pageParam => 'int');
+					if(Aeroport_Fonctions::validParam($params)){
+						$page = $pageParam;
+					}
+					else{
+						$page = 1;
+					}
+				}
+				else
+					$page = 1;
+				
+				if($this->getRequest()->getParam('orderBy'))
+					$orderBy = $this->getRequest()->getParam('orderBy');
+				else
+					$orderBy = 'nom_Asc';
+				
 				$dateExplode = explode('-', $date);
 				$this->view->date = $dateExplode[2].'/'.$dateExplode[1].'/'.$dateExplode[0];
 				
@@ -790,16 +808,20 @@ class PlanningController extends Zend_Controller_Action
 				if(count($infosAeroport) != 0)
 					$this->view->aeroport = $infosAeroport->nom;
 				
-				$ReqPilote = $tableAstreinte->getReqPiloteAstreinte($date, $idAeroport);
-				$Pilotes = $tableAstreinte->fetchAll($ReqPilote);
-				
-				$piloteArray = array();
-				foreach($Pilotes as $pilote){
-					$piloteArray[] = $tablePilote->find($pilote['id_pilote'])->current();
+				switch ($orderBy){
+					case 'nom_Asc': $ReqPilote = $tableAstreinte->getPilotebyAeroportbyDate($date, $idAeroport, 'nom asc')->toArray(); break;
+					case 'nom_Desc': $ReqPilote = $tableAstreinte->getPilotebyAeroportbyDate($date, $idAeroport, 'nom desc')->toArray(); break;
 				}
 				
-				$this->view->pilote = $piloteArray;
-
+				$this->view->order = $orderBy;
+				$this->view->nom = Aeroport_Tableau_OrderColumn::orderColumns($this, 'nom', $orderBy, null, 'Nom - prénom');
+				
+				$pilotes = Zend_Paginator::factory($ReqPilote);
+				$pilotes->setItemCountPerPage(25);
+				$pilotes->setCurrentPageNumber($page);
+				$this->view->pilote = $pilotes;
+				$this->view->param = $this->getAllParams();
+				
 			}else{
 				Aeroport_Fonctions::redirector('/planning');
 			}

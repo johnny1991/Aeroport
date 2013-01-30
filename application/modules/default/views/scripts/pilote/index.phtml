@@ -1,9 +1,18 @@
-<h3 class="h3DRH">Vol de la journée</h3>
+<div class="divSommaire">
+	<ul class="ulPilote">
+		<li><a href="#volJournee">Les vols de la journée</a></li>
+		<li><a href="#volSemaine">Les vols de la semaine</a></li>
+		<li><a href="#astreinteJournee">Equipage d'astreinte de la journée</a></li>
+		<li><a href="#astreinteSemaine">Equipage d'astreinte de la semaine</a></li>
+	</ul>
+</div>
+
+<h3 class="h3Pilote" id="volJournee">Vol de la journée</h3>
 <br />
 <?php 
 	if(count($this->volJournee) != 0){
 ?>
-<table class="tableService">
+<table class="tablePilote">
 	<tr>
 		<?php 
 			echo $this->datedep;
@@ -34,13 +43,41 @@
 <?php echo $this->paginationControl($this->volJournee, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>
 
 <?php }else{echo '<div style="text-align:center;">Aucun vol pour aujourd\'hui.</div>';}?>
+
+<h3 class="h3Pilote" id="astreinteJournee">Equipe d'astreinte</h3>
 <br />
-<h3 class="h3DRH">Vol de la semaine</h3>
+<?php if(count($this->astreinteJournee) != 0){?>
+<table class="tablePilote">
+	<tr>
+		<?php 
+			echo $this->date;
+			echo $this->aeroport;
+		?>
+	</tr>
+	<?php 
+		foreach($this->astreinteJournee as $astreinte){
+			$timestamp = strtotime($astreinte['date_astreinte']);
+			$date = explode(' ', $astreinte['date_astreinte']);
+			
+			$lien = '/planning/fiche-astreinte/date/'.$date[0].'/idaeroport/'.$astreinte['id_aeroport'].'/';
+			
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().'">';
+			echo '<td style="text-align:center;width:200px;"><a href="'.$lien.'">'.date('d/m/Y', $timestamp).'</a></td>';
+			echo '<td class="tdLibelleService"><a href="'.$lien.'">'.$astreinte['nomAeroport'].'</a></td>';
+			echo '</a></tr>';
+		}
+	?>
+</table>
+<br />
+<br />
+<?php }else{echo '<div style="text-align:center;">Pas d\'astreinte aujourd\'hui</div>';}?>
+
+<h3 class="h3Pilote" id="volSemaine">Vol de la semaine</h3>
 <br />
 <?php 
 	if(count($this->volSemaine) != 0){
 ?>
-<table class="tableService">
+<table class="tablePilote">
 	<tr>
 		<?php 
 			echo $this->datedep;
@@ -71,3 +108,31 @@
 <?php echo $this->paginationControl($this->volSemaine, 'Sliding', 'pagination.phtml', array('param' => $this->param)); ?>
 
 <?php }else{echo '<div style="text-align:center;">Aucun vol pour la semaine.</div>';}?>
+
+<h3 class="h3Pilote" id="astreinteSemaine">Equipe d'astreinte de la semaine</h3>
+<br />
+<?php if(count($this->astreinteSemaine) != 0){?>
+<table class="tablePilote">
+	<tr>
+		<?php 
+			echo $this->date;
+			echo $this->aeroport;
+		?>
+	</tr>
+	<?php 
+		foreach($this->astreinteSemaine as $astreinte){
+			$timestamp = strtotime($astreinte['date_astreinte']);
+			$date = explode(' ', $astreinte['date_astreinte']);
+			
+			$lien = '/planning/fiche-astreinte/date/'.$date[0].'/idaeroport/'.$astreinte['id_aeroport'].'/';
+			
+			echo '<tr class="'.$this->cycle(array("Odd", "Even"))->next().'">';
+			echo '<td style="text-align:center;width:200px;"><a href="'.$lien.'">'.date('d/m/Y', $timestamp).'</a></td>';
+			echo '<td class="tdLibelleService"><a href="'.$lien.'">'.$astreinte['nomAeroport'].'</a></td>';
+			echo '</a></tr>';
+		}
+	?>
+</table>
+<br />
+<br />
+<?php }else{echo '<div style="text-align:center;">Pas d\'astreinte pour la semaine</div>';}?>

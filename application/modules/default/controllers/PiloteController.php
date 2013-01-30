@@ -40,6 +40,7 @@ class PiloteController extends Zend_Controller_Action
 		$idPilote = $identity->id_user_pilote;
 		$planning = new Aeroport_Planning();
 		$tableVol = new Vol();
+		$tableAstreinte = new Astreinte();
 		
 		$debutJournee = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 		$finJournee = mktime(23, 59, 59, date('m'), date('d'), date('Y'));
@@ -76,6 +77,20 @@ class PiloteController extends Zend_Controller_Action
 			case 'aerarr_Desc': $listeVolSemaine = $tableVol->getVolByPiloteByDate($idPilote, $timestampLundi, $timestampDimanche, 'aeroportArrivee asc')->toArray(); break;	
 		}
 		
+		switch ($orderBy){
+			case 'datedep_Asc': $listeAstreinteJournee = $tableAstreinte->getAstreintebyDatebyPilote($idPilote, $debutJournee, $finJournee, 'date_astreinte asc')->toArray(); break;
+			case 'datedep_Desc': $listeAstreinteJournee = $tableAstreinte->getAstreintebyDatebyPilote($idPilote, $debutJournee, $finJournee, 'date_astreinte desc')->toArray(); break;
+			case 'aer_Asc': $listeAstreinteJournee = $tableAstreinte->getAstreintebyDatebyPilote($idPilote, $debutJournee, $finJournee, 'nomAeroport asc')->toArray(); break;
+			case 'aer_Desc': $listeAstreinteJournee = $tableAstreinte->getAstreintebyDatebyPilote($idPilote, $debutJournee, $finJournee, 'nomAeroport desc')->toArray(); break;
+		}
+		
+		switch ($orderBy){
+			case 'datedep_Asc': $listeAstreinteSemaine = $tableAstreinte->getAstreintebyDatebyPilote($idPilote, $timestampLundi, $timestampDimanche, 'date_astreinte asc')->toArray(); break;
+			case 'datedep_Desc': $listeAstreinteSemaine = $tableAstreinte->getAstreintebyDatebyPilote($idPilote, $timestampLundi, $timestampDimanche, 'date_astreinte desc')->toArray(); break;
+			case 'aer_Asc': $listeAstreinteSemaine = $tableAstreinte->getAstreintebyDatebyPilote($idPilote, $timestampLundi, $timestampDimanche, 'nomAeroport asc')->toArray(); break;
+			case 'aer_Desc': $listeAstreinteSemaine = $tableAstreinte->getAstreintebyDatebyPilote($idPilote, $timestampLundi, $timestampDimanche, 'nomAeroport desc')->toArray(); break;
+		}
+		
 		$this->view->order = $orderBy;
 		$this->view->datedep = Aeroport_Tableau_OrderColumn::orderColumns($this, 'datedep', $orderBy, 'thDateEmbauche', 'Date de départ');
 		$this->view->heuredep = Aeroport_Tableau_OrderColumn::orderColumns($this, 'heuredep', $orderBy, 'thDateEmbauche', 'Heure de départ');
@@ -83,6 +98,9 @@ class PiloteController extends Zend_Controller_Action
 		$this->view->datearr = Aeroport_Tableau_OrderColumn::orderColumns($this, 'datearr', $orderBy, 'thDateEmbauche', 'Date d\'arrivée');
 		$this->view->heurearr = Aeroport_Tableau_OrderColumn::orderColumns($this, 'heurearr', $orderBy, 'thDateEmbauche', 'Heure d\'arrivée');
 		$this->view->aeroportarr = Aeroport_Tableau_OrderColumn::orderColumns($this, 'aerarr', $orderBy, 'thDateEmbauche', 'Aéroport d\'arrivée');
+		
+		$this->view->date = Aeroport_Tableau_OrderColumn::orderColumns($this, 'datedep', $orderBy, 'thDateEmbauche', 'Date d\'astreinte');
+		$this->view->aeroport = Aeroport_Tableau_OrderColumn::orderColumns($this, 'aer', $orderBy, null, 'Aéroport d\'astreinte');
 		
 		$volJournee = Zend_Paginator::factory($listeVolJournee);
 		$volJournee->setItemCountPerPage(25);
@@ -93,6 +111,16 @@ class PiloteController extends Zend_Controller_Action
 		$volSemaine->setItemCountPerPage(25);
 		$volSemaine->setCurrentPageNumber($page);
 		$this->view->volSemaine = $volSemaine;
+		
+		$AstreinteJournee = Zend_Paginator::factory($listeAstreinteJournee);
+		$AstreinteJournee->setItemCountPerPage(25);
+		$AstreinteJournee->setCurrentPageNumber($page);
+		$this->view->astreinteJournee = $AstreinteJournee;
+		
+		$AstreinteSemaine = Zend_Paginator::factory($listeAstreinteSemaine);
+		$AstreinteSemaine->setItemCountPerPage(25);
+		$AstreinteSemaine->setCurrentPageNumber($page);
+		$this->view->astreinteSemaine = $AstreinteSemaine;
 		
 		$this->view->param = $this->getAllParams();
 		

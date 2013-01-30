@@ -21,3 +21,9 @@
 	.tdAeroportOption{text-align:center;font-size:0.90em;}
 
 .boxError{width:450px;min-height:50px;margin:auto;background-color:#ad2525;border:1px red solid;color:#290b0b;}
+
+.tablePilote{border:1px #000 solid;width:90%;border-collapse:collapse;margin:auto;}
+.tablePilote th{border-bottom:1px #000 solid;background-color:#84a5c3;}
+.tablePilote th#asc{border-bottom:1px #000 solid;background-color:#84a5c3;}
+.tablePilote th#desc{border-bottom:1px #000 solid;background-color:#84a5c3;}
+	.tdPilote{padding-left:15px;}

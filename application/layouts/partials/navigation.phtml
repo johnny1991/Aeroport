@@ -2,6 +2,10 @@
 $acl = new Aeroport_LibraryAcl();
 $SRole = new Zend_Session_Namespace('Role');
 $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
+$auth = Zend_Auth::getInstance();
+$identity = $auth->getIdentity();
+
+if($identity->id_service != 8){
 ?>
 <ul id="nav">
 	<li <?php if($controller == 'vol') : ?> class="current" <?php endif;?>><a href="#">Gérer les lignes</a>
@@ -10,10 +14,10 @@ $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerN
 		</ul>
 	</li>
 	
-	<li <?php if($controller == 'planning') : ?> class="current" <?php endif;?>><a href="#">Gérer le planning</a>
+	<li <?php if($controller == 'planning') : ?> class="current" <?php endif;?>><a <?php if($acl->isAllowed($SRole->id_service,'planning','index')) : ?> href="<?php echo $this->baseUrl('planning') ?>"<?php else: echo 'href="#"'; endif;?>>Gérer le planning</a>
 		<ul>
-			<li><a <?php if($acl->isAllowed($SRole->id_service,'planning','ajouter-ligne')) : ?> href="<?php echo $this->baseUrl('planning/ajouter-ligne') ?>" class="nocurrent"<?php endif;?>>Modifier le planning</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'planning','index')) : ?> href="<?php echo $this->baseUrl('planning') ?>" class="nocurrent"<?php endif;?>>Consulter le planning</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'planning','planning-liste')) : ?> href="<?php echo $this->baseUrl('planning/planning-liste') ?>" class="nocurrent"<?php endif;?>>Planning version liste</a></li>
 		</ul>
 	</li>
 	
@@ -26,10 +30,10 @@ $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerN
 	</li>
 
 
-	<li <?php if($controller == 'drh') : ?> class="current" <?php endif;?>><a href="#">Gérer le personnel</a>
+	<li <?php if($controller == 'drh') : ?> class="current" <?php endif;?>><a <?php if($acl->isAllowed($SRole->id_service,'drh','index')) : ?> href="<?php echo $this->baseUrl('drh') ?>"<?php else: echo 'href="#"'; endif;?>>Gérer le personnel</a>
 		<ul>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'drh','ajouter-employe')) : ?> href="<?php echo $this->baseUrl('drh/ajouter-employe') ?>" class="nocurrent"<?php endif;?>>Ajouter un employé</a></li>
-			<li><a <?php if($acl->isAllowed($SRole->id_service,'drh','consulter-service')) : ?> href="<?php echo $this->baseUrl('drh/consulter-service') ?>" class="nocurrent"<?php endif;?>>Consulter un service</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'drh','consulter-service')) : ?> href="<?php echo $this->baseUrl('drh/consulter-service') ?>" class="nocurrent"<?php endif;?>>Consulter les services</a></li>
 		</ul>
 	</li>
 
@@ -45,3 +49,4 @@ $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerN
 
 	<li><a href="#">Réservation</a></li>
 </ul>
+<?php }?>

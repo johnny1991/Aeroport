@@ -14,7 +14,7 @@
                     'myWeek': getWeek(dateToday),
                     'myDay': dateToday.getDay(),
             		'minYear' : 2012,
-        			'maxYear' : 2 + dateToday.getFullYear(),
+        			'maxYear' : 1 + dateToday.getFullYear(),
         			'nbSemaine' : 4,
         			'link' : '/planning/liste-vol/',
         			'infoDate' : false,
@@ -608,10 +608,20 @@
         				theNextMonth = 0;
         			}
         			
+        			
+        			
         			datesuivant = new Date();
         			datesuivant.setYear(theNextYear);
         			datesuivant.setMonth(theNextMonth);
         			datesuivant.setDate(j);
+        			
+        			if(theNextMonth == (currentMonth + 1)){
+        				if(datesuivant.getMonth() != theNextMonth){
+        					datesuivant.setMonth(theNextMonth);
+        				}
+        			}
+        			
+        			console.log(datesuivant.getMonth());
         			classToday = '';
         			if(isDay(j, theNextMonth, theNextYear)){
     					

@@ -50,6 +50,7 @@ class Aeroport_LibraryAcl extends Zend_Acl
 
 		// planning
 		$this->allow('5', 'planning', array('index','planifier-vol','liste-vol','recherchepilote','planifier-astreinte','planning-liste','fiche-astreinte'));
+		$this->allow('5', 'vol', array('fiche-vol'));
 		
 		//exploitation
 		$this->allow('6', 'exploitation', array('index', 'fiche-vol', 'rechercher-aeroport', 'rechercher-ville'));
@@ -58,8 +59,9 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		$this->allow('7', 'logistique', array('index', 'ajouter-remarque', 'consulter-remarque', 'fiche-vol', 'modifier-remarque', 'supprimer-remarque', 'traiter-all', 'traiter-remarque', 'traiter-type'));
 		
 		//pilote
-		$this->allow('8', 'pilote', 'index');
-		$this->allow('8', 'vol', 'fiche-vol');
+		$this->allow('8', 'pilote', array('index'));
+		$this->allow('8', 'vol', array('fiche-vol'));
+		$this->allow('8', 'planning', array('fiche-astreinte'));
 		
 		$this->allow(array('1','2','3','4','5','6','7'), 'vol', 'rechercher-aeroport');
 		

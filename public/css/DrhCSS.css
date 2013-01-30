@@ -17,3 +17,17 @@
 .errorForm{color:red;}
 .tdDateEmbauche{text-align:center;}
 .DivErreurForm{display:none;width:450px;min-height:30px;margin:auto;background-color:#ad2525;border:1px red solid;color:#290b0b;text-align:center;padding-top:10px;margin-bottom:20px;}
+
+
+
+.h3Pilote{margin-left:30px;border-bottom:1px #000 solid;margin-right:30px;}
+
+.tablePilote{border:1px #000 solid;width:90%;border-collapse:collapse;margin:auto;}
+.tablePilote th{border-bottom:1px #000 solid;background-color:#84a5c3;}
+.tablePilote th#asc{border-bottom:1px #000 solid;background-color:#84a5c3;}
+.tablePilote th#desc{border-bottom:1px #000 solid;background-color:#84a5c3;}
+
+.divSommaire{background-color:rgba(51, 187, 227, 0.2);border-top-right-radius:20px;border-bottom-right-radius:20px;width:350px;padding:2px 0;margin-top:10px;border:1px #2491af solid;border-left:none;box-shadow:0px 0px 3px #323232;}
+	.ulPilote{list-style:none;}
+	.ulPilote a{color:#000;text-decoration:none;}
+	.ulPilote a:hover{text-decoration:underline;}
