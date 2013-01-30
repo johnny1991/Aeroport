@@ -49,12 +49,13 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		$this->allow('1',array('vol','crud'));
 				
 		// maintenance
-		$this->allow('3', 'maintenance', array('intervention','index','consulter-avion','ajouter-avion','modifier-avion', 'fiche-avion-maintenance','fiche-avion','ajouter-maintenance','supprimer-avion','ajouter-modele-avion','modifier-modele-avion','supprimer-modele-avion','consulter-modele-avion','fiche-modele-avion','supprimer-maintenance','planning','planning-jour','consulter-maintenance'));
+		$this->allow('3', 'maintenance');
+		
 		// drh
-		$this->allow('4', 'drh', array('index','consulter-employe', 'change-disponibilite', 'prolonge-brevet', 'consulter-service', 'ajouter-employe', 'modifier-employe', 'supprimer-employe', 'change-ville', 'get-brevet', 'ajouter-service', 'modifier-service', 'supprimer-service', 'get-typeavion'));
+		$this->allow('4', 'drh');
 
 		// planning
-		$this->allow('5', 'planning', array('index','planifier-vol','liste-vol','recherchepilote','planifier-astreinte','planning-liste','fiche-astreinte'));
+		$this->allow('5', 'planning');
 		
 		//exploitation
 		$this->allow('6', 'exploitation', array('index', 'fiche-vol', 'rechercher-aeroport', 'rechercher-ville'));
@@ -64,7 +65,7 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		
 		//pilote
 		$this->allow('8', 'pilote', array('index'));
-		//$this->allow('8', 'vol', array('fiche-vol'));
+
 		$this->allow('8', 'planning', array('fiche-astreinte'));
 		
 		$this->allow(NULL, 'vol', 'rechercher-aeroport');
