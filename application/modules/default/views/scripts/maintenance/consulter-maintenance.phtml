@@ -48,6 +48,10 @@ foreach($this->messages as $message)
 				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$avion['id_avion']; ?>">
 					<?php echo ($avion['disponibilite_avion'])? "Disponible" : "En maintenance"; ?>
 			</a></td>
+			<td><?php if($avion['disponibilite_avion'] == "0"){?><a
+				href="<?php echo $this->baseUrl('maintenance/intervention/id/').$avion['id_avion']; ?>"
+				class="icone_modifier_maintenance"></a><?php }?>
+			</td>
 			<td><a
 				href="<?php echo $this->baseUrl('maintenance/modifier-avion/id/').$avion['id_avion']; ?>"
 				class="icone_modifier_ligne"></a>
