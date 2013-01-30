@@ -31,7 +31,8 @@ class PlanningController extends Zend_Controller_Action
 			}
 		}
 
-		$laDateArray = explode('-', $dateParam);
+		$laDateArray = strtotime($dateParam);
+		$datePlusUn = mktime(date('H', $laDateArray), date('i', $laDateArray), date('s', $laDateArray), date('m', $laDateArray), date('d', $laDateArray) + 1, date('Y', $laDateArray));
 		
 		$this->view->timestamp = $dateParam;
 
@@ -45,14 +46,18 @@ class PlanningController extends Zend_Controller_Action
 		if(count($laLigne) != 0){
 			$form = new PlanificationVol();
 			
-			$dateArrivee = ($laLigne->heure_arrivee < $laLigne->heure_depart) ? $laDateArray[0].'-'.$laDateArray[1].'-'.(intval($laDateArray[2]) + 1) : $dateParam;
+			if($laLigne->heure_arrivee < $laLigne->heure_depart){
+				$dateArrivee = date('Y-m-d', $datePlusUn);
+			}else{
+				$dateArrivee = $dateParam;
+			}
 			$aeroport_origine = $tableAeroport->find($laLigne->id_aeroport_depart)->current();
 			$aeroport_arrivee = $tableAeroport->find($laLigne->id_aeroport_arrivee)->current();
 			
 			$this->view->nomAeroportOrigine = $aeroport_origine->nom;
 			$this->view->nomAeroportArrivee = $aeroport_arrivee->nom;
 			$this->view->numeroLigne = $laLigne->numero_ligne;
-			$this->view->laDate = $laDateArray[2].'/'.$laDateArray[1].'/'.$laDateArray[0];
+			$this->view->laDate = date('d/m/Y', $laDateArray);
 			
 			if(($numeroligneParam != NULL) && ($laLigne != NULL)){
 				
@@ -79,7 +84,7 @@ class PlanningController extends Zend_Controller_Action
 					
 				}
 				else{
-					$this->view->nextDate = (intVal($laDateArray[2]) + 1).'/'.$laDateArray[1].'/'.$laDateArray[0];
+					$this->view->nextDate = date('d/m/Y', $datePlusUn);
 					$this->view->idVol = $tableVol->getLastId($numeroLigne) + 1;
 				}
 			}
@@ -837,7 +842,7 @@ class PlanningController extends Zend_Controller_Action
 		$this->view->headLink()->appendStylesheet('/css/PlanningCSS.css');
 		
 		$this->_redirector = $this->_helper->getHelper('Redirector');
-		
+		date_default_timezone_set('Europe/Paris');
 		$acl = new Aeroport_LibraryAcl();
 		$SRole = new Zend_Session_Namespace('Role');
 		if(!$acl->isAllowed($SRole->id_service, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))

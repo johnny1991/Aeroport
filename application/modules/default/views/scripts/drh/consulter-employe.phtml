@@ -1,6 +1,6 @@
 <h3 class="h3DRH">Fiche de l'employe : <?php echo $this->nom.' '.$this->prenom;?></h3>
 <br />
-<table>
+<table class="tableEmploye">
 	<tr>
 		<td>Nom:</td><td><?php echo strtoupper($this->nom);?></td>
 	</tr>
@@ -39,7 +39,7 @@
 				$newDate = mktime(0, 0, 0, date('m', $timestamp), date('d', $timestamp), date('Y', $timestamp) + 1);
 				echo '
 				<tr>
-					<td>'.$brevet->libelle.'</td><td>'.date('d/m/Y', $timestamp).' valable jusqu\'au '.date('d/m/Y', $newDate).' <span style="cursor:pointer;" onclick="prolongeBrevet('.$this->idPilote.', '.$brevet->id_type_avion.', \''.$brevet->date.'\')">Prolonger d\'un an</span></td>
+					<td>'.$brevet->libelle.'</td><td>'.date('d/m/Y', $timestamp).' valable jusqu\'au '.date('d/m/Y', $newDate).' <button style="cursor:pointer;" onclick="prolongeBrevet('.$this->idPilote.', '.$brevet->id_type_avion.', \''.$brevet->date.'\')">Prolonger</button></td>
 				</tr>
 				';
 			}

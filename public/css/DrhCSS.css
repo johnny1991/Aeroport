@@ -2,9 +2,9 @@
 
 .h3DRH{text-align:center;}
 
-.boxAjouterService{width:600px;border:1px #000 solid;margin:auto;text-align:center;}
+.boxAjouterService{width:500px;border:1px #59b25c solid;margin:auto;text-align:center;background-color:rgba(114, 219, 119, 0.5);border-radius:10px;}
 
-.tableService{border:1px #000 solid;width:100%;border-collapse:collapse;}
+.tableService{border:1px #000 solid;width:100%;border-collapse:collapse;border-left:none;border-right:none;}
 .tableService th{border-bottom:1px #000 solid;background-color:#84a5c3;}
 .tableService th#asc{border-bottom:1px #000 solid;background-color:#84a5c3;}
 .tableService th#desc{border-bottom:1px #000 solid;background-color:#84a5c3;}
@@ -13,12 +13,14 @@
 .tdLibelleService{padding-left:15px;}
 .tdOption{width:40px;text-align:center;}
 .tdOption div{margin-left:10px;cursor:pointer;}
+.tdOptionService div{margin-left:30px;cursor:pointer;}
 .tdOption a{margin-left:10px;}
 .errorForm{color:red;}
 .tdDateEmbauche{text-align:center;}
-.DivErreurForm{display:none;width:450px;min-height:30px;margin:auto;background-color:#ad2525;border:1px red solid;color:#290b0b;text-align:center;padding-top:10px;margin-bottom:20px;}
+.DivErreurForm{display:none;width:450px;min-height:30px;margin:auto;background-color:#ad2525;border:1px red solid;border-radius:10px;color:#290b0b;text-align:center;padding-top:10px;margin-bottom:20px;}
 
-
+#ajouterEmploye{width:380px;margin:auto;background-color:rgba( 202, 243, 247, 0.5);border:1px #a7cdd1 solid;padding:10px 20px;margin-bottom:20px;}
+#ajouter{margin-left:150px;margin-top:20px;}
 
 .h3Pilote{margin-left:30px;border-bottom:1px #000 solid;margin-right:30px;}
 
@@ -31,3 +33,6 @@
 	.ulPilote{list-style:none;}
 	.ulPilote a{color:#000;text-decoration:none;}
 	.ulPilote a:hover{text-decoration:underline;}
+
+.tableEmploye{width:500px;margin:auto;background-color:rgba( 202, 243, 247, 0.5);border:1px #a7cdd1 solid;padding:10px 20px;margin-bottom:20px;}
+.tableEmploye tr{height:30px;}

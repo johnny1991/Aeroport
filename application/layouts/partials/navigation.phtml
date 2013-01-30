@@ -47,6 +47,19 @@ if($identity->id_service != 8){
 		</ul>
 	</li>
 
-	<li><a href="#">Réservation</a></li>
+	<li <?php if($controller == 'logistique') : ?> class="current" <?php endif;?>><a href="#">Logistique</a>
+		<ul>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'logistique','index')) : ?> href="<?php echo $this->baseUrl('logistique/') ?>" class="nocurrent"<?php endif;?>>Consulter les vols</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'logistique','consulter-remarque')) : ?> href="<?php echo $this->baseUrl('logistique/consulter-remarque') ?>" class="nocurrent"<?php endif;?>>Consulter les types de remarque</a></li>
+		</ul>
+	</li>
+	
+	<li <?php if($controller == 'crud') : ?> class="current" <?php endif;?>><a href="#">Crud</a>
+		<ul>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'crud','liste-aeroport')) : ?> href="<?php echo $this->baseUrl('crud/liste-aeroport') ?>" class="nocurrent"<?php endif;?>>Consulter les aéroports</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'crud','liste-ville')) : ?> href="<?php echo $this->baseUrl('crud/liste-ville') ?>" class="nocurrent"<?php endif;?>>Consulter les villes</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'crud','liste-pays')) : ?> href="<?php echo $this->baseUrl('crud/liste-pays') ?>" class="nocurrent"<?php endif;?>>Consulter les pays</a></li>
+		</ul>
+	</li>
 </ul>
 <?php }?>
