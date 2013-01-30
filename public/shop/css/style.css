@@ -460,7 +460,7 @@ h2 {
 .contentSidePanier {
 	float: left;
 	line-height: 1.5;
-	cursor:pointer;
+	cursor: pointer;
 }
 
 .contentSidePanier ul {
@@ -994,7 +994,7 @@ fieldset .Global {
 
 .total_head_content_panier {
 	width: 81px;
-	padding-right:0px;
+	padding-right: 0px;
 }
 
 .ligne_content_panier {
@@ -1008,18 +1008,28 @@ fieldset .Global {
 	float: left;
 }
 
-.produit_ligne_content_panier ul {
+.produit_ligne_content_panier ul,.designationInfoProduitClient1 ul {
 	float: left;
-	width:295px
+	width: 295px;
 }
 
-.produit_ligne_content_panier ul li{
-	margin-left:10px
+.designationInfoProduit{
+	width:430px;
 }
 
-.remove_produit_ligne_content_panier{
-	float:left;
-	margin-top:10px;
+.designationInfoProduit ul {
+	float: left;
+	width: 200px;
+}
+
+.produit_ligne_content_panier ul li,.designationInfoProduitClient1 ul li,.designationInfoProduit ul li
+	{
+	margin-left: 10px
+}
+
+.remove_produit_ligne_content_panier {
+	float: left;
+	margin-top: 10px;
 }
 
 .photo_ligne_content_panier {
@@ -1296,6 +1306,15 @@ fieldset .Global {
 	text-align: left;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	/*background-color: #E5E5E5;*/
+}
+
+.montant-confirmation {
+	background-color: #E5E5E5;
+}
+
+.montant-confirmation td{
+	padding:0px;
 }
 
 #tableau1,#tableau2,#Total {
@@ -1454,6 +1473,7 @@ fieldset .Global {
 
 .designationInfoProduitClient1 {
 	width: 600px;
+	padding-left: 5px;
 }
 
 .nom_total {
@@ -1491,7 +1511,7 @@ fieldset .Global {
 }
 
 .nomLigneCommande {
-	width: 180px;
+	width: 170px;
 	text-overflow: ellipsis;
 }
 
@@ -1585,7 +1605,7 @@ fieldset .Global {
 .Map-New-Ligne {
 	float: left;
 	height: 300px;
-	width: 300px;
+	width: 355px;
 	margin: 10px;
 }
 
@@ -1594,8 +1614,8 @@ fieldset .Global {
 	float: left;
 }
 
-.Desc .blockSidePanier{
-	padding:5px 15px;
+.Desc .blockSidePanier {
+	padding: 5px 15px;
 }
 
 .detailDesc label {
@@ -1606,4 +1626,36 @@ fieldset .Global {
 
 .detailDesc ul li {
 	margin-left: 10px;
+}
+
+#mode_liste ul li{
+padding:2px 0;	
+}
+
+#mode_liste a {
+	color: #4F8100;
+}
+
+#mode_liste a:hover {
+	text-decoration: underline;
+}
+
+.livreLigneCommande{
+	width:75px;
+}
+
+.idRemarqueClient{
+	width:40px;
+}
+
+.infosRemarqueClient{
+	width:475px;
+}
+
+.typeRemarqueClient{
+	width: 120px;
+}
+
+.commentairesLigneCommande:hover{
+	text-decoration: underline;
 }

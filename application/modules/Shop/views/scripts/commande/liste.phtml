@@ -3,36 +3,30 @@
 foreach($this->messages as $message)
 	echo $message;
 ?>
-<div id="texteDroite2">
-	<?php if($this->livre){?>
-	<a href="<?= $this->baseUrl('liste_commandes/livre');?>">Afficher
-		toutes les commandes</a>
-	<?php } else {?>
-	<a href="<?= $this->baseUrl('liste_commandes');?>">Afficher uniquement
-		les commandes non livrés</a>
-	<?php } ?>
-</div>
 <?php if($this->paginator->count() > 0) {?>
 
 <table class="liste">
 	<thead>
 		<tr class="Head">
 			<?php 
-			/*echo $this->HeadId;
-			 echo $this->HeadNom;
-			echo $this->HeadPrenom;
-			echo $this->HeadNombre;
+			echo $this->HeadId;
+			echo $this->HeadVol;
+			echo $this->HeadLigne;
+			echo $this->HeadClient;
+			echo $this->HeadQuantite;
 			echo $this->HeadMontant;
 			echo $this->HeadDate;
-			echo $this->HeadLivre;*/
+			echo $this->HeadEtat;
 			?>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
+		$i = 0;
 		foreach ($this->paginator as $reservation)
-					{?>
+		{
+$i++;?>
 		<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
 			<td><a
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
@@ -40,35 +34,45 @@ foreach($this->messages as $message)
 			</td>
 			<td><a
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="nombreLigneCommande"><?= $reservation->numero_ligne; ?> </a>
+				class="idLigneCommande"><?= $reservation->numero_ligne; ?> </a>
 			</td>
 			<td><a
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="nombreLigneCommande"><?= $reservation->id_vol; ?> </a>
+				class="idLigneCommande"><?= $reservation->id_vol; ?> </a>
 			</td>
 			<td><a
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="nomLigneCommande"><?= ($reservation->nom) ? $reservation->nom : "Inconnu"; ?>
+				class="nombreLigneCommande"><?= ($reservation->nom) ? $reservation->nom : "Inconnu"; 
+				echo ($reservation->prenom) ? " ".$reservation->prenom : " Inconnu" ?>
 			</a>
 			</td>
 			<td><a
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="prenomLigneCommande"><?= ($reservation->prenom) ? $reservation->prenom : "Inconnu"; ?>
-			</a>
+				class="quantiteLigneCommande"><?= $reservation->nbreservation; ?> </a>
 			</td>
 			<td><a
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="montantLigneCommande"><?= ($reservation->tarif_effectif == 0) ? $reservation->tarif."€" : $reservation->tarif_effectif."€"; ?></a>
+				class="montantLigneCommande"><?= $reservation->montant."€"?> </a>
 			</td>
-			<td><a
+			<td><?php $dateDebut = new Zend_Date($reservation->date,'yyyy-MM-dd-HH-mm-ss');?>
+				<?php //$dateNow = Zend_Date::now()->get('yyyy-MM-dd-HH-mm-ss'); ?>
+				<?php $dateNow = new Zend_Date(); 
+				//	echo $dateNow->get('HH:mm'),"<br>"; ?> <?php //$dateEcart = new Zend_Date("0000-00-00-02-00-00",'yyyy-MM-dd-HH-mm-ss');
+			 //echo $dateEcart->get('HH:mm'),"<br>";?> <?php $dateNow->subHour($dateDebut)->subMinute($dateDebut); ?>
+				<?php //echo $dateNow; ?> <?php //$dateEcart->subHour($dateNow)->subMinute($dateNow);?>
+				<?php //$seconde = ($dateEcart->get('HH')*3600) + ($dateEcart->get('mm')*60) ?>
+				<a
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="dateLigneCommande"><?= date("d/m/y à H:i",strtotime($reservation->date));?>
-			</a>
+				class="dateLigneCommande"><?= $dateNow->get('HH:mm');?> </a>
 			</td>
 			<td><a
-				href="<?//= $this->baseUrl('livre_commande/'.$reservation->id_reservation.'/'); ?><?//= ($reservation->Islivre) ? 'nonlivre' : 'livre'; ?>"
-				class="boutonConfigCommande"
-				title="<?//= ($reservation->Islivre) ? 'Marqué comme non livré' : 'Marqué comme livré'; ?>"></a>
+				href="<?= $this->baseUrl('fiche_commande/'.$reservation->id_reservation.'/'); ?><?//= ($reservation->Islivre) ? 'nonlivre' : 'livre'; ?>"
+				class="montantLigneCommande"
+				title="<?= ($reservation->is_valid) ? 'Marqué comme non livré' : 'Marqué comme livré'; ?>">
+					<?php if($reservation->is_valid) { 
+						?> <span style="color: green">Validé</span> <?php } else {?> <span
+					style="color: red">En attente</span> <?php } ?>
+			</a>
 		
 		</tr>
 		<?php }?>

@@ -1,0 +1,77 @@
+<?php $remarques = $this->remarques; ?>
+<?php $form = $this->form; ?>
+<div class="Block">
+	<div class="HeadBlock">Ajouter un commentaire</div>
+	<div class="contentBLock">
+		<form method="<?= $form->getMethod() ?>"
+			action="<?= $form->getAction();?>">
+			<div class="contentBLock">
+				<div class="rowBlock">
+					<?php $form->getElement("type")->getDecorator('label')->setOption('tag', null); 
+					if($form->getElement('type')->hasErrors())
+					$form->type->setAttrib('class','inputRequired');?>
+					<div>
+						<?= $form->type->renderLabel();?>
+					</div>
+					<div>
+						<?= $form->type->renderViewHelper();?>
+					</div>
+					<div>
+						<?= $form->type->renderErrors();?>
+					</div>
+				</div>
+			</div>
+			<div class="contentBLock">
+				<div class="rowBlock">
+					<?php $form->getElement("libelle")->getDecorator('label')->setOption('tag', null); 
+					if($form->getElement('libelle')->hasErrors())
+					$form->libelle->setAttrib('class','inputRequired');?>
+					<div>
+						<?= $form->libelle->renderLabel();?>
+					</div>
+					<div>
+						<?= $form->libelle->renderViewHelper();?>
+					</div>
+					<div>
+						<?= $form->libelle->renderErrors();?>
+					</div>
+				</div>
+			</div>
+			<div class="contentBLock">
+				<div class="rowBlock">
+					<div>
+						<?= $form->Ajouter->renderViewHelper();?>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="Block">
+	<div class="HeadBlock">Commentaires</div>
+	<div class="contentBLock">
+		<?php if($remarques->count() > 0) {?>
+		<table id="Total">
+			<thead>
+				<tr>
+					<th class="idRemarqueClient">Id</th>
+					<th class="infosRemarqueClient">Informations</th>
+					<th class="typeRemarqueClient">Type de remarque</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($remarques as $remarque) {?>
+				<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
+					<td><span><?= $remarque->id_remarque; ?> </span></td>
+					<td><span><?= $remarque->libelle_remarque ; ?> </span></td>
+					<td><span><?= $remarque->findParentRow('TypeRemarque')->libelle_type_remarque; ?>
+					</span></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
+		<?php } else {?>
+		Aucun commentaires pour le moment.
+		<?php } ?>
+	</div>
+</div>

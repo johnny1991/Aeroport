@@ -1,14 +1,13 @@
-<?php $commande = $this->commande;?>
-<?php $transport = $this->transport; ?>
+<?php $reservation = $this->reservation;?>
 <?php $paiement = $this->paiement; ?>
 <?php $client = $this->client; ?>
 <?php $adresse = $this->adresse; ?>
 
 <h2>
 	Commande n°
-	<?=$commande->id_commande; ?>
+	<?=$reservation->id_reservation; ?>
 	-
-	<?= ($commande->Islivre) ? "Reçu" : "En attente"; ?>
+	<?= ($reservation->is_valid) ? "Validé" : "En attente"; ?>
 </h2>
 <div class="Block">
 	<div class="HeadBlock">Information sur la commande</div>
@@ -17,7 +16,7 @@
 			<div>Date de commande :</div>
 			<div>
 				Le
-				<?= date("d/m/y à H:i",strtotime($commande->date)); ?>
+				<?= date("d/m/y à H:i",strtotime($reservation->date)); ?>
 			</div>
 		</div>
 		<div class="rowBlock1">
@@ -27,35 +26,29 @@
 			</div>
 		</div>
 		<div class="rowBlock1">
-			<div>Livraison par :</div>
-			<div>
-				<b><?= $transport->libelle; ?> </b>
-			</div>
-		</div>
-		<div class="rowBlock1">
 			<div>Montant total :</div>
 			<div>
-				<?= $commande->montant."€"; ?>
+				<?= $reservation->montant."€"; ?>
 			</div>
 		</div>
 		<div class="rowBlock1">
 			<div>Statut :</div>
 			<div>
-				<?php 	if($commande->Islivre){?>
-				<span id='LivreOk'>Livrée</span>
+				<?php 	if($reservation->is_valid){?>
+				<span id='LivreOk'>Validé</span>
 				<?php }else { ?>
-				<span id='LivreNok'>Non livrée</span>
+				<span id='LivreNok'>En attente</span>
 				<?php }?>
 			</div>
 		</div>
-		<?php if ($commande->commentaire != NULL) {?>
-		<div class="rowBlock1">
+		<?php //if ($reservation->commentaire != NULL) {?>
+		<!--<div class="rowBlock1">
 			<div>Commentaire :</div>
 			<div>
-				<?= $commande->commentaire;?>
+				<?//= $reservation->commentaire;?>
 			</div>
-		</div>
-		<?php } ?>
+		</div>-->
+		<?php //} ?>
 	</div>
 </div>
 <div class="Block">
@@ -100,7 +93,7 @@
 	</div>
 </div>
 <div class="Block">
-	<div class="HeadBlock">Adresse de livraison</div>
+	<div class="HeadBlock">Adresse de facturation</div>
 	<div class="contentBLock">
 		<?php if ($adresse == NULL){?>
 		<div class="rowBlock1">
@@ -122,89 +115,64 @@
 		<?php }?>
 	</div>
 </div>
-<?php $CommandeProduits = $this->commandeProduits; ?>
 <div class="Block">
-	<div class="HeadBlock">Information sur les produits</div>
+	<div class="HeadBlock">Information sur le vol</div>
 	<div class="contentBLock">
-		<?php if($CommandeProduits->count() > 0) { ?>
+		<?php if(true) { ?>
+		<?php $TableVol = new Vol();
+		$vol = $TableVol->find($reservation->id_vol,$reservation->numero_ligne)->current(); ?>
 		<table id="tableau2">
 			<thead>
 				<tr class="Head">
-					<th class="idInfoProduit">Id</th>
-					<th class="designationInfoProduit">Désignation</th>
-					<th class="quantiteligneProduit">Qté</th>
-										<th class="quantiteRInfoProduit"><?= ($commande->Islivre) ? 'Qté restante' : 'Qté après livraison' ;?>
+					<th class="designationInfoProduit">Vol</th>
+					<th class="designationInfoProduit">Ligne</th>
+					<th class="quantiteRInfoProduit">Nombre de réservations</th>
 					<th class="prixUInfoProduit">Prix unitaire</th>
 					<th class="PrixTInfoProduit">Prix Total</th>
-					</th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($CommandeProduits as $CommandeProduit)
-					{ ?>
 				<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
-					<?php $produit = $CommandeProduit->findParentRow('Produit'); ?>
-					<?php if($produit != NULL) { ?>
+					<?php if($vol != NULL) { ?>
 					<td><a
-						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-						class="idInfoProduit" target="_blank"><?= $produit->id_produit;?>
+						href="<?= $this->baseUrl('/vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
+						class="idInfoProduit" target="_blank"><?= $vol->id_vol;?> </a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('/vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
+						class="designationInfoProduit" target="_blank"><?= $vol->numero_ligne;?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('/vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
+						class="quantiteligneProduit" target="_blank"><?=  $reservation->nbreservation; ?>
+					</a>
+					</td>
+					<td><a
+						href="<?= $this->baseUrl('/vol/fiche-vol/ligne/'.$vol->numero_ligne.'/vol/'.$vol->id_vol); ?>"
+						class="quantiteRInfoProduit" target="_blank"> <?php if($vol->tarif_effectif == 0) echo $vol->tarif; else echo $vol->tarif_effectif; ?>€
 					</a>
 					</td>
 					<td><a
 						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-						class="designationInfoProduit" target="_blank"><?= $produit->designation;?>
-					</a>
-					</td>
-					<td><a
-						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-						class="quantiteligneProduit" target="_blank"><?=  $CommandeProduit->quantite; ?>
-					</a>
-					</td>
-					<td><a
-						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-						class="quantiteRInfoProduit" target="_blank"> <?php if($commande->Islivre){?>
-							<?= $produit->quantite; ?> <?php } else { ?> <?=  ($produit->quantite-$CommandeProduit->quantite); ?>
-							<?php } ?>
-					</a>
-					</td>
-					<td><a
-						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-						class="prixUInfoProduit" target="_blank"><?= $produit->prix.'€';?>
-					</a>
-					</td>
-					<td><a
-						href="<?= $this->baseUrl('fiche_produit_admin/').$produit->id_produit; ?>"
-						class="PrixTInfoProduit" target="_blank"><?= ($produit->prix*$CommandeProduit->quantite).'€';?>
+						class="PrixTInfoProduit" target="_blank"><?= $reservation->montant." €";?>
 					</a>
 					</td>
 					<?php } else {?>
-					<td colspan="6"><span><b>Cet article n'est plus en ligne</b> </span>
+					<td colspan="6"><span><b> Le vol a été supprimé </b> </span>
 					</td>
 					<?php } ?>
 				</tr>
-				<?php } ?>
-				<tr id="underline">
-					<td colspan="5"><span class="nom_total">Montant sous-Total</span>
-					</td>
-					<td><span class="prix_total"><?= ($commande->montant-$transport->prix)." €"; ?> </span>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="5"><span class="nom_total">Frais de port (<?= $transport->libelle; ?>)
-					</span></td>
-					<td><span class="prix_total"><?= $transport->prix." €"; ?> </span>
-					</td>
-				</tr>
 				<tr class="Odd">
-					<td colspan="5"><span class="nom_total"><b>Montant Total</b> </span>
+					<td colspan="4"><span class="nom_total"><b>Montant Total</b> </span>
 					</td>
-					<td><span class="prix_total"><b><?= $commande->montant." €"; ?>
+					<td><span class="prix_total"><b><?= $reservation->montant." €"; ?>
 						</b> </span></td>
 				</tr>
 			</tbody>
 		</table>
 		<?php } else {?>
-		Le(s) produit(s) ont été supprimé(s)
+		Le vol a été supprimé
 		<?php } ?>
 	</div>
 </div>
@@ -212,17 +180,17 @@
 	<div class="contentBLock">
 		<div class="rowBlock">
 			<div>
-				<?php if($commande->Islivre){?>
+				<?php if($reservation->is_valid){?>
 				<form
-					action="<?= $this->baseUrl('commande/envoye/islivre/nonlivre/id/'.$commande->id_commande); ?>"
+					action="<?= $this->baseUrl('Shop/commande/envoye/is_valid/non/id/'.$reservation->id_reservation); ?>"
 					method="get">
-					<input type="submit" value="Marquer comme Non livrée">
+					<input type="submit" value="Marquer comme Refusé">
 				</form>
 				<?php }else { ?>
 				<form
-					action="<?= $this->baseUrl('commande/envoye/islivre/livre/id/'.$commande->id_commande); ?>"
+					action="<?= $this->baseUrl('Shop/commande/envoye/is_valid/oui/id/'.$reservation->id_reservation); ?>"
 					method="get">
-					<input type="submit" value="Marquer comme livrée">
+					<input type="submit" value="Marquer comme Validé">
 				</form>
 				<?php }?>
 			</div>

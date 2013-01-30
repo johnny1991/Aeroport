@@ -1,4 +1,4 @@
-<h2>Mes commandes</h2>
+<h2>Mes Reservations</h2>
 <?php if($this->paginator->count() != 0) { ?>
 <div class="Block">
 	<div class="HeadBlock">Liste de vos commandes</div>
@@ -6,49 +6,55 @@
 		<table id="tableau1">
 			<thead>
 				<tr class="Head">
-					<?php 
+					<?php
 					echo $this->HeadId;
-					echo $this->HeadNom;
-					echo $this->HeadPrenom;
-					echo $this->HeadNombre;
+					echo $this->HeadClient;
+					echo $this->HeadQuantite;
 					echo $this->HeadMontant;
 					echo $this->HeadDate;
-					echo $this->HeadLivre;
+					echo $this->HeadEtat;
 					?>
+					<th><span class="commentairesLigneCommande">Commentaires</span></th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
-				foreach ($this->paginator as $commande)
+				foreach ($this->paginator as $reservation)
 					{ ?>
 				<tr class="<?= $this->cycle(array("Odd", "Even"))->next();?>">
 					<td><a
-						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
-						class="idLigneCommande"><?= $commande->id_commande; ?> </a>
+						href="<?= $this->baseUrl('fiches_commandes/').$reservation->id_reservation; ?>"
+						class="idLigneCommande"><?= $reservation->id_reservation; ?> </a>
 					</td>
 					<td><a
-						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
-						class="nomLigneCommande"><?= $commande->prenom." ".$commande->nom; ?>
+						href="<?= $this->baseUrl('fiches_commandes/').$reservation->id_reservation; ?>"
+						class="nomLigneCommande"><?= $reservation->prenom." ".$reservation->nom; ?>
 					</a>
 					</td>
 					<td><a
-						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
-						class="nombreLigneCommande"><?= $commande->num; ?> </a>
+						href="<?= $this->baseUrl('fiches_commandes/').$reservation->id_reservation; ?>"
+						class="nombreLigneCommande"><?= $reservation->nbreservation; ?> </a>
 					</td>
 					<td><a
-						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
-						class="montantLigneCommande"><?= $commande->montant." €"; ?> </a>
+						href="<?= $this->baseUrl('fiches_commandes/').$reservation->id_reservation; ?>"
+						class="montantLigneCommande"><?= $reservation->montant." €"; ?> </a>
 					</td>
 					<td><a
-						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
-						class="dateLigneCommande"><?= date("d/m/y à H:i",strtotime($commande->date));?>
+						href="<?= $this->baseUrl('fiches_commandes/').$reservation->id_reservation; ?>"
+						class="dateLigneCommande"><?= date("d/m/y à H:i",strtotime($reservation->date));?>
 					</a>
 					</td>
 					<td><a
-						href="<?= $this->baseUrl('fiches_commandes/').$commande->id_commande; ?>"
-						class="montantLigneCommande"> <?php 	if($commande->Islivre){?> <span
-							id='LivreOk'>Envoyée</span> <?php }else { ?> <span id='LivreNok'>En attente</span> <?php }?>
+						href="<?= $this->baseUrl('fiches_commandes/').$reservation->id_reservation; ?>"
+						class="montantLigneCommande"> <?php 	if($reservation->is_valid){?>
+							<span id='LivreOk'>Validé</span> <?php }else { ?> <span
+							id='LivreNok'>En attente</span> <?php }?>
 					</a>
+					</td>
+							<td><?php if($reservation->is_valid){ ?><a
+						href="<?= $this->baseUrl('Shop/client/commentaire/id/').$reservation->id_reservation; ?>"
+						class="commentairesLigneCommande">Commentaires
+					</a><?php } ?>
 					</td>
 				</tr>
 				<?php }?>

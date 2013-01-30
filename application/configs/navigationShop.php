@@ -160,6 +160,13 @@ $array = array(
 														'action'     => 'fiche-commande',
 														'route'		 => 'mesFichesCommandes',
 														'title'		 =>	'Fiche de commande')
+												,
+												array(
+														'label'      => 'Commentaires Commande',
+														'module'     => 'Shop',
+														'controller' => 'client',
+														'action'     => 'commentaire',
+														'title'		 =>	'Commentaires Commande')
 										)
 								)
 						)

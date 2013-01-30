@@ -1,4 +1,4 @@
-<?php $produits = $this->produits; ?>
+<?php $vol = $this->vol;?>
 <div class="contenuSidebar">
 	<div class="headSidebar">
 		<span class="titleHeadSidebar"><a
@@ -6,29 +6,15 @@
 	</div>
 	<div id="contentSidebar">
 		<div class="blockSidePanier">
-			<?php if(count($produits) > 0) {?>
+			<?php if($vol != NULL) {?>
 			<div class="nbProduitContentSidePanier">
-				<a href="<?= $this->baseUrl('panier'); ?>"><b>Voir le panier</b></a>
+				<a href="<?= $this->baseUrl('panier'); ?>"><b>Voir le panier</b> </a>
 			</div>
-			<?php foreach($produits as $vol) { ?>
 			<div class="ligneContentSidePanier">
-				<!--<div class="photoContentSidePanier">
-					<?php 
-					//if (($produit[1]->photo1 != NULL) && (file_exists(APPLICATION_PATH.'/../public/shop/img/Produits/'.$produit[1]->photo1))) {
-				//	$ImageSize = Application_Image_Tools::adaptationTailleImage(APPLICATION_PATH.'/../public/shop/img/Produits/'.$produit[1]->photo1,80,98); ?>
-					<a href="<?//= $this->baseUrl('Article/'.$produit[3]);?>"><img
-						src="<?//= $this->baseUrl('/shop/img/Produits/Thumbnails/'.$produit[1]->photo1); ?>"
-						width="<?//= $ImageSize[0]; ?>px" height="<//= $ImageSize[1]; ?>px">
-					</a>
-					<?php //} else { 
-					//$ImageSize = Application_Image_Tools::adaptationTailleImage(APPLICATION_PATH.'/../public/shop/img/Produits/SmallNoPicture.png',80,98); ?>
-					<img src="<?//=  $this->baseUrl('/shop/img/Produits/SmallNoPicture.png'); ?>"
-						width="<?//= $ImageSize[0]; ?>px" height="<?//= $ImageSize[1]; ?>px">
-					<?php // }?>
-				</div>-->
-				<div class="contentSidePanier" onClick="window.location='<?= $this->baseUrl('itineraire/'.$vol[1]->numero_ligne."_".$vol[1]->id_vol); ?>'">
+				<div class="contentSidePanier"
+					onClick="window.location='<?= $this->baseUrl('itineraire/'.$vol[1]->numero_ligne."_".$vol[1]->id_vol); ?>'">
 					<ul>
-						<label><b>Départ :</b></label>
+						<label><b>Départ :</b> </label>
 						<li><?= $vol[1]->aeroportDepart;?></li>
 						<li><?= $vol[1]->pays_Depart;?></li>
 						<?php $Date = new Zend_Date($vol[1]->date_depart,'dd-MM-yy')?>
@@ -40,7 +26,7 @@
 						<li><?= $vol[1]->heure_depart;?></li>
 					</ul>
 					<ul>
-						<label><b>Arrivée :</b></label>
+						<label><b>Arrivée :</b> </label>
 						<li><?= $vol[1]->aeroportArrivee;?></li>
 						<li><?= $vol[1]->pays_Arrive;?></li>
 						<?php $Date1 = new Zend_Date($vol[1]->date_arrivee,'dd-MM-yy')?>
@@ -50,16 +36,22 @@
 						<li><?= $vol[1]->heure_arrivee;?></li>
 					</ul>
 					<div>
-						<div><label><b>Nombre de reservation : </b></label><span><b><?= $vol[2];?> </b></span></div>
-						<div><label><b>Prix pour une place : </b></label><span><b><?= $vol[4].'€'; ?></b></span></div>
+						<div>
+							<label><b>Nombre de reservation : </b> </label><span><b><?= $vol[2];?>
+							</b> </span>
+						</div>
+						<div>
+							<label><b>Prix pour une place : </b> </label><span><b><?= $vol[4].'€'; ?>
+							</b> </span>
+						</div>
 					</div>
 					<div id="iconeRemoveContentSidePanier">
-						<a href="<?= $this->baseUrl('panier/'.$vol[1]->numero_ligne."_".$vol[1]->id_vol); ?>"
+						<a
+							href="<?= $this->baseUrl('panier/'.$vol[1]->numero_ligne."_".$vol[1]->id_vol); ?>"
 							id="removeContentSidePanier"><span>Supprimer</span> </a>
 					</div>
 				</div>
 			</div>
-			<?php } ?>
 			<div id="sousTotalSidePanier">
 				Total du vol : <b><?=$this->sousTotal." €";?> </b>
 			</div>

@@ -1,4 +1,4 @@
-function AffichageSousCategorie()
+/*function AffichageSousCategorie()
 {
 	AffichageDisplaySousCategorie();
 	$.ajaxSetup ({
@@ -28,7 +28,7 @@ function AffichageDisplaySousCategorie(){
 		document.getElementById('sousCategorie').style.display='block';
 	else
 		document.getElementById('sousCategorie').style.display='none';
-}
+}*/
 
 function AffichageImage(element)
 {
