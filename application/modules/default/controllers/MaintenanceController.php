@@ -567,10 +567,12 @@ class MaintenanceController extends Zend_Controller_Action
 		->where('ma.fin_prevue >=?',Zend_Date::now()->get('yyyy-MM-dd'))
 		->where('ma.id_avion=?',$id);
 		$resultM = $TableMaintenance->fetchRow($requeteM);
-		
-		
+		//Zend_Debug::dump($requeteM);
+		//echo $requeteM;
+		//exit();
 		if( ($this->getRequest()->isPost()) && ($form->isValid($this->getRequest()->getPost())) )
 		{
+
 			$TableIntervention = new Intervention();
 			$intervention = $TableIntervention->createRow();
 			$intervention->login = $nom;
@@ -585,7 +587,8 @@ class MaintenanceController extends Zend_Controller_Action
 		->setIntegrityCheck(false)
 		->from(array('i'=>'intervention'))
 		->joinLeft(array('ma'=>'maintenance'), 'ma.id_maintenance = i.id_maintenance')
-		->joinLeft(array('a'=>'avion'), 'a.id_avion = ma.id_avion');
+		->joinLeft(array('a'=>'avion'), 'a.id_avion = ma.id_avion')
+		->where('ma.id_maintenance=?',$resultM->id_maintenance);
 		
 		$result = $TableIntervention->fetchAll($requete);
 			
@@ -597,6 +600,36 @@ class MaintenanceController extends Zend_Controller_Action
 		
 		$this->view->form = $form;
 	
+	}
+	
+	public function consulterInterventionAction(){
+		$this->view->title = "Consultation des interventions";
+		$nbLigne = 25; //Nombre de lignes par pages
+		
+		$TableAvion = new Avion();
+		$id = $this->_getParam('id');
+
+		
+		$TableIntervention = new Intervention();
+		$requete = $TableIntervention->select()
+		->setIntegrityCheck(false)
+		->from(array('i'=>'intervention'))
+		->joinLeft(array('ma'=>'maintenance'), 'ma.id_maintenance = i.id_maintenance')
+		->joinLeft(array('a'=>'avion'), 'a.id_avion = ma.id_avion')
+		->where('ma.id_maintenance=?',$id);
+		
+		$this->view->id = $id;
+		
+		//echo $requete;exit();
+		$result = $TableIntervention->fetchAll($requete);
+		
+		
+		
+		$paginator = Zend_Paginator::factory($result);
+		$paginator->setItemCountPerPage($nbLigne);
+		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+		$this->view->param=$this->getAllParams();
+		$this->view->paginator = $paginator;
 	}
 	
 	public function init(){ //OK

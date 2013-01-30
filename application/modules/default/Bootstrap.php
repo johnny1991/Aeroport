@@ -32,7 +32,10 @@ class Default_Bootstrap extends Zend_Application_Module_Bootstrap
 		$Avions = $TableAvion->fetchAll();
 		foreach ($Avions as $Avion)
 		{
-			$requete = $TableMaintenance->select()->where('date_prevue <=?',$currentDate->get('yyyy-MM-dd'))->where('id_avion =?',$Avion->id_avion);
+			$requete = $TableMaintenance->select()
+			->where('date_prevue <=?',$currentDate->get('yyyy-MM-dd'))
+			->where('fin_prevue >=?',$currentDate->get('yyyy-MM-dd'))
+			->where('id_avion =?',$Avion->id_avion);
 			$Maintenance = $TableMaintenance->fetchAll($requete);
 			if($Maintenance->count())
 				$Avion->disponibilite_avion = false;

@@ -1,19 +1,9 @@
-<script type="text/javascript">
-$(document).ready(function(){
-	$("input[name=Duree]").timepicker({
-		hourGrid: 4,
-		minuteGrid: 10,
-		timeFormat: "hh:mm:ss t",
-	});
-});
-</script>
 <?php 
 foreach($this->messages as $message)
 	echo $message;
 ?>
-<h2>Liste des interventions pour la maintenance </h2>
-<?php echo $this->form; ?>
 <?php if(count($this->paginator) > 0){ ?>
+<h2>Liste des interventions pour la maintenance <?php echo $this->id; ?></h2>
 
 
 <table class="table_consulter-ligne">

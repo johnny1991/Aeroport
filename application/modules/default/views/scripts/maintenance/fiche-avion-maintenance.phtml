@@ -32,31 +32,31 @@ foreach($this->messages as $message)
 		<tr
 			class="<?php echo $this->cycle(array("Odd", "Even"))->next();?><?php if(isset($doublons[$maintenance->id_avion])) echo " doublons"?>">
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+				href="<?php echo $this->baseUrl('maintenance/consulter-intervention/id/').$maintenance->id_maintenance; ?>">
 					<?php echo $maintenance->id_maintenance; ?>
 			</a></td>
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+				href="<?php echo $this->baseUrl('maintenance/consulter-intervention/id/').$maintenance->id_maintenance; ?>">
 					<?php echo $maintenance->id_avion; ?>
 			</a></td>
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+				href="<?php echo $this->baseUrl('maintenance/consulter-intervention/id/').$maintenance->id_maintenance; ?>">
 					<?php echo $maintenance->findParentRow('Avion')->findParentRow('TypeAvion')->libelle; ?>
 			</a></td>
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+				href="<?php echo $this->baseUrl('maintenance/consulter-intervention/id/').$maintenance->id_maintenance; ?>">
 					<?php echo $maintenance->findParentRow('Avion')->total_heure_vol; ?>
 			</a></td>
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+				href="<?php echo $this->baseUrl('maintenance/consulter-intervention/id/').$maintenance->id_avion; ?>">
 					<?php $dateDebut = new Zend_Date($maintenance->date_prevue)?> <?php echo $dateDebut->get('dd-MM-yyyy'); ?>
 			</a></td>
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+				href="<?php echo $this->baseUrl('maintenance/consulter-intervention/id/').$maintenance->id_maintenance; ?>">
 					<?php $dateFin = new Zend_Date($maintenance->fin_prevue)?> <?php echo $dateFin->get('dd-MM-yyyy'); ?>
 			</a></td>
 			<td class="ligne"><a
-				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$maintenance->id_avion; ?>">
+				href="<?php echo $this->baseUrl('maintenance/consulter-intervention/id/').$maintenance->id_maintenance; ?>">
 					<?php $dateTemp = new Zend_Date($maintenance->date_prevue,'dd-MM-yy'); ?>
 					<?php $dateTemp->addDay(10); ?> <?php if($dateTemp == $dateFin) echo "Grosse révision (10 jours)"; else echo "Petite révision (2 jours)" ?>
 			</a></td>
