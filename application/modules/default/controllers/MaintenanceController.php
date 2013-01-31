@@ -71,6 +71,7 @@ class MaintenanceController extends Zend_Controller_Action
 	public function modifierAvionAction(){
 		$this->view->title = "Modifier un avion";
 		$form = new FormulaireAvion();
+		$form->removeElement('disponibilite');
 		$TableAvion = new Avion();
 		$id = $this->_getParam('id');
 		$avion = $TableAvion->find($id)->current();

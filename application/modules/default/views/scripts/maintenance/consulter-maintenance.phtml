@@ -17,6 +17,7 @@ foreach($this->messages as $message)
 			echo $this->Disponibilite;
 			?>
 			<th class="emplacement_icone"></th>
+			<th class="emplacement_icone"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -52,7 +53,12 @@ foreach($this->messages as $message)
 			</a></td>
 			<td><?php if($avion['disponibilite_avion'] == "0"){?><a
 				href="<?php echo $this->baseUrl('maintenance/intervention/id/').$avion['id_avion']; ?>"
-				class="icone_modifier_maintenance" title="Voir les interventions"></a><?php }?>
+				class="icone_modifier_maintenance" title="Voir les interventions"></a>
+				<?php }?>
+			</td>
+			<td><a
+				href="<?php echo $this->baseUrl('maintenance/modifier-avion/id/').$avion['id_avion']; ?>"
+				class="icone_modifier_ligne"></a>
 			</td>
 		</tr>
 		<?php } ?>

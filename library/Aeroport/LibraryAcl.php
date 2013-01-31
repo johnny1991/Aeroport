@@ -83,7 +83,7 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		$this->deny('NOT_LOGGED','Shop/administration',null); // Aucun accès aux pages administration pour Visiteurs et Membres
 		$this->deny('NOT_LOGGED','Shop/commande'); // Aucun accès aux pages commandes pour Visiteurs et Membres
 		$this->allow('NOT_LOGGED','Shop/index'); // Tous les droits à tout le monde
-		$this->deny('NOT_LOGGED','Shop/produit', array('ajout','delete','update','liste','affichage-sous-categorie'));
+		$this->deny(array('LOGGED','NOT_LOGGED'),'Shop/produit', array('ajout','delete','update','liste','affichage-sous-categorie'));
 		$this->allow('NOT_LOGGED','Shop/produit');// Autorise accès au controller produit pour tout le monde
 		
 		//Client
