@@ -56,28 +56,21 @@ $i++;?>
 			</td>
 			<td><?php 
 					
-					function getReste($int){
-						$explode = explode('.', $int);
-						$reste = '0.'.$explode[1];
-						
-						return $reste;
-					}
-					
 					date_default_timezone_set('Europe/Paris');
 					$timestampReservation = strtotime($reservation->date);
 					$timestampNow = time();
 					
 					$timestampPassee = $timestampNow - $timestampReservation;
 					$jour = (($timestampPassee / 60) / 60) / 24;
-					$resteJour = getReste($jour);
+					$resteJour = Aeroport_Fonctions::getReste($jour);
 					$entierJour = floor($jour);
 					
 					$heure = $resteJour * 24;
-					$resteHeure = getReste($heure);
+					$resteHeure = Aeroport_Fonctions::getReste($heure);
 					$entierHeure = floor($heure);
 				
 					$minute = $resteHeure * 60;
-					$resteMinute = getReste($minute);
+					$resteMinute = Aeroport_Fonctions::getReste($minute);
 					$entierMinute = floor($minute);
 					
 					$seconde = number_format(($resteMinute * 60), 0);

@@ -374,7 +374,13 @@ CREATE TABLE IF NOT EXISTS `paiement` (
   `libelle` varchar(255) NOT NULL,
   `photo` varchar(255) NOT NULL,
   PRIMARY KEY (`id_paiement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+INSERT INTO `paiement` (`id_paiement`, `libelle`, `photo`) VALUES
+(1, 'Carte Bleue', 'credit_card'),
+(2, 'Chèque', 'icone-cheque-1.png'),
+(3, '1Euro.com', '1euro.png'),
+(4, 'Paypal', 'logo-paypal.png');
 
 -- --------------------------------------------------------
 
@@ -796,11 +802,20 @@ CREATE TABLE IF NOT EXISTS `reservation` (
   `numero_ligne` int(11) NOT NULL,
   `id_vol` int(11) NOT NULL,
   `nbreservation` int(3) NOT NULL,
+  `montant` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_paiement` int(11) NOT NULL,
+  `id_adresse` int(11) NOT NULL,
+  `is_valid` tinyint(4) NOT NULL,
   PRIMARY KEY (`id_reservation`),
   KEY `id_client` (`id_client`),
   KEY `numero_ligne` (`numero_ligne`,`id_vol`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+INSERT INTO `reservation` (`id_reservation`, `id_client`, `numero_ligne`, `id_vol`, `nbreservation`, `montant`, `date`, `id_paiement`, `id_adresse`, `is_valid`) VALUES
+(1, 1, 59, 1, 1, 45, '2013-01-30 21:56:03', 2, 2, 0),
+(2, 1, 59, 1, 8, 360, '2013-01-30 23:48:55', 1, 1, 1),
+(3, 1, 19, 3, 1, 5, '2013-01-31 00:16:27', 1, 2, 1);
 
 -- --------------------------------------------------------
 
