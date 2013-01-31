@@ -247,10 +247,10 @@ nav a {
 	width: 98%;
 }
 .table_consulter-vol th,.table_consulter-ligne th{
-	border-bottom:1px #000 solid;background-color:#84a5c3;
+	border-bottom:1px #000 dotted;background-color:#84a5c3;
 }
 .table_consulter-vol th#asc, .table_consulter-ligne th#asc{
-	border-bottom:1px #000 solid;
+	border-bottom:1px #000 dotted;
 	background-color:#84a5c3;
 }
 

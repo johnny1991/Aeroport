@@ -707,11 +707,9 @@ class VolController extends Zend_Controller_Action
 
 		$acl = new Aeroport_LibraryAcl();
 		$SRole = new Zend_Session_Namespace('Role');
-		if(!$acl->isAllowed('2'/*$SRole->id_service*/, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))
+		if(!$acl->isAllowed($SRole->id_service, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))
 		{
-			echo $SRole->id_service,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName();
-
-			//$this->_redirector->gotoUrl('/');
+			$this->_redirector->gotoUrl('/');
 		}
 
 		parent::init();
