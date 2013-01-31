@@ -55,16 +55,12 @@ h1 {
 
 h2 {
 	font-size: 1.2em;
-	margin: 10px;
+	margin: 10px 0 0 50px;
 }
 
 input {
-	border-radius: 10px 0 10px 0;
+	width:150px;
 	padding-left: 5px;
-}
-
-select {
-	border-radius: 10px 0 10px 0;
 }
 
 #TableHead:hover {
@@ -83,7 +79,7 @@ select {
 	background: url('../shop/img/carrousel_bg.png') no-repeat scroll center top
 		transparent;	
 	box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
-	/*overflow: auto;*/
+	overflow: auto;
 }
 
 
@@ -250,6 +246,13 @@ nav a {
 	margin: 10px;
 	width: 98%;
 }
+.table_consulter-vol th,.table_consulter-ligne th{
+	border-bottom:1px #000 solid;background-color:#84a5c3;
+}
+.table_consulter-vol th#asc, .table_consulter-ligne th#asc{
+	border-bottom:1px #000 solid;
+	background-color:#84a5c3;
+}
 
 .noVols {
 	margin: 20px;
@@ -311,7 +314,7 @@ nav a {
 }
 
 .Global_label {
-	width: 165px;
+	width: 200px;
 }
 
 .Legend-Map-New-Ligne { /*width:280px;*/
@@ -341,21 +344,21 @@ nav a {
 	color: #0E0E0F;
 }
 
-#Ajouter,#Rechercher,#Reset {
-	background: -moz-linear-gradient(center top, #FFFFFF 0%, #FF9C00 100%)
-		repeat scroll 0 0 transparent;
-	border: 1px solid #E3E3E3;
-	border-radius: 18px 18px 18px 18px;
-	display: inline-block;
-	padding: 7px 18px;
-	color: 0E53A7;
-	font-size: 15px;
-}
+/* #Ajouter,#Rechercher,#Reset { */
+/* 	background: -moz-linear-gradient(center top, #FFFFFF 0%, #FF9C00 100%) */
+/* 		repeat scroll 0 0 transparent; */
+/* 	border: 1px solid #E3E3E3; */
+/* 	border-radius: 18px 18px 18px 18px; */
+/* 	display: inline-block; */
+/* 	padding: 7px 18px; */
+/* 	color: 0E53A7; */
+/* 	font-size: 15px; */
+/* } */
 
-#Reset {
-	background: -moz-linear-gradient(center top, #FFFFFF 0%, rgb(129, 190, 208)
-		100% ) repeat scroll 0 0 transparent;
-}
+/* #Reset { */
+/* 	background: -moz-linear-gradient(center top, #FFFFFF 0%, rgb(129, 190, 208) */
+/* 		100% ) repeat scroll 0 0 transparent; */
+/* } */
 
 .Global_error ul {
 	margin: 0px;
@@ -479,7 +482,7 @@ nav a {
 
 #boutonSearchLigne {
 	cursor: pointer;
-	margin-top: 8px;
+	margin: 8px 0 30px 0;
 	display: block;
 	float: right;
 	text-decoration: underline;
@@ -598,7 +601,7 @@ nav a {
 }
 
 /* main level link hover */
-#nav .current a, #nav li:hover > a {
+#nav .current a, #nav li:hover > a , input[type="submit"], #Reset, .numero_enabled{
 	background: #d1d1d1; /* for non-css3 browsers */
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ebebeb', endColorstr='#a1a1a1'); /* for IE */
 	background: -webkit-gradient(linear, left top, left bottom, from(#ebebeb), to(#a1a1a1)); /* for webkit browsers */
@@ -650,7 +653,7 @@ nav a {
 	top: 35px;
 	left: 0;
 	border: solid 1px #b4b4b4;
-
+z-index:1;
 	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
 	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
@@ -658,8 +661,7 @@ nav a {
 /* dropdown */
 #nav li:hover > ul {
 	display: block;
-		z-index:1;
-	
+	z-index:1;		
 }
 #nav ul li {
 	float: none;
@@ -675,19 +677,7 @@ nav a {
 	left: 181px;
 	top: -3px;
 }
-/* rounded corners for first and last child */
-#nav ul li:first-child > a {
-	-webkit-border-top-left-radius: 9px;
-	-moz-border-radius-topleft: 9px;
-	-webkit-border-top-right-radius: 9px;
-	-moz-border-radius-topright: 9px;
-}
-#nav ul li:last-child > a {
-	-webkit-border-bottom-left-radius: 9px;
-	-moz-border-radius-bottomleft: 9px;
-	-webkit-border-bottom-right-radius: 9px;
-	-moz-border-radius-bottomright: 9px;
-}
+
 /* clearfix */
 #nav:after {
 	content: ".";
