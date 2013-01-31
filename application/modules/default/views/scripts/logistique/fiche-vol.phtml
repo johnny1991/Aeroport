@@ -48,5 +48,7 @@
 		$buttonCateogorie = ($countTickCategorie != $countRealTickCategorie) ? '<button onclick="traiterCategorie('.$categoriePrec.', '.$remarque->numero_ligne.', '.$remarque->id_vol.')">Tous traiter pour '.$typeRemarque.'</button>' : '';
 		
 		echo '</fieldset>'.$buttonCateogorie.'<br />'.$buttonAll;
+	}else{
+		echo '<div style="text-align:center">Aucune remarque pour ce vol.</div>';
 	}
 ?>

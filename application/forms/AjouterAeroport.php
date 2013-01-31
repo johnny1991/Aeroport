@@ -89,7 +89,7 @@ class AjouterAeroport extends Zend_Form{
 		$ESubmit->removeDecorator('DtDdWrapper')->removeDecorator('HtmlTag')->removeDecorator('Label');
 		
 		$this->setMethod('POST');
-	
+		$this->setAttrib('id', 'ajouterAeroport');
 		$this->addElement($EId);
 		$this->addElement($ENom);
 		$this->addElement($EPays);
