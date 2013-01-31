@@ -164,7 +164,7 @@ foreach($this->messages as $message)
 		$(document).ready(function(){
 			$('#calendar').calendar({
 				'nbSemaine' : 8,
-				'link' : '/maintenance/ajouter-maintenance/id/<?= $avion->id_avion ?>/mode/big/',
+				'link' : '/maintenance/ajouter-maintenance/id/<?= $avion->id_avion ?>/mode/<?=$this->mode; ?>/',
 					'colorDate' : {
 					4 : 'maintenanceAvion4',
 					3 : 'maintenanceAvion3',

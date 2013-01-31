@@ -86,7 +86,7 @@ class FormulaireLigne extends Zend_Form
 		$ERepopulateDepart->setName("PopulateDepart");
 		$ERepopulateArrivee->setName("PopulateArrivee");
 
-		$ENumero->setLabel('Numéro de vol');
+		$ENumero->setLabel('Numéro de ligne');
 		$EPaysOrigine->setLabel("Pays d'origine");
 		$EAeroportOrigine->setLabel("Aéroport d'origine");
 		$EPaysDepart->setLabel('Pays de départ');

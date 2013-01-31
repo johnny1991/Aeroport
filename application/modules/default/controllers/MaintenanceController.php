@@ -131,8 +131,8 @@ class MaintenanceController extends Zend_Controller_Action
 		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
 		$this->view->param=$this->getAllParams();
 		$this->view->paginator = $paginator;
-		}
-	
+	}
+
 	public function ficheAvionAction(){
 		$TableAvion = new Avion();
 		$id = $this->_getParam('id');
@@ -140,17 +140,33 @@ class MaintenanceController extends Zend_Controller_Action
 		$currentDate = new Zend_Date();
 		$requete = $TableMaintenance->select()->where('fin_prevue >?',$currentDate->get('yyyy-MM-dd'))->where('id_avion=?',$id);
 		$requete1 = $TableMaintenance->select()->where('id_avion=?',$id);
-		
+
 		$TableVol = new Vol();
 		$requete2 = $TableVol->select()->setIntegrityCheck(false)->from(array('v'=>'vol'))
 		->joinLeft(array('l'=>'ligne'),'l.numero_ligne = v.numero_ligne',array('l.heure_depart','l.heure_arrivee'))
-		
+
 		->where('v.id_avion=?',$id);
 		$this->view->vols = $TableVol->fetchAll($requete2);
 		$Maintenances = $TableMaintenance->fetchAll($requete);
 		$Maintenances1 = $TableMaintenance->fetchAll();
 		$this->view->maintenanceAvion = $TableMaintenance->fetchAll($requete1);
-		
+
+		$LastMaintenance = $TableMaintenance->fetchRow('id_avion='.$id,'id_maintenance desc');
+		Zend_Debug::dump($LastMaintenance);
+		if($LastMaintenance != NULL)
+		{
+			$dateFin = new Zend_Date($LastMaintenance->fin_prevue,'dd-MM-yy');
+			$dateTemp = new Zend_Date($LastMaintenance->date_prevue,'dd-MM-yy');
+			$dateTemp->addDay(10);
+			if($dateTemp == $dateFin)
+				$this->view->mode = "small";
+			else
+				$this->view->mode = "big";
+		}
+		else
+			$this->view->mode = "small";
+
+
 		$this->view->title = "Fiche de l'avion ".$id;
 		$avion = $TableAvion->find($id)->current();
 
@@ -209,7 +225,7 @@ class MaintenanceController extends Zend_Controller_Action
 		$Maintenance->date_prevue = $dateDebut->get('yyyy-MM-dd');
 		if($mode=="big")
 			$Maintenance->fin_prevue = $dateDebut->addDay(10)->get('yyyy-MM-dd');
-		else
+		else if ($mode=="small")
 			$Maintenance->fin_prevue = $dateDebut->addDay(2)->get('yyyy-MM-dd');
 		if($Maintenance->save())
 			$message = "<div class='insertion-ok'><label>Insertion réussi</label></div>";
@@ -555,20 +571,20 @@ class MaintenanceController extends Zend_Controller_Action
 	public function interventionAction(){
 		$this->view->title = "Intervention";
 		$nbLigne = 25; //Nombre de lignes par pages
-		
+
 		$id = $this->_getParam('id');
 		$this->view->id = $id;
-		
+
 		$form = new InterventionForm();
 		$TableIntervention = new Intervention();
-		
+
 		$auth = Zend_Auth::getInstance();
 		$nom = $auth->getIdentity()->nom;
-		
+
 		$TableAvion = new Avion();
 		$id = $this->_getParam('id');
 		$avion = $TableAvion->find($id)->current();
-		
+
 		$TableMaintenance = new Maintenance();
 		$requeteM = $TableMaintenance->select()
 		->setIntegrityCheck(false)
@@ -592,14 +608,14 @@ class MaintenanceController extends Zend_Controller_Action
 			$intervention->commentaire = $form->getValue('Commentaire');
 			$intervention->save();
 		}
-		
+
 		$requete = $TableIntervention->select()
 		->setIntegrityCheck(false)
 		->from(array('i'=>'intervention'))
 		->joinLeft(array('ma'=>'maintenance'), 'ma.id_maintenance = i.id_maintenance')
 		->joinLeft(array('a'=>'avion'), 'a.id_avion = ma.id_avion')
 		->where('ma.id_maintenance=?',$resultM->id_maintenance);
-		
+
 		$result = $TableIntervention->fetchAll($requete);
 			
 		$paginator = Zend_Paginator::factory($result);
@@ -607,19 +623,19 @@ class MaintenanceController extends Zend_Controller_Action
 		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
 		$this->view->param=$this->getAllParams();
 		$this->view->paginator = $paginator;
-		
+
 		$this->view->form = $form;
-	
+
 	}
-	
+
 	public function consulterInterventionAction(){
 		$this->view->title = "Consultation des interventions";
 		$nbLigne = 25; //Nombre de lignes par pages
-		
+
 		$TableAvion = new Avion();
 		$id = $this->_getParam('id');
 
-		
+
 		$TableIntervention = new Intervention();
 		$requete = $TableIntervention->select()
 		->setIntegrityCheck(false)
@@ -627,21 +643,21 @@ class MaintenanceController extends Zend_Controller_Action
 		->joinLeft(array('ma'=>'maintenance'), 'ma.id_maintenance = i.id_maintenance')
 		->joinLeft(array('a'=>'avion'), 'a.id_avion = ma.id_avion')
 		->where('ma.id_maintenance=?',$id);
-		
+
 		$this->view->id = $id;
-		
+
 		//echo $requete;exit();
 		$result = $TableIntervention->fetchAll($requete);
-		
-		
-		
+
+
+
 		$paginator = Zend_Paginator::factory($result);
 		$paginator->setItemCountPerPage($nbLigne);
 		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
 		$this->view->param=$this->getAllParams();
 		$this->view->paginator = $paginator;
 	}
-	
+
 	public function init(){ //OK
 		$this->view->messages = $this->_helper->FlashMessenger->getMessages();
 		$this->_redirector = $this->_helper->getHelper('Redirector');
@@ -652,7 +668,7 @@ class MaintenanceController extends Zend_Controller_Action
 		$this->view->headScript()->appendFile('/js/jquery-ui-timepicker-addon.js');
 		$this->view->headLink()->appendStylesheet('/css/jquery-ui-timepicker-addon.css');
 		$this->view->headLink()->appendStylesheet('/css/jquery-ui-1.8.23.css');
-		
+
 		$acl = new Aeroport_LibraryAcl();
 		$SRole = new Zend_Session_Namespace('Role');
 		if(!$acl->isAllowed($SRole->id_service, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))

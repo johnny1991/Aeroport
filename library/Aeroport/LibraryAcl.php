@@ -3,9 +3,8 @@ class Aeroport_LibraryAcl extends Zend_Acl
 {
 	public function __construct()
 	{
-		
-		$this->addRole(new Zend_Acl_Role('LOGGED'));
 		$this->addRole(new Zend_Acl_Role('NOT_LOGGED'));
+		$this->addRole(new Zend_Acl_Role('LOGGED'),'NOT_LOGGED');
 		
 		$this->addRole(new Zend_Acl_Role('1'),'LOGGED');
 		$this->addRole(new Zend_Acl_Role('2'),'LOGGED');
@@ -16,7 +15,6 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		$this->addRole(new Zend_Acl_Role('7'),'LOGGED');
 		$this->addRole(new Zend_Acl_Role('8'),'LOGGED');
 				
-		$this->addRole(new Zend_Acl_Role('ADMIN'),'LOGGED');
 		$this->addRole(new Zend_Acl_Role('MEMBER'),'NOT_LOGGED');
 		
 		
