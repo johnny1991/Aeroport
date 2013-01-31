@@ -20,7 +20,7 @@ class FormulaireTypeAvion extends Zend_Form
 
 		$ERayon = new Zend_Form_Element_Text('rayon');
 		$ERayon->addValidator('Digits');
-		$ERayon->setLabel('Rayon d\'action (m)');
+		$ERayon->setLabel('Rayon d\'action (km)');
 		$ERayon->setDecorators($decorators);
 		$ERayon->setAttrib('size','2');
 		$ERayon->setRequired(true);

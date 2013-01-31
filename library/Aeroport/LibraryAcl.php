@@ -17,7 +17,6 @@ class Aeroport_LibraryAcl extends Zend_Acl
 				
 		$this->addRole(new Zend_Acl_Role('MEMBER'),'NOT_LOGGED');
 		
-		
 		$this->addResource('index');
 		$this->addResource('crud');
 		$this->addResource('vol');

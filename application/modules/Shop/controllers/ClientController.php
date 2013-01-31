@@ -29,19 +29,19 @@ class Shop_ClientController extends Zend_Controller_Action
 						if($this->getRequest()->getParam('admin')){
 							$message = "<div id='message_ok'><label>L'ajout du client '".$client->nom."' '".$client->prenom."' est réussi !!</label></div>";
 							$this->_helper->FlashMessenger($message);
-							$this->_redirector->gotoUrl('/client/liste');
+							$this->_redirector->gotoUrl('Shop/client/liste');
 						}
 						else
 						{
 							$auth = Zend_Auth::getInstance();
-							$DbAdapter = new Zend_Auth_Adapter_DbTable(Zend_Registry::get('db'),'Client','login','password');
+							$DbAdapter = new Zend_Auth_Adapter_DbTable(Zend_Registry::get('db'),'client','login','password');
 							$DbAdapter->setIdentity($data['login'])->setCredential(md5($data['password']));
 							if($auth->authenticate($DbAdapter)->isValid())
 								$auth->getStorage()->write($DbAdapter->getResultRowObject(null,'password'));
 							if($Commande->isLogin == "commande")
 							{
 								$Commande->isLogin = false;
-								$this->_redirector->gotoUrl('/client/checkout-adresse');
+								$this->_redirector->gotoUrl('Shop/client/checkout-adresse');
 							}
 							else
 								$this->_redirector->gotoUrl('compte');
@@ -73,7 +73,7 @@ class Shop_ClientController extends Zend_Controller_Action
 		$message = "<div id='message_ok'><label>La suppression du client '".$Client->nom."' '".$Client->prenom."' est réussi !!</label></div>";
 		$Client->delete();
 		$this->_helper->FlashMessenger($message);
-		$this->_redirector->gotoUrl('client/liste');
+		$this->_redirector->gotoUrl('Shop/client/liste');
 
 	}
 

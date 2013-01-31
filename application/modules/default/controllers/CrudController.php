@@ -5,6 +5,14 @@ class CrudController extends Zend_Controller_Action
 	public function init(){
 		$this->view->headLink()->appendStylesheet('/css/DrhCSS.css');
 		$this->view->headScript()->appendFile('/js/CrudFonction.js');
+		
+		$acl = new Aeroport_LibraryAcl();
+		$SRole = new Zend_Session_Namespace('Role');
+		if(!$acl->isAllowed($SRole->id_service, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))
+		{
+			$this->_redirector->gotoUrl('/');
+		}
+		
 		parent::init();
 	}
 

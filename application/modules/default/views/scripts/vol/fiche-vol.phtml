@@ -176,14 +176,18 @@ $jours = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vend
 				<?php echo $vol->tarif_effectif." €"; ?>
 			</div>
 		</div>
+		<?php 		$SRole = new Zend_Session_Namespace('Role');
+		if($SRole->id_service == "2") {?>
 		<div class="infoVolRow">
 			<label for="tarif">Temps effectif : </label>
 			<div class="" id="tarif">
-				<form method="<?= $form->getMethod(); ?>" action="<?= $form->getAction(); ?>">
+				<form method="<?= $form->getMethod(); ?>"
+					action="<?= $form->getAction(); ?>">
 					<?= $form->heure->renderViewHelper();?>
 					<?= $form->ajouter->renderViewHelper();?>
 				</form>
 			</div>
 		</div>
+		<?php } ?>
 	</fieldset>
 </div>

@@ -14,9 +14,6 @@ class DrhController extends Zend_Controller_Action{
 		$SRole = new Zend_Session_Namespace('Role');
 		if(!$acl->isAllowed($SRole->id_service, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))
 		{
-			//echo $SRole->id_service . '<br />';
-			//echo $this->getRequest()->getControllerName(). '<br />';
-			//echo $this->getRequest()->getActionName();
 			$this->_redirector->gotoUrl('/');
 		}
 		

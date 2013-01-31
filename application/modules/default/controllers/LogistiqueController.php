@@ -6,6 +6,14 @@ class LogistiqueController extends Zend_Controller_Action
 		$this->view->headLink()->appendStylesheet('/css/DrhCSS.css');
 		$this->view->headScript()->appendFile('/js/LogistiqueFonction.js');
 		date_default_timezone_set('Europe/Paris');
+		
+		$acl = new Aeroport_LibraryAcl();
+		$SRole = new Zend_Session_Namespace('Role');
+		if(!$acl->isAllowed($SRole->id_service, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))
+		{
+			$this->_redirector->gotoUrl('/');
+		}
+		
 		parent::init();
 	}
 
