@@ -75,14 +75,24 @@ $i++;?>
 					
 					$seconde = number_format(($resteMinute * 60), 0);
 					
+					if($seconde < 10){
+						$seconde = '0'.$seconde;
+					}
+					if($entierMinute < 10){
+						$entierMinute = '0'.$entierMinute;
+					}
+					if($entierHeure < 10){
+						$entierHeure = '0'.$entierHeure;
+					}
+					
 					if($entierHeure != 0){
 						if($entierJour != 0){
-							$dateRebours = $entierJour.':'.$entierHeure.':'.$entierMinute.':'.$seconde;
+							$dateRebours = $entierJour.' j '.$entierHeure.':'.$entierMinute.':'.$seconde;
 						}else{
 							$dateRebours = $entierHeure.':'.$entierMinute.':'.$seconde;
 						}
 					}else{
-						$dateRebours = $entierMinute.':'.$seconde;
+						$dateRebours = '00:'.$entierMinute.':'.$seconde;
 					}
 				?>
 				<a href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>" class="dateLigneCommande"><?= $dateRebours;?> </a>
