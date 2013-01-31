@@ -65,7 +65,8 @@ class AjouterPays extends Zend_Form{
 		$ESubmit->removeDecorator('DtDdWrapper')->removeDecorator('HtmlTag')->removeDecorator('Label');
 		
 		$this->setMethod('POST');
-	
+		
+		$this->setAttrib('id', 'ajouterPays');
 		$this->addElement($ECode);
 		$this->addElement($ENom);
 		$this->addElement($EAlpha2);
