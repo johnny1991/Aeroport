@@ -59,7 +59,7 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		$this->allow('5', 'planning');
 		
 		//exploitation
-		$this->allow('6', 'exploitation');
+		$this->allow('6', array('exploitation','crud'));
 		
 		//logistique
 		$this->allow('7', 'logistique');
@@ -74,7 +74,7 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		
 		//reservation
 		$this->allow('2','Shop/administration'); // Autorise accès au controller administration pour l'administration
-		$this->allow('2','Shop/client',array('liste','ajout-admin','delete','panier','checkout-adresse')); // Aucun accès aux pages clients pour Visiteurs et Admin
+		$this->allow('2','Shop/client',array('liste','ajout-admin','delete','panier','checkout-adresse','ajout')); // Aucun accès aux pages clients pour Visiteurs et Admin
 		$this->allow('2','Shop/commande');// Autorise accès au controller conmmande pour l'administrateur
 		$this->allow('2', 'Shop/produit',array('fiche','catalogue','ajout','delete','update','liste','affichage-sous-categorie'));// Autorise accès au controller produit pour tout le monde
 		
