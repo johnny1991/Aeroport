@@ -9,12 +9,12 @@ class Shop_CommandeController extends Zend_Controller_Action
 		->select()
 		->from(array('r'=>'reservation'))
 		->setIntegrityCheck(false)
-		->joinLeft(array('cl'=>'Shop_Model_Client'),'cl.id_client=r.id_client',array('cl.nom','cl.prenom'))
+		->joinLeft(array('cl'=>'client'),'cl.id_client=r.id_client',array('cl.nom','cl.prenom'))
 		->group('r.id_reservation');
 
 		$nbCommande = $this->view->nbCommande;
 
-			if($this->getRequest()->getParam('orderBy'))
+		if($this->getRequest()->getParam('orderBy'))
 			$orderBy = $this->getRequest()->getParam('orderBy');
 		else
 			$orderBy = "Id_Asc";
@@ -48,9 +48,9 @@ class Shop_CommandeController extends Zend_Controller_Action
 		$this->view->HeadDate = Application_Tableau_OrderColumn::orderColumns($this,"Date",$orderBy,"dateLigneCommande","Temps écoulé");
 		$this->view->HeadEtat = Application_Tableau_OrderColumn::orderColumns($this,"Etat",$orderBy,"livreLigneCommande","Etat");
 
-		$Commandes = $TableReservation->fetchAll($requete);
+		$Reservations = $TableReservation->fetchAll($requete);
 		$this->view->order = $orderBy;
-		$paginator = Zend_Paginator::factory($Commandes);
+		$paginator = Zend_Paginator::factory($Reservations);
 		$paginator->setItemCountPerPage($nbCommande);
 		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
 		$this->view->pagination = $this->view->paginationControl($paginator, 'Sliding', 'pagination.phtml',array("param"=>$this->getAllParams()));
@@ -156,7 +156,7 @@ class Shop_CommandeController extends Zend_Controller_Action
 		$this->view->nbCommande = $Parametre->nbProduits;
 
 		$SessionRole = new Zend_Session_Namespace('Role');
-		$acl = new Application_Acl_Acl();
+		$acl = new Aeroport_LibraryAcl();
 		if(!($acl->isAllowed($SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName())))
 			$this->_redirector->gotoUrl('accueil');
 

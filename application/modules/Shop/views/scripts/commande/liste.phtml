@@ -10,8 +10,8 @@ foreach($this->messages as $message)
 		<tr class="Head">
 			<?php 
 			echo $this->HeadId;
-			echo $this->HeadVol;
 			echo $this->HeadLigne;
+			echo $this->HeadVol;
 			echo $this->HeadClient;
 			echo $this->HeadQuantite;
 			echo $this->HeadMontant;
@@ -54,26 +54,23 @@ $i++;?>
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
 				class="montantLigneCommande"><?= $reservation->montant."€"?> </a>
 			</td>
-			<td><?php $dateDebut = new Zend_Date($reservation->date,'yyyy-MM-dd-HH-mm-ss');?>
-				<?php //$dateNow = Zend_Date::now()->get('yyyy-MM-dd-HH-mm-ss'); ?>
-				<?php $dateNow = new Zend_Date(); 
-				//	echo $dateNow->get('HH:mm'),"<br>"; ?> <?php //$dateEcart = new Zend_Date("0000-00-00-02-00-00",'yyyy-MM-dd-HH-mm-ss');
-			 //echo $dateEcart->get('HH:mm'),"<br>";?> <?php $dateNow->subHour($dateDebut)->subMinute($dateDebut); ?>
-				<?php //echo $dateNow; ?> <?php //$dateEcart->subHour($dateNow)->subMinute($dateNow);?>
-				<?php //$seconde = ($dateEcart->get('HH')*3600) + ($dateEcart->get('mm')*60) ?>
-				<a
+			<td><?php
+			$date = new Zend_Date($reservation->date,Zend_Date::DATETIME);
+			$now = new Zend_Date(Zend_Date::now());
+			$ecart = new Zend_Date($now->getTimestamp() - $date->getTimestamp(),Zend_Date::TIMESTAMP);
+			$ecart->subHour('1');
+			?> <a
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="dateLigneCommande"><?= $dateNow->get('HH:mm');?> </a>
-			</td>
+				class="dateLigneCommande" id="date_heure"><?= $ecart->get(Zend_Date::TIMES)?></a> 
+				</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_commande/'.$reservation->id_reservation.'/'); ?><?//= ($reservation->Islivre) ? 'nonlivre' : 'livre'; ?>"
+				href="<?= $this->baseUrl('fiche_commande/'.$reservation->id_reservation.'/'); ?>"
 				class="montantLigneCommande"
-				title="<?= ($reservation->is_valid) ? 'Marqué comme non livré' : 'Marqué comme livré'; ?>">
-					<?php if($reservation->is_valid) { 
-						?> <span style="color: green">Validé</span> <?php } else {?> <span
-					style="color: red">En attente</span> <?php } ?>
+				title="<?= ($reservation->is_valid) ? 'Marqué comme En Attente' : 'Marqué comme Validé'; ?>">
+					<?php if($reservation->is_valid) { ?> <span style="color: green">Validé</span>
+					<?php } else {?> <span style="color: red">En attente</span> <?php } ?>
 			</a>
-		
+			</td>
 		</tr>
 		<?php }?>
 	</tbody>

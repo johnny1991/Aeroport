@@ -93,11 +93,11 @@
 }
 
 .quantiteVol {
-	width: 100px;
+	width: 105px;
 }
 
 .etatVol{
-	width:75px;
+	width:70px;
 }
 .montantLigneCommande,.livreLigneCommande,.quantiteligneProduit {
 	width: 65px;

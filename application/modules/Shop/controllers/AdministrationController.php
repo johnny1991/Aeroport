@@ -62,23 +62,6 @@ class Shop_AdministrationController extends Zend_Controller_Action
 	}
 
 	public function parametreAction(){ // Page de paramètre administrateur
-		$this->view->title = "Paramètre administration"; // Attribution du titre de la page
-		$TableAdmin = new Shop_Model_AdministrateurUser();
-		$Admin = $TableAdmin->fetchRow(); // On récupère l'unique ligne administrateur dans la bdd
-
-		$formConnexion = new Zend_Form(); // On créer un formulaire pour modifier le login et mot de passe lors de l'administration client
-		$Elogin = new Zend_Form_Element_Text('login');
-		$Elogin->setLabel('Nouveau Login *');
-		$Epassword = new Zend_Form_Element_Password('password');
-		$Epassword->setLabel('Nouveau mot de passe *');
-		$Esubmit = new Zend_Form_Element_Submit('modifier');
-		$Esubmit->setLabel('Modifier');
-		$formConnexion->addElement($Elogin);
-		$formConnexion->addElement($Epassword);
-		$formConnexion->addElement($Esubmit);
-		$this->view->formConnexion = $formConnexion; // On envoie le formulaire à la vue
-		$formConnexion->populate(array('login' =>$Admin->login)); // On peuple le formulaire avec les données de la bdd
-
 		$TableParametre = new Shop_Model_Parametre();
 		$Parametre = $TableParametre->fetchRow(); // On récupère l'unique ligne paramètre dans la bdd
 		$formMail = new Zend_Form(); // On créer un formulaire pour modifier l'email et le mot de passe pour l'envoie des emails
@@ -114,21 +97,8 @@ class Shop_AdministrationController extends Zend_Controller_Action
 		$data = $this->getRequest()->getPost(); // Récupération des données en POST
 		if($this->getRequest()->isPost())
 		{
-			// Si il y a des données envoyés en POST
-			if(isset($data['modifier'])){
+			 if(isset($data['modifier1'])){
 				// Si le premier formulaire a été modifier
-				$Elogin->setRequired(true); // on met les 2 champs du formulaire obligatoire
-				$Epassword->setRequired(true);
-				if($formConnexion->isValid($data)){
-					// Si le formulaire est valide
-					$Admin->login = $data['login'];
-					$Admin->password = md5($data['password']);
-					$Admin->save(); // On enregistre dans la bdd
-					$this->view->message = "<div id='message_ok'><label>La modification des paramètres de connexion est réussi !!</label></div>"; // on affiche un message OK
-				}
-			}
-			else if(isset($data['modifier1'])){
-				// Si le deuxieme formulaire a été modifier
 				$EMail->setRequired(true);
 				$EPass->setRequired(true);
 				if($formMail->isValid($data)){
@@ -140,7 +110,7 @@ class Shop_AdministrationController extends Zend_Controller_Action
 				}
 			}
 			else if(isset($data['modifier2'])){
-				// Si le troisieme formulaire a été modifier
+				// Si le deuxieme formulaire a été modifier
 				$Esite->setRequired(true);
 				$EnbProduit->setRequired(true);
 				$EnbElement->setRequired(true);
@@ -163,7 +133,7 @@ class Shop_AdministrationController extends Zend_Controller_Action
 		$this->_helper->layout->setLayout('administration'); // Layout administration de base
 
 		$SessionRole = new Zend_Session_Namespace('Role');  // Récupération de la session Role (definit dans le bootsrap)
-		$acl = new Application_Acl_Acl();
+		$acl = new Aeroport_LibraryAcl();
 		if(!($acl->isAllowed($SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName()))) // Si l'utilisateur n'a pas le droit d'acceder à cette page, on le redirige vers une page d'erreur
 			$this->_redirector->gotoUrl('accueil');
 	}

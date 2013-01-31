@@ -582,9 +582,6 @@ class VolController extends Zend_Controller_Action
 
 		$this->view->title = "Fiche du vol";
 		$numero_ligne = $this->getRequest()->getParam('ligne');
-		//$container = $this->view->navigation()->findOneBy("id","consulterVol");
-		//$container->set("params", array( 'ligne' => $numero_ligne));
-		//$container->set("title", "Consulter les vols de la ligne ".$numero_ligne);
 		$tableLigne = new Ligne;
 		$ligne = $tableLigne->find($numero_ligne)->current();
 		if( ($numero_ligne!=NULL) && ($ligne!=NULL) )
@@ -615,6 +612,25 @@ class VolController extends Zend_Controller_Action
 				$this->view->paysDepart = $this->view->villeDepart->findParentRow('Pays');
 				$this->view->villeArrivee = $ligne->findParentRow('Aeroport','aeroport_arrivee')->findParentRow('Ville');
 				$this->view->paysArrive = $this->view->villeArrivee->findParentRow('Pays');
+				$input = new Zend_Form_Element_Text('heure');
+				$submit = new Zend_Form_Element_Submit('ajouter');
+				$form = new Zend_Form();
+				$form->addElement($input);
+				$form->addElement($submit);
+				$this->view->form = $form;
+				$dateDebut = new Zend_Date($vol->date_depart,Zend_Date::DATES);
+				$heureDebut = new Zend_Date($ligne->heure_depart,Zend_Date::TIMES);
+				$dateArrivee = new Zend_Date($vol->date_arrivee,Zend_Date::DATES);
+				$heureArrivee = new Zend_Date($ligne->heure_arrivee,Zend_Date::TIMES);
+				$ecart = new Zend_Date($dateArrivee->add($heureArrivee)->getTimestamp()-$dateDebut->add($heureDebut)->getTimestamp(),Zend_Date::TIMESTAMP);
+				$input->setValue($ecart->getTimestamp()/3600);
+				if($this->getRequest()->isPost())
+				{
+					$avion = $vol->findParentRow('Avion');
+					$avion->total_heure_vol +=$this->getRequest()->getPost('heure');
+					$avion->save();
+				}
+
 			}
 			else
 			{
@@ -694,10 +710,10 @@ class VolController extends Zend_Controller_Action
 		if(!$acl->isAllowed('2'/*$SRole->id_service*/, $this->getRequest()->getControllerName(), $this->getRequest()->getActionName()))
 		{
 			echo $SRole->id_service,$this->getRequest()->getControllerName(),$this->getRequest()->getActionName();
-					
+
 			//$this->_redirector->gotoUrl('/');
 		}
-		
+
 		parent::init();
 	}
 }

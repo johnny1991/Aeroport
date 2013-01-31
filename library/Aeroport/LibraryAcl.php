@@ -41,63 +41,56 @@ class Aeroport_LibraryAcl extends Zend_Acl
 		
 		
 		$this->allow('LOGGED', 'vol', array('fiche-vol'));	
+		$this->allow(NULL, 'vol', 'rechercher-aeroport');
 		
 		// index
 		$this->allow(null, 'index');
 		
 		// strategique
-		$this->allow('1',array('vol','crud'));
+		$this->allow('1', array('vol','crud'));
 				
 		// maintenance
 		$this->allow('3', 'maintenance');
 		
 		// drh
-		$this->allow('4', 'drh');
+		$this->allow('4', array('drh','crud'));
 
 		// planning
 		$this->allow('5', 'planning');
 		
 		//exploitation
-		$this->allow('6', 'exploitation', array('index', 'fiche-vol', 'rechercher-aeroport', 'rechercher-ville'));
+		$this->allow('6', 'exploitation');
 		
 		//logistique
-		$this->allow('7', 'logistique', array('index', 'ajouter-remarque', 'consulter-remarque', 'fiche-vol', 'modifier-remarque', 'supprimer-remarque', 'traiter-all', 'traiter-remarque', 'traiter-type'));
+		$this->allow('7', 'logistique');
 		
 		//pilote
-		$this->allow('8', 'pilote', array('index'));
-
+		$this->allow('8', 'pilote');
 		$this->allow('8', 'planning', array('fiche-astreinte'));
 		
-		$this->allow(NULL, 'vol', 'rechercher-aeroport');
 		
 		
+		/* MAGASIN WEB */
 		
-		
-		// Administration
+		//reservation
 		$this->allow('2','Shop/administration'); // Autorise accès au controller administration pour l'administration
-		//$this->allow('NOT_LOGGED','Shop/administration','login'); // Autorise accès à la page login de l'administration pour Visiteurs et Membres
+		$this->allow('2','Shop/client',array('liste','ajout-admin','delete','panier','checkout-adresse')); // Aucun accès aux pages clients pour Visiteurs et Admin
+		$this->allow('2','Shop/commande');// Autorise accès au controller conmmande pour l'administrateur
+		$this->allow('2', 'Shop/produit',array('fiche','catalogue','ajout','delete','update','liste','affichage-sous-categorie'));// Autorise accès au controller produit pour tout le monde
+		
+		// Not logged
+		$this->allow('NOT_LOGGED','Shop/client',array('tableau-bord','ajout','panier','checkout-adresse')); // Autorise accès à la page login du client pour Visiteurs et Membres
 		$this->deny('NOT_LOGGED','Shop/administration',null); // Aucun accès aux pages administration pour Visiteurs et Membres
-			
+		$this->deny('NOT_LOGGED','Shop/commande'); // Aucun accès aux pages commandes pour Visiteurs et Membres
+		$this->allow('NOT_LOGGED','Shop/index'); // Tous les droits à tout le monde
+		$this->deny('NOT_LOGGED','Shop/produit', array('ajout','delete','update','liste','affichage-sous-categorie'));
+		$this->allow('NOT_LOGGED','Shop/produit');// Autorise accès au controller produit pour tout le monde
+		
 		//Client
 		$this->allow('MEMBER','Shop/client'); // Autorise accès au controller administration pour l'administrateur
 		$this->deny('MEMBER','Shop/client',array('liste','ajout-admin')); // Aucun accès aux pages clients pour Visiteurs et Admin
-		$this->allow('NOT_LOGGED','Shop/client',array('tableau-bord','ajout','panier')); // Autorise accès à la page login du client pour Visiteurs et Membres
-		$this->allow('2','Shop/client',array('liste','ajout-admin','delete')); // Aucun accès aux pages clients pour Visiteurs et Admin
 		
-		
-		//Commande
-		$this->allow('2','Shop/commande');// Autorise accès au controller conmmande pour l'administrateur
-		$this->deny('NOT_LOGGED','Shop/commande'); // Aucun accès aux pages commandes pour Visiteurs et Membres
-		
-		//index
-		$this->allow('NOT_LOGGED','Shop/index'); // Tous les droits à tout le monde
-		
-		//produit
-		$this->deny('NOT_LOGGED','Shop/produit', array('ajout','delete','update','liste','affichage-sous-categorie'));
-		$this->allow('NOT_LOGGED','Shop/produit');// Autorise accès au controller produit pour tout le monde
-		$this->allow('2', 'Shop/produit',array('fiche','catalogue','ajout','delete','update','liste','affichage-sous-categorie'));// Autorise accès au controller produit pour tout le monde
-		
-		
+		/* FIN MAGASIN WEB */		
 		
 	}
 }

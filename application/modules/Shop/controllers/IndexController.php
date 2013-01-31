@@ -19,7 +19,7 @@ class Shop_IndexController extends Zend_Controller_Action
 			if($formLogin->isValid($data))
 			{
 				$auth = Zend_Auth::getInstance();
-				$DbAdapter = new Zend_Auth_Adapter_DbTable(Zend_Registry::get('db'),'Client','login','password');
+				$DbAdapter = new Zend_Auth_Adapter_DbTable(Zend_Registry::get('db'),'client','login','password');
 				$DbAdapter->setIdentity($data['login']);
 				$DbAdapter->setCredential(md5($data['pass']));
 				if($auth->authenticate($DbAdapter)->isValid()){

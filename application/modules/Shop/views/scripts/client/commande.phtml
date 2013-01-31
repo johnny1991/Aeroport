@@ -1,7 +1,7 @@
 <h2>Mes Reservations</h2>
 <?php if($this->paginator->count() != 0) { ?>
 <div class="Block">
-	<div class="HeadBlock">Liste de vos commandes</div>
+	<div class="HeadBlock">Liste de vos réservations</div>
 	<div class="contentBLock">
 		<table id="tableau1">
 			<thead>
@@ -64,5 +64,5 @@
 </div>
 <?= $this->pagination; ?>
 <?php } else {?>
-<div class="Block">Aucune commande pour le moment.</div>
+<div class="Block">Aucune réservation pour le moment.</div>
 <?php }?>

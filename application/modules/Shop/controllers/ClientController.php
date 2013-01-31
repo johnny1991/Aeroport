@@ -92,7 +92,7 @@ class Shop_ClientController extends Zend_Controller_Action
 
 		$requete = $tableClient->select()
 		->setIntegrityCheck(false)
-		->from(array('cl'=>'Client'),array('cl.id_client','cl.nom','cl.mail','cl.login'))
+		->from(array('cl'=>'client'),array('cl.id_client','cl.nom','cl.mail','cl.login'))
 		->joinLeft(array('co'=>'Commande'),'co.id_client = cl.id_client',array('co.id_commande','montant'=>'sum(co.montant)','co.date'))
 		->group('cl.id_client')
 		;
@@ -302,7 +302,7 @@ class Shop_ClientController extends Zend_Controller_Action
 		->select()
 		->from(array('r'=>'reservation'))
 		->setIntegrityCheck(false)
-		->join(array('cl'=>'Client'),'cl.id_client=r.id_client',array('cl.nom','cl.prenom'))
+		->join(array('cl'=>'client'),'cl.id_client=r.id_client',array('cl.nom','cl.prenom'))
 		->joinLeft(array('l'=>'ligne'),'r.numero_ligne=l.numero_ligne',array('l.tarif'))
 		->joinLeft(array('v'=>'vol'),'r.id_vol=v.id_vol',array('v.tarif_effectif'))
 		->where('r.id_client=?',Zend_Auth::getInstance()->getIdentity()->id_client)
@@ -384,18 +384,18 @@ class Shop_ClientController extends Zend_Controller_Action
 	public function commentaireAction(){
 		$this->_helper->layout->setLayout('client');
 		$id = $this->getRequest()->getParam('id');
-		
+
 		$TableReservation = new Reservation();
 		$Reservation = $TableReservation->find($id)->current();
 		$TableRemarque = new Remarque();
 		$TableTypeRemarque = new TypeRemarque();
-		
-		
+
+
 		$libelle = new Zend_Form_Element_Text('libelle');
 		$libelle->setRequired(true);
 		$libelle->setLabel('Informations *');
 		$submit = new Zend_Form_Element_Submit('Ajouter');
-		
+
 		$type = new Zend_Form_Element_Select('type');
 		$type->setRequired(true);
 		$type->setLabel('Type *');
@@ -403,19 +403,19 @@ class Shop_ClientController extends Zend_Controller_Action
 		$type->addMultiOption('0',"Choisissez un type de remarque");
 		$type->setAttrib("disable",array("0"));
 		$type->setValue("0");
-		
+
 		foreach ($TypeRemarques as $TypeRemarque)
 		{
 			$type->addMultiOption($TypeRemarque->id_type_remarque,$TypeRemarque->libelle_type_remarque);
 		}
-		
+
 		$form = new Zend_Form();
 		$form->addElement($type);
 		$form->addElement($libelle);
 		$form->addElement($submit);
 		$form->setMethod('post');
 		$data = $this->getRequest()->getPost();
-		
+
 		if($this->getRequest()->isPost())
 		{
 			if($form->isValid($data))
@@ -432,7 +432,12 @@ class Shop_ClientController extends Zend_Controller_Action
 		$form->populate($data);
 		$this->view->form = $form;
 
-		$requete = $TableRemarque->select()->setIntegrityCheck(false)->from(array('r'=>'remarque'))->where('id_client=?',Zend_Auth::getInstance()->getIdentity()->id_client);
+		$requete = $TableRemarque->select()
+		->setIntegrityCheck(false)
+		->from(array('r'=>'remarque'))
+		->where('id_client=?',Zend_Auth::getInstance()->getIdentity()->id_client)
+		->where('id_vol =?',$Reservation->id_vol)
+		->where('numero_ligne =?',$Reservation->numero_ligne);
 		$Remarques = $TableRemarque->fetchAll($requete);
 		$this->view->remarques = $Remarques;
 
@@ -560,6 +565,11 @@ class Shop_ClientController extends Zend_Controller_Action
 					$form->populate($data);
 				}
 			}
+		}
+		else if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_service)) ) {
+				
+			$this->_redirector->gotoUrl('connexion');
+				
 		}
 		else
 		{
@@ -748,10 +758,9 @@ class Shop_ClientController extends Zend_Controller_Action
 		$this->view->nbClient = $Parametre->nbProduits;
 		$this->view->nbReservation = $Parametre->nbElements;
 		$SessionRole = new Zend_Session_Namespace('Role');
-		$acl = new Application_Acl_Acl();
-		//if(!($acl->isAllowed($SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName())))
-		//	$this->_redirector->gotoUrl('accueil');
-		//echo $SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName();
+		$acl = new Aeroport_LibraryAcl();
 
+		if(!($acl->isAllowed($SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName())))
+			$this->_redirector->gotoUrl('accueil');
 	}
 }

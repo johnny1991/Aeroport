@@ -5,6 +5,7 @@ foreach($this->messages as $message)
 <?php 
 $vol=$this->vol;
 $ligne=$this->ligne;
+$form = $this->form;
 $jours = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vendredi","6"=>"Samedi","7"=>"Dimanche");
 ?>
 <h1>
@@ -115,7 +116,7 @@ $jours = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vend
 			<label for="type_avion">Type d'avion : </label>
 			<div class="" id="type_avion">
 				<?php if($vol->id_avion!=NULL) {
-					echo $this->typeAvion->libelle;
+					echo $this->typeAvion->libelle. '('.$vol->findParentRow("Avion")->total_heure_vol.'h)';
 				} else {
 					echo "Non affecté";
 						} ?>
@@ -139,12 +140,6 @@ $jours = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vend
 				} else {
 					echo "Non affecté";
 						} ?>
-			</div>
-		</div>
-		<div class="infoVolRow">
-			<label for="tarif">Tarif effectif : </label>
-			<div class="" id="tarif">
-				<?php echo $vol->tarif_effectif." €"; ?>
 			</div>
 		</div>
 	</fieldset>
@@ -173,6 +168,21 @@ $jours = array("1"=>"Lundi","2"=>"Mardi","3"=>"Mercredi","4"=>"Jeudi","5"=>"Vend
 				else
 					echo "Non attribué";
 				?>
+			</div>
+		</div>
+		<div class="infoVolRow">
+			<label for="tarif">Tarif effectif : </label>
+			<div class="" id="tarif">
+				<?php echo $vol->tarif_effectif." €"; ?>
+			</div>
+		</div>
+		<div class="infoVolRow">
+			<label for="tarif">Temps effectif : </label>
+			<div class="" id="tarif">
+				<form method="<?= $form->getMethod(); ?>" action="<?= $form->getAction(); ?>">
+					<?= $form->heure->renderViewHelper();?>
+					<?= $form->ajouter->renderViewHelper();?>
+				</form>
 			</div>
 		</div>
 	</fieldset>

@@ -4,47 +4,6 @@ if($this->message != NULL)
 	echo $this->message;
 ?>
 <div class="textBlock">Vous pouvez ajouter un seul paramètre à la fois .</div>
-
-<div class="Block">
-	<div class="HeadBlock">
-		<h3>Paramètres de connexion administrateur</h3>
-	</div>
-	<?php $formConnexion = $this->formConnexion;?>
-	<form method="<?= $formConnexion->getMethod() ?>"
-		action="<?= $formConnexion->getAction();?>">
-		<div class="contentBLock">
-			<div class="rowBlock">
-				<?php $formConnexion->getElement("login")->getDecorator('label')->setOption('tag', null); ?>
-				<div>
-					<?= $formConnexion->login->renderLabel();?>
-				</div>
-				<div>
-					<?= $formConnexion->login->renderViewHelper();?>
-				</div>
-				<div>
-					<?= $formConnexion->login->renderErrors();?>
-				</div>
-			</div>
-			<div class="rowBlock">
-				<?php $formConnexion->getElement("password")->getDecorator('label')->setOption('tag', null); ?>
-				<div>
-					<?= $formConnexion->password->renderLabel();?>
-				</div>
-				<div>
-					<?= $formConnexion->password->renderViewHelper();?>
-				</div>
-				<div>
-					<?= $formConnexion->password->renderErrors();?>
-				</div>
-			</div>
-			<div class="rowBlock">
-				<div class="BoutonCreateContent">
-					<?= $formConnexion->modifier->renderViewHelper();?>
-				</div>
-			</div>
-		</div>
-	</form>
-</div>
 <div class="Block">
 	<div class="HeadBlock">
 		<h3>Paramètres de compte UPJV</h3>

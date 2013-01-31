@@ -3,18 +3,6 @@
 class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 {
 
-
-	/*
-	 protected function _initDataBase(){ // Initialisation de la base de données
-
-	$config = new Zend_Config_Ini(APPLICATION_PATH.'/configs/application.ini','development');
-	$db = Zend_Db::factory($config->database1);
-	Zend_Db_Table_Abstract::setDefaultAdapter($db);
-	Zend_Registry::set('db',$db);
-	Zend_Registry::set('config',$config); // Mettre la config de application.ini dans le registre
-	}
-	*/
-
 	protected function _initLibrairie(){ // Initialisation de la librarie personnelle
 		$autoloader = Zend_Loader_Autoloader::getInstance();
 		$autoloader->registerNamespace('Application_');
@@ -31,14 +19,6 @@ class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 		Zend_Registry::set('navigation',$navigation);
 	}
 	
-	/*
-	 protected function _initTranslate(){ // Initialisation De la traduction en Francais
-	$translate = new Zend_Translate(array('adapter' => 'array', 'content' =>
-			realpath(APPLICATION_PATH . '/../resources/languages'), 'locale' => 'fr', 'scan' =>
-			Zend_Translate::LOCALE_DIRECTORY));
-	Zend_Registry::set('Zend_Translate', $translate);
-	}*/
-
 	protected function _initRouter() { // Initialisation de la redirection des pages (URl Rewriting)
 		$front = $this->bootstrap('FrontController')->getResource('FrontController');
 		$router = $front->getRouter();
@@ -80,40 +60,4 @@ class Shop_Bootstrap extends Zend_Application_Module_Bootstrap
 
 	}
 
-	/*
-	 protected function _initSession(){ // Initialisation de la session Panier
-	$sessionConfig = Zend_registry::get('config')->session;
-	$session = $sessionConfig->toArray();
-	$panier = new Zend_Session_Namespace('panier');
-	$panier->setExpirationSeconds($session['time_panier']);
-	}
-	*/
-	/*protected function _initAccessControlList(){ // Initialisation des ACL
-		//$SessionRole = new Zend_Session_Namespace('Role');
-		$identity = Zend_Auth::getInstance()->getStorage()->read();
-
-		if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_client)) )
-			$SRole->id_service = "MEMBER"; 
-		echo $SRole->id_service; // Membre
-		//else if(isset($identity->id_service)){
-			//$SRole->id_service = $identity->id_service;
-				
-//			$SessionRole->Role = $identity->id_service;
-		//}
-		//else
-			//$SRole->id_service = $identity->id_service;
-				
-			//$SessionRole->Role = "Visitor"; // Visiteur
-		
-		/*else if( (Zend_Auth::getInstance()->getIdentity()) && (isset(Zend_Auth::getInstance()->getIdentity()->id_service)) )
-		{
-			$identity = Zend_Auth::getInstance()->getStorage()->read();
-			if(isset($identity)){
-				$SRole->id_service = $identity->id_service;
-			}	
-		}
-		else
-			$SessionRole->Role = "Visitor"; // Visiteur
-			*/
-	//}*/
 }

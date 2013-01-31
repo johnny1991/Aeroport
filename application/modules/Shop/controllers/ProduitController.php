@@ -204,53 +204,11 @@ class Shop_ProduitController extends Zend_Controller_Action
 			$this->view->vol = $vol;
 			$form->getElement('id')->setValue($this->getRequest()->getParam('id'));
 			$this->view->form = $form;
-			}
+		}
 		else
 			$this->_redirector->gotoUrl('liste_produit');
 
 	}
-	/*
-	 public function blocAction(){ // Block produit (que l'on retrouve dans le catalogue, page d'accueil ...)
-
-	$this->_helper->layout->setLayout('categories');
-	//$tableProduit = new Shop_Model_Produit;
-	$tableVol = new Vol();
-
-	$this->view->vol = $tableVol->find($this->getRequest()->getParam('id_vol'), $this->getRequest()->getParam('numero_ligne'))->current();
-	Zend_Debug::dump($this->view->vol);
-	$MiseEnLigne = new Zend_Date($this->view->vol->date_depart, 'dd-MM-yy');
-	//$cheminPublic = 'shop/public';
-	if(Zend_Date::now() < $MiseEnLigne->addDay("15"))
-		$this->view->Nouveaute = true;
-	else
-		$this->view->Nouveaute = false;
-	//$imageTool = new Application_Image_Tools();
-	/*if(($this->view->produit->photo1 != NULL) && (file_exists(APPLICATION_PATH.'/../'.$cheminPublic.'/img/Produits/'.$this->view->produit->photo1)))
-	 $this->view->TaillePhoto = $imageTool::adaptationTailleImage(APPLICATION_PATH.'/../'.$cheminPublic.'/img/Produits/'.$this->view->produit->photo1,202,140);
-	else{
-	$this->view->produit->photo1 = "NoPicture.png";
-	$this->view->TaillePhoto = array(202,140);
-	}*/
-
-	//$categorieProduit = $this->view->produit->findDependentRowset('Shop_Model_CategorieProduit')->current();
-	//$sousCategorieProduit = $this->view->produit->findDependentRowset('Shop_Model_SousCategorieProduit')->current();
-
-	//$urlProd = new Application_Url();
-
-	//$this->view->url = $urlProd::Rewrite($this->view->vol->designation);
-
-	//}
-
-	/*public function affichageSousCategorieAction(){ // Affichage des sous-catégories (dans l'ajout produit) en AJAX
-
-	$this->_helper->layout->disableLayout();
-	$TableSousCategorie = new Shop_Model_SousCategorie();
-	$SousCategories = $TableSousCategorie->fetchAll($TableSousCategorie->select()->where('id_categorie=?',$this->getParam('categorie')));
-	echo "<option value='0' selected='selected'>Choisissez une sous-catégorie</option>";
-	foreach ($SousCategories as $SousCategorie)
-		echo "<option value='".$SousCategorie->id_souscategorie."'>".$SousCategorie->libelle."</option>";
-
-	}*/
 
 	public function init(){
 
@@ -264,10 +222,9 @@ class Shop_ProduitController extends Zend_Controller_Action
 		$this->view->nbElements = $Parametre->nbElements;
 
 		$SessionRole = new Zend_Session_Namespace('Role');  // Récupération de la session Role (definit dans le bootsrap)
-		$acl = new Application_Acl_Acl();
+		$acl = new Aeroport_LibraryAcl();
 		if(!($acl->isAllowed($SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName()))) // Si l'utilisateur n'a pas le droit d'acceder à cette page, on le redirige vers une page d'erreur
 			$this->_redirector->gotoUrl('accueil');
-		//echo $SessionRole->id_service,'Shop/'.$this->getRequest()->getControllerName(),$this->getRequest()->getActionName();
 	}
 
 }
