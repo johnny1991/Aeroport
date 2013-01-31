@@ -8,7 +8,7 @@ class Shop_AdministrationController extends Zend_Controller_Action
 		$this->view->title = "Information du compte"; // Attribution du titre de la page
 		$tableClient = new Shop_Model_Client; // On récupère la table Client
 		$client = $tableClient->find($id)->current(); // On récupère le client via son identifiant
-		$form = new AjoutClient(); // Nouveau formulaire d'ajout client
+		$form = new Shop_Form_AjoutClient(); // Nouveau formulaire d'ajout client
 		if($client != NULL) {
 			// Si le client existe
 			$form->getElement('password')->setRequired(false); // On met les champs password et password1 à non obligatoire pour éviter de réinitialiser le mot de passe
