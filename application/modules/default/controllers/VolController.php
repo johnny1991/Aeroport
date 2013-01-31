@@ -132,6 +132,7 @@ class VolController extends Zend_Controller_Action
 
 				if(($form->isValid($data)) && (($dateDepart<$dateArrivee) || (($dateDepart==$dateArrivee) && ($hDepart<$hArrivee)) || (($data["periodicite"]))))
 				{
+						
 					$Ligne = $TableLigne->find($form->getValue('Numero'))->current();
 					$Ligne->numero_ligne = $numero_ligne;
 					$Ligne->id_aeroport_origine = $form->getValue('aeroportOrigine');
@@ -149,6 +150,7 @@ class VolController extends Zend_Controller_Action
 
 					if($this->getRequest()->getPost('periodicite')) // Périodique
 					{
+						
 						foreach ($form->getValue("jours") as $jour)
 						{
 							if($TablePeriodicite->find($Id,$jour)->current() == NULL)
@@ -165,11 +167,9 @@ class VolController extends Zend_Controller_Action
 					}
 					else // Vol à la carte
 					{
-						if(($TableVol->find($TableVol->getLastId($Id),$Id)->current()) == NULL)
-						{
-							$Vol = $TableVol->createRow();
-							$Vol->id_vol = $TableVol->getLastId($Id)+1;
-							$Vol->numero_ligne = $Id;
+						if(($TableVol->find($TableVol->getLastId($Id),$Id)->current()) != NULL)
+						{											
+							$Vol = $TableVol->find($TableVol->getLastId($Id),$Id)->current();											
 							$Vol->id_aeroport_depart_effectif = $form->getValue('aeroportDepart');
 							$Vol->id_aeroport_arrivee_effectif = $form->getValue('aeroportArrivee');
 							$Vol->date_depart = $dateDepart->get('yyyy-MM-dd');
