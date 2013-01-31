@@ -11,7 +11,7 @@ $(document).ready(function(){
 foreach($this->messages as $message)
 	echo $message;
 ?>
-<h2>Liste des interventions pour la maintenance </h2>
+<h2>Liste des interventions pour la maintenance <?php echo $this->id; ?></h2>
 <?php echo $this->form; ?>
 <?php if(count($this->paginator) > 0){ ?>
 

@@ -549,6 +549,9 @@ class MaintenanceController extends Zend_Controller_Action
 		$this->view->title = "Intervention";
 		$nbLigne = 25; //Nombre de lignes par pages
 		
+		$id = $this->_getParam('id');
+		$this->view->id = $id;
+		
 		$form = new InterventionForm();
 		$TableIntervention = new Intervention();
 		
