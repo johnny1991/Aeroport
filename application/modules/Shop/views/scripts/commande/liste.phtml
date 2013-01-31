@@ -10,8 +10,8 @@ foreach($this->messages as $message)
 		<tr class="Head">
 			<?php 
 			echo $this->HeadId;
-			echo $this->HeadLigne;
 			echo $this->HeadVol;
+			echo $this->HeadLigne;
 			echo $this->HeadClient;
 			echo $this->HeadQuantite;
 			echo $this->HeadMontant;
@@ -54,23 +54,48 @@ $i++;?>
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
 				class="montantLigneCommande"><?= $reservation->montant."€"?> </a>
 			</td>
-			<td><?php
-			$date = new Zend_Date($reservation->date,Zend_Date::DATETIME);
-			$now = new Zend_Date(Zend_Date::now());
-			$ecart = new Zend_Date($now->getTimestamp() - $date->getTimestamp(),Zend_Date::TIMESTAMP);
-			$ecart->subHour('1');
-			?> <a
-				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="dateLigneCommande" id="date_heure"><?= $ecart->get(Zend_Date::TIMES)?></a> 
-				</td>
-			<td><a
-				href="<?= $this->baseUrl('fiche_commande/'.$reservation->id_reservation.'/'); ?>"
-				class="montantLigneCommande"
-				title="<?= ($reservation->is_valid) ? 'Marqué comme En Attente' : 'Marqué comme Validé'; ?>">
-					<?php if($reservation->is_valid) { ?> <span style="color: green">Validé</span>
-					<?php } else {?> <span style="color: red">En attente</span> <?php } ?>
-			</a>
+			<td><?php 
+					
+					date_default_timezone_set('Europe/Paris');
+					$timestampReservation = strtotime($reservation->date);
+					$timestampNow = time();
+					
+					$timestampPassee = $timestampNow - $timestampReservation;
+					$jour = (($timestampPassee / 60) / 60) / 24;
+					$resteJour = Aeroport_Fonctions::getReste($jour);
+					$entierJour = floor($jour);
+					
+					$heure = $resteJour * 24;
+					$resteHeure = Aeroport_Fonctions::getReste($heure);
+					$entierHeure = floor($heure);
+				
+					$minute = $resteHeure * 60;
+					$resteMinute = Aeroport_Fonctions::getReste($minute);
+					$entierMinute = floor($minute);
+					
+					$seconde = number_format(($resteMinute * 60), 0);
+					
+					if($entierHeure != 0){
+						if($entierJour != 0){
+							$dateRebours = $entierJour.':'.$entierHeure.':'.$entierMinute.':'.$seconde;
+						}else{
+							$dateRebours = $entierHeure.':'.$entierMinute.':'.$seconde;
+						}
+					}else{
+						$dateRebours = $entierMinute.':'.$seconde;
+					}
+				?>
+				<a href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>" class="dateLigneCommande"><?= $dateRebours;?> </a>
 			</td>
+			<td><a
+				href="<?= $this->baseUrl('fiche_commande/'.$reservation->id_reservation.'/'); ?><?//= ($reservation->Islivre) ? 'nonlivre' : 'livre'; ?>"
+				class="montantLigneCommande"
+				title="<?= ($reservation->is_valid) ? 'Marqué comme non livré' : 'Marqué comme livré'; ?>">
+					<?php if($reservation->is_valid) { 
+						?> <span style="color: green">Validé</span> <?php } else {?> <span
+					style="color: red">En attente</span> <?php } ?>
+			</a>
+						
 		</tr>
 		<?php }?>
 	</tbody>

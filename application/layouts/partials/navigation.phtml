@@ -8,8 +8,9 @@ $identity = $auth->getIdentity();
 if($identity->id_service != 8){
 ?>
 <ul id="nav">
-	<li <?php if($controller == 'vol') : ?> class="current" <?php endif;?>><a href="#">Gérer les lignes</a>
+	<li <?php if($controller == 'vol') : ?> class="current" <?php endif;?>><a <?php if($acl->isAllowed($SRole->id_service,'vol','consulter-ligne')) : ?> href="<?php echo $this->baseUrl('vol/consulter-ligne') ?>"<?php else: echo 'href="#"'; endif;?>>Gérer les lignes</a>
 		<ul>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'vol','consulter-ligne')) : ?> href="<?php echo $this->baseUrl('vol/consulter-ligne') ?>" class="nocurrent"<?php endif;?> >Consulter les lignes</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'vol','ajouter-ligne')) : ?> href="<?php echo $this->baseUrl('vol/ajouter-ligne') ?>" class="nocurrent"<?php endif;?> >Ajouter une ligne</a></li>
 		</ul>
 	</li>
@@ -21,9 +22,9 @@ if($identity->id_service != 8){
 		</ul>
 	</li>
 	
-	<li <?php if($controller == 'maintenance') : ?> class="current" <?php endif;?>><a href="#">Gérer la maintenance</a>
+	<li <?php if($controller == 'maintenance') : ?> class="current" <?php endif;?>><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','consulter-maintenance')) : ?> href="<?php echo $this->baseUrl('maintenance/consulter-maintenance') ?>"<?php else: echo 'href="#"'; endif;?>>Gérer la maintenance</a>
 		<ul>
-					<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','consulter-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/consulter-maintenance') ?>" class="nocurrent"<?php endif;?>>Consulter les avions/maintenances</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','consulter-maintenance')) : ?> href="<?php echo $this->baseUrl('maintenance/consulter-maintenance') ?>" class="nocurrent"<?php endif;?>>Consulter les avions/maintenances</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','consulter-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/consulter-avion') ?>" class="nocurrent"<?php endif;?>>Consulter un avion</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','planning')) : ?> href="<?php echo $this->baseUrl('maintenance/planning') ?>" class="nocurrent"<?php endif;?>>Consulter le planning</a></li>
 		</ul>
@@ -32,34 +33,40 @@ if($identity->id_service != 8){
 
 	<li <?php if($controller == 'drh') : ?> class="current" <?php endif;?>><a <?php if($acl->isAllowed($SRole->id_service,'drh','index')) : ?> href="<?php echo $this->baseUrl('drh') ?>"<?php else: echo 'href="#"'; endif;?>>Gérer le personnel</a>
 		<ul>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'drh','index')) : ?> href="<?php echo $this->baseUrl('drh/index') ?>" class="nocurrent"<?php endif;?>>Consulter les employés</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'drh','ajouter-employe')) : ?> href="<?php echo $this->baseUrl('drh/ajouter-employe') ?>" class="nocurrent"<?php endif;?>>Ajouter un employé</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'drh','consulter-service')) : ?> href="<?php echo $this->baseUrl('drh/consulter-service') ?>" class="nocurrent"<?php endif;?>>Consulter les services</a></li>
 		</ul>
 	</li>
 
 
-	<li <?php if($controller == 'maintenance') : ?> class="current" <?php endif;?>><a href="#">Gérer les avions</a>
+	<li <?php if($controller == 'maintenance') : ?> class="current" <?php endif;?>><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','consulter-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/consulter-maintenance') ?>"<?php else: echo 'href="#"'; endif;?>>Gérer les avions</a>
 		<ul>
-			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','ajouter-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/ajouter-avion') ?>" class="nocurrent"<?php endif;?>>Ajouter un avion</a></li>
-			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','ajouter-modele-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/ajouter-modele-avion') ?>" class="nocurrent"<?php endif;?>>Ajouter un type d'avion</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','consulter-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/consulter-avion') ?>" class="nocurrent"<?php endif;?>>Consulter un avion</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','ajouter-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/ajouter-avion') ?>" class="nocurrent"<?php endif;?>>Ajouter un avion</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','consulter-modele-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/consulter-modele-avion') ?>" class="nocurrent"<?php endif;?>>Consulter un model d'avion</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'maintenance','ajouter-modele-avion')) : ?> href="<?php echo $this->baseUrl('maintenance/ajouter-modele-avion') ?>" class="nocurrent"<?php endif;?>>Ajouter un type d'avion</a></li>
 		</ul>
 	</li>
 
-	<li <?php if($controller == 'logistique') : ?> class="current" <?php endif;?>><a href="#">Logistique</a>
+	<li <?php if($controller == 'logistique') : ?> class="current" <?php endif;?>><a <?php if($acl->isAllowed($SRole->id_service,'logistique','index')) : ?> href="<?php echo $this->baseUrl('logistique') ?>"<?php else: echo 'href="#"'; endif;?>>Logistique</a>
 		<ul>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'logistique','index')) : ?> href="<?php echo $this->baseUrl('logistique/') ?>" class="nocurrent"<?php endif;?>>Consulter les vols</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'logistique','consulter-remarque')) : ?> href="<?php echo $this->baseUrl('logistique/consulter-remarque') ?>" class="nocurrent"<?php endif;?>>Consulter les types de remarque</a></li>
 		</ul>
 	</li>
 	
-	<li <?php if($controller == 'crud') : ?> class="current" <?php endif;?>><a href="#">Crud</a>
+	<li<?php if($controller == 'crud') : ?> class="current" <?php endif;?>><a href="#">Crud</a>
 		<ul>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'crud','liste-aeroport')) : ?> href="<?php echo $this->baseUrl('crud/liste-aeroport') ?>" class="nocurrent"<?php endif;?>>Consulter les aéroports</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'crud','ajouter-aeroport')) : ?> href="<?php echo $this->baseUrl('crud/ajouter-aeroport') ?>" class="nocurrent"<?php endif;?>>Ajouter un aéroport</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'crud','liste-ville')) : ?> href="<?php echo $this->baseUrl('crud/liste-ville') ?>" class="nocurrent"<?php endif;?>>Consulter les villes</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'crud','ajouter-ville')) : ?> href="<?php echo $this->baseUrl('crud/ajouter-ville') ?>" class="nocurrent"<?php endif;?>>Ajouter une ville</a></li>
 			<li><a <?php if($acl->isAllowed($SRole->id_service,'crud','liste-pays')) : ?> href="<?php echo $this->baseUrl('crud/liste-pays') ?>" class="nocurrent"<?php endif;?>>Consulter les pays</a></li>
+			<li><a <?php if($acl->isAllowed($SRole->id_service,'crud','ajouter-pays')) : ?> href="<?php echo $this->baseUrl('crud/ajouter-pays') ?>" class="nocurrent"<?php endif;?>>Ajouter un pays</a></li>
 		</ul>
 	</li>
+	
+	<li<?php if($controller == 'Shop') : ?> class="current" <?php endif;?>><a href="<?php echo $this->baseUrl('Shop/accueil') ?>">Shop</a></li>
 </ul>
 <?php }?>

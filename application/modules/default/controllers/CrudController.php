@@ -267,8 +267,8 @@ class CrudController extends Zend_Controller_Action
 		$this->view->order = $orderBy;
 		$this->view->trigramme = Aeroport_Tableau_OrderColumn::orderColumns($this, 'id', $orderBy, null, 'Abréviation');
 		$this->view->nom = Aeroport_Tableau_OrderColumn::orderColumns($this, 'nom', $orderBy, null, 'Nom');
-		$this->view->ville = Aeroport_Tableau_OrderColumn::orderColumns($this, 'ville', $orderBy, 'thDateEmbauche', 'Ville');
-		$this->view->pays = Aeroport_Tableau_OrderColumn::orderColumns($this, 'pays', $orderBy, 'thDateEmbauche', 'Pays');
+		$this->view->ville = Aeroport_Tableau_OrderColumn::orderColumns($this, 'ville', $orderBy, null, 'Ville');
+		$this->view->pays = Aeroport_Tableau_OrderColumn::orderColumns($this, 'pays', $orderBy, null, 'Pays');
 
 		$paginator = Zend_Paginator::factory($req);
 		$paginator->setItemCountPerPage(25);

@@ -93,7 +93,7 @@ class Shop_ClientController extends Zend_Controller_Action
 		$requete = $tableClient->select()
 		->setIntegrityCheck(false)
 		->from(array('cl'=>'client'),array('cl.id_client','cl.nom','cl.mail','cl.login'))
-		->joinLeft(array('co'=>'Commande'),'co.id_client = cl.id_client',array('co.id_commande','montant'=>'sum(co.montant)','co.date'))
+		->joinLeft(array('co'=>'commande'),'co.id_client = cl.id_client',array('co.id_commande','montant'=>'sum(co.montant)','co.date'))
 		->group('cl.id_client')
 		;
 

@@ -71,6 +71,7 @@ class MaintenanceController extends Zend_Controller_Action
 	public function modifierAvionAction(){
 		$this->view->title = "Modifier un avion";
 		$form = new FormulaireAvion();
+		$form->removeElement('disponibilite');
 		$TableAvion = new Avion();
 		$id = $this->_getParam('id');
 		$avion = $TableAvion->find($id)->current();
@@ -140,6 +141,12 @@ class MaintenanceController extends Zend_Controller_Action
 		$requete = $TableMaintenance->select()->where('fin_prevue >?',$currentDate->get('yyyy-MM-dd'))->where('id_avion=?',$id);
 		$requete1 = $TableMaintenance->select()->where('id_avion=?',$id);
 		
+		$TableVol = new Vol();
+		$requete2 = $TableVol->select()->setIntegrityCheck(false)->from(array('v'=>'vol'))
+		->joinLeft(array('l'=>'ligne'),'l.numero_ligne = v.numero_ligne',array('l.heure_depart','l.heure_arrivee'))
+		
+		->where('v.id_avion=?',$id);
+		$this->view->vols = $TableVol->fetchAll($requete2);
 		$Maintenances = $TableMaintenance->fetchAll($requete);
 		$Maintenances1 = $TableMaintenance->fetchAll();
 		$this->view->maintenanceAvion = $TableMaintenance->fetchAll($requete1);

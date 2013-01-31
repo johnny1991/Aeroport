@@ -112,4 +112,11 @@ class Aeroport_Fonctions{
 		$replace = array ('e','a','i','u','o','c');
 		return preg_replace($search, $replace, $in);
 	}
+	
+	public static function getReste($int){
+		$explode = explode('.', $int);
+		$reste = '0.'.$explode[1];
+	
+		return $reste;
+	}
 }

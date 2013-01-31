@@ -38,7 +38,10 @@ foreach($this->messages as $message)
 			</a></td>
 			<td class="ligne"><a
 				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$avion['id_avion']; ?>">
-					<?php echo $avion['diff']; ?>
+					<?php if($avion['diff'] <= 15) 
+						echo "<span style='color:red'><b>".round($avion['diff'],2)."</b></span>";
+					else
+						echo '<span style="color:green">'.round($avion['diff'],2).'</span>'; ?>
 			</a></td>
 			<td class="ligne"><a
 				href="<?php echo $this->baseUrl('maintenance/fiche-avion/id/').$avion['id_avion']; ?>">
@@ -50,15 +53,12 @@ foreach($this->messages as $message)
 			</a></td>
 			<td><?php if($avion['disponibilite_avion'] == "0"){?><a
 				href="<?php echo $this->baseUrl('maintenance/intervention/id/').$avion['id_avion']; ?>"
-				class="icone_modifier_maintenance"></a><?php }?>
+				class="icone_modifier_maintenance" title="Voir les interventions"></a>
+				<?php }?>
 			</td>
 			<td><a
 				href="<?php echo $this->baseUrl('maintenance/modifier-avion/id/').$avion['id_avion']; ?>"
 				class="icone_modifier_ligne"></a>
-			</td>
-			<td><a
-				href="<?php echo $this->baseUrl('maintenance/supprimer-avion/id/').$avion['id_avion']; ?>"
-				class="icone_delete_ligne"></a>
 			</td>
 		</tr>
 		<?php } ?>

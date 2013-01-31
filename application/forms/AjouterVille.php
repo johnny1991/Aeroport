@@ -55,7 +55,8 @@ class AjouterVille extends Zend_Form{
 		$ESubmit->removeDecorator('DtDdWrapper')->removeDecorator('HtmlTag')->removeDecorator('Label');
 		
 		$this->setMethod('POST');
-	
+		
+		$this->setAttrib('id', 'ajouterVille');
 		$this->addElement($ENom);
 		$this->addElement($ECodePays);
 		$this->addElement($ECodePostal);

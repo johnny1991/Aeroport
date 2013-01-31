@@ -40,8 +40,34 @@ foreach($this->messages as $message)
 		<div class="infoLigneRow">
 			<label for="heure_depart">Nombre d'heures avant Grande révision : </label>
 			<div class="" id="heure_depart">
-				<?php echo $avion->id_type_avion;?>
+				<?php echo $avion->nb_heures_gd_revision;?>
 				h
+			</div>
+		</div>
+		<?php $total = 0;?>
+		<div class="infoLigneRow">
+			<label>Durée des prochains vols :</label>
+		</div>
+		<?php foreach($this->vols as $vol) {?>
+		<div class="infoLigneRow">
+			<?php $date = new Zend_Date($vol->date_depart,'yyyy-MM-dd')?>
+			<label> - Le <?=$date->get('dd/MM/yyyy'); ?>
+			</label>
+			<div>
+				<?php $dateDepart = new Zend_Date($vol->date_depart.' '.$vol->heure_depart);
+				$dateArrivee = new Zend_Date($vol->date_arrivee.' '.$vol->heure_arrivee);
+				$diff = $dateArrivee->sub($dateDepart)->toValue()/3600;
+				$total += $diff;
+				?>
+				<?php echo round($diff,2);?>
+				h
+			</div>
+		</div>
+		<?php } ?>
+		<div class="infoLigneRow">
+			<label for="total_heure">Total des heures restantes dans 4 semaines : </label>
+			<div class="" id="total_heure">
+				<?php echo round($avion->nb_heures_gd_revision-$total,2)." h"; ?>
 			</div>
 		</div>
 		<div class="infoLigneRow">

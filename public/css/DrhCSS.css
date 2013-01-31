@@ -1,5 +1,21 @@
 @CHARSET "UTF-8";
 
+button{
+	width:150px;
+	padding-left: 5px;
+	background: #d1d1d1; /* for non-css3 browsers */
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ebebeb', endColorstr='#a1a1a1'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#ebebeb), to(#a1a1a1)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #ebebeb,  #a1a1a1); /* for firefox 3.6+ */
+
+	color: #444;
+	border-top: solid 1px #f8f8f8;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+}
+
 .h3DRH{text-align:center;}
 
 .boxAjouterService{width:500px;border:1px #59b25c solid;margin:auto;text-align:center;background-color:rgba(114, 219, 119, 0.5);border-radius:10px;}
@@ -8,6 +24,7 @@
 .tableService th{border-bottom:1px #000 solid;background-color:#84a5c3;}
 .tableService th#asc{border-bottom:1px #000 solid;background-color:#84a5c3;}
 .tableService th#desc{border-bottom:1px #000 solid;background-color:#84a5c3;}
+.tableService input{width:300px;}
 
 .thDateEmbauche{text-align:center;}
 .tdLibelleService{padding-left:15px;}
@@ -19,8 +36,8 @@
 .tdDateEmbauche{text-align:center;}
 .DivErreurForm{display:none;width:450px;min-height:30px;margin:auto;background-color:#ad2525;border:1px red solid;border-radius:10px;color:#290b0b;text-align:center;padding-top:10px;margin-bottom:20px;}
 
-#ajouterEmploye{width:380px;margin:auto;background-color:rgba( 202, 243, 247, 0.5);border:1px #a7cdd1 solid;padding:10px 20px;margin-bottom:20px;}
-#ajouter{margin-left:150px;margin-top:20px;}
+#ajouterEmploye{width:380px;margin:auto;box-shadow:2px 2px 2px #dfdfdf;border:1px #a7cdd1 solid;padding:10px 20px;margin-bottom:20px;}
+#ajouterEmploye button{margin-left:120px;margin-top:20px;}
 
 .h3Pilote{margin-left:30px;border-bottom:1px #000 solid;margin-right:30px;}
 
@@ -34,5 +51,11 @@
 	.ulPilote a{color:#000;text-decoration:none;}
 	.ulPilote a:hover{text-decoration:underline;}
 
-.tableEmploye{width:500px;margin:auto;background-color:rgba( 202, 243, 247, 0.5);border:1px #a7cdd1 solid;padding:10px 20px;margin-bottom:20px;}
+.tableEmploye{width:600px;margin:auto;box-shadow:2px 2px 2px #dfdfdf;border:1px #a7cdd1 solid;padding:10px 20px;margin-bottom:20px;}
 .tableEmploye tr{height:30px;}
+.tableEmploye td{padding:5px;}
+
+#service{width:180px;}
+
+#ajouterAeroport, #ajouterVille, #ajouterPays{width:380px;margin:auto;box-shadow:2px 2px 2px #dfdfdf;border:1px #a7cdd1 solid;padding:10px 20px;margin-bottom:20px;}
+#ajouterAeroport input[type=submit], #ajouterVille input[type=submit], #ajouterPays input[type=submit]{margin-left:120px;margin-top:20px;}
