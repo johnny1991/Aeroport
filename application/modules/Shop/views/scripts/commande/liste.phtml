@@ -10,8 +10,8 @@ foreach($this->messages as $message)
 		<tr class="Head">
 			<?php 
 			echo $this->HeadId;
-			echo $this->HeadLigne;
 			echo $this->HeadVol;
+			echo $this->HeadLigne;
 			echo $this->HeadClient;
 			echo $this->HeadQuantite;
 			echo $this->HeadMontant;
@@ -52,30 +52,62 @@ $i++;?>
 			</td>
 			<td><a
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="montantLigneCommande"><?= $reservation->montant."â‚¬"?> </a>
+				class="montantLigneCommande"><?= $reservation->montant."€"?> </a>
 			</td>
-			<td><?php
-			$date = new Zend_Date($reservation->date,Zend_Date::DATETIME);
-			$now = new Zend_Date(Zend_Date::now());
-			$ecart = new Zend_Date($now->getTimestamp() - $date->getTimestamp(),Zend_Date::TIMESTAMP);
-			$ecart->subHour('1');
-			?> <a
-				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="dateLigneCommande" id="date_heure"><?= $ecart->get(Zend_Date::TIMES)?></a> 
-				</td>
+			<td><?php 
+					
+					function getReste($int){
+						$explode = explode('.', $int);
+						$reste = '0.'.$explode[1];
+						
+						return $reste;
+					}
+					
+					date_default_timezone_set('Europe/Paris');
+					$timestampReservation = strtotime($reservation->date);
+					$timestampNow = time();
+					
+					$timestampPassee = $timestampNow - $timestampReservation;
+					$jour = (($timestampPassee / 60) / 60) / 24;
+					$resteJour = getReste($jour);
+					$entierJour = floor($jour);
+					
+					$heure = $resteJour * 24;
+					$resteHeure = getReste($heure);
+					$entierHeure = floor($heure);
+				
+					$minute = $resteHeure * 60;
+					$resteMinute = getReste($minute);
+					$entierMinute = floor($minute);
+					
+					$seconde = number_format(($resteMinute * 60), 0);
+					
+					if($entierHeure != 0){
+						if($entierJour != 0){
+							$dateRebours = $entierJour.':'.$entierHeure.':'.$entierMinute.':'.$seconde;
+						}else{
+							$dateRebours = $entierHeure.':'.$entierMinute.':'.$seconde;
+						}
+					}else{
+						$dateRebours = $entierMinute.':'.$seconde;
+					}
+				?>
+				<a href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>" class="dateLigneCommande"><?= $dateRebours;?> </a>
+			</td>
 			<td><a
-				href="<?= $this->baseUrl('fiche_commande/'.$reservation->id_reservation.'/'); ?>"
+				href="<?= $this->baseUrl('fiche_commande/'.$reservation->id_reservation.'/'); ?><?//= ($reservation->Islivre) ? 'nonlivre' : 'livre'; ?>"
 				class="montantLigneCommande"
-				title="<?= ($reservation->is_valid) ? 'MarquÃ© comme En Attente' : 'MarquÃ© comme ValidÃ©'; ?>">
-					<?php if($reservation->is_valid) { ?> <span style="color: green">ValidÃ©</span>
-					<?php } else {?> <span style="color: red">En attente</span> <?php } ?>
+				title="<?= ($reservation->is_valid) ? 'Marqué comme non livré' : 'Marqué comme livré'; ?>">
+					<?php if($reservation->is_valid) { 
+						?> <span style="color: green">Validé</span> <?php } else {?> <span
+					style="color: red">En attente</span> <?php } ?>
 			</a>
-			</td>
+		
 		</tr>
 		<?php }?>
 	</tbody>
 </table>
 <?= $this->pagination; ?>
 <?php } else {?>
-<div class="CommandeLivre">Toutes les commandes sont livrÃ©es</div>
+<div class="CommandeLivre">Toutes les commandes sont livrées</div>
 <?php } ?>
