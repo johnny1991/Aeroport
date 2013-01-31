@@ -79,7 +79,7 @@ input {
 	background: url('../shop/img/carrousel_bg.png') no-repeat scroll center top
 		transparent;	
 	box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
-	overflow: auto;
+	overflow: hidden;
 }
 
 
