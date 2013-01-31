@@ -509,12 +509,6 @@ nav a {
 	margin: 5px 0px;
 }
 
-.search-ligne .Aeroport,.search-ligne .Heure,.search-ligne .Tarif,.search-ligne .Date,.search-ligne .Periodicite
-	{
-	background-color: rgba(129, 190, 208, 0.65);
-	border-radius: 10px;
-}
-
 #search-advanced-ligne .Aeroport label,#search-advanced-ligne .Date label,#search-advanced-ligne .Heure label,#search-advanced-ligne .Tarif label
 	{
 	display: block;
