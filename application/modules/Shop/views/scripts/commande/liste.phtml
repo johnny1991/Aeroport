@@ -52,7 +52,7 @@ $i++;?>
 			</td>
 			<td><a
 				href="<?= $this->baseUrl('fiche_commande/').$reservation->id_reservation; ?>"
-				class="montantLigneCommande"><?= $reservation->montant."€"?> </a>
+				class="montantLigneCommande"><?= $reservation->montant."â‚¬"?> </a>
 			</td>
 			<td><?php 
 					
@@ -90,17 +90,17 @@ $i++;?>
 			<td><a
 				href="<?= $this->baseUrl('fiche_commande/'.$reservation->id_reservation.'/'); ?><?//= ($reservation->Islivre) ? 'nonlivre' : 'livre'; ?>"
 				class="montantLigneCommande"
-				title="<?= ($reservation->is_valid) ? 'Marqué comme non livré' : 'Marqué comme livré'; ?>">
+				title="<?= ($reservation->is_valid) ? 'MarquÃ© comme non livrÃ©' : 'MarquÃ© comme livrÃ©'; ?>">
 					<?php if($reservation->is_valid) { 
-						?> <span style="color: green">Validé</span> <?php } else {?> <span
+						?> <span style="color: green">ValidÃ©</span> <?php } else {?> <span
 					style="color: red">En attente</span> <?php } ?>
 			</a>
-		
+						
 		</tr>
 		<?php }?>
 	</tbody>
 </table>
 <?= $this->pagination; ?>
 <?php } else {?>
-<div class="CommandeLivre">Toutes les commandes sont livrées</div>
+<div class="CommandeLivre">Toutes les commandes sont livrÃ©es</div>
 <?php } ?>
